@@ -54,32 +54,23 @@ function createSlides() {
 
 function submitVote(movieTitle, vote) {
   const userName = document.getElementById("username").value.trim();
-  if (!userName) {
-    alert("Please enter your name.");
-    return;
-  }
+  if (!userName) return alert("Please enter your name.");
 
-  const slideIndex = Array.from(document.querySelectorAll(".swiper-slide")).findIndex(slide =>
-    slide.querySelector("h2")?.innerText === movieTitle
-  );
+  const slideIndex = Array.from(document.querySelectorAll(".swiper-slide"))
+    .findIndex(s => s.querySelector("h2").innerText === movieTitle);
+  const seen = document.getElementById(`seen-${slideIndex}`).checked ? "✅" : "❌";
 
-  const seen = document.getElementById(`seen-${slideIndex}`)?.checked ? "✅" : "❌";
+  // Build a query-string URL
+  const url = `${sheetURL}`
+    + `?movieTitle=${encodeURIComponent(movieTitle)}`
+    + `&userName=${encodeURIComponent(userName)}`
+    + `&vote=${encodeURIComponent(vote)}`
+    + `&seen=${encodeURIComponent(seen)}`;
 
-  fetch(sheetURL, {
-    method: "POST",
-    body: JSON.stringify({
-      movieTitle,
-      userName,
-      vote,
-      seen
-    }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-    .then(res => res.text())
+  fetch(url)
+    .then(res => res.json())
     .then(() => alert(`Vote for "${movieTitle}" submitted.`))
-    .catch(err => alert("Failed to submit vote."));
+    .catch(() => alert("Failed to submit vote."));
 }
 
 createSlides();
