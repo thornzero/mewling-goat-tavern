@@ -4,7 +4,7 @@ body {
   color: #fff;
   margin: 0;
   padding: 0;
-  text-align: center;
+  text-align: left;
 }
 
 .container {
@@ -39,8 +39,8 @@ body {
   margin: 0 0.5rem;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 5px;
-  font-size: 1.2rem;
+  border-radius: 20px;
+  font-size: 4.0rem;
   cursor: pointer;
 }
 

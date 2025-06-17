@@ -51,8 +51,8 @@ function createSlidesFromData(movies) {
     const slide = document.createElement("div");
     slide.className = "swiper-slide";
     slide.innerHTML = `
-      <h2>${m.title}</h2>
       <img class="movie-poster" src="${m.poster}" alt="${m.title}">
+      <h2>${m.title}</h2>
       <div class="genre-tags">
         ${m.genres.map(t => `<span>${t}</span>`).join("")}
       </div>
