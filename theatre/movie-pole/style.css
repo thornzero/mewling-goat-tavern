@@ -1,0 +1,66 @@
+body {
+  font-family: sans-serif;
+  background: #111;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.swiper {
+  width: 100%;
+  height: auto;
+  padding: 2rem 0;
+}
+
+.swiper-slide {
+  background: #222;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.movie-poster {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.vote-buttons {
+  margin-top: 1rem;
+}
+
+.vote-buttons button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.vote-buttons button.love { background: #4caf50; }
+.vote-buttons button.neutral { background: #ffc107; }
+.vote-buttons button.trash { background: #f44336; }
+
+.genre-tags {
+  margin: 1rem 0;
+}
+
+.genre-tags span {
+  background: #444;
+  color: #fff;
+  padding: 0.2rem 0.6rem;
+  margin: 0 0.3rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.user-input {
+  margin-bottom: 1rem;
+}
