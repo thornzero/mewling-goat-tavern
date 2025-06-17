@@ -53,24 +53,41 @@ function createSlides() {
 }
 
 function submitVote(movieTitle, vote) {
-  const userName = document.getElementById("username").value.trim();
-  if (!userName) return alert("Please enter your name.");
+const userName = document.getElementById("username").value.trim();
+  if (!userName) {
+    alert("Please enter your name.");
+    return;
+  }
 
-  const slideIndex = Array.from(document.querySelectorAll(".swiper-slide"))
-    .findIndex(s => s.querySelector("h2").innerText === movieTitle);
-  const seen = document.getElementById(`seen-${slideIndex}`).checked ? "✅" : "❌";
+  // Figure out which slide this is
+  const slides = Array.from(document.querySelectorAll(".swiper-slide"));
+  const slideIndex = slides.findIndex(s =>
+    s.querySelector("h2").innerText === movieTitle
+  );
+  const seen = document.getElementById(`seen-${slideIndex}`)?.checked
+    ? "✅"
+    : "❌";
 
-  // Build a query-string URL
+  // Build a simple GET URL—no body, no custom headers, no preflight
   const url = `${sheetURL}`
     + `?movieTitle=${encodeURIComponent(movieTitle)}`
     + `&userName=${encodeURIComponent(userName)}`
     + `&vote=${encodeURIComponent(vote)}`
     + `&seen=${encodeURIComponent(seen)}`;
 
-  fetch(url)
-    .then(res => res.json())
-    .then(() => alert(`Vote for "${movieTitle}" submitted.`))
-    .catch(() => alert("Failed to submit vote."));
+  fetch(url)                // simple GET → skips CORS preflight
+    .then(res => {
+      if (!res.ok) throw new Error("Network response was not OK");
+      return res.text();    // pull the raw reply (should be your JSON string)
+    })
+    .then(text => {
+      console.log("Server replied:", text);
+      alert(`Vote for “${movieTitle}” submitted.`);
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Failed to submit vote. Check console for details.");
+    });
 }
 
 createSlides();
