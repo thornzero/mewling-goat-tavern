@@ -1,0 +1,140 @@
+{
+    "page": 1,
+    "results": [
+        {
+            "adult": false,
+            "backdrop_path": null,
+            "genre_ids": [
+                18
+            ],
+            "id": 1020008,
+            "original_language": "ja",
+            "original_title": "ロリコンハウス　おしめりジュンコ",
+            "overview": "A high school girl lives by herself in her parent’s apartment. They deserted her and each other they both took lovers. Feeling lonely she signs up as a mistress at a “Lolicon House” to service middle-aged men.",
+            "popularity": 0.6065,
+            "poster_path": "/bSQTYQq8LKLGaDCeYr5SnZ1SqpX.jpg",
+            "release_date": "1983-11-18",
+            "title": "Rorikon hausu: Oshimeri Junko",
+            "video": false,
+            "vote_average": 2,
+            "vote_count": 1
+        },
+        {
+            "adult": false,
+            "backdrop_path": null,
+            "genre_ids": [
+                99
+            ],
+            "id": 877982,
+            "original_language": "en",
+            "original_title": "Hausu 2020: Locked Down with My Friends in My Parents’ Empty House During the First Wave of COVID-19",
+            "overview": "This is a film about the strangely idyllic time we had during the first UK lockdown, and the media we consumed.",
+            "popularity": 0.0143,
+            "poster_path": "/pmH5VDL3JVgQOCcnfKEWDwEqLE1.jpg",
+            "release_date": "",
+            "title": "Hausu 2020: Locked Down with My Friends in My Parents’ Empty House During the First Wave of COVID-19",
+            "video": false,
+            "vote_average": 0,
+            "vote_count": 0
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/9JurDIR0DMfxvrLFlpBFXWrTZu2.jpg",
+            "genre_ids": [
+                12,
+                16,
+                10751,
+                14,
+                878
+            ],
+            "id": 126710,
+            "original_language": "ja",
+            "original_title": "マジック・ツリーハウス",
+            "overview": "Jack and Annie are young siblings who find a magic tree house on their way home after chasing a weasel. By using the books available on the tree house, they are able to travel through time and location. The two end up with the difficult task of collecting four medallions, each one hidden in a different place and epoch, in order to help a magician named Morgan.",
+            "popularity": 1.4684,
+            "poster_path": "/ewq3RVqwkJVWAcmskbrTO1hFg9j.jpg",
+            "release_date": "2012-01-07",
+            "title": "Magic Tree House",
+            "video": false,
+            "vote_average": 7.111,
+            "vote_count": 9
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/mjLJ95wOq9etZwSBpk8ZZfs62SH.jpg",
+            "genre_ids": [
+                18,
+                35
+            ],
+            "id": 218736,
+            "original_language": "de",
+            "original_title": "Sein letztes Rennen",
+            "overview": "A former Olympic champion wants to compete in the Berlin Marathon one last time.",
+            "popularity": 0.4743,
+            "poster_path": "/qbZxpzebpY803LUHdCBrSYf6OIX.jpg",
+            "release_date": "2013-10-10",
+            "title": "Back on Track",
+            "video": false,
+            "vote_average": 7.3,
+            "vote_count": 87
+        },
+        {
+            "adult": false,
+            "backdrop_path": "/hO1on1VXIPxpv1G3Z8jzGkFdeKY.jpg",
+            "genre_ids": [
+                35,
+                14,
+                27
+            ],
+            "id": 25623,
+            "original_language": "ja",
+            "original_title": "ハウス",
+            "overview": "Hoping to find a sense of connection to her late mother, Gorgeous takes a trip to the countryside to visit her aunt at their ancestral house. She invites her six friends, Prof, Melody, Mac, Fantasy, Kung Fu, and Sweet, to join her. The girls soon discover that there is more to the old house than meets the eye.",
+            "popularity": 2.695,
+            "poster_path": "/tXlEgAJkGQuE9Vm6ppYERUBmdDM.jpg",
+            "release_date": "1977-08-26",
+            "title": "House",
+            "video": false,
+            "vote_average": 7.313,
+            "vote_count": 701
+        },
+        {
+            "adult": false,
+            "backdrop_path": null,
+            "genre_ids": [
+                27
+            ],
+            "id": 1241572,
+            "original_language": "ja",
+            "original_title": "ホラーハウス　Vol.2　夢邪鬼　醒めない悪夢",
+            "overview": "Film directed by Yorida Katsuya.",
+            "popularity": 0.1578,
+            "poster_path": "/vHnDFS7m8GYRidMk8K58v95gZg1.jpg",
+            "release_date": "1992-06-21",
+            "title": "Horror House Vol.2: Dream Malevolent Oni - Unending Nightmare",
+            "video": false,
+            "vote_average": 0,
+            "vote_count": 0
+        },
+        {
+            "adult": false,
+            "backdrop_path": null,
+            "genre_ids": [
+                27
+            ],
+            "id": 1241569,
+            "original_language": "ja",
+            "original_title": "ホラーハウス　Vol.1　怨霊教室",
+            "overview": "Film directed by Yorida Katsuya.",
+            "popularity": 0.0828,
+            "poster_path": "/u00L7Mn7QQ6klFTeoePaoooXwlj.jpg",
+            "release_date": "1992-06-21",
+            "title": "Horror House Vol.1: Grudge Ghost Classroom",
+            "video": false,
+            "vote_average": 0,
+            "vote_count": 0
+        }
+    ],
+    "total_pages": 1,
+    "total_results": 7
+}

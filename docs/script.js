@@ -13,7 +13,7 @@ let swiper;
 // Step 1: Fetch movie titles list from Google Sheet
 function fetchMovieTitles() {
   const cb = 'movieListCallback';
-  window[cb] = function(resp) {
+  window[cb] = function (resp) {
     if (Array.isArray(resp)) {
       movieTitles = resp;
       remaining = movieTitles.length;
@@ -31,9 +31,19 @@ function fetchMovieTitles() {
 // Step 2: Search TMDb for each title to get ID
 function startSearchAndFetch() {
   movieTitles.forEach((rawTitle, idx) => {
-    const title = rawTitle.replace(/\s*\(\d{4}\)$/, '');
+
+    // 1. Extract title + year
+    let title = rawTitle;
+    let year = null;
+    const m = rawTitle.match(/(.+?)\s*\((\d{4})\)$/);
+    if (m) {
+      title = m[1].trim();
+      year = m[2];
+    }
+
+    // 2. Set up callback
     const searchCb = `searchCb_${idx}`;
-    window[searchCb] = function(resp) {
+    window[searchCb] = function (resp) {
       if (resp && resp.results && resp.results[0]) {
         fetchDetails(resp.results[0].id, idx);
       } else {
@@ -42,8 +52,16 @@ function startSearchAndFetch() {
       }
       delete window[searchCb];
     };
+
+    // 3. Build the JSONP URL including &year= if we have one
+    let url = `${proxyURL}?action=search`
+      + `&query=${encodeURIComponent(title)}`;
+    if (year) url += `&year=${year}`;
+    url += `&callback=${searchCb}`;
+
+    // 4. Inject the <script>
     const s = document.createElement('script');
-    s.src = `${proxyURL}?action=search&query=${encodeURIComponent(title)}&callback=${searchCb}`;
+    s.src = url;
     document.body.appendChild(s);
   });
 }
@@ -51,7 +69,7 @@ function startSearchAndFetch() {
 // Step 3: Fetch movie details by ID
 function fetchDetails(id, idx) {
   const detailCb = `detailCb_${idx}`;
-  window[detailCb] = function(data) {
+  window[detailCb] = function (data) {
     movieData[idx] = {
       title: data.title,
       poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
@@ -71,7 +89,7 @@ function fetchDetails(id, idx) {
 // Step 4: Fetch videos (trailers/teasers) by movie ID
 function fetchVideos(id, idx) {
   const videoCb = `videoCb_${idx}`;
-  window[videoCb] = function(resp) {
+  window[videoCb] = function (resp) {
     if (resp.results && resp.results.length) {
       const teaser = resp.results.find(v => v.type === 'Teaser') || resp.results[0];
       movieData[idx].videoKey = teaser.key;
@@ -173,7 +191,7 @@ function submitVote(movieTitle, vote) {
   const idx = slides.findIndex(s => s.querySelector("h2").innerText === movieTitle);
   const seen = document.getElementById(`seen-${idx}`).checked ? "✅" : "❌";
   const cb = `voteCb_${idx}_${Date.now()}`;
-  window[cb] = function(resp) {
+  window[cb] = function (resp) {
     alert(resp.status === "ok" ? `Vote for \"${movieTitle}\" submitted.` : "Error submitting vote.");
     delete window[cb];
   };
