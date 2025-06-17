@@ -16,7 +16,7 @@ function init() {
   movieIds.forEach((id, idx) => {
     // Dynamically create a unique callback for each movie
     const cbName = `tmdbCallback_${id}`;
-    window[cbName] = function(data) {
+    window[cbName] = function (data) {
       // Transform TMDb response into slide-friendly format
       movieData.push({
         title: data.title,
@@ -62,7 +62,11 @@ function createSlidesFromData(movies) {
         <button class="love"    onclick="submitVote('${m.title}','❤️')">❤️</button>
         <button class="neutral" onclick="submitVote('${m.title}','😐')">😐</button>
         <button class="trash"   onclick="submitVote('${m.title}','🗑️')">🗑️</button>
-        <br><label><input type="checkbox" id="seen-${i}"> Seen it</label>
+        <label class="switch">
+          <input type="checkbox" id="seen-${i}">
+            <span class="slider round"></span>
+            Seen it
+        </label>
       </div>
     `;
     container.appendChild(slide);
@@ -92,7 +96,7 @@ function submitVote(movieTitle, vote) {
 
   // Create unique callback for vote response
   const cbName = `voteCallback_${idx}_${Date.now()}`;
-  window[cbName] = function(resp) {
+  window[cbName] = function (resp) {
     if (resp && resp.status === "ok") {
       alert(`Vote for "${movieTitle}" submitted.`);
     } else {
