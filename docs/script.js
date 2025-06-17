@@ -53,41 +53,34 @@ function createSlides() {
 }
 
 function submitVote(movieTitle, vote) {
-const userName = document.getElementById("username").value.trim();
-  if (!userName) {
-    alert("Please enter your name.");
-    return;
-  }
+  const userName = document.getElementById("username").value.trim();
+  if (!userName) return alert("Please enter your name.");
 
-  // Figure out which slide this is
   const slides = Array.from(document.querySelectorAll(".swiper-slide"));
-  const slideIndex = slides.findIndex(s =>
-    s.querySelector("h2").innerText === movieTitle
-  );
-  const seen = document.getElementById(`seen-${slideIndex}`)?.checked
-    ? "✅"
-    : "❌";
+  const idx = slides.findIndex(s => s.querySelector("h2").innerText === movieTitle);
+  const seen = document.getElementById(`seen-${idx}`)?.checked ? "✅" : "❌";
 
-  // Build a simple GET URL—no body, no custom headers, no preflight
+  // Build the URL with a callback=handleVoteResponse
   const url = `${sheetURL}`
     + `?movieTitle=${encodeURIComponent(movieTitle)}`
     + `&userName=${encodeURIComponent(userName)}`
     + `&vote=${encodeURIComponent(vote)}`
-    + `&seen=${encodeURIComponent(seen)}`;
+    + `&seen=${encodeURIComponent(seen)}`
+    + `&callback=handleVoteResponse`;
 
-  fetch(url)                // simple GET → skips CORS preflight
-    .then(res => {
-      if (!res.ok) throw new Error("Network response was not OK");
-      return res.text();    // pull the raw reply (should be your JSON string)
-    })
-    .then(text => {
-      console.log("Server replied:", text);
-      alert(`Vote for “${movieTitle}” submitted.`);
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Failed to submit vote. Check console for details.");
-    });
+  // Create a <script> tag
+  const script = document.createElement("script");
+  script.src = url;
+  document.body.appendChild(script);
+}
+
+// This function gets called by the JSONP response
+function handleVoteResponse(response) {
+  if (response && response.status === "ok") {
+    alert("Vote submitted!");
+  } else {
+    alert("Something went wrong.");
+  }
 }
 
 createSlides();
