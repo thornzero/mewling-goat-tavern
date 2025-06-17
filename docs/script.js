@@ -30,7 +30,8 @@ function fetchMovieTitles() {
 
 // Step 2: Search TMDb for each title to get ID
 function startSearchAndFetch() {
-  movieTitles.forEach((title, idx) => {
+  movieTitles.forEach((rawTitle, idx) => {
+    const title = rawTitle.replace(/\s*\(\d{4}\)$/, '');
     const searchCb = `searchCb_${idx}`;
     window[searchCb] = function(resp) {
       if (resp && resp.results && resp.results[0]) {
