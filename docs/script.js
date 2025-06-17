@@ -105,7 +105,7 @@ function createSlides(movies) {
       <div class="slide-content">
         <img class="movie-poster" src="${m.poster}" alt="${m.title}">
         ${m.videoKey ? `<div class="video-container">
-          <iframe data-key="${m.videoKey}" src="https://www.youtube.com/embed/${m.videoKey}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe data-key="${m.videoKey}" src="https://www.youtube-nocookie.com/embed/${m.videoKey}?modestbranding=1&rel=0" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
         </div>` : ''}
       </div>
       <div class="genre-tags">
@@ -147,7 +147,7 @@ function playActiveVideo() {
     const iframe = slide.querySelector('iframe');
     if (iframe) {
       const key = iframe.dataset.key;
-      let src = `https://www.youtube.com/embed/${key}`;
+      let src = `https://www.youtube-nocookie.com/embed/${key}?modestbranding=1&rel=0`;
       if (idx === swiper.activeIndex) {
         src += '?autoplay=1';
       }
