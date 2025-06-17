@@ -4,7 +4,7 @@
 // Replace with your Google Apps Script Web App URL
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
 // List of TMDb IDs for your movie candidates
-const movieIds = [238, 41032, 797, 11359]; // The Thing, Tucker & Dale, Scream, Big Trouble
+const movieIds = [1091, 46838, 4232, 6978]; // The Thing, Tucker & Dale, Scream, Big Trouble
 
 // Container for fetched movie data
 const movieData = [];
