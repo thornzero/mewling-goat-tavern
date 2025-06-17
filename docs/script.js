@@ -3,109 +3,179 @@
 // === CONFIGURATION ===
 // Replace with your Google Apps Script Web App URL
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
-// List of TMDb IDs for your movie candidates
-const movieIds = [1091, 46838, 4232, 6978]; // The Thing, Tucker & Dale, Scream, Big Trouble
 
-// Container for fetched movie data
-const movieData = [];
+// State
+let movieTitles = [];
+let movieData = [];
+let remaining = 0;
+let swiper;
 
-// Initialize: fetch all movie details via JSONP and render when done
-function init() {
-  let remaining = movieIds.length;
+// Step 1: Fetch movie titles list from Google Sheet
+function fetchMovieTitles() {
+  const cb = 'movieListCallback';
+  window[cb] = function(resp) {
+    if (Array.isArray(resp)) {
+      movieTitles = resp;
+      remaining = movieTitles.length;
+      startSearchAndFetch();
+    } else {
+      console.error('Invalid movie list response', resp);
+    }
+    delete window[cb];
+  };
+  const s = document.createElement('script');
+  s.src = `${proxyURL}?action=listMovies&callback=${cb}`;
+  document.body.appendChild(s);
+}
 
-  movieIds.forEach((id, idx) => {
-    // Dynamically create a unique callback for each movie
-    const cbName = `tmdbCallback_${id}`;
-    window[cbName] = function (data) {
-      // Transform TMDb response into slide-friendly format
-      movieData.push({
-        title: data.title,
-        poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
-        genres: data.genres.map(g => g.name),
-        synopsis: data.overview,
-        runtime: `${data.runtime} min`
-      });
-      remaining--;
-      if (remaining === 0) {
-        createSlidesFromData(movieData);
+// Step 2: Search TMDb for each title to get ID
+function startSearchAndFetch() {
+  movieTitles.forEach((title, idx) => {
+    const searchCb = `searchCb_${idx}`;
+    window[searchCb] = function(resp) {
+      if (resp && resp.results && resp.results[0]) {
+        fetchDetails(resp.results[0].id, idx);
+      } else {
+        console.error(`No result for "${title}"`);
+        handleDone();
       }
-      // Clean up
-      delete window[cbName];
+      delete window[searchCb];
     };
-
-    // Inject JSONP <script> tag to fetch movie details
-    const script = document.createElement('script');
-    script.src = `${proxyURL}`
-      + `?action=movie&id=${id}`
-      + `&callback=tmdbCallback_${id}`;
-    document.body.appendChild(script);
+    const s = document.createElement('script');
+    s.src = `${proxyURL}?action=search&query=${encodeURIComponent(title)}&callback=${searchCb}`;
+    document.body.appendChild(s);
   });
 }
 
-// Render carousel slides from fetched data
-function createSlidesFromData(movies) {
+// Step 3: Fetch movie details by ID
+function fetchDetails(id, idx) {
+  const detailCb = `detailCb_${idx}`;
+  window[detailCb] = function(data) {
+    movieData[idx] = {
+      title: data.title,
+      poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
+      genres: data.genres.map(g => g.name),
+      synopsis: data.overview,
+      runtime: `${data.runtime} min`,
+      videoKey: ''
+    };
+    delete window[detailCb];
+    fetchVideos(id, idx);
+  };
+  const s = document.createElement('script');
+  s.src = `${proxyURL}?action=movie&id=${id}&callback=${detailCb}`;
+  document.body.appendChild(s);
+}
+
+// Step 4: Fetch videos (trailers/teasers) by movie ID
+function fetchVideos(id, idx) {
+  const videoCb = `videoCb_${idx}`;
+  window[videoCb] = function(resp) {
+    if (resp.results && resp.results.length) {
+      const teaser = resp.results.find(v => v.type === 'Teaser') || resp.results[0];
+      movieData[idx].videoKey = teaser.key;
+    } else {
+      console.warn(`No videos for movie ID ${id}`);
+    }
+    delete window[videoCb];
+    handleDone();
+  };
+  const s = document.createElement('script');
+  s.src = `${proxyURL}?action=videos&id=${id}&callback=${videoCb}`;
+  document.body.appendChild(s);
+}
+
+// Step 5: Track completion and render
+function handleDone() {
+  if (--remaining === 0) {
+    createSlides(movieData);
+  }
+}
+
+// Render carousel slides with poster & teaser floated
+function createSlides(movies) {
   const container = document.getElementById("movie-carousel");
   container.innerHTML = "";
-
   movies.forEach((m, i) => {
     const slide = document.createElement("div");
     slide.className = "swiper-slide";
     slide.innerHTML = `
-      <img class="movie-poster" src="${m.poster}" alt="${m.title}">
       <h2>${m.title}</h2>
+      <div class="slide-content">
+        <img class="movie-poster" src="${m.poster}" alt="${m.title}">
+        ${m.videoKey ? `<div class="video-container">
+          <iframe data-key="${m.videoKey}" src="https://www.youtube.com/embed/${m.videoKey}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>` : ''}
+      </div>
       <div class="genre-tags">
         ${m.genres.map(t => `<span>${t}</span>`).join("")}
       </div>
       <p>${m.synopsis}</p>
       <p><strong>Runtime:</strong> ${m.runtime}</p>
+      <div class="seen-control">
+        <div class="seen-label">Seen it?</div>
+        <input type="checkbox" id="seen-${i}" hidden>
+        <button id="seen-btn-${i}" class="seen-btn closed" onclick="toggleSeen(${i})">
+          <span class="emoji open">👀</span>
+          <span class="emoji closed">🙈</span>
+        </button>
+      </div>
       <div class="vote-buttons">
         <button class="love"    onclick="submitVote('${m.title}','❤️')">❤️</button>
         <button class="neutral" onclick="submitVote('${m.title}','😐')">😐</button>
         <button class="trash"   onclick="submitVote('${m.title}','🗑️')">🗑️</button>
-        <label class="switch">
-          <input type="checkbox" id="seen-${i}">
-            <span class="slider round"></span>
-            Seen it
-        </label>
       </div>
     `;
     container.appendChild(slide);
   });
 
-  // Initialize Swiper carousel navigation
-  new Swiper(".swiper", {
+  // Initialize Swiper and handle slide-change for autoplay
+  swiper = new Swiper(".swiper", {
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev"
     }
   });
+  swiper.on('slideChange', playActiveVideo);
+  playActiveVideo();
 }
 
-// Submit a vote via JSONP to the Apps Script proxy
+// Autoplay teaser for active slide
+function playActiveVideo() {
+  document.querySelectorAll('.swiper-slide').forEach((slide, idx) => {
+    const iframe = slide.querySelector('iframe');
+    if (iframe) {
+      const key = iframe.dataset.key;
+      let src = `https://www.youtube.com/embed/${key}`;
+      if (idx === swiper.activeIndex) {
+        src += '?autoplay=1';
+      }
+      iframe.src = src;
+    }
+  });
+}
+
+// Toggle "Seen it" state
+function toggleSeen(idx) {
+  const checkbox = document.getElementById(`seen-${idx}`);
+  const btn = document.getElementById(`seen-btn-${idx}`);
+  checkbox.checked = !checkbox.checked;
+  btn.classList.toggle('open', checkbox.checked);
+  btn.classList.toggle('closed', !checkbox.checked);
+}
+
+// Submit a vote via JSONP
 function submitVote(movieTitle, vote) {
   const userName = document.getElementById("username").value.trim();
-  if (!userName) {
-    alert("Please enter your name.");
-    return;
-  }
-
-  // Determine slide index for 'seen' checkbox
+  if (!userName) { alert("Please enter your name."); return; }
   const slides = Array.from(document.querySelectorAll(".swiper-slide"));
   const idx = slides.findIndex(s => s.querySelector("h2").innerText === movieTitle);
-  const seen = document.getElementById(`seen-${idx}`)?.checked ? "✅" : "❌";
-
-  // Create unique callback for vote response
-  const cbName = `voteCallback_${idx}_${Date.now()}`;
-  window[cbName] = function (resp) {
-    if (resp && resp.status === "ok") {
-      alert(`Vote for "${movieTitle}" submitted.`);
-    } else {
-      alert("Error submitting vote.");
-    }
-    delete window[cbName];
+  const seen = document.getElementById(`seen-${idx}`).checked ? "✅" : "❌";
+  const cb = `voteCb_${idx}_${Date.now()}`;
+  window[cb] = function(resp) {
+    alert(resp.status === "ok" ? `Vote for \"${movieTitle}\" submitted.` : "Error submitting vote.");
+    delete window[cb];
   };
-
-  // Inject JSONP <script> to submit vote
   const script = document.createElement('script');
   script.src = `${proxyURL}`
     + `?action=vote`
@@ -113,9 +183,9 @@ function submitVote(movieTitle, vote) {
     + `&userName=${encodeURIComponent(userName)}`
     + `&vote=${encodeURIComponent(vote)}`
     + `&seen=${encodeURIComponent(seen)}`
-    + `&callback=${cbName}`;
+    + `&callback=${cb}`;
   document.body.appendChild(script);
 }
 
-// Kick off the init on load
-init();
+// Start the flow
+fetchMovieTitles();
