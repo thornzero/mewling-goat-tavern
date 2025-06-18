@@ -55,9 +55,17 @@ function startSearchAndFetch() {
 
 // Step 3: Fetch movie details by ID
 function fetchDetails(id, idx) {
+  const storageKey = `movie_${id}`
+  const cached = localStorage.getItem(storageKey);
+  if (cached){
+    movieData[idx] = JSON.parse(cached);
+    handleDone();
+    return;
+  }
+
   const detailCb = `detailCb_${idx}`;
   window[detailCb] = function (data) {
-    movieData[idx] = {
+    const entry = {
       title: data.title,
       poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
       genres: data.genres.map(g => g.name),
@@ -65,6 +73,9 @@ function fetchDetails(id, idx) {
       runtime: `${data.runtime} min`,
       videos: []
     };
+    movieData[idx] = entry;
+    // cache it 
+    localStorage.setItem(storageKey, JSON.stringify(entry));
     delete window[detailCb];
     fetchVideos(id, idx);
   };
