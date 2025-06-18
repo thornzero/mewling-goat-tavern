@@ -76,7 +76,7 @@ function fetchDetails(id, idx) {
 // Step 4: Fetch videos (trailers/teasers) by movie ID
 function fetchVideos(id, idx) {
   const videoCb = `videoCb_${idx}`;
-  window[videoCb] = function(resp) {
+  window[videoCb] = function (resp) {
     if (resp.results && resp.results.length) {
       movieData[idx].videos = resp.results.map(v => v);
     } else {
@@ -107,7 +107,7 @@ function createSlides(movies) {
       return `<button class="video-link" onclick="openVideo('${v.key}')">▶ ${label}</button>`;
     }).join(' ');
 
-     const slide = document.createElement("div");
+    const slide = document.createElement("div");
     slide.className = "swiper-slide";
     slide.innerHTML = `
       <div class="slide-content">
@@ -139,14 +139,15 @@ function createSlides(movies) {
     container.appendChild(slide);
   });
 
-  
+
   // Initialize Swiper
-  swiper = new Swiper(".swiper", {
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev"
-    }
+  swiper = new Swiper('.swiper', {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    centeredSlides: false,
+    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
   });
+
 }
 
 // Open YouTube video in new tab
@@ -172,7 +173,7 @@ function submitVote(movieTitle, vote) {
   );
   const seen = document.getElementById(`seen-${idx}`).checked ? "✅" : "❌";
   const cb = `voteCb_${idx}_${Date.now()}`;
-  window[cb] = function(resp) {
+  window[cb] = function (resp) {
     alert(resp.status === "ok" ? `Vote for \"${movieTitle}\" submitted.` : "Error submitting vote.");
     delete window[cb];
   };

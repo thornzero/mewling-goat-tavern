@@ -20,22 +20,37 @@ body {
 
 .swiper-slide {
   background: #222;
+  box-sizing: border-box;
   padding: 1rem;
   border-radius: 10px;
+  width: 100% !important;
 }
 
 .slide-content {
-  overflow: hidden; /* contain floats */
+  display: flex;
+  align-items: flex-start;
+  /* top-align poster & links */
+  gap: 1rem;
+  /* space between poster & video links */
 }
 
 .movie-poster {
-  float: left;
+  flex-shrink: 0;
+  /* never shrink below natural size */
   max-width: 40%;
-  margin-right: 1rem;
+  /* or whatever % you like */
+}
+
+.video-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* space between buttons */
+  flex-grow: 1;
+  /* fill remaining space */
 }
 
 .video-container {
-  float: right;
   width: 55%;
 }
 
