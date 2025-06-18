@@ -103,8 +103,7 @@ function createSlides(movies) {
   container.innerHTML = "";
   movies.forEach((m, i) => {
     const videoButtons = m.videos.map(v => {
-      const label = v.type || 'Video';
-      return `<button class="video-link" onclick="openVideo('${v.key}')">▶ ${label}</button>`;
+      return `<button class="video-link ${v.type}" onclick="openVideo('${v.key}')">${v.type || 'Video'}</button>`;
     }).join(' ');
 
     const slide = document.createElement("div");
@@ -126,8 +125,8 @@ function createSlides(movies) {
         <div class="seen-label">Seen it?</div>
         <input type="checkbox" id="seen-${i}" hidden>
         <button id="seen-btn-${i}" class="seen-btn closed" onclick="toggleSeen(${i})">
-          <span class="emoji open">👀</span>
-          <span class="emoji closed">🙈</span>
+          <span class="emoji open">✅</span>
+          <span class="emoji closed">❌</span>
         </button>
       </div>
       <div class="vote-buttons">
