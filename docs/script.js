@@ -31,35 +31,22 @@ function fetchMovieTitles() {
 // Step 2: Search TMDb for each title to get ID
 function startSearchAndFetch() {
   movieTitles.forEach((rawTitle, idx) => {
-
-    // 1. Extract title + year
-    let title = rawTitle;
-    let year = null;
-    const m = rawTitle.match(/(.+?)\s*\((\d{4})\)$/);
-    if (m) {
-      title = m[1].trim();
-      year = m[2];
-    }
-
-    // 2. Set up callback
+    const match = rawTitle.match(/(.+?)\s*\((\d{4})\)$/);
+    const title = match ? match[1].trim() : rawTitle;
+    const year = match ? match[2] : null;
     const searchCb = `searchCb_${idx}`;
     window[searchCb] = function (resp) {
       if (resp && resp.results && resp.results[0]) {
         fetchDetails(resp.results[0].id, idx);
       } else {
-        console.error(`No result for "${title}"`);
+        console.error(`No result for "${rawTitle}"`);
         handleDone();
       }
       delete window[searchCb];
     };
-
-    // 3. Build the JSONP URL including &year= if we have one
-    let url = `${proxyURL}?action=search`
-      + `&query=${encodeURIComponent(title)}`;
+    let url = `${proxyURL}?action=search&query=${encodeURIComponent(title)}`;
     if (year) url += `&year=${year}`;
     url += `&callback=${searchCb}`;
-
-    // 4. Inject the <script>
     const s = document.createElement('script');
     s.src = url;
     document.body.appendChild(s);
@@ -76,7 +63,7 @@ function fetchDetails(id, idx) {
       genres: data.genres.map(g => g.name),
       synopsis: data.overview,
       runtime: `${data.runtime} min`,
-      videoKey: ''
+      videos: []
     };
     delete window[detailCb];
     fetchVideos(id, idx);
@@ -89,10 +76,9 @@ function fetchDetails(id, idx) {
 // Step 4: Fetch videos (trailers/teasers) by movie ID
 function fetchVideos(id, idx) {
   const videoCb = `videoCb_${idx}`;
-  window[videoCb] = function (resp) {
+  window[videoCb] = function(resp) {
     if (resp.results && resp.results.length) {
-      const teaser = resp.results.find(v => v.type === 'Teaser') || resp.results[0];
-      movieData[idx].videoKey = teaser.key;
+      movieData[idx].videos = resp.results.map(v => v);
     } else {
       console.warn(`No videos for movie ID ${id}`);
     }
@@ -116,16 +102,21 @@ function createSlides(movies) {
   const container = document.getElementById("movie-carousel");
   container.innerHTML = "";
   movies.forEach((m, i) => {
-    const slide = document.createElement("div");
+    const videoButtons = m.videos.map(v => {
+      const label = v.type || 'Video';
+      return `<button class="video-link" onclick="openVideo('${v.key}')">▶ ${label}</button>`;
+    }).join(' ');
+
+     const slide = document.createElement("div");
     slide.className = "swiper-slide";
     slide.innerHTML = `
-      <h2>${m.title}</h2>
       <div class="slide-content">
         <img class="movie-poster" src="${m.poster}" alt="${m.title}">
-        ${m.videoKey ? `<div class="video-container">
-          <iframe data-key="${m.videoKey}" src="https://www.youtube-nocookie.com/embed/${m.videoKey}?modestbranding=1&rel=0" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-        </div>` : ''}
+        <div class="video-links">
+          ${videoButtons}
+        </div>
       </div>
+      <h2>${m.title}</h2>
       <div class="genre-tags">
         ${m.genres.map(t => `<span>${t}</span>`).join("")}
       </div>
@@ -148,30 +139,19 @@ function createSlides(movies) {
     container.appendChild(slide);
   });
 
-  // Initialize Swiper and handle slide-change for autoplay
+  
+  // Initialize Swiper
   swiper = new Swiper(".swiper", {
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev"
     }
   });
-  swiper.on('slideChange', playActiveVideo);
-  playActiveVideo();
 }
 
-// Autoplay teaser for active slide
-function playActiveVideo() {
-  document.querySelectorAll('.swiper-slide').forEach((slide, idx) => {
-    const iframe = slide.querySelector('iframe');
-    if (iframe) {
-      const key = iframe.dataset.key;
-      let src = `https://www.youtube-nocookie.com/embed/${key}?modestbranding=1&rel=0`;
-      if (idx === swiper.activeIndex) {
-        src += '?autoplay=1';
-      }
-      iframe.src = src;
-    }
-  });
+// Open YouTube video in new tab
+function openVideo(key) {
+  window.open(`https://www.youtube.com/watch?v=${key}`, '_blank');
 }
 
 // Toggle "Seen it" state
@@ -187,11 +167,12 @@ function toggleSeen(idx) {
 function submitVote(movieTitle, vote) {
   const userName = document.getElementById("username").value.trim();
   if (!userName) { alert("Please enter your name."); return; }
-  const slides = Array.from(document.querySelectorAll(".swiper-slide"));
-  const idx = slides.findIndex(s => s.querySelector("h2").innerText === movieTitle);
+  const idx = Array.from(document.querySelectorAll(".swiper-slide")).findIndex(s =>
+    s.querySelector("h2").innerText === movieTitle
+  );
   const seen = document.getElementById(`seen-${idx}`).checked ? "✅" : "❌";
   const cb = `voteCb_${idx}_${Date.now()}`;
-  window[cb] = function (resp) {
+  window[cb] = function(resp) {
     alert(resp.status === "ok" ? `Vote for \"${movieTitle}\" submitted.` : "Error submitting vote.");
     delete window[cb];
   };
