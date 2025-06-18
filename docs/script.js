@@ -124,7 +124,7 @@ function createSlides(movies) {
         <div class="flex items-center justify-between">
           <button onclick="toggleSeen(${i})" class="flex items-center space-x-2">
             <span class="text-2xl">${/* emoji toggles via JS */''}</span>
-            <span class="font-medium">Have you seen it?</span>
+            <span class="font-medium">Seen it?</span>
           </button>
           <div class="flex gap-2">
             <button class="px-3 py-1 bg-green-600 rounded">❤️</button>
