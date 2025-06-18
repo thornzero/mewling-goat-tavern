@@ -107,33 +107,33 @@ function createSlides(movies) {
     }).join(' ');
 
     const slide = document.createElement("div");
-    slide.className = "swiper-slide";
+    slide.className = "swiper-slide bg-gray-700 p-6 rounded-lg shadow-lg flex flex-col space-y-4";
     slide.innerHTML = `
-      <div class="slide-content">
-        <img class="movie-poster" src="${m.poster}" alt="${m.title}">
-        <div class="video-links">
-          ${videoButtons}
+    <h2 class="text-2xl font-semibold text-pink-500">${m.title}</h2>
+    <div class="flex gap-6">
+      <img class="w-2/5 rounded-md" src="${m.poster}" alt="${m.title}">
+      <div class="flex-1 flex flex-col space-y-2">
+        <div class="flex flex-wrap gap-2">
+          ${m.genres.map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-sm">${t}</span>`).join('')}
+        </div>
+        <p class="text-gray-200 flex-1">${m.synopsis}</p>
+        <p class="font-medium">${m.runtime}</p>
+        <div class="flex flex-wrap gap-2">
+          ${m.videos.map(v => `<button onclick="openVideo('${v.key}')" class="px-3 py-1 bg-pink-500 rounded hover:bg-pink-600 transition">▶ ${v.type}</button>`).join('')}
+        </div>
+        <div class="flex items-center justify-between">
+          <button onclick="toggleSeen(${i})" class="flex items-center space-x-2">
+            <span class="text-2xl">${/* emoji toggles via JS */''}</span>
+            <span class="font-medium">Have you seen it?</span>
+          </button>
+          <div class="flex gap-2">
+            <button class="px-3 py-1 bg-green-600 rounded">❤️</button>
+            <button class="px-3 py-1 bg-yellow-500 rounded">😐</button>
+            <button class="px-3 py-1 bg-red-600 rounded">🗑️</button>
+          </div>
         </div>
       </div>
-      <h2>${m.title}</h2>
-      <div class="genre-tags">
-        ${m.genres.map(t => `<span>${t}</span>`).join("")}
-      </div>
-      <p>${m.synopsis}</p>
-      <p><strong>Runtime:</strong> ${m.runtime}</p>
-      <div class="seen-control">
-        <div class="seen-label">Seen it?</div>
-        <input type="checkbox" id="seen-${i}" hidden>
-        <button id="seen-btn-${i}" class="seen-btn closed" onclick="toggleSeen(${i})">
-          <span class="emoji open">✅</span>
-          <span class="emoji closed">❌</span>
-        </button>
-      </div>
-      <div class="vote-buttons">
-        <button class="love"    onclick="submitVote('${m.title}','❤️')">❤️</button>
-        <button class="neutral" onclick="submitVote('${m.title}','😐')">😐</button>
-        <button class="trash"   onclick="submitVote('${m.title}','🗑️')">🗑️</button>
-      </div>
+    </div>
     `;
     container.appendChild(slide);
   });

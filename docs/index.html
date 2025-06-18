@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mewling Goat Movie Poll</title>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="pattern.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Swiper styles -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+  <div class="relative min-h-screen flex items-center justify-center p-4">
+    <!-- Optional background pattern -->
+    <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-black to-blue-900 opacity-20"></div>
 
-<body>
-  <div class="container">
-    <div class="marquee">
-      <h1>Mewling Goat Tavern Theatre</h1>
-      <h3>~Movie Poll~</h3>
-      <div class="user-input">
-        <label for="username">Your name:</label>
-        <input type="text" id="username" placeholder="Enter your name" />
+    <!-- Marquee Card -->
+    <div class="relative z-10 max-w-4xl w-full bg-gray-800 p-6 rounded-xl shadow-xl">
+      <h1 class="text-3xl font-bold text-pink-500 mb-2">Mewling Goat Movie Poll</h1>
+      <div class="mb-4">
+        <label for="username" class="block font-medium mb-1">Your name:</label>
+        <input id="username" type="text" placeholder="Enter your name"
+               class="w-full px-4 py-2 bg-gray-700 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500" />
       </div>
+
+      <!-- Carousel -->
       <div class="swiper">
-        <div class="swiper-wrapper" id="movie-carousel">
-          <!-- Slides injected by script.js -->
-        </div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+        <div id="movie-carousel" class="swiper-wrapper"></div>
+        <div class="swiper-button-prev text-pink-400"></div>
+        <div class="swiper-button-next text-pink-400"></div>
       </div>
     </div>
   </div>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- Your app logic -->
   <script src="script.js"></script>
 </body>
-
 </html>
