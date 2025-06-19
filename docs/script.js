@@ -57,7 +57,7 @@ function startSearchAndFetch() {
 function fetchDetails(id, idx) {
   const storageKey = `movie_${id}`
   const cached = localStorage.getItem(storageKey);
-  if (cached){
+  if (cached) {
     movieData[idx] = JSON.parse(cached);
     handleDone();
     return;
@@ -168,6 +168,7 @@ function openVideo(key) {
 // Toggle "Seen it" state
 function toggleSeen(idx) {
   const checkbox = document.getElementById(`seen-${idx}`);
+  if (!checkbox) return;      // ← guard against missing element
   const btn = document.getElementById(`seen-btn-${idx}`);
   checkbox.checked = !checkbox.checked;
   btn.classList.toggle('open', checkbox.checked);
