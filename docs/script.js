@@ -176,6 +176,80 @@ function updateProgress() {
   }
 }
 
+// Update movie info
+function updateMovieInfo(index) {
+  const movie = movieData[index];
+  if (!movie) return;
+  
+  currentMovieIndex = index;
+  
+  // Update seen toggle state
+  updateSeenToggle(index);
+  
+  // Update vote buttons state
+  updateVoteButtons(index);
+  
+  // Update progress
+  updateProgress();
+}
+
+// Update seen toggle
+function updateSeenToggle(index) {
+  const isSeen = seenStates[index];
+  elements.seenEmoji.textContent = isSeen ? '✅' : '❌';
+  elements.seenToggle.querySelector('span:last-child').textContent = isSeen ? 'Seen it' : 'Haven\'t seen it';
+  elements.seenToggle.className = `w-full py-2 md:py-3 px-3 md:px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors ${isSeen ? 'bg-green-600' : 'bg-gray-700'}`;
+}
+
+// Update vote buttons to show current vote
+function updateVoteButtons(index) {
+  const voteData = userVotes[index] || null;
+  const isSeen = seenStates[index];
+  const options = isSeen ? VOTE_OPTIONS.seen : VOTE_OPTIONS.notSeen;
+  
+  // Update button elements with new options
+  const voteButtons = [
+    { element: elements.voteLove, option: options[0] },
+    { element: elements.voteMeh, option: options[1] },
+    { element: elements.votePass, option: options[2] }
+  ];
+  
+  voteButtons.forEach(({ element, option }) => {
+    const isSelected = voteData && voteData.emoji === option.emoji;
+    
+    // Set emoji and label
+    element.textContent = option.emoji;
+    element.title = `${option.label}: ${option.meaning}`;
+    
+    // Set colors based on emoji
+    const bgColor = isSelected ? 
+      (option.emoji === '⭐' ? 'bg-yellow-700' : 
+       option.emoji === '🔥' ? 'bg-orange-700' : 
+       option.emoji === '⏳' ? 'bg-blue-700' : 
+       option.emoji === '😐' ? 'bg-yellow-700' : 
+       option.emoji === '💤' ? 'bg-gray-700' : 'bg-red-700') :
+      (option.emoji === '⭐' ? 'bg-yellow-600' : 
+       option.emoji === '🔥' ? 'bg-orange-600' : 
+       option.emoji === '⏳' ? 'bg-blue-600' : 
+       option.emoji === '😐' ? 'bg-yellow-600' : 
+       option.emoji === '💤' ? 'bg-gray-600' : 'bg-red-600');
+    
+    const hoverColor = option.emoji === '⭐' ? 'hover:bg-yellow-700' : 
+                      option.emoji === '🔥' ? 'hover:bg-orange-700' : 
+                      option.emoji === '⏳' ? 'hover:bg-blue-700' : 
+                      option.emoji === '😐' ? 'hover:bg-yellow-700' : 
+                      option.emoji === '💤' ? 'hover:bg-gray-700' : 'hover:bg-red-700';
+    
+    const borderClass = isSelected ? 'border-2 border-white' : '';
+    
+    // Update classes
+    element.className = `py-3 md:py-4 px-2 ${bgColor} rounded-lg text-xl md:text-2xl font-bold transition-colors active:${hoverColor} ${borderClass}`;
+    
+    // Update onclick handler
+    element.onclick = () => recordVote(index, option);
+  });
+}
+
 // Show summary slide
 function showSummary() {
   appState = 'summary';
@@ -783,5 +857,6 @@ function toggleSeen(idx) {
 document.addEventListener('DOMContentLoaded', function() {
   initElements();
   setupEventHandlers();
+  setupKeyboardShortcuts();
   fetchMovieTitles();
 });
