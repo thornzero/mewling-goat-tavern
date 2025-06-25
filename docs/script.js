@@ -60,11 +60,48 @@ function loadSavedVotes() {
   if (saved) {
     userVotes = JSON.parse(saved);
   }
+  
+  // Load saved seen states
+  const savedSeenStates = localStorage.getItem('movieSeenStates');
+  if (savedSeenStates) {
+    seenStates = JSON.parse(savedSeenStates);
+  }
 }
 
 // Save votes to localStorage
 function saveVotes() {
   localStorage.setItem('movieVotes', JSON.stringify(userVotes));
+}
+
+// Save seen states to localStorage
+function saveSeenStates() {
+  localStorage.setItem('movieSeenStates', JSON.stringify(seenStates));
+}
+
+// Reset all data to fresh state
+function resetAllData() {
+  // Clear localStorage
+  localStorage.removeItem('movieVotes');
+  localStorage.removeItem('movieSeenStates');
+  
+  // Reset state variables
+  userVotes = {};
+  seenStates = {};
+  appState = 'voting';
+  
+  // Update UI
+  updateProgress();
+  
+  // Go back to first movie if carousel is visible
+  if (swiper) {
+    swiper.slideTo(0);
+  }
+  
+  // Hide summary and show carousel
+  hideLoading();
+  
+  // Show success message
+  showSuccess('All data reset! Starting fresh.');
 }
 
 // Update progress bar
@@ -135,10 +172,15 @@ function showSummary() {
           }).join('')}
         </div>
       </div>
-      <div class="mt-8 text-center">
+      <div class="mt-8 text-center space-y-4">
         <button id="submit-all-btn" class="px-8 py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition-colors">
           Submit All Votes
         </button>
+        <div>
+          <button onclick="resetAllData()" class="px-6 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
+            🔄 Reset All & Start Over
+          </button>
+        </div>
       </div>
     </div>
   `;
@@ -254,7 +296,9 @@ function submitAllVotes() {
         hideNameModal();
         // Clear local storage
         localStorage.removeItem('movieVotes');
+        localStorage.removeItem('movieSeenStates');
         userVotes = {};
+        seenStates = {};
         // Reset progress
         updateProgress();
       }, 3000); // Show success message for 3 seconds
@@ -645,6 +689,9 @@ function toggleSeen(idx) {
       emoji.textContent = seenStates[idx] ? '✅' : '❌';
     }
   }
+  
+  // Save seen states to localStorage
+  saveSeenStates();
   
   // Clear existing vote if it's no longer valid for the new context
   const currentVote = userVotes[idx];
