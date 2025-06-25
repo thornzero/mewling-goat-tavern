@@ -279,7 +279,9 @@ function createSlides(movies) {
     slide.className = "swiper-slide bg-gray-700 p-4 flex flex-col";
     slide.innerHTML = `
       <div class="flex-1 flex flex-col">
-        <img class="w-full h-48 object-cover rounded-lg mb-4" src="${m.poster}" alt="${m.title}">
+        <div class="relative mb-4">
+          <img class="w-full aspect-[2/3] object-cover rounded-lg" src="${m.poster}" alt="${m.title}">
+        </div>
         <div class="flex-1">
           <h3 class="text-lg font-semibold text-pink-500 mb-2">${m.title}</h3>
           <div class="flex flex-wrap gap-1 mb-2">

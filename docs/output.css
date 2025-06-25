@@ -338,6 +338,9 @@
   .inline-flex {
     display: inline-flex;
   }
+  .aspect-\[2\/3\] {
+    aspect-ratio: 2/3;
+  }
   .\!h-12 {
     height: calc(var(--spacing) * 12) !important;
   }
@@ -355,9 +358,6 @@
   }
   .h-12 {
     height: calc(var(--spacing) * 12);
-  }
-  .h-48 {
-    height: calc(var(--spacing) * 48);
   }
   .h-full {
     height: 100%;
@@ -1165,6 +1165,25 @@
   }
   input[type="text"] {
     font-size: 16px;
+  }
+  .aspect-\[2\/3\] {
+    aspect-ratio: 2 / 3;
+  }
+  .aspect-\[2\/3\] {
+    position: relative;
+  }
+  .aspect-\[2\/3\]::before {
+    content: "";
+    display: block;
+    padding-bottom: 150%;
+  }
+  .aspect-\[2\/3\] img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 .line-clamp-3 {
