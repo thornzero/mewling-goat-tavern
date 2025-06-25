@@ -223,29 +223,31 @@ function showSummary() {
   if (!summaryContainer) return;
   
   summaryContainer.innerHTML = `
-    <div class="p-4">
+    <div class="p-4 min-h-screen flex flex-col">
       <h2 class="text-2xl font-bold text-pink-500 mb-4 text-center">Your Movie Votes</h2>
-      <div class="space-y-3 max-h-96 overflow-y-auto">
-        ${movieData.map((movie, index) => {
-          const voteData = userVotes[index];
-          const voteEmoji = voteData ? voteData.emoji : '❓';
-          const voteLabel = voteData ? voteData.label : 'No vote';
-          const seen = seenStates[index] ? '✅' : '❌';
-          return `
-            <div class="bg-gray-700 p-3 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
-              <div class="flex items-center justify-between">
-                <div class="flex-1">
-                  <h3 class="font-semibold text-gray-200">${movie.title}</h3>
-                  <p class="text-xs text-gray-500">${voteLabel}</p>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <span class="text-lg">${voteEmoji}</span>
-                  <span class="text-sm">${seen}</span>
+      <div class="flex-1 overflow-y-auto">
+        <div class="space-y-3 max-h-[calc(100vh-180px)]">
+          ${movieData.map((movie, index) => {
+            const voteData = userVotes[index];
+            const voteEmoji = voteData ? voteData.emoji : '❓';
+            const voteLabel = voteData ? voteData.label : 'No vote';
+            const seen = seenStates[index] ? '✅' : '❌';
+            return `
+              <div class="bg-gray-700 p-3 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
+                <div class="flex items-center justify-between">
+                  <div class="flex-1">
+                    <h3 class="font-semibold text-gray-200">${movie.title}</h3>
+                    <p class="text-xs text-gray-500">${voteLabel}</p>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="text-lg">${voteEmoji}</span>
+                    <span class="text-sm">${seen}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          `;
-        }).join('')}
+            `;
+          }).join('')}
+        </div>
       </div>
       <div class="mt-6 text-center">
         <button id="submit-all-btn" class="px-6 py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition-colors">

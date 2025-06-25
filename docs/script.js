@@ -98,30 +98,32 @@ function showSummary() {
   if (!summaryContainer) return;
   
   summaryContainer.innerHTML = `
-    <div class="p-6">
+    <div class="p-6 min-h-screen flex flex-col">
       <h2 class="text-3xl font-bold text-pink-500 mb-6 text-center">Your Movie Votes</h2>
-      <div class="grid gap-4 max-h-96 overflow-y-auto">
-        ${movieData.map((movie, index) => {
-          const voteData = userVotes[index];
-          const voteEmoji = voteData ? voteData.emoji : '❓';
-          const voteLabel = voteData ? voteData.label : 'No vote';
-          const seen = seenStates[index] ? '✅' : '❌';
-          return `
-            <div class="bg-gray-700 p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
-              <div class="flex items-center justify-between">
-                <div class="flex-1">
-                  <h3 class="text-lg font-semibold text-gray-200">${movie.title}</h3>
-                  <p class="text-sm text-gray-400">${movie.genres.slice(0, 3).join(', ')}</p>
-                  <p class="text-xs text-gray-500">${voteLabel}</p>
-                </div>
-                <div class="flex items-center space-x-3">
-                  <span class="text-2xl">${voteEmoji}</span>
-                  <span class="text-lg">${seen}</span>
+      <div class="flex-1 overflow-y-auto">
+        <div class="grid gap-4 max-h-[calc(100vh-200px)]">
+          ${movieData.map((movie, index) => {
+            const voteData = userVotes[index];
+            const voteEmoji = voteData ? voteData.emoji : '❓';
+            const voteLabel = voteData ? voteData.label : 'No vote';
+            const seen = seenStates[index] ? '✅' : '❌';
+            return `
+              <div class="bg-gray-700 p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
+                <div class="flex items-center justify-between">
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-200">${movie.title}</h3>
+                    <p class="text-sm text-gray-400">${movie.genres.slice(0, 3).join(', ')}</p>
+                    <p class="text-xs text-gray-500">${voteLabel}</p>
+                  </div>
+                  <div class="flex items-center space-x-3">
+                    <span class="text-2xl">${voteEmoji}</span>
+                    <span class="text-lg">${seen}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          `;
-        }).join('')}
+            `;
+          }).join('')}
+        </div>
       </div>
       <div class="mt-8 text-center">
         <button id="submit-all-btn" class="px-8 py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition-colors">
