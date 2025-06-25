@@ -749,12 +749,15 @@ function createSlides(movies) {
           <div class="w-2/5 flex-shrink-0">
             <div class="relative">
               <img class="w-full aspect-[2/3] object-cover rounded-lg shadow-lg" src="${m.poster}" alt="${m.title}">
-              <!-- Hover button over top left corner -->
-              <button onclick="openVideo('${m.videos.length > 0 ? m.videos[0].key : ''}')" 
-                      class="absolute top-2 left-2 bg-black bg-opacity-75 hover:bg-opacity-90 text-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center transition-all duration-200 transform hover:scale-110 z-10"
-                      title="Watch Trailer">
-                ▶
-              </button>
+              <!-- Trailer button chip over top left corner -->
+              ${m.videos.length > 0 ? `
+                <button onclick="openVideo('${m.videos[0].key}')" 
+                        class="absolute top-2 left-2 bg-black bg-opacity-80 hover:bg-opacity-95 text-white rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 transition-all duration-200 transform hover:scale-105 z-10 text-xs md:text-sm font-medium"
+                        title="Watch Trailer">
+                  <span class="text-sm md:text-base">▶</span>
+                  <span>Trailer</span>
+                </button>
+              ` : ''}
             </div>
           </div>
           
@@ -777,12 +780,15 @@ function createSlides(movies) {
         <div class="flex-1 flex flex-col">
           <div class="relative mb-3 md:mb-4">
             <img class="w-full aspect-[2/3] object-cover rounded-lg" src="${m.poster}" alt="${m.title}">
-            <!-- Hover button over top left corner -->
-            <button onclick="openVideo('${m.videos.length > 0 ? m.videos[0].key : ''}')" 
-                    class="absolute top-2 left-2 bg-black bg-opacity-75 hover:bg-opacity-90 text-white rounded-full w-8 h-8 flex items-center justify-center transition-all duration-200 transform hover:scale-110 z-10"
-                    title="Watch Trailer">
-              ▶
-            </button>
+            <!-- Trailer button chip over top left corner -->
+            ${m.videos.length > 0 ? `
+              <button onclick="openVideo('${m.videos[0].key}')" 
+                      class="absolute top-2 left-2 bg-black bg-opacity-80 hover:bg-opacity-95 text-white rounded-full px-3 py-1.5 flex items-center space-x-1 transition-all duration-200 transform hover:scale-105 z-10 text-xs font-medium"
+                      title="Watch Trailer">
+                <span class="text-sm">▶</span>
+                <span>Trailer</span>
+              </button>
+            ` : ''}
           </div>
           <div class="flex-1">
             <h3 class="text-base md:text-lg font-semibold text-pink-500 mb-1 md:mb-2">${m.title}</h3>
