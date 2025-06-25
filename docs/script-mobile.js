@@ -3,6 +3,20 @@
 // === CONFIGURATION ===
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
 
+// Vote options based on seen state
+const VOTE_OPTIONS = {
+  seen: [
+    { emoji: '⭐', label: 'Rewatch', rank: 1, meaning: 'I\'ve seen this and would happily watch it again.' },
+    { emoji: '😐', label: 'Meh', rank: 4, meaning: 'I\'ve seen this and I\'m indifferent about rewatching.' },
+    { emoji: '🚫', label: 'Never', rank: 6, meaning: 'I\'ve seen this and never want to watch it again.' }
+  ],
+  notSeen: [
+    { emoji: '🔥', label: 'Stoked', rank: 2, meaning: 'I haven\'t seen this yet and I\'m excited to watch it.' },
+    { emoji: '⏳', label: 'Later', rank: 3, meaning: 'I haven\'t seen this yet and I\'m indifferent.' },
+    { emoji: '💤', label: 'Skip', rank: 5, meaning: 'I haven\'t seen this and absolutely don\'t want to.' }
+  ]
+};
+
 // State
 let movieTitles = [];
 let movieData = [];
@@ -11,7 +25,7 @@ let swiper;
 let seenStates = {};
 let currentMovieIndex = 0;
 let currentMovies = []; // Store current movies for layout updates
-let userVotes = {}; // Store user votes locally
+let userVotes = {}; // Store user votes locally with context
 let appState = 'voting'; // 'voting' or 'summary'
 
 // DOM elements
@@ -132,21 +146,51 @@ function updateSeenToggle(index) {
 
 // Update vote buttons to show current vote
 function updateVoteButtons(index) {
-  const vote = userVotes[index] || null;
+  const voteData = userVotes[index] || null;
+  const isSeen = seenStates[index];
+  const options = isSeen ? VOTE_OPTIONS.seen : VOTE_OPTIONS.notSeen;
   
-  // Reset all buttons
-  elements.voteLove.className = 'py-4 px-2 bg-green-600 rounded-lg text-2xl font-bold transition-colors active:bg-green-700';
-  elements.voteMeh.className = 'py-4 px-2 bg-yellow-500 rounded-lg text-2xl font-bold transition-colors active:bg-yellow-600';
-  elements.votePass.className = 'py-4 px-2 bg-red-600 rounded-lg text-2xl font-bold transition-colors active:bg-red-700';
+  // Update button elements with new options
+  const voteButtons = [
+    { element: elements.voteLove, option: options[0] },
+    { element: elements.voteMeh, option: options[1] },
+    { element: elements.votePass, option: options[2] }
+  ];
   
-  // Highlight current vote
-  if (vote === '❤️') {
-    elements.voteLove.className = 'py-4 px-2 bg-green-700 rounded-lg text-2xl font-bold transition-colors border-2 border-white';
-  } else if (vote === '😐') {
-    elements.voteMeh.className = 'py-4 px-2 bg-yellow-600 rounded-lg text-2xl font-bold transition-colors border-2 border-white';
-  } else if (vote === '🗑️') {
-    elements.votePass.className = 'py-4 px-2 bg-red-700 rounded-lg text-2xl font-bold transition-colors border-2 border-white';
-  }
+  voteButtons.forEach(({ element, option }) => {
+    const isSelected = voteData && voteData.emoji === option.emoji;
+    
+    // Set emoji and label
+    element.textContent = option.emoji;
+    element.title = `${option.label}: ${option.meaning}`;
+    
+    // Set colors based on emoji
+    const bgColor = isSelected ? 
+      (option.emoji === '⭐' ? 'bg-yellow-700' : 
+       option.emoji === '🔥' ? 'bg-orange-700' : 
+       option.emoji === '⏳' ? 'bg-blue-700' : 
+       option.emoji === '😐' ? 'bg-yellow-700' : 
+       option.emoji === '💤' ? 'bg-gray-700' : 'bg-red-700') :
+      (option.emoji === '⭐' ? 'bg-yellow-600' : 
+       option.emoji === '🔥' ? 'bg-orange-600' : 
+       option.emoji === '⏳' ? 'bg-blue-600' : 
+       option.emoji === '😐' ? 'bg-yellow-600' : 
+       option.emoji === '💤' ? 'bg-gray-600' : 'bg-red-600');
+    
+    const hoverColor = option.emoji === '⭐' ? 'hover:bg-yellow-700' : 
+                      option.emoji === '🔥' ? 'hover:bg-orange-700' : 
+                      option.emoji === '⏳' ? 'hover:bg-blue-700' : 
+                      option.emoji === '😐' ? 'hover:bg-yellow-700' : 
+                      option.emoji === '💤' ? 'hover:bg-gray-700' : 'hover:bg-red-700';
+    
+    const borderClass = isSelected ? 'border-2 border-white' : '';
+    
+    // Update classes
+    element.className = `py-4 px-2 ${bgColor} rounded-lg text-2xl font-bold transition-colors active:${hoverColor} ${borderClass}`;
+    
+    // Update onclick handler
+    element.onclick = () => recordVote(index, option);
+  });
 }
 
 // Update progress bar
@@ -183,16 +227,19 @@ function showSummary() {
       <h2 class="text-2xl font-bold text-pink-500 mb-4 text-center">Your Movie Votes</h2>
       <div class="space-y-3 max-h-96 overflow-y-auto">
         ${movieData.map((movie, index) => {
-          const vote = userVotes[index] || '❓';
+          const voteData = userVotes[index];
+          const voteEmoji = voteData ? voteData.emoji : '❓';
+          const voteLabel = voteData ? voteData.label : 'No vote';
           const seen = seenStates[index] ? '✅' : '❌';
           return `
             <div class="bg-gray-700 p-3 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
               <div class="flex items-center justify-between">
                 <div class="flex-1">
                   <h3 class="font-semibold text-gray-200">${movie.title}</h3>
+                  <p class="text-xs text-gray-500">${voteLabel}</p>
                 </div>
                 <div class="flex items-center space-x-2">
-                  <span class="text-lg">${vote}</span>
+                  <span class="text-lg">${voteEmoji}</span>
                   <span class="text-sm">${seen}</span>
                 </div>
               </div>
@@ -200,8 +247,8 @@ function showSummary() {
           `;
         }).join('')}
       </div>
-      <div class="mt-6">
-        <button id="submit-all-btn" class="w-full py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition-colors">
+      <div class="mt-6 text-center">
+        <button id="submit-all-btn" class="px-6 py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition-colors">
           Submit All Votes
         </button>
       </div>
@@ -223,33 +270,64 @@ function goToMovie(index) {
 
 // Show name entry modal
 function showNameModal() {
-  elements.nameModal.classList.remove('hidden');
-  elements.nameInput.focus();
-  elements.nameError.textContent = '';
+  const nameModal = document.getElementById('name-modal');
+  const nameInput = document.getElementById('name-input');
+  const nameError = document.getElementById('name-error');
+  
+  if (nameModal) {
+    nameModal.classList.remove('hidden');
+  }
+  
+  if (nameInput) {
+    nameInput.focus();
+  }
+  
+  if (nameError) {
+    nameError.textContent = '';
+  }
 }
 
 // Hide name entry modal
 function hideNameModal() {
-  elements.nameModal.classList.add('hidden');
-  elements.nameInput.value = '';
+  const nameModal = document.getElementById('name-modal');
+  const nameInput = document.getElementById('name-input');
+  const nameSubmit = document.getElementById('name-submit');
+  
+  if (nameModal) {
+    nameModal.classList.add('hidden');
+  }
+  
+  if (nameInput) {
+    nameInput.value = '';
+  }
+  
+  if (nameSubmit) {
+    nameSubmit.textContent = 'Submit';
+    nameSubmit.disabled = false;
+  }
 }
 
 // Validate and submit votes
 function submitAllVotes() {
-  const userName = elements.nameInput.value.trim();
+  const nameInput = document.getElementById('name-input');
+  const nameSubmit = document.getElementById('name-submit');
+  const nameError = document.getElementById('name-error');
+  
+  const userName = nameInput.value.trim();
   
   if (userName.length < 2) {
-    elements.nameError.textContent = 'Please enter a name (at least 2 characters)';
+    nameError.textContent = 'Please enter a name (at least 2 characters)';
     return;
   }
   
   // Show loading state
-  elements.nameSubmit.textContent = 'Submitting...';
-  elements.nameSubmit.disabled = true;
+  nameSubmit.textContent = 'Submitting...';
+  nameSubmit.disabled = true;
   
   // Submit all votes
   const promises = movieData.map((movie, index) => {
-    const vote = userVotes[index];
+    const voteData = userVotes[index];
+    const voteEmoji = voteData ? voteData.emoji : '❓';
     const seen = seenStates[index] ? "✅" : "❌";
     
     return new Promise((resolve, reject) => {
@@ -270,7 +348,7 @@ function submitAllVotes() {
         + `?action=vote`
         + `&movieTitle=${encodeURIComponent(movie.title)}`
         + `&userName=${encodeURIComponent(userName)}`
-        + `&vote=${encodeURIComponent(vote)}`
+        + `&vote=${encodeURIComponent(voteEmoji)}`
         + `&seen=${encodeURIComponent(seen)}`
         + `&callback=${cb}`;
       document.body.appendChild(script);
@@ -286,8 +364,11 @@ function submitAllVotes() {
       userVotes = {};
     })
     .catch((error) => {
-      elements.nameSubmit.textContent = 'Submit';
-      elements.nameSubmit.disabled = false;
+      const nameSubmit = document.getElementById('name-submit');
+      if (nameSubmit) {
+        nameSubmit.textContent = 'Submit';
+        nameSubmit.disabled = false;
+      }
       if (error.message === 'Rate limit exceeded') {
         showRateLimitError();
       } else {
@@ -314,19 +395,6 @@ function setupEventHandlers() {
     toggleSeen(currentMovieIndex);
   });
   
-  // Vote buttons
-  elements.voteLove.addEventListener('click', () => {
-    recordVote(currentMovieIndex, '❤️');
-  });
-  
-  elements.voteMeh.addEventListener('click', () => {
-    recordVote(currentMovieIndex, '😐');
-  });
-  
-  elements.votePass.addEventListener('click', () => {
-    recordVote(currentMovieIndex, '🗑️');
-  });
-  
   // Help modal
   elements.helpButton.addEventListener('click', () => {
     elements.instructionsModal.classList.remove('hidden');
@@ -344,19 +412,30 @@ function setupEventHandlers() {
   });
   
   // Name modal events
-  elements.nameSubmit.addEventListener('click', submitAllVotes);
-  elements.nameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      submitAllVotes();
-    }
-  });
+  const nameSubmit = document.getElementById('name-submit');
+  const nameInput = document.getElementById('name-input');
+  const nameModal = document.getElementById('name-modal');
+  
+  if (nameSubmit) {
+    nameSubmit.addEventListener('click', submitAllVotes);
+  }
+  
+  if (nameInput) {
+    nameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        submitAllVotes();
+      }
+    });
+  }
   
   // Close name modal on background click
-  elements.nameModal.addEventListener('click', (e) => {
-    if (e.target === elements.nameModal) {
-      hideNameModal();
-    }
-  });
+  if (nameModal) {
+    nameModal.addEventListener('click', (e) => {
+      if (e.target === nameModal) {
+        hideNameModal();
+      }
+    });
+  }
   
   // Handle orientation change
   window.addEventListener('resize', handleOrientationChange);
@@ -364,17 +443,20 @@ function setupEventHandlers() {
 }
 
 // Record a vote
-function recordVote(index, vote) {
-  userVotes[index] = vote;
+function recordVote(index, voteData) {
+  userVotes[index] = voteData; // Store the full vote data object
   saveVotes();
-  updateVoteButtons(index);
   updateProgress();
+  
+  // Show feedback
+  const option = voteData;
+  showToast(`${option.label}: ${option.meaning}`, 'success');
   
   // Auto-advance to next movie if not the last one
   if (index < movieData.length - 1 && swiper) {
     setTimeout(() => {
       swiper.slideNext();
-    }, 500);
+    }, 1000);
   }
 }
 
@@ -636,7 +718,27 @@ function openVideo(key) {
 // Toggle "Seen it" state
 function toggleSeen(idx) {
   seenStates[idx] = !seenStates[idx];
+  
+  // Update seen toggle display
   updateSeenToggle(idx);
+  
+  // Clear existing vote if it's no longer valid for the new context
+  const currentVote = userVotes[idx];
+  if (currentVote) {
+    const newOptions = seenStates[idx] ? VOTE_OPTIONS.seen : VOTE_OPTIONS.notSeen;
+    const isValidVote = newOptions.some(option => option.emoji === currentVote.emoji);
+    if (!isValidVote) {
+      delete userVotes[idx];
+      saveVotes();
+    }
+  }
+  
+  // Refresh vote buttons
+  updateVoteButtons(idx);
+  
+  // Show feedback
+  const status = seenStates[idx] ? 'seen' : 'not seen';
+  showToast(`Marked as ${status}`, 'info');
 }
 
 // Initialize everything

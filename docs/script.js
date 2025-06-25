@@ -4,13 +4,27 @@
 // Replace with your Google Apps Script Web App URL
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
 
+// Vote options based on seen state
+const VOTE_OPTIONS = {
+  seen: [
+    { emoji: '⭐', label: 'Rewatch', rank: 1, meaning: 'I\'ve seen this and would happily watch it again.' },
+    { emoji: '😐', label: 'Meh', rank: 4, meaning: 'I\'ve seen this and I\'m indifferent about rewatching.' },
+    { emoji: '🚫', label: 'Never', rank: 6, meaning: 'I\'ve seen this and never want to watch it again.' }
+  ],
+  notSeen: [
+    { emoji: '🔥', label: 'Stoked', rank: 2, meaning: 'I haven\'t seen this yet and I\'m excited to watch it.' },
+    { emoji: '⏳', label: 'Later', rank: 3, meaning: 'I haven\'t seen this yet and I\'m indifferent.' },
+    { emoji: '💤', label: 'Skip', rank: 5, meaning: 'I haven\'t seen this and absolutely don\'t want to.' }
+  ]
+};
+
 // State
 let movieTitles = [];
 let movieData = [];
 let remaining = 0;
 let swiper;
 let seenStates = {}; // Track seen states for each movie
-let userVotes = {}; // Store user votes locally
+let userVotes = {}; // Store user votes locally with context
 let appState = 'voting'; // 'voting' or 'summary'
 
 // Loading state management
@@ -88,7 +102,9 @@ function showSummary() {
       <h2 class="text-3xl font-bold text-pink-500 mb-6 text-center">Your Movie Votes</h2>
       <div class="grid gap-4 max-h-96 overflow-y-auto">
         ${movieData.map((movie, index) => {
-          const vote = userVotes[index] || '❓';
+          const voteData = userVotes[index];
+          const voteEmoji = voteData ? voteData.emoji : '❓';
+          const voteLabel = voteData ? voteData.label : 'No vote';
           const seen = seenStates[index] ? '✅' : '❌';
           return `
             <div class="bg-gray-700 p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
@@ -96,9 +112,10 @@ function showSummary() {
                 <div class="flex-1">
                   <h3 class="text-lg font-semibold text-gray-200">${movie.title}</h3>
                   <p class="text-sm text-gray-400">${movie.genres.slice(0, 3).join(', ')}</p>
+                  <p class="text-xs text-gray-500">${voteLabel}</p>
                 </div>
                 <div class="flex items-center space-x-3">
-                  <span class="text-2xl">${vote}</span>
+                  <span class="text-2xl">${voteEmoji}</span>
                   <span class="text-lg">${seen}</span>
                 </div>
               </div>
@@ -166,7 +183,8 @@ function submitAllVotes() {
   
   // Submit all votes
   const promises = movieData.map((movie, index) => {
-    const vote = userVotes[index];
+    const voteData = userVotes[index];
+    const voteEmoji = voteData ? voteData.emoji : '❓';
     const seen = seenStates[index] ? "✅" : "❌";
     
     return new Promise((resolve, reject) => {
@@ -187,7 +205,7 @@ function submitAllVotes() {
         + `?action=vote`
         + `&movieTitle=${encodeURIComponent(movie.title)}`
         + `&userName=${encodeURIComponent(userName)}`
-        + `&vote=${encodeURIComponent(vote)}`
+        + `&vote=${encodeURIComponent(voteEmoji)}`
         + `&seen=${encodeURIComponent(seen)}`
         + `&callback=${cb}`;
       document.body.appendChild(script);
@@ -249,8 +267,8 @@ function setupKeyboardShortcuts() {
 }
 
 // Record a vote
-function recordVote(index, vote) {
-  userVotes[index] = vote;
+function recordVote(index, voteData) {
+  userVotes[index] = voteData; // Store the full vote data object
   saveVotes();
   updateProgress();
   
@@ -474,10 +492,8 @@ function createSlides(movies) {
             <span class="text-2xl">${seenStates[i] ? '✅' : '❌'}</span>
             <span class="font-medium">Seen it? (S)</span>
           </button>
-          <div class="flex gap-2">
-            <button onclick="recordVote(${i}, '❤️')" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700 transition" title="Love it (1)">❤️</button>
-            <button onclick="recordVote(${i}, '😐')" class="px-3 py-1 bg-yellow-500 rounded hover:bg-yellow-600 transition" title="Meh (2)">😐</button>
-            <button onclick="recordVote(${i}, '🗑️')" class="px-3 py-1 bg-red-600 rounded hover:bg-red-700 transition" title="Pass (3)">🗑️</button>
+          <div id="vote-buttons-${i}" class="flex gap-2">
+            ${generateVoteButtons(i)}
           </div>
         </div>
       </div>
@@ -514,6 +530,40 @@ function createSlides(movies) {
   });
 }
 
+// Generate vote buttons based on seen state
+function generateVoteButtons(index) {
+  const isSeen = seenStates[index];
+  const options = isSeen ? VOTE_OPTIONS.seen : VOTE_OPTIONS.notSeen;
+  const currentVote = userVotes[index];
+  
+  return options.map(option => {
+    const isSelected = currentVote && currentVote.emoji === option.emoji;
+    const bgColor = isSelected ? 
+      (option.emoji === '⭐' ? 'bg-yellow-700' : 
+       option.emoji === '🔥' ? 'bg-orange-700' : 
+       option.emoji === '⏳' ? 'bg-blue-700' : 
+       option.emoji === '😐' ? 'bg-yellow-700' : 
+       option.emoji === '💤' ? 'bg-gray-700' : 'bg-red-700') :
+      (option.emoji === '⭐' ? 'bg-yellow-600' : 
+       option.emoji === '🔥' ? 'bg-orange-600' : 
+       option.emoji === '⏳' ? 'bg-blue-600' : 
+       option.emoji === '😐' ? 'bg-yellow-600' : 
+       option.emoji === '💤' ? 'bg-gray-600' : 'bg-red-600');
+    
+    const hoverColor = option.emoji === '⭐' ? 'hover:bg-yellow-700' : 
+                      option.emoji === '🔥' ? 'hover:bg-orange-700' : 
+                      option.emoji === '⏳' ? 'hover:bg-blue-700' : 
+                      option.emoji === '😐' ? 'hover:bg-yellow-700' : 
+                      option.emoji === '💤' ? 'hover:bg-gray-700' : 'hover:bg-red-700';
+    
+    const borderClass = isSelected ? 'border-2 border-white' : '';
+    
+    return `<button onclick="recordVote(${index}, ${JSON.stringify(option).replace(/"/g, '&quot;')})" 
+                    class="px-3 py-1 ${bgColor} rounded ${hoverColor} transition ${borderClass}" 
+                    title="${option.label}: ${option.meaning}">${option.emoji}</button>`;
+  }).join('');
+}
+
 // Open YouTube video in new tab
 function openVideo(key) {
   window.open(`https://www.youtube.com/watch?v=${key}`, '_blank');
@@ -532,6 +582,23 @@ function toggleSeen(idx) {
     if (emoji) {
       emoji.textContent = seenStates[idx] ? '✅' : '❌';
     }
+  }
+  
+  // Clear existing vote if it's no longer valid for the new context
+  const currentVote = userVotes[idx];
+  if (currentVote) {
+    const newOptions = seenStates[idx] ? VOTE_OPTIONS.seen : VOTE_OPTIONS.notSeen;
+    const isValidVote = newOptions.some(option => option.emoji === currentVote.emoji);
+    if (!isValidVote) {
+      delete userVotes[idx];
+      saveVotes();
+    }
+  }
+  
+  // Refresh vote buttons
+  const voteButtonsContainer = document.getElementById(`vote-buttons-${idx}`);
+  if (voteButtonsContainer) {
+    voteButtonsContainer.innerHTML = generateVoteButtons(idx);
   }
 }
 
