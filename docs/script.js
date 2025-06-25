@@ -9,17 +9,72 @@ let movieTitles = [];
 let movieData = [];
 let remaining = 0;
 let swiper;
+let seenStates = {}; // Track seen states for each movie
+
+// Loading state management
+function showLoading() {
+  document.getElementById('loading').classList.remove('hidden');
+  document.getElementById('carousel-container').classList.add('hidden');
+}
+
+function hideLoading() {
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('carousel-container').classList.remove('hidden');
+}
+
+// Keyboard shortcuts
+function setupKeyboardShortcuts() {
+  document.addEventListener('keydown', function(e) {
+    // Only handle shortcuts when carousel is visible
+    if (document.getElementById('carousel-container').classList.contains('hidden')) {
+      return;
+    }
+    
+    const currentIndex = swiper ? swiper.activeIndex : 0;
+    const currentMovie = movieData[currentIndex];
+    
+    if (!currentMovie) return;
+    
+    switch(e.key) {
+      case '1':
+        e.preventDefault();
+        submitVote(currentMovie.title, '❤️');
+        break;
+      case '2':
+        e.preventDefault();
+        submitVote(currentMovie.title, '😐');
+        break;
+      case '3':
+        e.preventDefault();
+        submitVote(currentMovie.title, '🗑️');
+        break;
+      case 's':
+      case 'S':
+        e.preventDefault();
+        toggleSeen(currentIndex);
+        break;
+    }
+  });
+}
 
 // Step 1: Fetch movie titles list from Google Sheet
 function fetchMovieTitles() {
+  showLoading();
   const cb = 'movieListCallback';
   window[cb] = function (resp) {
     if (Array.isArray(resp)) {
       movieTitles = resp;
       remaining = movieTitles.length;
+      if (remaining === 0) {
+        showError('No movies found in the list.');
+        hideLoading();
+        return;
+      }
       startSearchAndFetch();
     } else {
       console.error('Invalid movie list response', resp);
+      showError('Failed to load movie list. Please try again later.');
+      hideLoading();
     }
     delete window[cb];
   };
@@ -38,6 +93,9 @@ function startSearchAndFetch() {
     window[searchCb] = function (resp) {
       if (resp && resp.results && resp.results[0]) {
         fetchDetails(resp.results[0].id, idx);
+      } else if (resp && resp.rateLimitExceeded) {
+        showRateLimitError();
+        handleDone();
       } else {
         console.error(`No result for "${rawTitle}"`);
         handleDone();
@@ -65,6 +123,12 @@ function fetchDetails(id, idx) {
 
   const detailCb = `detailCb_${idx}`;
   window[detailCb] = function (data) {
+    if (data && data.rateLimitExceeded) {
+      showRateLimitError();
+      handleDone();
+      return;
+    }
+    
     const entry = {
       title: data.title,
       poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
@@ -88,6 +152,12 @@ function fetchDetails(id, idx) {
 function fetchVideos(id, idx) {
   const videoCb = `videoCb_${idx}`;
   window[videoCb] = function (resp) {
+    if (resp && resp.rateLimitExceeded) {
+      showRateLimitError();
+      handleDone();
+      return;
+    }
+    
     if (resp.results && resp.results.length) {
       movieData[idx].videos = resp.results.map(v => v);
     } else {
@@ -105,7 +175,47 @@ function fetchVideos(id, idx) {
 function handleDone() {
   if (--remaining === 0) {
     createSlides(movieData);
+    hideLoading();
   }
+}
+
+// Error handling functions
+function showRateLimitError() {
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'fixed top-4 right-4 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+  errorDiv.innerHTML = `
+    <div class="flex items-center space-x-2">
+      <span>⚠️</span>
+      <span>API rate limit reached. Please wait a moment and refresh.</span>
+    </div>
+  `;
+  document.body.appendChild(errorDiv);
+  
+  // Auto-remove after 10 seconds
+  setTimeout(() => {
+    if (errorDiv.parentNode) {
+      errorDiv.parentNode.removeChild(errorDiv);
+    }
+  }, 10000);
+}
+
+function showError(message) {
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'fixed top-4 right-4 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+  errorDiv.innerHTML = `
+    <div class="flex items-center space-x-2">
+      <span>❌</span>
+      <span>${message}</span>
+    </div>
+  `;
+  document.body.appendChild(errorDiv);
+  
+  // Auto-remove after 5 seconds
+  setTimeout(() => {
+    if (errorDiv.parentNode) {
+      errorDiv.parentNode.removeChild(errorDiv);
+    }
+  }, 5000);
 }
 
 // Render carousel slides with poster & teaser floated
@@ -133,14 +243,14 @@ function createSlides(movies) {
           ${m.videos.map(v => `<button onclick="openVideo('${v.key}')" class="px-3 py-1 bg-pink-500 rounded hover:bg-pink-600 transition">▶ ${v.type}</button>`).join('')}
         </div>
         <div class="flex items-center justify-between">
-          <button onclick="toggleSeen(${i})" class="flex items-center space-x-2">
-            <span class="text-2xl">${/* emoji toggles via JS */''}</span>
-            <span class="font-medium">Seen it?</span>
+          <button id="seen-btn-${i}" onclick="toggleSeen(${i})" class="flex items-center space-x-2 px-3 py-1 rounded transition-colors ${seenStates[i] ? 'bg-green-600' : 'bg-gray-600 hover:bg-gray-500'}">
+            <span class="text-2xl">${seenStates[i] ? '✅' : '❌'}</span>
+            <span class="font-medium">Seen it? (S)</span>
           </button>
           <div class="flex gap-2">
-            <button class="px-3 py-1 bg-green-600 rounded">❤️</button>
-            <button class="px-3 py-1 bg-yellow-500 rounded">😐</button>
-            <button class="px-3 py-1 bg-red-600 rounded">🗑️</button>
+            <button onclick="submitVote('${m.title}', '❤️')" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700 transition" title="Love it (1)">❤️</button>
+            <button onclick="submitVote('${m.title}', '😐')" class="px-3 py-1 bg-yellow-500 rounded hover:bg-yellow-600 transition" title="Meh (2)">😐</button>
+            <button onclick="submitVote('${m.title}', '🗑️')" class="px-3 py-1 bg-red-600 rounded hover:bg-red-700 transition" title="Pass (3)">🗑️</button>
           </div>
         </div>
       </div>
@@ -149,15 +259,32 @@ function createSlides(movies) {
     container.appendChild(slide);
   });
 
-
-  // Initialize Swiper
+  // Initialize Swiper with improved configuration
   swiper = new Swiper('.swiper', {
     slidesPerView: 1,
     spaceBetween: 20,
     centeredSlides: false,
-    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
+    loop: false,
+    navigation: { 
+      nextEl: '.swiper-button-next', 
+      prevEl: '.swiper-button-prev' 
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+      dynamicBullets: true
+    },
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true
+    },
+    a11y: {
+      prevSlideMessage: 'Previous movie',
+      nextSlideMessage: 'Next movie',
+      firstSlideMessage: 'This is the first movie',
+      lastSlideMessage: 'This is the last movie'
+    }
   });
-
 }
 
 // Open YouTube video in new tab
@@ -167,27 +294,43 @@ function openVideo(key) {
 
 // Toggle "Seen it" state
 function toggleSeen(idx) {
-  const checkbox = document.getElementById(`seen-${idx}`);
-  if (!checkbox) return;      // ← guard against missing element
+  seenStates[idx] = !seenStates[idx];
   const btn = document.getElementById(`seen-btn-${idx}`);
-  checkbox.checked = !checkbox.checked;
-  btn.classList.toggle('open', checkbox.checked);
-  btn.classList.toggle('closed', !checkbox.checked);
+  if (btn) {
+    btn.classList.toggle('bg-green-600', seenStates[idx]);
+    btn.classList.toggle('bg-gray-600', !seenStates[idx]);
+    btn.classList.toggle('hover:bg-gray-500', !seenStates[idx]);
+    
+    const emoji = btn.querySelector('.text-2xl');
+    if (emoji) {
+      emoji.textContent = seenStates[idx] ? '✅' : '❌';
+    }
+  }
 }
 
 // Submit a vote via JSONP
 function submitVote(movieTitle, vote) {
   const userName = document.getElementById("username").value.trim();
-  if (!userName) { alert("Please enter your name."); return; }
-  const idx = Array.from(document.querySelectorAll(".swiper-slide")).findIndex(s =>
-    s.querySelector("h2").innerText === movieTitle
-  );
-  const seen = document.getElementById(`seen-${idx}`).checked ? "✅" : "❌";
+  if (!userName) { 
+    showError("Please enter your name before voting.");
+    return; 
+  }
+  
+  const idx = movieData.findIndex(m => m.title === movieTitle);
+  const seen = seenStates[idx] ? "✅" : "❌";
+  
   const cb = `voteCb_${idx}_${Date.now()}`;
   window[cb] = function (resp) {
-    alert(resp.status === "ok" ? `Vote for \"${movieTitle}\" submitted.` : "Error submitting vote.");
+    if (resp && resp.rateLimitExceeded) {
+      showRateLimitError();
+    } else if (resp && resp.status === "ok") {
+      showSuccess(`Vote for "${movieTitle}" submitted successfully!`);
+    } else {
+      showError("Error submitting vote. Please try again.");
+    }
     delete window[cb];
   };
+  
   const script = document.createElement('script');
   script.src = `${proxyURL}`
     + `?action=vote`
@@ -199,5 +342,26 @@ function submitVote(movieTitle, vote) {
   document.body.appendChild(script);
 }
 
-// Start the flow
+// Success message function
+function showSuccess(message) {
+  const successDiv = document.createElement('div');
+  successDiv.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+  successDiv.innerHTML = `
+    <div class="flex items-center space-x-2">
+      <span>✅</span>
+      <span>${message}</span>
+    </div>
+  `;
+  document.body.appendChild(successDiv);
+  
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (successDiv.parentNode) {
+      successDiv.parentNode.removeChild(successDiv);
+    }
+  }, 3000);
+}
+
+// Initialize everything
+setupKeyboardShortcuts();
 fetchMovieTitles();

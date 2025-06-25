@@ -8,6 +8,19 @@
   <link href="./output.css" rel="stylesheet">
   <!-- Swiper styles -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  
+  <script>
+    // Mobile detection and redirect
+    function isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+             window.innerWidth <= 768;
+    }
+    
+    // Redirect to mobile version if on mobile device
+    if (isMobile() && !window.location.search.includes('desktop=true')) {
+      window.location.href = './index-mobile.html';
+    }
+  </script>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans">
   <div class="relative min-h-screen flex items-center justify-center p-4">
@@ -16,18 +29,44 @@
 
     <!-- Marquee Card -->
     <div class="relative z-10 max-w-4xl w-full bg-gray-800 p-6 rounded-xl shadow-xl">
-      <h1 class="text-3xl font-bold text-pink-500 mb-2">Mewling Goat Movie Poll</h1>
-      <div class="mb-4">
-        <label for="username" class="block font-medium mb-1">Your name:</label>
+      <h1 class="text-3xl font-bold text-pink-500 mb-4 text-center">Mewling Goat Movie Poll</h1>
+      
+      <!-- Mobile Notice -->
+      <div class="mb-4 p-3 bg-blue-600 rounded-lg text-center">
+        <p class="text-sm">📱 <strong>Mobile users:</strong> <a href="./index-mobile.html" class="underline">Click here for mobile-optimized version</a></p>
+      </div>
+      
+      <!-- Username Input -->
+      <div class="mb-6">
+        <label for="username" class="block font-medium mb-2 text-gray-200">Your name:</label>
         <input id="username" type="text" placeholder="Enter your name"
-               class="w-full px-4 py-2 bg-gray-700 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500" />
+               class="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 border border-gray-600 transition-colors" />
       </div>
 
-      <!-- Carousel -->
-      <div class="swiper">
-        <div id="movie-carousel" class="swiper-wrapper"></div>
-        <div class="swiper-button-prev text-pink-400"></div>
-        <div class="swiper-button-next text-pink-400"></div>
+      <!-- Loading State -->
+      <div id="loading" class="text-center py-8">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mb-4"></div>
+        <p class="text-gray-300">Loading movies...</p>
+      </div>
+
+      <!-- Carousel Container -->
+      <div id="carousel-container" class="hidden">
+        <div class="swiper">
+          <div id="movie-carousel" class="swiper-wrapper"></div>
+          <div class="swiper-button-prev text-pink-400"></div>
+          <div class="swiper-button-next text-pink-400"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="mt-6 text-center text-sm text-gray-400">
+        <p>💡 <strong>How to vote:</strong> Click the emoji buttons or use keyboard shortcuts</p>
+        <p>🎬 <strong>Videos:</strong> Click the video buttons to watch trailers</p>
+        <p>✅ <strong>Seen it:</strong> Toggle if you've already watched the movie</p>
+        <div class="mt-2 text-xs">
+          <p><strong>Keyboard shortcuts:</strong> 1=❤️ Love | 2=😐 Meh | 3=🗑️ Pass | S=Seen it</p>
+        </div>
       </div>
     </div>
   </div>
