@@ -2,160 +2,146 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Mewling Goat Movie Poll</title>
   <link rel="icon" href="./favicon.ico" />
   <link href="./output.css" rel="stylesheet">
   <!-- Swiper styles -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  
-  <script>
-    // Mobile detection and redirect
-    function isMobile() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-             window.innerWidth <= 768;
-    }
-    
-    // Redirect to mobile version if on mobile device
-    if (isMobile() && !window.location.search.includes('desktop=true')) {
-      window.location.href = './index-mobile.html';
-    }
-  </script>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans">
-  <div class="relative min-h-screen flex items-center justify-center p-4">
-    <!-- Optional background pattern -->
-    <div class="absolute inset-0 bg-gradient-to-br from-green-900 via-black to-blue-900 opacity-20"></div>
-
-    <!-- Marquee Card -->
-    <div class="relative z-10 max-w-4xl w-full bg-gray-800 p-6 rounded-xl shadow-xl">
-      <h1 class="text-3xl font-bold text-pink-500 mb-4 text-center">Mewling Goat Movie Poll</h1>
-      
-      <!-- Mobile Notice (dynamically inserted) -->
-      <div id="mobile-notice-anchor"></div>
-      
-      <!-- Progress Bar -->
-      <div class="mb-6 p-4 bg-gray-700 rounded-lg">
-        <div class="flex items-center justify-between text-sm text-gray-300 mb-2">
-          <span>Progress</span>
-          <div class="flex items-center space-x-4">
-            <span id="progress-text">0/0</span>
-            <button onclick="resetAllData()" class="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors" title="Reset all votes and start fresh">
-              🔄 Reset All
-            </button>
-          </div>
-        </div>
-        <div class="w-full bg-gray-600 rounded-full h-3">
-          <div id="progress-bar" class="bg-pink-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
-        </div>
-      </div>
-
-      <!-- Loading State -->
-      <div id="loading" class="text-center py-8">
-        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-pink-500 mb-4"></div>
-        <p class="text-gray-300">Loading movies...</p>
-      </div>
-
-      <!-- Carousel Container -->
-      <div id="carousel-container" class="hidden">
-        <!-- Back to Summary Button (hidden by default) -->
-        <div id="back-to-summary-btn" class="hidden mb-4 text-center">
-          <button onclick="showSummary()" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors">
-            📋 Back to Summary (ESC)
+  <div class="relative min-h-screen flex flex-col">
+    <!-- Header with integrated progress -->
+    <header class="bg-gray-800 p-4 shadow-lg">
+      <h1 class="text-2xl md:text-3xl font-bold text-pink-500 text-center mb-2">Mewling Goat Movie Poll</h1>
+      <!-- Progress bar -->
+      <div class="flex items-center justify-between text-sm text-gray-400 mb-1">
+        <span>Progress</span>
+        <div class="flex items-center space-x-2">
+          <span id="progress-text">0/0</span>
+          <button onclick="resetAllData()" class="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
+            🔄 Reset
           </button>
         </div>
-        
-        <div class="swiper">
+      </div>
+      <div class="w-full bg-gray-700 rounded-full h-2">
+        <div id="progress-bar" class="bg-pink-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading" class="flex-1 flex items-center justify-center">
+      <div class="text-center">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mb-4"></div>
+        <p class="text-gray-300 text-lg">Loading movies...</p>
+      </div>
+    </div>
+
+    <!-- Carousel Container -->
+    <div id="carousel-container" class="hidden flex-1 flex flex-col">
+      <!-- Swiper Container - Takes remaining space -->
+      <div class="flex-1 relative" style="min-height: 0;">
+        <div class="swiper h-full">
           <div id="movie-carousel" class="swiper-wrapper"></div>
-          <div class="swiper-button-prev text-pink-400"></div>
-          <div class="swiper-button-next text-pink-400"></div>
-          <div class="swiper-pagination"></div>
+          <!-- Navigation arrows -->
+          <div class="swiper-button-prev text-pink-400 !w-8 !h-8 md:!w-12 md:!h-12 !bg-gray-800 !rounded-full !shadow-lg"></div>
+          <div class="swiper-button-next text-pink-400 !w-8 !h-8 md:!w-12 md:!h-12 !bg-gray-800 !rounded-full !shadow-lg"></div>
         </div>
       </div>
 
-      <!-- Summary Container -->
-      <div id="summary-container" class="hidden">
-        <!-- Summary content will be dynamically inserted here -->
-      </div>
+      <!-- Action Buttons - Fixed at bottom -->
+      <div class="bg-gray-800 p-3 md:p-4 border-t border-gray-700">
+        <!-- Seen it toggle -->
+        <div class="mb-3 md:mb-4">
+          <button id="seen-toggle" class="w-full py-2 md:py-3 px-3 md:px-4 bg-gray-700 rounded-lg flex items-center justify-center space-x-2 transition-colors">
+            <span id="seen-emoji" class="text-xl md:text-2xl">❌</span>
+            <span class="font-medium text-sm md:text-lg">Haven't seen it</span>
+          </button>
+        </div>
 
-      <!-- Instructions -->
-      <div class="mt-6 text-center text-sm text-gray-400">
-        <p>💡 <strong>How to vote:</strong> Click the emoji buttons or use keyboard shortcuts</p>
-        <p>🎬 <strong>Videos:</strong> Click the video buttons to watch trailers</p>
-        <p>✅ <strong>Seen it:</strong> Toggle if you've already watched the movie</p>
-        <div class="mt-2 text-xs">
-          <p><strong>Keyboard shortcuts:</strong> 1=First option | 2=Second option | 3=Third option | S=Seen it | ESC=Back to Summary</p>
-          <p><strong>Vote options change based on whether you've seen the movie</strong></p>
+        <!-- Vote buttons -->
+        <div class="grid grid-cols-3 gap-2 md:gap-3">
+          <button id="vote-love" class="py-3 md:py-4 px-2 bg-green-600 rounded-lg text-xl md:text-2xl font-bold transition-colors active:bg-green-700">
+            ❤️
+          </button>
+          <button id="vote-meh" class="py-3 md:py-4 px-2 bg-yellow-500 rounded-lg text-xl md:text-2xl font-bold transition-colors active:bg-yellow-600">
+            😐
+          </button>
+          <button id="vote-pass" class="py-3 md:py-4 px-2 bg-red-600 rounded-lg text-xl md:text-2xl font-bold transition-colors active:bg-red-700">
+            🗑️
+          </button>
+        </div>
+
+        <!-- Vote labels -->
+        <div class="grid grid-cols-3 gap-2 md:gap-3 mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-400">
+          <span>Love it</span>
+          <span>Meh</span>
+          <span>Pass</span>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Name Entry Modal -->
-  <div id="name-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
-    <div class="bg-gray-800 rounded-lg p-6 max-w-md w-full">
-      <h3 class="text-xl font-bold text-pink-500 mb-4">Enter Your Name</h3>
-      <p class="text-gray-300 text-sm mb-4">Please enter your name to submit your votes.</p>
-      <input id="name-input" type="text" placeholder="Your name" 
-             class="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 border border-gray-600 text-lg mb-3">
-      <div id="name-error" class="text-red-400 text-sm mb-4"></div>
-      <div class="flex space-x-3">
-        <button id="name-submit" class="flex-1 py-2 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition-colors">
-          Submit
-        </button>
-        <button onclick="hideNameModal()" class="flex-1 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors">
-          Cancel
+    <!-- Summary Container -->
+    <div id="summary-container" class="hidden flex-1 bg-gray-800">
+      <!-- Summary content will be dynamically inserted here -->
+    </div>
+
+    <!-- Instructions Modal -->
+    <div id="instructions-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
+      <div class="bg-gray-800 rounded-lg p-6 max-w-sm w-full">
+        <h3 class="text-xl font-bold text-pink-500 mb-4">How to Vote</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">❤️</span>
+            <span>Love it - Tap the heart</span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">😐</span>
+            <span>Meh - Tap the neutral face</span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">🗑️</span>
+            <span>Pass - Tap the trash</span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">✅</span>
+            <span>Toggle "Seen it" status</span>
+          </div>
+        </div>
+        <button id="close-instructions" class="w-full mt-6 py-2 bg-pink-500 text-white rounded-lg font-medium">
+          Got it!
         </button>
       </div>
     </div>
+
+    <!-- Name Entry Modal -->
+    <div id="name-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
+      <div class="bg-gray-800 rounded-lg p-6 max-w-sm w-full">
+        <h3 class="text-xl font-bold text-pink-500 mb-4">Enter Your Name</h3>
+        <p class="text-gray-300 text-sm mb-4">Please enter your name to submit your votes.</p>
+        <input id="name-input" type="text" placeholder="Your name" 
+               class="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 border border-gray-600 text-lg mb-3">
+        <div id="name-error" class="text-red-400 text-sm mb-4"></div>
+        <div class="flex space-x-3">
+          <button id="name-submit" class="flex-1 py-2 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition-colors">
+            Submit
+          </button>
+          <button onclick="hideNameModal()" class="flex-1 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Button -->
+    <button id="help-button" class="fixed bottom-4 right-4 w-12 h-12 bg-pink-500 rounded-full shadow-lg flex items-center justify-center text-white text-xl z-40">
+      ?
+    </button>
   </div>
 
   <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <!-- Your app logic -->
+  <!-- Unified app logic -->
   <script src="script.js"></script>
-  <script>
-    // Dynamically show mobile notice only if on mobile and viewing desktop version
-    (function() {
-      function isMobile() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-      }
-      if (isMobile() && window.location.search.includes('desktop=true')) {
-        var anchor = document.getElementById('mobile-notice-anchor');
-        if (anchor) {
-          var notice = document.createElement('div');
-          notice.className = 'mb-4 p-3 bg-blue-600 rounded-lg text-center';
-          notice.innerHTML = '📱 <strong>Mobile users:</strong> <a href="./index-mobile.html" class="underline">Click here for mobile-optimized version</a>';
-          anchor.appendChild(notice);
-        }
-      }
-    })();
-    
-    // Add event listeners for name modal
-    document.addEventListener('DOMContentLoaded', function() {
-      const nameInput = document.getElementById('name-input');
-      const nameSubmit = document.getElementById('name-submit');
-      
-      if (nameInput && nameSubmit) {
-        nameInput.addEventListener('keypress', function(e) {
-          if (e.key === 'Enter') {
-            submitAllVotes();
-          }
-        });
-        
-        nameSubmit.addEventListener('click', submitAllVotes);
-      }
-      
-      // Close name modal on background click
-      const nameModal = document.getElementById('name-modal');
-      if (nameModal) {
-        nameModal.addEventListener('click', function(e) {
-          if (e.target === nameModal) {
-            hideNameModal();
-          }
-        });
-      }
-    });
-  </script>
 </body>
 </html>
