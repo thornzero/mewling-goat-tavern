@@ -663,8 +663,15 @@ function fetchDetails(id, idx) {
   const storageKey = `movie_${id}`
   const cached = localStorage.getItem(storageKey);
   if (cached) {
-    movieData[idx] = JSON.parse(cached);
-    handleDone();
+    const cachedData = JSON.parse(cached);
+    movieData[idx] = cachedData;
+    
+    // If cached data doesn't have videos, fetch them
+    if (!cachedData.videos || cachedData.videos.length === 0) {
+      fetchVideos(id, idx);
+    } else {
+      handleDone();
+    }
     return;
   }
 
@@ -685,7 +692,6 @@ function fetchDetails(id, idx) {
       videos: []
     };
     movieData[idx] = entry;
-    localStorage.setItem(storageKey, JSON.stringify(entry));
     delete window[detailCb];
     fetchVideos(id, idx);
   };
@@ -708,7 +714,13 @@ function fetchVideos(id, idx) {
       movieData[idx].videos = resp.results.map(v => v);
     } else {
       console.warn(`No videos for movie ID ${id}`);
+      movieData[idx].videos = [];
     }
+    
+    // Update cache with videos included
+    const storageKey = `movie_${id}`;
+    localStorage.setItem(storageKey, JSON.stringify(movieData[idx]));
+    
     delete window[videoCb];
     handleDone();
   };
@@ -735,6 +747,9 @@ function createSlides(movies) {
   currentMovies = movies;
   
   movies.forEach((m, i) => {
+    // Debug: Log video data for each movie
+    console.log(`Movie ${i}: ${m.title} - Videos:`, m.videos);
+    
     const slide = document.createElement("div");
     slide.className = "swiper-slide bg-gray-700 p-3 md:p-4 flex flex-col";
     
@@ -750,7 +765,7 @@ function createSlides(movies) {
             <div class="relative">
               <img class="w-full aspect-[2/3] object-cover rounded-lg shadow-lg" src="${m.poster}" alt="${m.title}">
               <!-- Trailer button chip over top left corner -->
-              ${m.videos.length > 0 ? `
+              ${m.videos && m.videos.length > 0 ? `
                 <button onclick="openVideo('${m.videos[0].key}')" 
                         class="absolute top-2 left-2 bg-black bg-opacity-80 hover:bg-opacity-95 text-white rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 transition-all duration-200 transform hover:scale-105 z-10 text-xs md:text-sm font-medium"
                         title="Watch Trailer">
@@ -781,7 +796,7 @@ function createSlides(movies) {
           <div class="relative mb-3 md:mb-4">
             <img class="w-full aspect-[2/3] object-cover rounded-lg" src="${m.poster}" alt="${m.title}">
             <!-- Trailer button chip over top left corner -->
-            ${m.videos.length > 0 ? `
+            ${m.videos && m.videos.length > 0 ? `
               <button onclick="openVideo('${m.videos[0].key}')" 
                       class="absolute top-2 left-2 bg-black bg-opacity-80 hover:bg-opacity-95 text-white rounded-full px-3 py-1.5 flex items-center space-x-1 transition-all duration-200 transform hover:scale-105 z-10 text-xs font-medium"
                       title="Watch Trailer">
