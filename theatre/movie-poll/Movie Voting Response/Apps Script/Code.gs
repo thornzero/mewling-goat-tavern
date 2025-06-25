@@ -255,17 +255,26 @@ function updateAppealValues() {
   votesData.forEach(row => {
     const movieTitle = row[1]; // Column B - Movie Title
     const vote = row[3];       // Column D - Vote (emoji)
+    const seen = row[4];       // Column E - Seen status
     
     if (movieTitle && vote && voteRanks.hasOwnProperty(vote)) {
       if (!movieAppeals[movieTitle]) {
         movieAppeals[movieTitle] = {
           totalVotes: 0,
-          totalAppeal: 0
+          totalAppeal: 0,
+          seenCount: 0,
+          totalVoters: 0
         };
       }
       
       movieAppeals[movieTitle].totalVotes++;
       movieAppeals[movieTitle].totalAppeal += voteRanks[vote];
+      
+      // Track seen status for visibility score
+      if (seen === "✅") {
+        movieAppeals[movieTitle].seenCount++;
+      }
+      movieAppeals[movieTitle].totalVoters++;
     }
   });
   
@@ -273,16 +282,66 @@ function updateAppealValues() {
   const marqueeData = marqueeSheet.getRange(2, 1, marqueeSheet.getLastRow() - 1, 3).getValues();
   let updatedCount = 0;
   
-  // Update appeal values in Marquee sheet
+  // Helper function to normalize titles for comparison
+  function normalizeTitle(title) {
+    if (!title) return '';
+    // Remove year in parentheses and trim whitespace
+    return title.replace(/\s*\(\d{4}\)\s*$/, '').trim();
+  }
+  
+  // Create a lookup map for normalized titles
+  const marqueeTitleMap = {};
   marqueeData.forEach((row, index) => {
     const title = row[0]; // Column A - Title
-    const id = row[1];    // Column B - ID
+    if (title) {
+      const normalizedTitle = normalizeTitle(title);
+      marqueeTitleMap[normalizedTitle] = {
+        originalTitle: title,
+        index: index
+      };
+    }
+  });
+  
+  // Calculate visibility scores and final appeal values
+  const finalAppeals = {};
+  Object.keys(movieAppeals).forEach(voteTitle => {
+    const movie = movieAppeals[voteTitle];
     
-    if (title && movieAppeals[title]) {
-      const appeal = movieAppeals[title].totalAppeal;
-      // Update Column C - Appeal
-      marqueeSheet.getRange(index + 2, 3).setValue(appeal);
+    // Calculate visibility score (lower = less seen = better for tie-breaking)
+    // Formula: (seenCount / totalVoters) * 0.1 to make it a small modifier
+    const visibilityRatio = movie.totalVoters > 0 ? movie.seenCount / movie.totalVoters : 0;
+    const visibilityModifier = visibilityRatio * 0.1;
+    
+    // Final appeal = total appeal - visibility modifier
+    // This gives an edge to less-seen movies (lower visibility = higher final appeal)
+    const finalAppeal = movie.totalAppeal - visibilityModifier;
+    
+    finalAppeals[voteTitle] = {
+      originalAppeal: movie.totalAppeal,
+      visibilityRatio: visibilityRatio,
+      visibilityModifier: visibilityModifier,
+      finalAppeal: finalAppeal,
+      seenCount: movie.seenCount,
+      totalVoters: movie.totalVoters
+    };
+  });
+  
+  // Update appeal values in Marquee sheet
+  Object.keys(finalAppeals).forEach(voteTitle => {
+    const normalizedVoteTitle = normalizeTitle(voteTitle);
+    const marqueeEntry = marqueeTitleMap[normalizedVoteTitle];
+    
+    if (marqueeEntry) {
+      const appealData = finalAppeals[voteTitle];
+      // Update Column C - Appeal with the final appeal value (including visibility modifier)
+      marqueeSheet.getRange(marqueeEntry.index + 2, 3).setValue(appealData.finalAppeal);
       updatedCount++;
+      
+      // Log the calculation for debugging
+      console.log(`${voteTitle}: Original=${appealData.originalAppeal}, Seen=${appealData.seenCount}/${appealData.totalVoters} (${(appealData.visibilityRatio * 100).toFixed(1)}%), Modifier=${appealData.visibilityModifier.toFixed(3)}, Final=${appealData.finalAppeal.toFixed(3)}`);
+    } else {
+      // Log unmatched titles for debugging
+      console.log(`No match found for vote title: "${voteTitle}" (normalized: "${normalizedVoteTitle}")`);
     }
   });
   
