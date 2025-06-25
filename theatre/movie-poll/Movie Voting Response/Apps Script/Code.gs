@@ -143,6 +143,42 @@ function doGet(e) {
       break;
     }
 
+    // ─── batch vote submission ───────────────────────────────────────────
+    case 'batchVote': {
+      if (!p.votes) {
+        body = cb + '(' + JSON.stringify({ error: 'Missing votes parameter' }) + ');';
+      } else {
+        try {
+          const votes = JSON.parse(p.votes);
+          const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Votes');
+          
+          // Prepare all rows to append
+          const rowsToAppend = votes.map(vote => [
+            new Date(vote.timestamp || Date.now()),
+            vote.movieTitle || '',
+            vote.userName || '',
+            vote.vote || '',
+            vote.seen || ''
+          ]);
+          
+          // Append all rows at once
+          if (rowsToAppend.length > 0) {
+            sheet.getRange(sheet.getLastRow() + 1, 1, rowsToAppend.length, 5).setValues(rowsToAppend);
+          }
+          
+          body = cb + '(' + JSON.stringify({ 
+            status: 'ok',
+            submitted: rowsToAppend.length 
+          }) + ');';
+        } catch (error) {
+          body = cb + '(' + JSON.stringify({ 
+            error: 'Invalid votes JSON: ' + error.message 
+          }) + ');';
+        }
+      }
+      break;
+    }
+
     // ─── invalid action ──────────────────────────────────────────────────
     default: {
       body = cb + '(' + JSON.stringify({ error: 'Invalid action' }) + ');';

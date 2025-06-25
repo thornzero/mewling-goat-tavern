@@ -235,105 +235,67 @@ function submitAllVotes() {
   nameSubmit.textContent = 'Submitting...';
   nameSubmit.disabled = true;
   
-  // Get all movies that have votes
-  const votesToSubmit = [];
+  // Prepare all votes as a single batch
+  const votesBatch = [];
   movieData.forEach((movie, index) => {
     if (userVotes[index]) {
-      votesToSubmit.push({
-        movie: movie,
-        voteData: userVotes[index],
+      votesBatch.push({
+        movieTitle: movie.title,
+        userName: userName,
+        vote: userVotes[index].emoji,
         seen: seenStates[index] ? "✅" : "❌",
-        originalIndex: index
+        timestamp: new Date().toISOString()
       });
     }
   });
   
-  if (votesToSubmit.length === 0) {
+  if (votesBatch.length === 0) {
     nameError.textContent = 'No votes to submit. Please vote on at least one movie.';
     nameSubmit.textContent = 'Submit';
     nameSubmit.disabled = false;
     return;
   }
   
-  console.log(`Submitting ${votesToSubmit.length} votes:`, votesToSubmit.map(v => `${v.movie.title}: ${v.voteData.emoji}`));
+  console.log(`Submitting batch of ${votesBatch.length} votes:`, votesBatch);
   
-  // Submit votes with delay to avoid rate limiting
-  const submitVoteWithDelay = (voteInfo, delay) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const cb = `batchVoteCb_${voteInfo.originalIndex}_${Date.now()}`;
-        window[cb] = function (resp) {
-          if (resp && resp.rateLimitExceeded) {
-            reject(new Error(`Rate limit exceeded for ${voteInfo.movie.title}`));
-          } else if (resp && resp.status === "ok") {
-            resolve({ success: true, movie: voteInfo.movie.title });
-          } else {
-            reject(new Error(`Submission failed for ${voteInfo.movie.title}`));
-          }
-          delete window[cb];
-        };
-        
-        const script = document.createElement('script');
-        script.src = `${proxyURL}`
-          + `?action=vote`
-          + `&movieTitle=${encodeURIComponent(voteInfo.movie.title)}`
-          + `&userName=${encodeURIComponent(userName)}`
-          + `&vote=${encodeURIComponent(voteInfo.voteData.emoji)}`
-          + `&seen=${encodeURIComponent(voteInfo.seen)}`
-          + `&callback=${cb}`;
-        document.body.appendChild(script);
-      }, delay);
-    });
-  };
-  
-  const promises = votesToSubmit.map((voteInfo, index) => {
-    return submitVoteWithDelay(voteInfo, index * 200); // 200ms delay between each vote
-  });
-  
-  Promise.allSettled(promises)
-    .then((results) => {
-      const successful = results.filter(r => r.status === 'fulfilled').length;
-      const failed = results.filter(r => r.status === 'rejected').length;
-      
-      console.log(`Vote submission results: ${successful} successful, ${failed} failed`);
-      
-      if (failed > 0) {
-        const failedVotes = results
-          .filter(r => r.status === 'rejected')
-          .map(r => r.reason.message);
-        console.error('Failed votes:', failedVotes);
-      }
-      
-      if (successful > 0) {
-        // Show success message with actual count
-        showSuccess(`Successfully submitted ${successful} votes!${failed > 0 ? ` (${failed} failed)` : ''}`);
-        
-        // Update summary page to show submission status
-        updateSummaryAfterSubmission();
-        
-        setTimeout(() => {
-          hideNameModal();
-          // Clear local storage
-          localStorage.removeItem('movieVotes');
-          localStorage.removeItem('movieSeenStates');
-          userVotes = {};
-          seenStates = {};
-          // Reset progress
-          updateProgress();
-        }, 3000); // Show success message for 3 seconds
-      } else {
-        // All votes failed
-        nameSubmit.textContent = 'Submit';
-        nameSubmit.disabled = false;
-        showError('All votes failed to submit. Please try again.');
-      }
-    })
-    .catch((error) => {
+  // Submit all votes as a single batch
+  const cb = `batchVoteCb_${Date.now()}`;
+  window[cb] = function (resp) {
+    if (resp && resp.rateLimitExceeded) {
       nameSubmit.textContent = 'Submit';
       nameSubmit.disabled = false;
-      console.error('Vote submission error:', error);
+      showRateLimitError();
+    } else if (resp && resp.status === "ok") {
+      // Show success message
+      showSuccess(`Successfully submitted ${votesBatch.length} votes!`);
+      
+      // Update summary page to show submission status
+      updateSummaryAfterSubmission();
+      
+      setTimeout(() => {
+        hideNameModal();
+        // Clear local storage
+        localStorage.removeItem('movieVotes');
+        localStorage.removeItem('movieSeenStates');
+        userVotes = {};
+        seenStates = {};
+        // Reset progress
+        updateProgress();
+      }, 3000); // Show success message for 3 seconds
+    } else {
+      nameSubmit.textContent = 'Submit';
+      nameSubmit.disabled = false;
       showError('Error submitting votes. Please try again.');
-    });
+    }
+    delete window[cb];
+  };
+  
+  const script = document.createElement('script');
+  script.src = `${proxyURL}`
+    + `?action=batchVote`
+    + `&votes=${encodeURIComponent(JSON.stringify(votesBatch))}`
+    + `&callback=${cb}`;
+  document.body.appendChild(script);
 }
 
 // Update summary page to show submission status
