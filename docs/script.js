@@ -749,6 +749,8 @@ function createSlides(movies) {
   movies.forEach((m, i) => {
     // Debug: Log video data for each movie
     console.log(`Movie ${i}: ${m.title} - Videos:`, m.videos);
+    console.log(`Movie ${i}: ${m.title} - Videos length:`, m.videos ? m.videos.length : 0);
+    console.log(`Movie ${i}: ${m.title} - First video key:`, m.videos && m.videos.length > 0 ? m.videos[0].key : 'none');
     
     const slide = document.createElement("div");
     slide.className = "swiper-slide bg-gray-700 p-3 md:p-4 flex flex-col";
@@ -798,10 +800,10 @@ function createSlides(movies) {
             <!-- Trailer button chip over top left corner -->
             ${m.videos && m.videos.length > 0 ? `
               <button onclick="openVideo('${m.videos[0].key}')" 
-                      class="absolute top-2 left-2 bg-black bg-opacity-80 hover:bg-opacity-95 text-white rounded-full px-3 py-1.5 flex items-center space-x-1 transition-all duration-200 transform hover:scale-105 z-10 text-xs font-medium"
+                      class="absolute top-2 left-2 bg-black bg-opacity-90 hover:bg-opacity-100 text-white rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 transition-all duration-200 transform hover:scale-105 z-20 text-xs md:text-sm font-medium shadow-lg border border-white border-opacity-20 min-w-[70px] md:min-w-[80px]"
                       title="Watch Trailer">
-                <span class="text-sm">▶</span>
-                <span>Trailer</span>
+                <span class="text-sm md:text-base">▶</span>
+                <span class="whitespace-nowrap">Trailer</span>
               </button>
             ` : ''}
           </div>

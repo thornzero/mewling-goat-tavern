@@ -272,6 +272,9 @@
   .z-10 {
     z-index: 10;
   }
+  .z-20 {
+    z-index: 20;
+  }
   .z-40 {
     z-index: 40;
   }
@@ -400,6 +403,9 @@
   }
   .max-w-sm {
     max-width: var(--container-sm);
+  }
+  .min-w-\[70px\] {
+    min-width: 70px;
   }
   .flex-1 {
     flex: 1;
@@ -668,6 +674,9 @@
   .font-semibold {
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
   }
   .text-gray-100 {
     color: var(--color-gray-100);
@@ -1054,6 +1063,11 @@
   .md\:\!w-12 {
     @media (width >= 48rem) {
       width: calc(var(--spacing) * 12) !important;
+    }
+  }
+  .md\:min-w-\[80px\] {
+    @media (width >= 48rem) {
+      min-width: 80px;
     }
   }
   .md\:gap-2 {
