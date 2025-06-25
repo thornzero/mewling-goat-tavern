@@ -31,10 +31,8 @@
     <div class="relative z-10 max-w-4xl w-full bg-gray-800 p-6 rounded-xl shadow-xl">
       <h1 class="text-3xl font-bold text-pink-500 mb-4 text-center">Mewling Goat Movie Poll</h1>
       
-      <!-- Mobile Notice -->
-      <div class="mb-4 p-3 bg-blue-600 rounded-lg text-center">
-        <p class="text-sm">📱 <strong>Mobile users:</strong> <a href="./index-mobile.html" class="underline">Click here for mobile-optimized version</a></p>
-      </div>
+      <!-- Mobile Notice (dynamically inserted) -->
+      <div id="mobile-notice-anchor"></div>
       
       <!-- Username Input -->
       <div class="mb-6">
@@ -75,5 +73,22 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <!-- Your app logic -->
   <script src="script.js"></script>
+  <script>
+    // Dynamically show mobile notice only if on mobile and viewing desktop version
+    (function() {
+      function isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+      }
+      if (isMobile() && window.location.search.includes('desktop=true')) {
+        var anchor = document.getElementById('mobile-notice-anchor');
+        if (anchor) {
+          var notice = document.createElement('div');
+          notice.className = 'mb-4 p-3 bg-blue-600 rounded-lg text-center';
+          notice.innerHTML = '📱 <strong>Mobile users:</strong> <a href="./index-mobile.html" class="underline">Click here for mobile-optimized version</a>';
+          anchor.appendChild(notice);
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
