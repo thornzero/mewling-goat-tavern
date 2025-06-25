@@ -83,6 +83,16 @@ function updateProgress() {
     progressText.textContent = `${votedCount}/${totalCount}`;
   }
   
+  // Show/hide "Back to Summary" button
+  const backToSummaryBtn = document.getElementById('back-to-summary-btn');
+  if (backToSummaryBtn) {
+    if (votedCount === totalCount && totalCount > 0) {
+      backToSummaryBtn.classList.remove('hidden');
+    } else {
+      backToSummaryBtn.classList.add('hidden');
+    }
+  }
+  
   // Check if all movies are voted on
   if (votedCount === totalCount && appState === 'voting' && totalCount > 0) {
     showSummary();
@@ -286,23 +296,33 @@ function setupKeyboardShortcuts() {
     
     if (!currentMovie) return;
     
+    const isSeen = seenStates[currentIndex];
+    const options = isSeen ? VOTE_OPTIONS.seen : VOTE_OPTIONS.notSeen;
+    
     switch(e.key) {
       case '1':
         e.preventDefault();
-        recordVote(currentIndex, '❤️');
+        recordVote(currentIndex, options[0]); // First option (⭐ or 🔥)
         break;
       case '2':
         e.preventDefault();
-        recordVote(currentIndex, '😐');
+        recordVote(currentIndex, options[1]); // Second option (😐 or ⏳)
         break;
       case '3':
         e.preventDefault();
-        recordVote(currentIndex, '🗑️');
+        recordVote(currentIndex, options[2]); // Third option (🚫 or 💤)
         break;
       case 's':
       case 'S':
         e.preventDefault();
         toggleSeen(currentIndex);
+        break;
+      case 'Escape':
+        e.preventDefault();
+        // If we came from summary, go back to summary
+        if (Object.keys(userVotes).length === movieData.length) {
+          showSummary();
+        }
         break;
     }
   });

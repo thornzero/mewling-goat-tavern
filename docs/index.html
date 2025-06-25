@@ -53,6 +53,13 @@
 
       <!-- Carousel Container -->
       <div id="carousel-container" class="hidden">
+        <!-- Back to Summary Button (hidden by default) -->
+        <div id="back-to-summary-btn" class="hidden mb-4 text-center">
+          <button onclick="showSummary()" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-colors">
+            📋 Back to Summary (ESC)
+          </button>
+        </div>
+        
         <div class="swiper">
           <div id="movie-carousel" class="swiper-wrapper"></div>
           <div class="swiper-button-prev text-pink-400"></div>
@@ -72,7 +79,8 @@
         <p>🎬 <strong>Videos:</strong> Click the video buttons to watch trailers</p>
         <p>✅ <strong>Seen it:</strong> Toggle if you've already watched the movie</p>
         <div class="mt-2 text-xs">
-          <p><strong>Keyboard shortcuts:</strong> 1=❤️ Love | 2=😐 Meh | 3=🗑️ Pass | S=Seen it</p>
+          <p><strong>Keyboard shortcuts:</strong> 1=First option | 2=Second option | 3=Third option | S=Seen it | ESC=Back to Summary</p>
+          <p><strong>Vote options change based on whether you've seen the movie</strong></p>
         </div>
       </div>
     </div>
