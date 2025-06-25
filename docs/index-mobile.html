@@ -12,20 +12,20 @@
 <body class="bg-gray-900 text-gray-100 font-sans">
   <div class="relative min-h-screen flex flex-col">
     <!-- Header with integrated progress -->
-    <header class="bg-gray-800 p-3 shadow-lg">
-      <h1 class="text-xl font-bold text-pink-500 text-center mb-2">Mewling Goat Movie Poll</h1>
+    <header class="bg-gray-800 p-4 shadow-lg">
+      <h1 class="text-2xl font-bold text-pink-500 text-center mb-2">Mewling Goat Movie Poll</h1>
       <!-- Compact progress bar -->
-      <div class="flex items-center justify-between text-xs text-gray-400 mb-1">
+      <div class="flex items-center justify-between text-sm text-gray-400 mb-1">
         <span>Progress</span>
         <div class="flex items-center space-x-2">
           <span id="progress-text">0/0</span>
-          <button onclick="resetAllData()" class="px-2 py-1 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
+          <button onclick="resetAllData()" class="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
             🔄 Reset
           </button>
         </div>
       </div>
-      <div class="w-full bg-gray-700 rounded-full h-1.5">
-        <div id="progress-bar" class="bg-pink-500 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+      <div class="w-full bg-gray-700 rounded-full h-2">
+        <div id="progress-bar" class="bg-pink-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
       </div>
     </header>
 
@@ -39,56 +39,41 @@
 
     <!-- Carousel Container -->
     <div id="carousel-container" class="hidden flex-1 flex flex-col">
-      <!-- Movie Info Bar - Compact -->
-      <div class="bg-gray-800 p-2 border-b border-gray-700">
-        <div class="flex items-center justify-between">
-          <div class="flex-1 min-w-0">
-            <h2 id="current-movie-title" class="text-sm font-semibold text-pink-500 truncate"></h2>
-            <p id="current-movie-genres" class="text-xs text-gray-400 truncate"></p>
-          </div>
-          <div class="flex items-center space-x-1 ml-2">
-            <span id="current-slide" class="text-xs text-gray-400">1</span>
-            <span class="text-gray-400 text-xs">/</span>
-            <span id="total-slides" class="text-xs text-gray-400">1</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Swiper Container - Reduced height -->
+      <!-- Swiper Container - Takes remaining space -->
       <div class="flex-1 relative" style="min-height: 0;">
         <div class="swiper h-full">
           <div id="movie-carousel" class="swiper-wrapper"></div>
           <!-- Navigation arrows -->
-          <div class="swiper-button-prev text-pink-400 !w-8 !h-8 !bg-gray-800 !rounded-full !shadow-lg"></div>
-          <div class="swiper-button-next text-pink-400 !w-8 !h-8 !bg-gray-800 !rounded-full !shadow-lg"></div>
+          <div class="swiper-button-prev text-pink-400 !w-12 !h-12 !bg-gray-800 !rounded-full !shadow-lg"></div>
+          <div class="swiper-button-next text-pink-400 !w-12 !h-12 !bg-gray-800 !rounded-full !shadow-lg"></div>
         </div>
       </div>
 
-      <!-- Action Buttons - Compact -->
-      <div class="bg-gray-800 p-3 border-t border-gray-700">
+      <!-- Action Buttons - Fixed at bottom -->
+      <div class="bg-gray-800 p-4 border-t border-gray-700">
         <!-- Seen it toggle -->
-        <div class="mb-3">
-          <button id="seen-toggle" class="w-full py-2 px-3 bg-gray-700 rounded-lg flex items-center justify-center space-x-2 transition-colors">
-            <span id="seen-emoji" class="text-xl">❌</span>
-            <span class="font-medium text-sm">Haven't seen it</span>
+        <div class="mb-4">
+          <button id="seen-toggle" class="w-full py-3 px-4 bg-gray-700 rounded-lg flex items-center justify-center space-x-2 transition-colors">
+            <span id="seen-emoji" class="text-2xl">❌</span>
+            <span class="font-medium text-lg">Haven't seen it</span>
           </button>
         </div>
 
         <!-- Vote buttons -->
-        <div class="grid grid-cols-3 gap-2">
-          <button id="vote-love" class="py-3 px-2 bg-green-600 rounded-lg text-xl font-bold transition-colors active:bg-green-700">
+        <div class="grid grid-cols-3 gap-3">
+          <button id="vote-love" class="py-4 px-2 bg-green-600 rounded-lg text-2xl font-bold transition-colors active:bg-green-700">
             ❤️
           </button>
-          <button id="vote-meh" class="py-3 px-2 bg-yellow-500 rounded-lg text-xl font-bold transition-colors active:bg-yellow-600">
+          <button id="vote-meh" class="py-4 px-2 bg-yellow-500 rounded-lg text-2xl font-bold transition-colors active:bg-yellow-600">
             😐
           </button>
-          <button id="vote-pass" class="py-3 px-2 bg-red-600 rounded-lg text-xl font-bold transition-colors active:bg-red-700">
+          <button id="vote-pass" class="py-4 px-2 bg-red-600 rounded-lg text-2xl font-bold transition-colors active:bg-red-700">
             🗑️
           </button>
         </div>
 
         <!-- Vote labels -->
-        <div class="grid grid-cols-3 gap-2 mt-1 text-center text-xs text-gray-400">
+        <div class="grid grid-cols-3 gap-3 mt-2 text-center text-sm text-gray-400">
           <span>Love it</span>
           <span>Meh</span>
           <span>Pass</span>

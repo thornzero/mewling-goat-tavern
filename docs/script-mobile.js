@@ -32,10 +32,6 @@ let appState = 'voting'; // 'voting' or 'summary'
 const elements = {
   loading: null,
   carouselContainer: null,
-  currentMovieTitle: null,
-  currentMovieGenres: null,
-  currentSlide: null,
-  totalSlides: null,
   seenToggle: null,
   seenEmoji: null,
   voteLove: null,
@@ -57,10 +53,6 @@ const elements = {
 function initElements() {
   elements.loading = document.getElementById('loading');
   elements.carouselContainer = document.getElementById('carousel-container');
-  elements.currentMovieTitle = document.getElementById('current-movie-title');
-  elements.currentMovieGenres = document.getElementById('current-movie-genres');
-  elements.currentSlide = document.getElementById('current-slide');
-  elements.totalSlides = document.getElementById('total-slides');
   elements.seenToggle = document.getElementById('seen-toggle');
   elements.seenEmoji = document.getElementById('seen-emoji');
   elements.voteLove = document.getElementById('vote-love');
@@ -121,10 +113,6 @@ function updateMovieInfo(index) {
   if (!movie) return;
   
   currentMovieIndex = index;
-  elements.currentMovieTitle.textContent = movie.title;
-  elements.currentMovieGenres.textContent = movie.genres.join(', ');
-  elements.currentSlide.textContent = index + 1;
-  elements.totalSlides.textContent = movieData.length;
   
   // Update seen toggle state
   updateSeenToggle(index);
@@ -660,34 +648,34 @@ function createSlides(movies) {
   
   movies.forEach((m, i) => {
     const slide = document.createElement("div");
-    slide.className = "swiper-slide bg-gray-700 p-3 flex flex-col";
+    slide.className = "swiper-slide bg-gray-700 p-4 flex flex-col";
     
     // Check if we're in landscape mode
     const isLandscape = window.innerWidth > window.innerHeight;
     
     if (isLandscape) {
-      // Landscape layout: poster on left, content on right - more compact
+      // Landscape layout: poster on left, content on right - scales proportionally
       slide.innerHTML = `
-        <div class="flex-1 flex flex-row gap-4">
-          <!-- Poster on the left - smaller -->
-          <div class="w-1/3 flex-shrink-0">
+        <div class="flex-1 flex flex-row gap-6">
+          <!-- Poster on the left - scales with screen size -->
+          <div class="w-2/5 flex-shrink-0">
             <div class="relative">
               <img class="w-full aspect-[2/3] object-cover rounded-lg shadow-lg" src="${m.poster}" alt="${m.title}">
             </div>
           </div>
           
-          <!-- Content on the right - more compact -->
+          <!-- Content on the right - scales with screen size -->
           <div class="flex-1 flex flex-col justify-between">
             <div>
-              <h3 class="text-lg font-bold text-pink-500 mb-2">${m.title}</h3>
-              <div class="flex flex-wrap gap-1 mb-2">
-                ${m.genres.slice(0, 3).map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-xs">${t}</span>`).join('')}
+              <h3 class="text-2xl font-bold text-pink-500 mb-3">${m.title}</h3>
+              <div class="flex flex-wrap gap-2 mb-4">
+                ${m.genres.slice(0, 4).map(t => `<span class="px-3 py-1 bg-gray-600 rounded-full text-sm">${t}</span>`).join('')}
               </div>
-              <p class="text-gray-300 text-sm leading-relaxed mb-2 line-clamp-3">${m.synopsis}</p>
-              <p class="text-gray-400 text-sm font-medium mb-2">${m.runtime}</p>
+              <p class="text-gray-300 text-base leading-relaxed mb-4">${m.synopsis}</p>
+              <p class="text-gray-400 text-lg font-medium mb-4">${m.runtime}</p>
               ${m.videos.length > 0 ? `
-                <div class="mb-2">
-                  <button onclick="openVideo('${m.videos[0].key}')" class="px-4 py-2 bg-pink-500 text-white rounded-lg text-sm font-medium hover:bg-pink-600 transition-colors">
+                <div class="mb-4">
+                  <button onclick="openVideo('${m.videos[0].key}')" class="px-6 py-3 bg-pink-500 text-white rounded-lg text-base font-medium hover:bg-pink-600 transition-colors">
                     ▶ Watch Trailer
                   </button>
                 </div>
@@ -697,22 +685,22 @@ function createSlides(movies) {
         </div>
       `;
     } else {
-      // Portrait layout: stacked (more compact)
+      // Portrait layout: stacked - scales proportionally
       slide.innerHTML = `
         <div class="flex-1 flex flex-col">
-          <div class="relative mb-3">
+          <div class="relative mb-4">
             <img class="w-full aspect-[2/3] object-cover rounded-lg" src="${m.poster}" alt="${m.title}">
           </div>
           <div class="flex-1">
-            <h3 class="text-base font-semibold text-pink-500 mb-1">${m.title}</h3>
-            <div class="flex flex-wrap gap-1 mb-1">
-              ${m.genres.slice(0, 2).map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-xs">${t}</span>`).join('')}
+            <h3 class="text-lg font-semibold text-pink-500 mb-2">${m.title}</h3>
+            <div class="flex flex-wrap gap-1 mb-2">
+              ${m.genres.slice(0, 3).map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-xs">${t}</span>`).join('')}
             </div>
-            <p class="text-gray-300 text-xs mb-1 line-clamp-2">${m.synopsis}</p>
-            <p class="text-gray-400 text-xs">${m.runtime}</p>
+            <p class="text-gray-300 text-sm mb-2 line-clamp-3">${m.synopsis}</p>
+            <p class="text-gray-400 text-sm">${m.runtime}</p>
             ${m.videos.length > 0 ? `
-              <div class="mt-2">
-                <button onclick="openVideo('${m.videos[0].key}')" class="w-full py-1.5 bg-pink-500 text-white rounded-lg text-xs font-medium">
+              <div class="mt-3">
+                <button onclick="openVideo('${m.videos[0].key}')" class="w-full py-2 bg-pink-500 text-white rounded-lg text-sm font-medium">
                   ▶ Watch Trailer
                 </button>
               </div>

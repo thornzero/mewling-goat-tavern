@@ -164,12 +164,30 @@ function doGet(e) {
           // Append all rows at once
           if (rowsToAppend.length > 0) {
             sheet.getRange(sheet.getLastRow() + 1, 1, rowsToAppend.length, 5).setValues(rowsToAppend);
+            
+            // Automatically update appeal values after votes are submitted
+            try {
+              const appealResult = updateAppealValues();
+              body = cb + '(' + JSON.stringify({ 
+                status: 'ok',
+                submitted: rowsToAppend.length,
+                appealUpdated: appealResult.updated,
+                appealTotal: appealResult.total
+              }) + ');';
+            } catch (appealError) {
+              // If appeal update fails, still return success for vote submission
+              body = cb + '(' + JSON.stringify({ 
+                status: 'ok',
+                submitted: rowsToAppend.length,
+                appealError: appealError.message
+              }) + ');';
+            }
+          } else {
+            body = cb + '(' + JSON.stringify({ 
+              status: 'ok',
+              submitted: 0 
+            }) + ');';
           }
-          
-          body = cb + '(' + JSON.stringify({ 
-            status: 'ok',
-            submitted: rowsToAppend.length 
-          }) + ');';
         } catch (error) {
           body = cb + '(' + JSON.stringify({ 
             error: 'Invalid votes JSON: ' + error.message 
