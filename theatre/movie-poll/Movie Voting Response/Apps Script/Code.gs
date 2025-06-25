@@ -179,6 +179,23 @@ function doGet(e) {
       break;
     }
 
+    // ─── update appeal values ────────────────────────────────────────────
+    case 'updateAppeal': {
+      try {
+        const result = updateAppealValues();
+        body = cb + '(' + JSON.stringify({ 
+          status: 'ok',
+          updated: result.updated,
+          total: result.total
+        }) + ');';
+      } catch (error) {
+        body = cb + '(' + JSON.stringify({ 
+          error: 'Failed to update appeal: ' + error.message 
+        }) + ');';
+      }
+      break;
+    }
+
     // ─── invalid action ──────────────────────────────────────────────────
     default: {
       body = cb + '(' + JSON.stringify({ error: 'Invalid action' }) + ');';
@@ -189,4 +206,70 @@ function doGet(e) {
   return ContentService
     .createTextOutput(body)
     .setMimeType(ContentService.MimeType.JAVASCRIPT);
+}
+
+// Function to update appeal values based on vote ranks
+function updateAppealValues() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const votesSheet = ss.getSheetByName('Votes');
+  const marqueeSheet = ss.getSheetByName('Marquee');
+  
+  if (!votesSheet || !marqueeSheet) {
+    throw new Error('Required sheets not found');
+  }
+  
+  // Get all votes
+  const votesData = votesSheet.getRange(2, 1, votesSheet.getLastRow() - 1, 5).getValues();
+  
+  // Vote rank mapping based on emoji
+  const voteRanks = {
+    '⭐': 1,  // Rewatch - highest rank
+    '🔥': 2,  // Stoked
+    '⏳': 3,  // Later
+    '😐': 4,  // Meh
+    '💤': 5,  // Skip
+    '🚫': 6   // Never - lowest rank
+  };
+  
+  // Calculate appeal for each movie
+  const movieAppeals = {};
+  
+  votesData.forEach(row => {
+    const movieTitle = row[1]; // Column B - Movie Title
+    const vote = row[3];       // Column D - Vote (emoji)
+    
+    if (movieTitle && vote && voteRanks.hasOwnProperty(vote)) {
+      if (!movieAppeals[movieTitle]) {
+        movieAppeals[movieTitle] = {
+          totalVotes: 0,
+          totalAppeal: 0
+        };
+      }
+      
+      movieAppeals[movieTitle].totalVotes++;
+      movieAppeals[movieTitle].totalAppeal += voteRanks[vote];
+    }
+  });
+  
+  // Get Marquee sheet data
+  const marqueeData = marqueeSheet.getRange(2, 1, marqueeSheet.getLastRow() - 1, 3).getValues();
+  let updatedCount = 0;
+  
+  // Update appeal values in Marquee sheet
+  marqueeData.forEach((row, index) => {
+    const title = row[0]; // Column A - Title
+    const id = row[1];    // Column B - ID
+    
+    if (title && movieAppeals[title]) {
+      const appeal = movieAppeals[title].totalAppeal;
+      // Update Column C - Appeal
+      marqueeSheet.getRange(index + 2, 3).setValue(appeal);
+      updatedCount++;
+    }
+  });
+  
+  return {
+    updated: updatedCount,
+    total: Object.keys(movieAppeals).length
+  };
 }
