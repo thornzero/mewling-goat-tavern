@@ -257,60 +257,82 @@ function submitAllVotes() {
   
   console.log(`Submitting ${votesToSubmit.length} votes:`, votesToSubmit.map(v => `${v.movie.title}: ${v.voteData.emoji}`));
   
-  // Submit votes
-  const promises = votesToSubmit.map((voteInfo) => {
+  // Submit votes with delay to avoid rate limiting
+  const submitVoteWithDelay = (voteInfo, delay) => {
     return new Promise((resolve, reject) => {
-      const cb = `batchVoteCb_${voteInfo.originalIndex}_${Date.now()}`;
-      window[cb] = function (resp) {
-        if (resp && resp.rateLimitExceeded) {
-          reject(new Error('Rate limit exceeded'));
-        } else if (resp && resp.status === "ok") {
-          resolve();
-        } else {
-          reject(new Error('Submission failed'));
-        }
-        delete window[cb];
-      };
-      
-      const script = document.createElement('script');
-      script.src = `${proxyURL}`
-        + `?action=vote`
-        + `&movieTitle=${encodeURIComponent(voteInfo.movie.title)}`
-        + `&userName=${encodeURIComponent(userName)}`
-        + `&vote=${encodeURIComponent(voteInfo.voteData.emoji)}`
-        + `&seen=${encodeURIComponent(voteInfo.seen)}`
-        + `&callback=${cb}`;
-      document.body.appendChild(script);
+      setTimeout(() => {
+        const cb = `batchVoteCb_${voteInfo.originalIndex}_${Date.now()}`;
+        window[cb] = function (resp) {
+          if (resp && resp.rateLimitExceeded) {
+            reject(new Error(`Rate limit exceeded for ${voteInfo.movie.title}`));
+          } else if (resp && resp.status === "ok") {
+            resolve({ success: true, movie: voteInfo.movie.title });
+          } else {
+            reject(new Error(`Submission failed for ${voteInfo.movie.title}`));
+          }
+          delete window[cb];
+        };
+        
+        const script = document.createElement('script');
+        script.src = `${proxyURL}`
+          + `?action=vote`
+          + `&movieTitle=${encodeURIComponent(voteInfo.movie.title)}`
+          + `&userName=${encodeURIComponent(userName)}`
+          + `&vote=${encodeURIComponent(voteInfo.voteData.emoji)}`
+          + `&seen=${encodeURIComponent(voteInfo.seen)}`
+          + `&callback=${cb}`;
+        document.body.appendChild(script);
+      }, delay);
     });
+  };
+  
+  const promises = votesToSubmit.map((voteInfo, index) => {
+    return submitVoteWithDelay(voteInfo, index * 200); // 200ms delay between each vote
   });
   
-  Promise.all(promises)
-    .then(() => {
-      // Show success message first, then hide modal after a delay
-      showSuccess(`Successfully submitted ${votesToSubmit.length} votes!`);
+  Promise.allSettled(promises)
+    .then((results) => {
+      const successful = results.filter(r => r.status === 'fulfilled').length;
+      const failed = results.filter(r => r.status === 'rejected').length;
       
-      // Update summary page to show submission status
-      updateSummaryAfterSubmission();
+      console.log(`Vote submission results: ${successful} successful, ${failed} failed`);
       
-      setTimeout(() => {
-        hideNameModal();
-        // Clear local storage
-        localStorage.removeItem('movieVotes');
-        localStorage.removeItem('movieSeenStates');
-        userVotes = {};
-        seenStates = {};
-        // Reset progress
-        updateProgress();
-      }, 3000); // Show success message for 3 seconds
+      if (failed > 0) {
+        const failedVotes = results
+          .filter(r => r.status === 'rejected')
+          .map(r => r.reason.message);
+        console.error('Failed votes:', failedVotes);
+      }
+      
+      if (successful > 0) {
+        // Show success message with actual count
+        showSuccess(`Successfully submitted ${successful} votes!${failed > 0 ? ` (${failed} failed)` : ''}`);
+        
+        // Update summary page to show submission status
+        updateSummaryAfterSubmission();
+        
+        setTimeout(() => {
+          hideNameModal();
+          // Clear local storage
+          localStorage.removeItem('movieVotes');
+          localStorage.removeItem('movieSeenStates');
+          userVotes = {};
+          seenStates = {};
+          // Reset progress
+          updateProgress();
+        }, 3000); // Show success message for 3 seconds
+      } else {
+        // All votes failed
+        nameSubmit.textContent = 'Submit';
+        nameSubmit.disabled = false;
+        showError('All votes failed to submit. Please try again.');
+      }
     })
     .catch((error) => {
       nameSubmit.textContent = 'Submit';
       nameSubmit.disabled = false;
-      if (error.message === 'Rate limit exceeded') {
-        showRateLimitError();
-      } else {
-        showError('Error submitting votes. Please try again.');
-      }
+      console.error('Vote submission error:', error);
+      showError('Error submitting votes. Please try again.');
     });
 }
 
