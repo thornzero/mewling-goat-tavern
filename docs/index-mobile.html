@@ -16,11 +16,15 @@
       <h1 class="text-2xl font-bold text-pink-500 text-center">Mewling Goat Movie Poll</h1>
     </header>
 
-    <!-- Username Input -->
-    <div class="p-4 bg-gray-800 border-b border-gray-700">
-      <label for="username" class="block font-medium mb-2 text-gray-200">Your name:</label>
-      <input id="username" type="text" placeholder="Enter your name"
-             class="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 border border-gray-600 text-lg" />
+    <!-- Progress Bar -->
+    <div class="bg-gray-800 border-b border-gray-700 p-2">
+      <div class="flex items-center justify-between text-sm text-gray-400 mb-1">
+        <span>Progress</span>
+        <span id="progress-text">0/0</span>
+      </div>
+      <div class="w-full bg-gray-700 rounded-full h-2">
+        <div id="progress-bar" class="bg-pink-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
     </div>
 
     <!-- Loading State -->
@@ -90,8 +94,13 @@
       </div>
     </div>
 
+    <!-- Summary Container -->
+    <div id="summary-container" class="hidden flex-1 bg-gray-800">
+      <!-- Summary content will be dynamically inserted here -->
+    </div>
+
     <!-- Instructions Modal -->
-    <div id="instructions-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div id="instructions-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
       <div class="bg-gray-800 rounded-lg p-6 max-w-sm w-full">
         <h3 class="text-xl font-bold text-pink-500 mb-4">How to Vote</h3>
         <div class="space-y-3 text-sm">
@@ -115,6 +124,25 @@
         <button id="close-instructions" class="w-full mt-6 py-2 bg-pink-500 text-white rounded-lg font-medium">
           Got it!
         </button>
+      </div>
+    </div>
+
+    <!-- Name Entry Modal -->
+    <div id="name-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
+      <div class="bg-gray-800 rounded-lg p-6 max-w-sm w-full">
+        <h3 class="text-xl font-bold text-pink-500 mb-4">Enter Your Name</h3>
+        <p class="text-gray-300 text-sm mb-4">Please enter your name to submit your votes.</p>
+        <input id="name-input" type="text" placeholder="Your name" 
+               class="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 border border-gray-600 text-lg mb-3">
+        <div id="name-error" class="text-red-400 text-sm mb-4"></div>
+        <div class="flex space-x-3">
+          <button id="name-submit" class="flex-1 py-2 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition-colors">
+            Submit
+          </button>
+          <button onclick="hideNameModal()" class="flex-1 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors">
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
 

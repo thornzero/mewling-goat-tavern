@@ -1,4 +1,4 @@
-// script-mobile.js - Mobile-optimized version
+// script-mobile.js - Mobile-optimized version with new flow
 
 // === CONFIGURATION ===
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
@@ -11,6 +11,8 @@ let swiper;
 let seenStates = {};
 let currentMovieIndex = 0;
 let currentMovies = []; // Store current movies for layout updates
+let userVotes = {}; // Store user votes locally
+let appState = 'voting'; // 'voting' or 'summary'
 
 // DOM elements
 const elements = {
@@ -27,7 +29,14 @@ const elements = {
   votePass: null,
   instructionsModal: null,
   helpButton: null,
-  closeInstructions: null
+  closeInstructions: null,
+  summaryContainer: null,
+  progressBar: null,
+  submitButton: null,
+  nameModal: null,
+  nameInput: null,
+  nameSubmit: null,
+  nameError: null
 };
 
 // Initialize DOM elements
@@ -46,17 +55,50 @@ function initElements() {
   elements.instructionsModal = document.getElementById('instructions-modal');
   elements.helpButton = document.getElementById('help-button');
   elements.closeInstructions = document.getElementById('close-instructions');
+  elements.summaryContainer = document.getElementById('summary-container');
+  elements.progressBar = document.getElementById('progress-bar');
+  elements.submitButton = document.getElementById('submit-button');
+  elements.nameModal = document.getElementById('name-modal');
+  elements.nameInput = document.getElementById('name-input');
+  elements.nameSubmit = document.getElementById('name-submit');
+  elements.nameError = document.getElementById('name-error');
 }
 
 // Loading state management
 function showLoading() {
   elements.loading.classList.remove('hidden');
   elements.carouselContainer.classList.add('hidden');
+  if (elements.summaryContainer) {
+    elements.summaryContainer.classList.add('hidden');
+  }
 }
 
 function hideLoading() {
   elements.loading.classList.add('hidden');
-  elements.carouselContainer.classList.remove('hidden');
+  if (appState === 'voting') {
+    elements.carouselContainer.classList.remove('hidden');
+    if (elements.summaryContainer) {
+      elements.summaryContainer.classList.add('hidden');
+    }
+  } else {
+    elements.carouselContainer.classList.add('hidden');
+    if (elements.summaryContainer) {
+      elements.summaryContainer.classList.remove('hidden');
+    }
+  }
+}
+
+// Load saved votes from localStorage
+function loadSavedVotes() {
+  const saved = localStorage.getItem('movieVotes');
+  if (saved) {
+    userVotes = JSON.parse(saved);
+  }
+}
+
+// Save votes to localStorage
+function saveVotes() {
+  localStorage.setItem('movieVotes', JSON.stringify(userVotes));
 }
 
 // Update movie info bar
@@ -72,6 +114,12 @@ function updateMovieInfo(index) {
   
   // Update seen toggle state
   updateSeenToggle(index);
+  
+  // Update vote buttons state
+  updateVoteButtons(index);
+  
+  // Update progress
+  updateProgress();
 }
 
 // Update seen toggle
@@ -82,9 +130,175 @@ function updateSeenToggle(index) {
   elements.seenToggle.className = `w-full py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors ${isSeen ? 'bg-green-600' : 'bg-gray-700'}`;
 }
 
+// Update vote buttons to show current vote
+function updateVoteButtons(index) {
+  const vote = userVotes[index] || null;
+  
+  // Reset all buttons
+  elements.voteLove.className = 'py-4 px-2 bg-green-600 rounded-lg text-2xl font-bold transition-colors active:bg-green-700';
+  elements.voteMeh.className = 'py-4 px-2 bg-yellow-500 rounded-lg text-2xl font-bold transition-colors active:bg-yellow-600';
+  elements.votePass.className = 'py-4 px-2 bg-red-600 rounded-lg text-2xl font-bold transition-colors active:bg-red-700';
+  
+  // Highlight current vote
+  if (vote === '❤️') {
+    elements.voteLove.className = 'py-4 px-2 bg-green-700 rounded-lg text-2xl font-bold transition-colors border-2 border-white';
+  } else if (vote === '😐') {
+    elements.voteMeh.className = 'py-4 px-2 bg-yellow-600 rounded-lg text-2xl font-bold transition-colors border-2 border-white';
+  } else if (vote === '🗑️') {
+    elements.votePass.className = 'py-4 px-2 bg-red-700 rounded-lg text-2xl font-bold transition-colors border-2 border-white';
+  }
+}
+
+// Update progress bar
+function updateProgress() {
+  const votedCount = Object.keys(userVotes).length;
+  const totalCount = movieData.length;
+  const percentage = totalCount > 0 ? (votedCount / totalCount) * 100 : 0;
+  
+  if (elements.progressBar) {
+    elements.progressBar.style.width = `${percentage}%`;
+  }
+  
+  const progressText = document.getElementById('progress-text');
+  if (progressText) {
+    progressText.textContent = `${votedCount}/${totalCount}`;
+  }
+  
+  // Check if all movies are voted on
+  if (votedCount === totalCount && appState === 'voting' && totalCount > 0) {
+    showSummary();
+  }
+}
+
+// Show summary slide
+function showSummary() {
+  appState = 'summary';
+  hideLoading();
+  
+  const summaryContainer = document.getElementById('summary-container');
+  if (!summaryContainer) return;
+  
+  summaryContainer.innerHTML = `
+    <div class="p-4">
+      <h2 class="text-2xl font-bold text-pink-500 mb-4 text-center">Your Movie Votes</h2>
+      <div class="space-y-3 max-h-96 overflow-y-auto">
+        ${movieData.map((movie, index) => {
+          const vote = userVotes[index] || '❓';
+          const seen = seenStates[index] ? '✅' : '❌';
+          return `
+            <div class="bg-gray-700 p-3 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
+              <div class="flex items-center justify-between">
+                <div class="flex-1">
+                  <h3 class="font-semibold text-gray-200">${movie.title}</h3>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="text-lg">${vote}</span>
+                  <span class="text-sm">${seen}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="mt-6">
+        <button id="submit-all-btn" class="w-full py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition-colors">
+          Submit All Votes
+        </button>
+      </div>
+    </div>
+  `;
+  
+  // Add event listener for submit button
+  document.getElementById('submit-all-btn').addEventListener('click', showNameModal);
+}
+
+// Go back to specific movie
+function goToMovie(index) {
+  appState = 'voting';
+  hideLoading();
+  if (swiper) {
+    swiper.slideTo(index);
+  }
+}
+
+// Show name entry modal
+function showNameModal() {
+  elements.nameModal.classList.remove('hidden');
+  elements.nameInput.focus();
+  elements.nameError.textContent = '';
+}
+
+// Hide name entry modal
+function hideNameModal() {
+  elements.nameModal.classList.add('hidden');
+  elements.nameInput.value = '';
+}
+
+// Validate and submit votes
+function submitAllVotes() {
+  const userName = elements.nameInput.value.trim();
+  
+  if (userName.length < 2) {
+    elements.nameError.textContent = 'Please enter a name (at least 2 characters)';
+    return;
+  }
+  
+  // Show loading state
+  elements.nameSubmit.textContent = 'Submitting...';
+  elements.nameSubmit.disabled = true;
+  
+  // Submit all votes
+  const promises = movieData.map((movie, index) => {
+    const vote = userVotes[index];
+    const seen = seenStates[index] ? "✅" : "❌";
+    
+    return new Promise((resolve, reject) => {
+      const cb = `batchVoteCb_${index}_${Date.now()}`;
+      window[cb] = function (resp) {
+        if (resp && resp.rateLimitExceeded) {
+          reject(new Error('Rate limit exceeded'));
+        } else if (resp && resp.status === "ok") {
+          resolve();
+        } else {
+          reject(new Error('Submission failed'));
+        }
+        delete window[cb];
+      };
+      
+      const script = document.createElement('script');
+      script.src = `${proxyURL}`
+        + `?action=vote`
+        + `&movieTitle=${encodeURIComponent(movie.title)}`
+        + `&userName=${encodeURIComponent(userName)}`
+        + `&vote=${encodeURIComponent(vote)}`
+        + `&seen=${encodeURIComponent(seen)}`
+        + `&callback=${cb}`;
+      document.body.appendChild(script);
+    });
+  });
+  
+  Promise.all(promises)
+    .then(() => {
+      hideNameModal();
+      showSuccess('All votes submitted successfully!');
+      // Clear local storage
+      localStorage.removeItem('movieVotes');
+      userVotes = {};
+    })
+    .catch((error) => {
+      elements.nameSubmit.textContent = 'Submit';
+      elements.nameSubmit.disabled = false;
+      if (error.message === 'Rate limit exceeded') {
+        showRateLimitError();
+      } else {
+        showError('Error submitting votes. Please try again.');
+      }
+    });
+}
+
 // Handle orientation change
 function handleOrientationChange() {
-  if (currentMovies.length > 0) {
+  if (currentMovies.length > 0 && appState === 'voting') {
     const currentIndex = swiper ? swiper.activeIndex : 0;
     createSlides(currentMovies);
     if (swiper) {
@@ -102,15 +316,15 @@ function setupEventHandlers() {
   
   // Vote buttons
   elements.voteLove.addEventListener('click', () => {
-    submitVote(movieData[currentMovieIndex].title, '❤️');
+    recordVote(currentMovieIndex, '❤️');
   });
   
   elements.voteMeh.addEventListener('click', () => {
-    submitVote(movieData[currentMovieIndex].title, '😐');
+    recordVote(currentMovieIndex, '😐');
   });
   
   elements.votePass.addEventListener('click', () => {
-    submitVote(movieData[currentMovieIndex].title, '🗑️');
+    recordVote(currentMovieIndex, '🗑️');
   });
   
   // Help modal
@@ -129,14 +343,46 @@ function setupEventHandlers() {
     }
   });
   
+  // Name modal events
+  elements.nameSubmit.addEventListener('click', submitAllVotes);
+  elements.nameInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      submitAllVotes();
+    }
+  });
+  
+  // Close name modal on background click
+  elements.nameModal.addEventListener('click', (e) => {
+    if (e.target === elements.nameModal) {
+      hideNameModal();
+    }
+  });
+  
   // Handle orientation change
   window.addEventListener('resize', handleOrientationChange);
   window.addEventListener('orientationchange', handleOrientationChange);
 }
 
+// Record a vote
+function recordVote(index, vote) {
+  userVotes[index] = vote;
+  saveVotes();
+  updateVoteButtons(index);
+  updateProgress();
+  
+  // Auto-advance to next movie if not the last one
+  if (index < movieData.length - 1 && swiper) {
+    setTimeout(() => {
+      swiper.slideNext();
+    }, 500);
+  }
+}
+
 // Step 1: Fetch movie titles list from Google Sheet
 function fetchMovieTitles() {
   showLoading();
+  loadSavedVotes(); // Load any existing votes
+  
   const cb = 'movieListCallback';
   window[cb] = function (resp) {
     if (Array.isArray(resp)) {
@@ -252,6 +498,7 @@ function handleDone() {
   if (--remaining === 0) {
     createSlides(movieData);
     hideLoading();
+    updateProgress();
   }
 }
 
@@ -390,40 +637,6 @@ function openVideo(key) {
 function toggleSeen(idx) {
   seenStates[idx] = !seenStates[idx];
   updateSeenToggle(idx);
-}
-
-// Submit a vote via JSONP
-function submitVote(movieTitle, vote) {
-  const userName = document.getElementById("username").value.trim();
-  if (!userName) { 
-    showError("Please enter your name before voting.");
-    return; 
-  }
-  
-  const idx = movieData.findIndex(m => m.title === movieTitle);
-  const seen = seenStates[idx] ? "✅" : "❌";
-  
-  const cb = `voteCb_${idx}_${Date.now()}`;
-  window[cb] = function (resp) {
-    if (resp && resp.rateLimitExceeded) {
-      showRateLimitError();
-    } else if (resp && resp.status === "ok") {
-      showSuccess(`Vote submitted!`);
-    } else {
-      showError("Error submitting vote. Please try again.");
-    }
-    delete window[cb];
-  };
-  
-  const script = document.createElement('script');
-  script.src = `${proxyURL}`
-    + `?action=vote`
-    + `&movieTitle=${encodeURIComponent(movieTitle)}`
-    + `&userName=${encodeURIComponent(userName)}`
-    + `&vote=${encodeURIComponent(vote)}`
-    + `&seen=${encodeURIComponent(seen)}`
-    + `&callback=${cb}`;
-  document.body.appendChild(script);
 }
 
 // Initialize everything

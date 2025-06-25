@@ -1,4 +1,4 @@
-// script.js
+// script.js - Desktop version with new flow
 
 // === CONFIGURATION ===
 // Replace with your Google Apps Script Web App URL
@@ -10,23 +10,214 @@ let movieData = [];
 let remaining = 0;
 let swiper;
 let seenStates = {}; // Track seen states for each movie
+let userVotes = {}; // Store user votes locally
+let appState = 'voting'; // 'voting' or 'summary'
 
 // Loading state management
 function showLoading() {
   document.getElementById('loading').classList.remove('hidden');
   document.getElementById('carousel-container').classList.add('hidden');
+  const summaryContainer = document.getElementById('summary-container');
+  if (summaryContainer) {
+    summaryContainer.classList.add('hidden');
+  }
 }
 
 function hideLoading() {
   document.getElementById('loading').classList.add('hidden');
-  document.getElementById('carousel-container').classList.remove('hidden');
+  if (appState === 'voting') {
+    document.getElementById('carousel-container').classList.remove('hidden');
+    const summaryContainer = document.getElementById('summary-container');
+    if (summaryContainer) {
+      summaryContainer.classList.add('hidden');
+    }
+  } else {
+    document.getElementById('carousel-container').classList.add('hidden');
+    const summaryContainer = document.getElementById('summary-container');
+    if (summaryContainer) {
+      summaryContainer.classList.remove('hidden');
+    }
+  }
+}
+
+// Load saved votes from localStorage
+function loadSavedVotes() {
+  const saved = localStorage.getItem('movieVotes');
+  if (saved) {
+    userVotes = JSON.parse(saved);
+  }
+}
+
+// Save votes to localStorage
+function saveVotes() {
+  localStorage.setItem('movieVotes', JSON.stringify(userVotes));
+}
+
+// Update progress bar
+function updateProgress() {
+  const votedCount = Object.keys(userVotes).length;
+  const totalCount = movieData.length;
+  const percentage = totalCount > 0 ? (votedCount / totalCount) * 100 : 0;
+  
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar) {
+    progressBar.style.width = `${percentage}%`;
+  }
+  
+  const progressText = document.getElementById('progress-text');
+  if (progressText) {
+    progressText.textContent = `${votedCount}/${totalCount}`;
+  }
+  
+  // Check if all movies are voted on
+  if (votedCount === totalCount && appState === 'voting' && totalCount > 0) {
+    showSummary();
+  }
+}
+
+// Show summary slide
+function showSummary() {
+  appState = 'summary';
+  hideLoading();
+  
+  const summaryContainer = document.getElementById('summary-container');
+  if (!summaryContainer) return;
+  
+  summaryContainer.innerHTML = `
+    <div class="p-6">
+      <h2 class="text-3xl font-bold text-pink-500 mb-6 text-center">Your Movie Votes</h2>
+      <div class="grid gap-4 max-h-96 overflow-y-auto">
+        ${movieData.map((movie, index) => {
+          const vote = userVotes[index] || '❓';
+          const seen = seenStates[index] ? '✅' : '❌';
+          return `
+            <div class="bg-gray-700 p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
+              <div class="flex items-center justify-between">
+                <div class="flex-1">
+                  <h3 class="text-lg font-semibold text-gray-200">${movie.title}</h3>
+                  <p class="text-sm text-gray-400">${movie.genres.slice(0, 3).join(', ')}</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span class="text-2xl">${vote}</span>
+                  <span class="text-lg">${seen}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="mt-8 text-center">
+        <button id="submit-all-btn" class="px-8 py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition-colors">
+          Submit All Votes
+        </button>
+      </div>
+    </div>
+  `;
+  
+  // Add event listener for submit button
+  document.getElementById('submit-all-btn').addEventListener('click', showNameModal);
+}
+
+// Go back to specific movie
+function goToMovie(index) {
+  appState = 'voting';
+  hideLoading();
+  if (swiper) {
+    swiper.slideTo(index);
+  }
+}
+
+// Show name entry modal
+function showNameModal() {
+  const nameModal = document.getElementById('name-modal');
+  const nameInput = document.getElementById('name-input');
+  const nameError = document.getElementById('name-error');
+  
+  nameModal.classList.remove('hidden');
+  nameInput.focus();
+  nameError.textContent = '';
+}
+
+// Hide name entry modal
+function hideNameModal() {
+  const nameModal = document.getElementById('name-modal');
+  const nameInput = document.getElementById('name-input');
+  
+  nameModal.classList.add('hidden');
+  nameInput.value = '';
+}
+
+// Validate and submit votes
+function submitAllVotes() {
+  const nameInput = document.getElementById('name-input');
+  const nameSubmit = document.getElementById('name-submit');
+  const nameError = document.getElementById('name-error');
+  
+  const userName = nameInput.value.trim();
+  
+  if (userName.length < 2) {
+    nameError.textContent = 'Please enter a name (at least 2 characters)';
+    return;
+  }
+  
+  // Show loading state
+  nameSubmit.textContent = 'Submitting...';
+  nameSubmit.disabled = true;
+  
+  // Submit all votes
+  const promises = movieData.map((movie, index) => {
+    const vote = userVotes[index];
+    const seen = seenStates[index] ? "✅" : "❌";
+    
+    return new Promise((resolve, reject) => {
+      const cb = `batchVoteCb_${index}_${Date.now()}`;
+      window[cb] = function (resp) {
+        if (resp && resp.rateLimitExceeded) {
+          reject(new Error('Rate limit exceeded'));
+        } else if (resp && resp.status === "ok") {
+          resolve();
+        } else {
+          reject(new Error('Submission failed'));
+        }
+        delete window[cb];
+      };
+      
+      const script = document.createElement('script');
+      script.src = `${proxyURL}`
+        + `?action=vote`
+        + `&movieTitle=${encodeURIComponent(movie.title)}`
+        + `&userName=${encodeURIComponent(userName)}`
+        + `&vote=${encodeURIComponent(vote)}`
+        + `&seen=${encodeURIComponent(seen)}`
+        + `&callback=${cb}`;
+      document.body.appendChild(script);
+    });
+  });
+  
+  Promise.all(promises)
+    .then(() => {
+      hideNameModal();
+      showSuccess('All votes submitted successfully!');
+      // Clear local storage
+      localStorage.removeItem('movieVotes');
+      userVotes = {};
+    })
+    .catch((error) => {
+      nameSubmit.textContent = 'Submit';
+      nameSubmit.disabled = false;
+      if (error.message === 'Rate limit exceeded') {
+        showRateLimitError();
+      } else {
+        showError('Error submitting votes. Please try again.');
+      }
+    });
 }
 
 // Keyboard shortcuts
 function setupKeyboardShortcuts() {
   document.addEventListener('keydown', function(e) {
-    // Only handle shortcuts when carousel is visible
-    if (document.getElementById('carousel-container').classList.contains('hidden')) {
+    // Only handle shortcuts when carousel is visible and in voting mode
+    if (document.getElementById('carousel-container').classList.contains('hidden') || appState !== 'voting') {
       return;
     }
     
@@ -38,15 +229,15 @@ function setupKeyboardShortcuts() {
     switch(e.key) {
       case '1':
         e.preventDefault();
-        submitVote(currentMovie.title, '❤️');
+        recordVote(currentIndex, '❤️');
         break;
       case '2':
         e.preventDefault();
-        submitVote(currentMovie.title, '😐');
+        recordVote(currentIndex, '😐');
         break;
       case '3':
         e.preventDefault();
-        submitVote(currentMovie.title, '🗑️');
+        recordVote(currentIndex, '🗑️');
         break;
       case 's':
       case 'S':
@@ -57,9 +248,25 @@ function setupKeyboardShortcuts() {
   });
 }
 
+// Record a vote
+function recordVote(index, vote) {
+  userVotes[index] = vote;
+  saveVotes();
+  updateProgress();
+  
+  // Auto-advance to next movie if not the last one
+  if (index < movieData.length - 1 && swiper) {
+    setTimeout(() => {
+      swiper.slideNext();
+    }, 500);
+  }
+}
+
 // Step 1: Fetch movie titles list from Google Sheet
 function fetchMovieTitles() {
   showLoading();
+  loadSavedVotes(); // Load any existing votes
+  
   const cb = 'movieListCallback';
   window[cb] = function (resp) {
     if (Array.isArray(resp)) {
@@ -138,7 +345,6 @@ function fetchDetails(id, idx) {
       videos: []
     };
     movieData[idx] = entry;
-    // cache it 
     localStorage.setItem(storageKey, JSON.stringify(entry));
     delete window[detailCb];
     fetchVideos(id, idx);
@@ -176,6 +382,7 @@ function handleDone() {
   if (--remaining === 0) {
     createSlides(movieData);
     hideLoading();
+    updateProgress();
   }
 }
 
@@ -218,6 +425,26 @@ function showError(message) {
   }, 5000);
 }
 
+// Success message function
+function showSuccess(message) {
+  const successDiv = document.createElement('div');
+  successDiv.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+  successDiv.innerHTML = `
+    <div class="flex items-center space-x-2">
+      <span>✅</span>
+      <span>${message}</span>
+    </div>
+  `;
+  document.body.appendChild(successDiv);
+  
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    if (successDiv.parentNode) {
+      successDiv.parentNode.removeChild(successDiv);
+    }
+  }, 3000);
+}
+
 // Render carousel slides with poster & teaser floated
 function createSlides(movies) {
   const container = document.getElementById("movie-carousel");
@@ -248,9 +475,9 @@ function createSlides(movies) {
             <span class="font-medium">Seen it? (S)</span>
           </button>
           <div class="flex gap-2">
-            <button onclick="submitVote('${m.title}', '❤️')" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700 transition" title="Love it (1)">❤️</button>
-            <button onclick="submitVote('${m.title}', '😐')" class="px-3 py-1 bg-yellow-500 rounded hover:bg-yellow-600 transition" title="Meh (2)">😐</button>
-            <button onclick="submitVote('${m.title}', '🗑️')" class="px-3 py-1 bg-red-600 rounded hover:bg-red-700 transition" title="Pass (3)">🗑️</button>
+            <button onclick="recordVote(${i}, '❤️')" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700 transition" title="Love it (1)">❤️</button>
+            <button onclick="recordVote(${i}, '😐')" class="px-3 py-1 bg-yellow-500 rounded hover:bg-yellow-600 transition" title="Meh (2)">😐</button>
+            <button onclick="recordVote(${i}, '🗑️')" class="px-3 py-1 bg-red-600 rounded hover:bg-red-700 transition" title="Pass (3)">🗑️</button>
           </div>
         </div>
       </div>
@@ -306,60 +533,6 @@ function toggleSeen(idx) {
       emoji.textContent = seenStates[idx] ? '✅' : '❌';
     }
   }
-}
-
-// Submit a vote via JSONP
-function submitVote(movieTitle, vote) {
-  const userName = document.getElementById("username").value.trim();
-  if (!userName) { 
-    showError("Please enter your name before voting.");
-    return; 
-  }
-  
-  const idx = movieData.findIndex(m => m.title === movieTitle);
-  const seen = seenStates[idx] ? "✅" : "❌";
-  
-  const cb = `voteCb_${idx}_${Date.now()}`;
-  window[cb] = function (resp) {
-    if (resp && resp.rateLimitExceeded) {
-      showRateLimitError();
-    } else if (resp && resp.status === "ok") {
-      showSuccess(`Vote for "${movieTitle}" submitted successfully!`);
-    } else {
-      showError("Error submitting vote. Please try again.");
-    }
-    delete window[cb];
-  };
-  
-  const script = document.createElement('script');
-  script.src = `${proxyURL}`
-    + `?action=vote`
-    + `&movieTitle=${encodeURIComponent(movieTitle)}`
-    + `&userName=${encodeURIComponent(userName)}`
-    + `&vote=${encodeURIComponent(vote)}`
-    + `&seen=${encodeURIComponent(seen)}`
-    + `&callback=${cb}`;
-  document.body.appendChild(script);
-}
-
-// Success message function
-function showSuccess(message) {
-  const successDiv = document.createElement('div');
-  successDiv.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-  successDiv.innerHTML = `
-    <div class="flex items-center space-x-2">
-      <span>✅</span>
-      <span>${message}</span>
-    </div>
-  `;
-  document.body.appendChild(successDiv);
-  
-  // Auto-remove after 3 seconds
-  setTimeout(() => {
-    if (successDiv.parentNode) {
-      successDiv.parentNode.removeChild(successDiv);
-    }
-  }, 3000);
 }
 
 // Initialize everything
