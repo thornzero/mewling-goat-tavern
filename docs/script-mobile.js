@@ -326,14 +326,24 @@ function submitAllVotes() {
   nameSubmit.textContent = 'Submitting...';
   nameSubmit.disabled = true;
   
-  // Submit all votes
-  const promises = movieData.map((movie, index) => {
-    const voteData = userVotes[index];
-    const voteEmoji = voteData ? voteData.emoji : '❓';
-    const seen = seenStates[index] ? "✅" : "❌";
+  // Filter to only movies that have actual votes
+  const moviesWithVotes = movieData.filter((movie, index) => userVotes[index]);
+  
+  if (moviesWithVotes.length === 0) {
+    nameError.textContent = 'No votes to submit. Please vote on at least one movie.';
+    nameSubmit.textContent = 'Submit';
+    nameSubmit.disabled = false;
+    return;
+  }
+  
+  // Submit only movies with actual votes
+  const promises = moviesWithVotes.map((movie, originalIndex) => {
+    const voteData = userVotes[originalIndex];
+    const voteEmoji = voteData.emoji;
+    const seen = seenStates[originalIndex] ? "✅" : "❌";
     
     return new Promise((resolve, reject) => {
-      const cb = `batchVoteCb_${index}_${Date.now()}`;
+      const cb = `batchVoteCb_${originalIndex}_${Date.now()}`;
       window[cb] = function (resp) {
         if (resp && resp.rateLimitExceeded) {
           reject(new Error('Rate limit exceeded'));
@@ -359,11 +369,16 @@ function submitAllVotes() {
   
   Promise.all(promises)
     .then(() => {
-      hideNameModal();
+      // Show success message first, then hide modal after a delay
       showSuccess('All votes submitted successfully!');
-      // Clear local storage
-      localStorage.removeItem('movieVotes');
-      userVotes = {};
+      setTimeout(() => {
+        hideNameModal();
+        // Clear local storage
+        localStorage.removeItem('movieVotes');
+        userVotes = {};
+        // Reset progress
+        updateProgress();
+      }, 2000); // Show success message for 2 seconds
     })
     .catch((error) => {
       const nameSubmit = document.getElementById('name-submit');
