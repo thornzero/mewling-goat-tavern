@@ -326,24 +326,32 @@ function submitAllVotes() {
   nameSubmit.textContent = 'Submitting...';
   nameSubmit.disabled = true;
   
-  // Filter to only movies that have actual votes
-  const moviesWithVotes = movieData.filter((movie, index) => userVotes[index]);
+  // Get all movies that have votes
+  const votesToSubmit = [];
+  movieData.forEach((movie, index) => {
+    if (userVotes[index]) {
+      votesToSubmit.push({
+        movie: movie,
+        voteData: userVotes[index],
+        seen: seenStates[index] ? "✅" : "❌",
+        originalIndex: index
+      });
+    }
+  });
   
-  if (moviesWithVotes.length === 0) {
+  if (votesToSubmit.length === 0) {
     nameError.textContent = 'No votes to submit. Please vote on at least one movie.';
     nameSubmit.textContent = 'Submit';
     nameSubmit.disabled = false;
     return;
   }
   
-  // Submit only movies with actual votes
-  const promises = moviesWithVotes.map((movie, originalIndex) => {
-    const voteData = userVotes[originalIndex];
-    const voteEmoji = voteData.emoji;
-    const seen = seenStates[originalIndex] ? "✅" : "❌";
-    
+  console.log(`Submitting ${votesToSubmit.length} votes:`, votesToSubmit.map(v => `${v.movie.title}: ${v.voteData.emoji}`));
+  
+  // Submit votes
+  const promises = votesToSubmit.map((voteInfo) => {
     return new Promise((resolve, reject) => {
-      const cb = `batchVoteCb_${originalIndex}_${Date.now()}`;
+      const cb = `batchVoteCb_${voteInfo.originalIndex}_${Date.now()}`;
       window[cb] = function (resp) {
         if (resp && resp.rateLimitExceeded) {
           reject(new Error('Rate limit exceeded'));
@@ -358,10 +366,10 @@ function submitAllVotes() {
       const script = document.createElement('script');
       script.src = `${proxyURL}`
         + `?action=vote`
-        + `&movieTitle=${encodeURIComponent(movie.title)}`
+        + `&movieTitle=${encodeURIComponent(voteInfo.movie.title)}`
         + `&userName=${encodeURIComponent(userName)}`
-        + `&vote=${encodeURIComponent(voteEmoji)}`
-        + `&seen=${encodeURIComponent(seen)}`
+        + `&vote=${encodeURIComponent(voteInfo.voteData.emoji)}`
+        + `&seen=${encodeURIComponent(voteInfo.seen)}`
         + `&callback=${cb}`;
       document.body.appendChild(script);
     });
@@ -370,7 +378,11 @@ function submitAllVotes() {
   Promise.all(promises)
     .then(() => {
       // Show success message first, then hide modal after a delay
-      showSuccess('All votes submitted successfully!');
+      showSuccess(`Successfully submitted ${votesToSubmit.length} votes!`);
+      
+      // Update summary page to show submission status
+      updateSummaryAfterSubmission();
+      
       setTimeout(() => {
         hideNameModal();
         // Clear local storage
@@ -378,7 +390,7 @@ function submitAllVotes() {
         userVotes = {};
         // Reset progress
         updateProgress();
-      }, 2000); // Show success message for 2 seconds
+      }, 3000); // Show success message for 3 seconds
     })
     .catch((error) => {
       const nameSubmit = document.getElementById('name-submit');
@@ -392,6 +404,19 @@ function submitAllVotes() {
         showError('Error submitting votes. Please try again.');
       }
     });
+}
+
+// Update summary page to show submission status
+function updateSummaryAfterSubmission() {
+  const summaryContainer = document.getElementById('summary-container');
+  if (summaryContainer && appState === 'summary') {
+    const submitButton = document.getElementById('submit-all-btn');
+    if (submitButton) {
+      submitButton.textContent = '✅ Votes Submitted!';
+      submitButton.className = 'px-6 py-3 bg-green-600 text-white rounded-lg font-bold text-lg transition-colors cursor-default';
+      submitButton.disabled = true;
+    }
+  }
 }
 
 // Handle orientation change

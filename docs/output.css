@@ -434,6 +434,9 @@
   .animate-spin {
     animation: var(--animate-spin);
   }
+  .cursor-default {
+    cursor: default;
+  }
   .cursor-pointer {
     cursor: pointer;
   }
