@@ -259,26 +259,26 @@ function showSummary() {
   if (!summaryContainer) return;
   
   summaryContainer.innerHTML = `
-    <div class="p-4 md:p-6 min-h-screen flex flex-col">
-      <h2 class="text-2xl md:text-3xl font-bold text-pink-500 mb-4 md:mb-6 text-center">Your Movie Votes</h2>
-      <div class="flex-1 overflow-y-auto">
-        <div class="space-y-3 md:space-y-4 max-h-[calc(100vh-180px)]">
+    <div class="p-2 md:p-4 lg:p-6 h-full flex flex-col min-h-0">
+      <h2 class="text-lg md:text-2xl lg:text-3xl font-bold text-pink-500 mb-2 md:mb-4 lg:mb-6 text-center flex-shrink-0">Your Movie Votes</h2>
+      <div class="flex-1 overflow-y-auto min-h-0">
+        <div class="space-y-2 md:space-y-3 lg:space-y-4">
           ${movieData.map((movie, index) => {
             const voteData = userVotes[index];
             const voteEmoji = voteData ? voteData.emoji : '❓';
             const voteLabel = voteData ? voteData.label : 'No vote';
             const seen = seenStates[index] ? '✅' : '❌';
             return `
-              <div class="bg-gray-700 p-3 md:p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
+              <div class="bg-gray-700 p-2 md:p-3 lg:p-4 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors" onclick="goToMovie(${index})">
                 <div class="flex items-center justify-between">
-                  <div class="flex-1">
-                    <h3 class="font-semibold text-gray-200 text-sm md:text-lg">${movie.title}</h3>
-                    <p class="text-xs md:text-sm text-gray-400">${movie.genres.slice(0, 3).join(', ')}</p>
+                  <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-gray-200 text-xs md:text-sm lg:text-lg truncate">${movie.title}</h3>
+                    <p class="text-xs md:text-sm text-gray-400 truncate">${movie.genres.slice(0, 3).join(', ')}</p>
                     <p class="text-xs text-gray-500">${voteLabel}</p>
                   </div>
-                  <div class="flex items-center space-x-2 md:space-x-3">
-                    <span class="text-lg md:text-2xl">${voteEmoji}</span>
-                    <span class="text-sm md:text-lg">${seen}</span>
+                  <div class="flex items-center space-x-1 md:space-x-2 lg:space-x-3 flex-shrink-0">
+                    <span class="text-sm md:text-lg lg:text-2xl">${voteEmoji}</span>
+                    <span class="text-xs md:text-sm lg:text-lg">${seen}</span>
                   </div>
                 </div>
               </div>
@@ -286,12 +286,12 @@ function showSummary() {
           }).join('')}
         </div>
       </div>
-      <div class="mt-6 text-center space-y-4">
-        <button id="submit-all-btn" class="px-6 md:px-8 py-3 bg-pink-500 text-white rounded-lg font-bold text-lg hover:bg-pink-600 transition-colors">
+      <div class="mt-4 md:mt-6 text-center space-y-2 md:space-y-4 flex-shrink-0">
+        <button id="submit-all-btn" class="px-4 md:px-6 lg:px-8 py-2 md:py-3 bg-pink-500 text-white rounded-lg font-bold text-sm md:text-lg hover:bg-pink-600 transition-colors">
           Submit All Votes
         </button>
         <div>
-          <button onclick="resetAllData()" class="px-6 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors">
+          <button onclick="resetAllData()" class="px-4 md:px-6 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors text-xs md:text-sm">
             🔄 Reset All & Start Over
           </button>
         </div>
@@ -753,7 +753,7 @@ function createSlides(movies) {
     console.log(`Movie ${i}: ${m.title} - First video key:`, m.videos && m.videos.length > 0 ? m.videos[0].key : 'none');
     
     const slide = document.createElement("div");
-    slide.className = "swiper-slide bg-gray-700 p-3 md:p-4 flex flex-col";
+    slide.className = "swiper-slide bg-gray-700 p-2 md:p-3 lg:p-4 flex flex-col h-full";
     
     // Check if we're in landscape mode
     const isLandscape = window.innerWidth > window.innerHeight;
@@ -761,32 +761,34 @@ function createSlides(movies) {
     if (isLandscape) {
       // Landscape layout: poster on left, content on right - scales proportionally
       slide.innerHTML = `
-        <div class="flex-1 flex flex-row gap-4 md:gap-6">
+        <div class="flex-1 flex flex-row gap-2 md:gap-4 lg:gap-6 h-full min-h-0">
           <!-- Poster on the left - scales with screen size -->
-          <div class="w-2/5 flex-shrink-0">
-            <div class="relative">
-              <img class="w-full aspect-[2/3] object-cover rounded-lg shadow-lg" src="${m.poster}" alt="${m.title}">
+          <div class="w-2/5 flex-shrink-0 flex flex-col">
+            <div class="relative flex-1">
+              <img class="w-full h-full object-cover rounded-lg shadow-lg" src="${m.poster}" alt="${m.title}">
               <!-- Trailer button chip over top left corner -->
               ${m.videos && m.videos.length > 0 ? `
                 <button onclick="openVideo('${m.videos[0].key}')" 
-                        class="absolute top-2 left-2 bg-black bg-opacity-80 hover:bg-opacity-95 text-white rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 transition-all duration-200 transform hover:scale-105 z-10 text-xs md:text-sm font-medium"
+                        class="absolute top-1 md:top-2 left-1 md:left-2 bg-black bg-opacity-90 hover:bg-opacity-100 text-white rounded-full px-2 md:px-3 lg:px-4 py-1 md:py-1.5 lg:py-2 flex items-center space-x-1 md:space-x-2 transition-all duration-200 transform hover:scale-105 z-20 text-xs md:text-sm font-medium shadow-lg border border-white border-opacity-20 min-w-[60px] md:min-w-[70px] lg:min-w-[80px]"
                         title="Watch Trailer">
-                  <span class="text-sm md:text-base">▶</span>
-                  <span>Trailer</span>
+                  <span class="text-xs md:text-sm lg:text-base">▶</span>
+                  <span class="whitespace-nowrap">Trailer</span>
                 </button>
               ` : ''}
             </div>
           </div>
           
           <!-- Content on the right - scales with screen size -->
-          <div class="flex-1 flex flex-col justify-between">
-            <div>
-              <h3 class="text-lg md:text-2xl font-bold text-pink-500 mb-2 md:mb-3">${m.title}</h3>
-              <div class="flex flex-wrap gap-1 md:gap-2 mb-2 md:mb-4">
-                ${m.genres.slice(0, 4).map(t => `<span class="px-2 md:px-3 py-1 bg-gray-600 rounded-full text-xs md:text-sm">${t}</span>`).join('')}
+          <div class="flex-1 flex flex-col justify-between min-h-0">
+            <div class="flex-1 flex flex-col min-h-0">
+              <h3 class="text-sm md:text-lg lg:text-2xl font-bold text-pink-500 mb-1 md:mb-2 lg:mb-3 flex-shrink-0">${m.title}</h3>
+              <div class="flex flex-wrap gap-1 md:gap-2 mb-1 md:mb-2 lg:mb-4 flex-shrink-0">
+                ${m.genres.slice(0, 4).map(t => `<span class="px-1.5 md:px-2 lg:px-3 py-0.5 md:py-1 bg-gray-600 rounded-full text-xs md:text-sm">${t}</span>`).join('')}
               </div>
-              <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-2 md:mb-4">${m.synopsis}</p>
-              <p class="text-gray-400 text-sm md:text-lg font-medium mb-2 md:mb-4">${m.runtime}</p>
+              <div class="flex-1 min-h-0 overflow-hidden">
+                <p class="text-gray-300 text-xs md:text-sm lg:text-base leading-relaxed line-clamp-4 md:line-clamp-6 lg:line-clamp-8">${m.synopsis}</p>
+              </div>
+              <p class="text-gray-400 text-xs md:text-sm lg:text-lg font-medium mt-1 md:mt-2 lg:mt-4 flex-shrink-0">${m.runtime}</p>
             </div>
           </div>
         </div>
@@ -794,26 +796,28 @@ function createSlides(movies) {
     } else {
       // Portrait layout: stacked - scales proportionally
       slide.innerHTML = `
-        <div class="flex-1 flex flex-col">
-          <div class="relative mb-3 md:mb-4">
+        <div class="flex-1 flex flex-col h-full min-h-0">
+          <div class="relative mb-2 md:mb-3 lg:mb-4 flex-shrink-0">
             <img class="w-full aspect-[2/3] object-cover rounded-lg" src="${m.poster}" alt="${m.title}">
             <!-- Trailer button chip over top left corner -->
             ${m.videos && m.videos.length > 0 ? `
               <button onclick="openVideo('${m.videos[0].key}')" 
-                      class="absolute top-2 left-2 bg-black bg-opacity-90 hover:bg-opacity-100 text-white rounded-full px-3 py-1.5 md:px-4 md:py-2 flex items-center space-x-1 md:space-x-2 transition-all duration-200 transform hover:scale-105 z-20 text-xs md:text-sm font-medium shadow-lg border border-white border-opacity-20 min-w-[70px] md:min-w-[80px]"
+                      class="absolute top-1 md:top-2 left-1 md:left-2 bg-black bg-opacity-90 hover:bg-opacity-100 text-white rounded-full px-2 md:px-3 py-1 md:py-1.5 flex items-center space-x-1 md:space-x-2 transition-all duration-200 transform hover:scale-105 z-20 text-xs md:text-sm font-medium shadow-lg border border-white border-opacity-20 min-w-[60px] md:min-w-[70px]"
                       title="Watch Trailer">
-                <span class="text-sm md:text-base">▶</span>
+                <span class="text-xs md:text-sm">▶</span>
                 <span class="whitespace-nowrap">Trailer</span>
               </button>
             ` : ''}
           </div>
-          <div class="flex-1">
-            <h3 class="text-base md:text-lg font-semibold text-pink-500 mb-1 md:mb-2">${m.title}</h3>
-            <div class="flex flex-wrap gap-1 mb-1 md:mb-2">
-              ${m.genres.slice(0, 3).map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-xs">${t}</span>`).join('')}
+          <div class="flex-1 flex flex-col min-h-0">
+            <h3 class="text-sm md:text-base lg:text-lg font-semibold text-pink-500 mb-1 md:mb-2 flex-shrink-0">${m.title}</h3>
+            <div class="flex flex-wrap gap-1 mb-1 md:mb-2 flex-shrink-0">
+              ${m.genres.slice(0, 3).map(t => `<span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-gray-600 rounded-full text-xs">${t}</span>`).join('')}
             </div>
-            <p class="text-gray-300 text-xs md:text-sm mb-1 md:mb-2 line-clamp-3">${m.synopsis}</p>
-            <p class="text-gray-400 text-xs md:text-sm">${m.runtime}</p>
+            <div class="flex-1 min-h-0 overflow-hidden">
+              <p class="text-gray-300 text-xs md:text-sm line-clamp-3 md:line-clamp-4 lg:line-clamp-5">${m.synopsis}</p>
+            </div>
+            <p class="text-gray-400 text-xs md:text-sm mt-1 md:mt-2 flex-shrink-0">${m.runtime}</p>
           </div>
         </div>
       `;

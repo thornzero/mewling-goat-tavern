@@ -45,6 +45,25 @@
   background: #9ca3af;
 }
 
+/* Improved responsive scaling */
+@media (max-width: 640px) {
+  /* Extra small screens */
+  .swiper-slide {
+    padding: 0.5rem !important;
+  }
+  
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    font-size: 16px !important;
+  }
+}
+
 /* Mobile-specific improvements */
 @media (max-width: 768px) {
   /* Larger touch targets */
@@ -114,11 +133,61 @@
   }
 }
 
+/* Large screen improvements */
+@media (min-width: 1024px) {
+  .swiper-slide {
+    padding: 1.5rem !important;
+  }
+  
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 56px !important;
+    height: 56px !important;
+  }
+  
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    font-size: 24px !important;
+  }
+}
+
 /* Line clamp utility for text truncation */
 .line-clamp-3 {
   display: -webkit-box;
   line-clamp: 3;
   -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-4 {
+  display: -webkit-box;
+  line-clamp: 4;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-5 {
+  display: -webkit-box;
+  line-clamp: 5;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-6 {
+  display: -webkit-box;
+  line-clamp: 6;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-8 {
+  display: -webkit-box;
+  line-clamp: 8;
+  -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -169,4 +238,38 @@
 
 .active\:bg-red-700:active {
   background-color: #b91c1c;
+}
+
+/* Ensure proper flex behavior */
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.min-h-0 {
+  min-height: 0;
+}
+
+/* Better text truncation */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Ensure proper height constraints */
+.h-full {
+  height: 100%;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+/* Prevent overflow issues */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }

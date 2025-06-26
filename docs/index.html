@@ -9,71 +9,71 @@
   <!-- Swiper styles -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans">
-  <div class="relative min-h-screen flex flex-col">
+<body class="bg-gray-900 text-gray-100 font-sans h-screen overflow-hidden">
+  <div class="relative h-full flex flex-col">
     <!-- Header with integrated progress -->
-    <header class="bg-gray-800 p-4 shadow-lg">
-      <h1 class="text-2xl md:text-3xl font-bold text-pink-500 text-center mb-2">Mewling Goat Movie Poll</h1>
+    <header class="bg-gray-800 p-2 md:p-4 shadow-lg flex-shrink-0">
+      <h1 class="text-lg md:text-2xl lg:text-3xl font-bold text-pink-500 text-center mb-1 md:mb-2">Mewling Goat Movie Poll</h1>
       <!-- Progress bar -->
-      <div class="flex items-center justify-between text-sm text-gray-400 mb-1">
+      <div class="flex items-center justify-between text-xs md:text-sm text-gray-400 mb-1">
         <span>Progress</span>
         <div class="flex items-center space-x-2">
           <span id="progress-text">0/0</span>
-          <button onclick="resetAllData()" class="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
+          <button onclick="resetAllData()" class="px-2 md:px-3 py-1 bg-red-600 text-white rounded text-xs font-medium hover:bg-red-700 transition-colors">
             🔄 Reset
           </button>
         </div>
       </div>
-      <div class="w-full bg-gray-700 rounded-full h-2">
-        <div id="progress-bar" class="bg-pink-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+      <div class="w-full bg-gray-700 rounded-full h-1.5 md:h-2">
+        <div id="progress-bar" class="bg-pink-500 h-1.5 md:h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
       </div>
     </header>
 
     <!-- Loading State -->
     <div id="loading" class="flex-1 flex items-center justify-center">
       <div class="text-center">
-        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mb-4"></div>
-        <p class="text-gray-300 text-lg">Loading movies...</p>
+        <div class="inline-block animate-spin rounded-full h-8 w-8 md:h-12 md:w-12 border-b-2 border-pink-500 mb-2 md:mb-4"></div>
+        <p class="text-gray-300 text-sm md:text-lg">Loading movies...</p>
       </div>
     </div>
 
     <!-- Carousel Container -->
-    <div id="carousel-container" class="hidden flex-1 flex flex-col">
+    <div id="carousel-container" class="hidden flex-1 flex flex-col min-h-0">
       <!-- Swiper Container - Takes remaining space -->
-      <div class="flex-1 relative" style="min-height: 0;">
+      <div class="flex-1 relative min-h-0">
         <div class="swiper h-full">
           <div id="movie-carousel" class="swiper-wrapper"></div>
           <!-- Navigation arrows -->
-          <div class="swiper-button-prev text-pink-400 !w-8 !h-8 md:!w-12 md:!h-12 !bg-gray-800 !rounded-full !shadow-lg"></div>
-          <div class="swiper-button-next text-pink-400 !w-8 !h-8 md:!w-12 md:!h-12 !bg-gray-800 !rounded-full !shadow-lg"></div>
+          <div class="swiper-button-prev text-pink-400 !w-6 !h-6 md:!w-8 md:!h-8 lg:!w-12 lg:!h-12 !bg-gray-800 !rounded-full !shadow-lg"></div>
+          <div class="swiper-button-next text-pink-400 !w-6 !h-6 md:!w-8 md:!h-8 lg:!w-12 lg:!h-12 !bg-gray-800 !rounded-full !shadow-lg"></div>
         </div>
       </div>
 
       <!-- Action Buttons - Fixed at bottom -->
-      <div class="bg-gray-800 p-3 md:p-4 border-t border-gray-700">
+      <div class="bg-gray-800 p-2 md:p-3 lg:p-4 border-t border-gray-700 flex-shrink-0">
         <!-- Seen it toggle -->
-        <div class="mb-3 md:mb-4">
+        <div class="mb-2 md:mb-3 lg:mb-4">
           <button id="seen-toggle" class="w-full py-2 md:py-3 px-3 md:px-4 bg-gray-700 rounded-lg flex items-center justify-center space-x-2 transition-colors">
-            <span id="seen-emoji" class="text-xl md:text-2xl">❌</span>
-            <span class="font-medium text-sm md:text-lg">Haven't seen it</span>
+            <span id="seen-emoji" class="text-lg md:text-xl lg:text-2xl">❌</span>
+            <span class="font-medium text-xs md:text-sm lg:text-lg">Haven't seen it</span>
           </button>
         </div>
 
         <!-- Vote buttons -->
-        <div class="grid grid-cols-3 gap-2 md:gap-3">
-          <button id="vote-love" class="py-3 md:py-4 px-2 bg-green-600 rounded-lg text-xl md:text-2xl font-bold transition-colors active:bg-green-700">
+        <div class="grid grid-cols-3 gap-1.5 md:gap-2 lg:gap-3">
+          <button id="vote-love" class="py-2 md:py-3 lg:py-4 px-1 md:px-2 bg-green-600 rounded-lg text-lg md:text-xl lg:text-2xl font-bold transition-colors active:bg-green-700">
             ❤️
           </button>
-          <button id="vote-meh" class="py-3 md:py-4 px-2 bg-yellow-500 rounded-lg text-xl md:text-2xl font-bold transition-colors active:bg-yellow-600">
+          <button id="vote-meh" class="py-2 md:py-3 lg:py-4 px-1 md:px-2 bg-yellow-500 rounded-lg text-lg md:text-xl lg:text-2xl font-bold transition-colors active:bg-yellow-600">
             😐
           </button>
-          <button id="vote-pass" class="py-3 md:py-4 px-2 bg-red-600 rounded-lg text-xl md:text-2xl font-bold transition-colors active:bg-red-700">
+          <button id="vote-pass" class="py-2 md:py-3 lg:py-4 px-1 md:px-2 bg-red-600 rounded-lg text-lg md:text-xl lg:text-2xl font-bold transition-colors active:bg-red-700">
             🗑️
           </button>
         </div>
 
         <!-- Vote labels -->
-        <div class="grid grid-cols-3 gap-2 md:gap-3 mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-400">
+        <div class="grid grid-cols-3 gap-1.5 md:gap-2 lg:gap-3 mt-1 md:mt-2 text-center text-xs md:text-sm text-gray-400">
           <span>Love it</span>
           <span>Meh</span>
           <span>Pass</span>
@@ -82,53 +82,53 @@
     </div>
 
     <!-- Summary Container -->
-    <div id="summary-container" class="hidden flex-1 bg-gray-800">
+    <div id="summary-container" class="hidden flex-1 bg-gray-800 min-h-0 overflow-hidden">
       <!-- Summary content will be dynamically inserted here -->
     </div>
 
     <!-- Instructions Modal -->
     <div id="instructions-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
-      <div class="bg-gray-800 rounded-lg p-6 max-w-sm w-full">
-        <h3 class="text-xl font-bold text-pink-500 mb-4">How to Vote</h3>
-        <div class="space-y-3 text-sm">
-          <div class="flex items-center space-x-3">
-            <span class="text-2xl">⭐</span>
+      <div class="bg-gray-800 rounded-lg p-4 md:p-6 max-w-sm w-full max-h-[90vh] overflow-y-auto">
+        <h3 class="text-lg md:text-xl font-bold text-pink-500 mb-3 md:mb-4">How to Vote</h3>
+        <div class="space-y-2 md:space-y-3 text-xs md:text-sm">
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <span class="text-xl md:text-2xl">⭐</span>
             <span>Rewatch - I've seen this and would happily watch it again</span>
           </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-2xl">🔥</span>
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <span class="text-xl md:text-2xl">🔥</span>
             <span>Stoked - I haven't seen this yet and I'm excited to watch it</span>
           </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-2xl">⏳</span>
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <span class="text-xl md:text-2xl">⏳</span>
             <span>Later - I haven't seen this yet and I'm indifferent</span>
           </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-2xl">😐</span>
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <span class="text-xl md:text-2xl">😐</span>
             <span>Meh - I've seen this and I'm indifferent about rewatching</span>
           </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-2xl">💤</span>
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <span class="text-xl md:text-2xl">💤</span>
             <span>Skip - I haven't seen this and absolutely don't want to</span>
           </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-2xl">🚫</span>
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <span class="text-xl md:text-2xl">🚫</span>
             <span>Never - I've seen this and never want to watch it again</span>
           </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-2xl">✅</span>
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <span class="text-xl md:text-2xl">✅</span>
             <span>Toggle "Seen it" status to change vote options</span>
           </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-2xl">▶</span>
+          <div class="flex items-center space-x-2 md:space-x-3">
+            <span class="text-xl md:text-2xl">▶</span>
             <span>Click trailer button to watch movie trailer</span>
           </div>
         </div>
-        <div class="mt-4 p-3 bg-gray-700 rounded text-xs">
+        <div class="mt-3 md:mt-4 p-2 md:p-3 bg-gray-700 rounded text-xs">
           <p class="font-semibold mb-1">Keyboard shortcuts:</p>
           <p>1, 2, 3 = Vote options | S = Toggle seen | ESC = Back to summary</p>
         </div>
-        <button id="close-instructions" class="w-full mt-6 py-2 bg-pink-500 text-white rounded-lg font-medium">
+        <button id="close-instructions" class="w-full mt-4 md:mt-6 py-2 bg-pink-500 text-white rounded-lg font-medium">
           Got it!
         </button>
       </div>
@@ -136,13 +136,13 @@
 
     <!-- Name Entry Modal -->
     <div id="name-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
-      <div class="bg-gray-800 rounded-lg p-6 max-w-sm w-full">
-        <h3 class="text-xl font-bold text-pink-500 mb-4">Enter Your Name</h3>
-        <p class="text-gray-300 text-sm mb-4">Please enter your name to submit your votes.</p>
+      <div class="bg-gray-800 rounded-lg p-4 md:p-6 max-w-sm w-full">
+        <h3 class="text-lg md:text-xl font-bold text-pink-500 mb-3 md:mb-4">Enter Your Name</h3>
+        <p class="text-gray-300 text-xs md:text-sm mb-3 md:mb-4">Please enter your name to submit your votes.</p>
         <input id="name-input" type="text" placeholder="Your name" 
-               class="w-full px-4 py-3 bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 border border-gray-600 text-lg mb-3">
-        <div id="name-error" class="text-red-400 text-sm mb-4"></div>
-        <div class="flex space-x-3">
+               class="w-full px-3 md:px-4 py-2 md:py-3 bg-gray-700 text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 border border-gray-600 text-sm md:text-lg mb-3">
+        <div id="name-error" class="text-red-400 text-xs md:text-sm mb-3 md:mb-4"></div>
+        <div class="flex space-x-2 md:space-x-3">
           <button id="name-submit" class="flex-1 py-2 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition-colors">
             Submit
           </button>
@@ -154,7 +154,7 @@
     </div>
 
     <!-- Help Button -->
-    <button id="help-button" class="fixed bottom-4 right-4 w-12 h-12 bg-pink-500 rounded-full shadow-lg flex items-center justify-center text-white text-xl z-40">
+    <button id="help-button" class="fixed bottom-3 md:bottom-4 right-3 md:right-4 w-10 h-10 md:w-12 md:h-12 bg-pink-500 rounded-full shadow-lg flex items-center justify-center text-white text-lg md:text-xl z-40">
       ?
     </button>
   </div>
