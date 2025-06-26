@@ -797,7 +797,7 @@ function createSlides(movies) {
       // Portrait layout: stacked - scales proportionally
       slide.innerHTML = `
         <div class="flex-1 flex flex-col h-full min-h-0">
-          <div class="relative mb-2 md:mb-3 lg:mb-4 flex-shrink-0" style="height: 60%;">
+          <div class="relative mb-2 md:mb-3 lg:mb-4 flex-shrink-0" style="height: 75%;">
             <img class="w-full h-full object-cover rounded-lg" src="${m.poster}" alt="${m.title}">
             <!-- Trailer button chip over top left corner -->
             ${m.videos && m.videos.length > 0 ? `

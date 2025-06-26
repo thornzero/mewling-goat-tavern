@@ -110,7 +110,7 @@
   /* Portrait mode poster sizing */
   @media (orientation: portrait) {
     .swiper-slide .relative {
-      height: 60% !important;
+      height: 75% !important;
       width: 80% !important;
       margin: 0 auto !important;
     }
