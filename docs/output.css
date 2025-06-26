@@ -1599,11 +1599,13 @@
   @media (orientation: portrait) {
     .swiper-slide .relative {
       height: 60% !important;
+      width: 80% !important;
+      margin: 0 auto !important;
     }
   }
   @media (orientation: landscape) {
     .swiper-slide .w-2\/5 {
-      width: 32% !important;
+      width: 30% !important;
     }
   }
 }
@@ -1619,7 +1621,7 @@
     font-size: 24px !important;
   }
   .swiper-slide .w-2\/5 {
-    width: 28% !important;
+    width: 26% !important;
   }
 }
 .line-clamp-3 {

@@ -111,13 +111,15 @@
   @media (orientation: portrait) {
     .swiper-slide .relative {
       height: 60% !important;
+      width: 80% !important;
+      margin: 0 auto !important;
     }
   }
   
   /* Landscape mode poster sizing */
   @media (orientation: landscape) {
     .swiper-slide .w-2\/5 {
-      width: 32% !important;
+      width: 30% !important;
     }
   }
 }
@@ -141,7 +143,7 @@
   
   /* Desktop poster sizing */
   .swiper-slide .w-2\/5 {
-    width: 28% !important;
+    width: 26% !important;
   }
 }
 
