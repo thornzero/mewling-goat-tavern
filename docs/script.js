@@ -810,14 +810,14 @@ function createSlides(movies) {
             ` : ''}
           </div>
           <div class="flex-1 flex flex-col min-h-0">
-            <h3 class="text-sm md:text-base lg:text-lg font-semibold text-pink-500 mb-1 md:mb-2 flex-shrink-0">${m.title}</h3>
-            <div class="flex flex-wrap gap-1 mb-1 md:mb-2 flex-shrink-0">
-              ${m.genres.slice(0, 3).map(t => `<span class="px-1.5 md:px-2 py-0.5 md:py-1 bg-gray-600 rounded-full text-xs">${t}</span>`).join('')}
+            <h3 class="text-sm md:text-lg lg:text-2xl font-bold text-pink-500 mb-1 md:mb-2 lg:mb-3 flex-shrink-0">${m.title}</h3>
+            <div class="flex flex-wrap gap-1 md:gap-2 mb-1 md:mb-2 lg:mb-4 flex-shrink-0">
+              ${m.genres.slice(0, 3).map(t => `<span class="px-1.5 md:px-2 lg:px-3 py-0.5 md:py-1 bg-gray-600 rounded-full text-xs md:text-sm">${t}</span>`).join('')}
             </div>
             <div class="flex-1 min-h-0 overflow-hidden">
-              <p class="text-gray-300 text-xs md:text-sm line-clamp-3 md:line-clamp-4 lg:line-clamp-5">${m.synopsis}</p>
+              <p class="text-gray-300 text-xs md:text-sm lg:text-base leading-relaxed line-clamp-3 md:line-clamp-4 lg:line-clamp-5">${m.synopsis}</p>
             </div>
-            <p class="text-gray-400 text-xs md:text-sm mt-1 md:mt-2 flex-shrink-0">${m.runtime}</p>
+            <p class="text-gray-400 text-xs md:text-sm lg:text-lg font-medium mt-1 md:mt-2 lg:mt-4 flex-shrink-0">${m.runtime}</p>
           </div>
         </div>
       `;
