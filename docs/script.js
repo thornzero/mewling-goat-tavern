@@ -764,8 +764,8 @@ function createSlides(movies) {
         <div class="flex-1 flex flex-row gap-2 md:gap-4 lg:gap-6 h-full min-h-0">
           <!-- Poster on the left - scales with screen size -->
           <div class="w-2/5 flex-shrink-0 flex flex-col">
-            <div class="relative flex-1">
-              <img class="w-full h-full object-cover rounded-lg shadow-lg" src="${m.poster}" alt="${m.title}">
+            <div class="relative h-full">
+              <img class="w-full h-full object-cover rounded-lg shadow-lg" style="max-height: 100%;" src="${m.poster}" alt="${m.title}">
               <!-- Trailer button chip over top left corner -->
               ${m.videos && m.videos.length > 0 ? `
                 <button onclick="openVideo('${m.videos[0].key}')" 
@@ -797,8 +797,8 @@ function createSlides(movies) {
       // Portrait layout: stacked - scales proportionally
       slide.innerHTML = `
         <div class="flex-1 flex flex-col h-full min-h-0">
-          <div class="relative mb-2 md:mb-3 lg:mb-4 flex-shrink-0">
-            <img class="w-full aspect-[2/3] object-cover rounded-lg" src="${m.poster}" alt="${m.title}">
+          <div class="relative mb-2 md:mb-3 lg:mb-4 flex-shrink-0" style="height: 40%;">
+            <img class="w-full h-full object-cover rounded-lg" src="${m.poster}" alt="${m.title}">
             <!-- Trailer button chip over top left corner -->
             ${m.videos && m.videos.length > 0 ? `
               <button onclick="openVideo('${m.videos[0].key}')" 

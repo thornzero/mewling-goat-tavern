@@ -353,9 +353,6 @@
   .inline-flex {
     display: inline-flex;
   }
-  .aspect-\[2\/3\] {
-    aspect-ratio: 2/3;
-  }
   .\!h-6 {
     height: calc(var(--spacing) * 6) !important;
   }
@@ -1599,24 +1596,15 @@
   input[type="text"] {
     font-size: 16px;
   }
-  .aspect-\[2\/3\] {
-    aspect-ratio: 2 / 3;
+  @media (orientation: portrait) {
+    .swiper-slide .relative {
+      height: 35% !important;
+    }
   }
-  .aspect-\[2\/3\] {
-    position: relative;
-  }
-  .aspect-\[2\/3\]::before {
-    content: "";
-    display: block;
-    padding-bottom: 150%;
-  }
-  .aspect-\[2\/3\] img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  @media (orientation: landscape) {
+    .swiper-slide .w-2\/5 {
+      width: 35% !important;
+    }
   }
 }
 @media (min-width: 1024px) {
@@ -1629,6 +1617,9 @@
   }
   .swiper-button-prev::after, .swiper-button-next::after {
     font-size: 24px !important;
+  }
+  .swiper-slide .w-2\/5 {
+    width: 30% !important;
   }
 }
 .line-clamp-3 {
@@ -1722,6 +1713,10 @@
 }
 .overflow-y-auto {
   overflow-y: auto;
+}
+.swiper-slide img {
+  object-fit: cover;
+  object-position: center;
 }
 @property --tw-rotate-x {
   syntax: "*";

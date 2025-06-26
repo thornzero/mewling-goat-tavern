@@ -107,29 +107,18 @@
     font-size: 16px;
   }
   
-  /* Movie poster aspect ratio for mobile */
-  .aspect-\[2\/3\] {
-    aspect-ratio: 2 / 3;
+  /* Portrait mode poster sizing */
+  @media (orientation: portrait) {
+    .swiper-slide .relative {
+      height: 35% !important;
+    }
   }
   
-  /* Fallback for browsers that don't support aspect-ratio */
-  .aspect-\[2\/3\] {
-    position: relative;
-  }
-  
-  .aspect-\[2\/3\]::before {
-    content: "";
-    display: block;
-    padding-bottom: 150%; /* 3/2 = 1.5 = 150% */
-  }
-  
-  .aspect-\[2\/3\] img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  /* Landscape mode poster sizing */
+  @media (orientation: landscape) {
+    .swiper-slide .w-2\/5 {
+      width: 35% !important;
+    }
   }
 }
 
@@ -148,6 +137,11 @@
   .swiper-button-prev::after,
   .swiper-button-next::after {
     font-size: 24px !important;
+  }
+  
+  /* Desktop poster sizing */
+  .swiper-slide .w-2\/5 {
+    width: 30% !important;
   }
 }
 
@@ -272,4 +266,10 @@
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+/* Poster image constraints */
+.swiper-slide img {
+  object-fit: cover;
+  object-position: center;
 }
