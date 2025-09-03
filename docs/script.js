@@ -4,26 +4,54 @@
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
 
 // State
-let movieTitles = [];
-let movieData = [];
+const movie ={
+  title: '',
+  year: 1900,
+  poster: '',
+  genres: [],
+  synopsis: '',
+  runtime: '',
+  videos: [],
+  seen: false,
+  vote: 0,
+  timestamp: 0
+}
+
+let movieData = [movie];
 let remaining = 0;
 let swiper;
 let userName = '';
 let moviesLoaded = false;
 let currentMovieIndex = 0;
 let userVotes = []; // Store votes locally until final submission
+let voteStates = []; // Track the voting state for each movie
 
-
-
-// Simple vote values - no complex mapping needed
+function debugLog(message, level = 'info', data = null) {
+  if (DEBUG) {
+    if (level === 'debug') {
+      console.debug(message, data);
+    } else if (level === 'info') {
+      console.log(message, data);
+    } else if (level === 'error') {
+      console.error(message, data);
+    } else if (level === 'warn') {
+      console.warn(message, data);
+    }
+  }
+}
 
 // Step 1: Fetch movie titles list from Google Sheet
 function fetchMovieTitles() {
   const cb = 'movieListCallback';
-  window[cb] = function (resp) {
+  window[cb] = function (resp) {  
     if (Array.isArray(resp)) {
-      movieTitles = resp;
-      remaining = movieTitles.length;
+      movieData = resp.map(m => {
+        const match = m.title.match(/(.+?)\s*\((\d{4})\)$/);
+        const title = match ? match[1].trim() : m.title;
+        const year = match ? match[2] : null;
+        return { ...movie, title: title, year: year };
+      });
+      remaining = movieData.length;
       startSearchAndFetch();
     } else {
       console.error('Invalid movie list response', resp);
@@ -37,16 +65,19 @@ function fetchMovieTitles() {
 
 // Step 2: Search TMDb for each title to get ID
 function startSearchAndFetch() {
-  movieTitles.forEach((rawTitle, idx) => {
-    const match = rawTitle.match(/(.+?)\s*\((\d{4})\)$/);
-    const title = match ? match[1].trim() : rawTitle;
-    const year = match ? match[2] : null;
-    const searchCb = `searchCb_${idx}`;
+  movieData.forEach((m, i) => {
+    const searchCb = `searchCb_${i}`;
     window[searchCb] = function (resp) {
-      if (resp && resp.results && resp.results[0]) {
-        fetchDetails(resp.results[0].id, idx);
+      if (resp && resp.results && resp.results.length > 0) {
+        debugLog('Search result', 'debug', resp.results);
+        resp.results.forEach(r => {
+          debugLog('Search result', 'debug', r);
+          if (r.year === m.year) {
+            fetchDetails(r.id, i);
+          }
+        });
       } else {
-        console.error(`No result for "${rawTitle}"`);
+        debugLog(`No result for "${m.title}"`, 'error');
         handleDone();
       }
       delete window[searchCb];
@@ -72,17 +103,24 @@ function fetchDetails(id, idx) {
 
   const detailCb = `detailCb_${idx}`;
   window[detailCb] = function (data) {
-    const entry = {
+    debugLog('Detail result', 'debug', data);
+    if (data.error) {
+      debugLog('Detail error', 'error', data.error);
+      handleDone();
+      return;
+    }
+    
+    movieData[idx] = {
       title: data.title,
+      year: data.year,
       poster: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
       genres: data.genres.map(g => g.name),
       synopsis: data.overview,
       runtime: `${data.runtime} min`,
       videos: []
     };
-    movieData[idx] = entry;
     // cache it 
-    localStorage.setItem(storageKey, JSON.stringify(entry));
+    localStorage.setItem(storageKey, JSON.stringify(movieData[idx])); 
     delete window[detailCb];
     fetchVideos(id, idx);
   };
@@ -226,19 +264,14 @@ function openVideo(key) {
 
 // Handle the "Have you seen it?" question
 function answerSeen(movieIndex, hasSeen) {
-  const seenQuestion = document.getElementById(`seen-question-${movieIndex}`);
-  const ratingDiv = document.getElementById(`rating-${movieIndex}`);
-  const interestDiv = document.getElementById(`interest-${movieIndex}`);
+  // Update the vote state data structure
+  const voteState = voteStates[movieIndex];
+  voteState.hasAnsweredSeen = true;
+  voteState.hasSeen = hasSeen;
+  voteState.currentStep = hasSeen ? 'rating' : 'interest';
   
-  // Hide the seen question
-  seenQuestion.classList.add('hidden');
-  
-  // Show appropriate next step
-  if (hasSeen) {
-    ratingDiv.classList.remove('hidden');
-  } else {
-    interestDiv.classList.remove('hidden');
-  }
+  // Update the UI to reflect the new state
+  updateMovieVotingUI(movieIndex);
 }
 
 // Submit a vote (store locally and advance slide)
@@ -254,32 +287,65 @@ function submitVote(movieIndex, voteValue) {
     return;
   }
   
-  // Determine if user has seen the movie based on which buttons are visible
-  const ratingDiv = document.getElementById(`rating-${movieIndex}`);
-  const hasSeen = !ratingDiv.classList.contains('hidden');
-  const seen = hasSeen ? "true" : "false"; // Simple true/false instead of emojis
+  // Get the vote state from our data structure
+  const voteState = voteStates[movieIndex];
+  if (!voteState.hasAnsweredSeen) {
+    console.error('User has not answered the seen question yet');
+    return;
+  }
+  
+  // Update the vote state
+  voteState.hasVoted = true;
+  voteState.vote = voteValue;
+  voteState.currentStep = 'confirmation';
   
   // Store vote locally with simple values
   userVotes[movieIndex] = {
     movieTitle: movie.title,
     vote: voteValue, // Direct numeric value
-    seen: seen, // Simple true/false
+    seen: voteState.hasSeen ? "true" : "false", // From data structure
     timestamp: Date.now()
   };
   
-  // Show confirmation and advance to next slide
+  // Update UI and advance to next slide
+  updateMovieVotingUI(movieIndex);
   showVoteConfirmationAndAdvance(movieIndex);
 }
 
-// Show vote confirmation and advance to next slide
-function showVoteConfirmationAndAdvance(movieIndex) {
+// Update the UI based on the vote state data structure
+function updateMovieVotingUI(movieIndex) {
+  const voteState = voteStates[movieIndex];
+  const seenQuestion = document.getElementById(`seen-question-${movieIndex}`);
   const ratingDiv = document.getElementById(`rating-${movieIndex}`);
   const interestDiv = document.getElementById(`interest-${movieIndex}`);
   const confirmationDiv = document.getElementById(`confirmation-${movieIndex}`);
   
-  // Hide current voting options
-  ratingDiv.classList.add('hidden');
-  interestDiv.classList.add('hidden');
+  // Hide all sections first
+  seenQuestion?.classList.add('hidden');
+  ratingDiv?.classList.add('hidden');
+  interestDiv?.classList.add('hidden');
+  confirmationDiv?.classList.add('hidden');
+  
+  // Show the appropriate section based on current step
+  switch (voteState.currentStep) {
+    case 'seen-question':
+      seenQuestion?.classList.remove('hidden');
+      break;
+    case 'rating':
+      ratingDiv?.classList.remove('hidden');
+      break;
+    case 'interest':
+      interestDiv?.classList.remove('hidden');
+      break;
+    case 'confirmation':
+      confirmationDiv?.classList.remove('hidden');
+      break;
+  }
+}
+
+// Show vote confirmation and advance to next slide
+function showVoteConfirmationAndAdvance(movieIndex) {
+  const confirmationDiv = document.getElementById(`confirmation-${movieIndex}`);
   
   // Show simple confirmation
   confirmationDiv.innerHTML = `
@@ -287,7 +353,6 @@ function showVoteConfirmationAndAdvance(movieIndex) {
       <p class="text-green-200">✅ Vote submitted! Thanks for your input.</p>
     </div>
   `;
-  confirmationDiv.classList.remove('hidden');
   
   // Check if this is the last movie
   const isLastMovie = movieIndex === movieData.length - 1;
@@ -427,6 +492,16 @@ function showMoviePoll() {
   
   // Initialize votes array
   userVotes = new Array(movieData.length);
+  
+  // Initialize vote states for each movie
+  voteStates = movieData.map((movie, index) => ({
+    movieIndex: index,
+    hasAnsweredSeen: false,
+    hasSeen: null, // true/false/null
+    hasVoted: false,
+    vote: null,
+    currentStep: 'seen-question' // 'seen-question', 'rating', 'interest', 'confirmation'
+  }));
   
   // Initialize swiper if not already done
   if (!swiper && movieData.length > 0) {
