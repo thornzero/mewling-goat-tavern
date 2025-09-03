@@ -13,28 +13,7 @@ let moviesLoaded = false;
 let currentMovieIndex = 0;
 let userVotes = []; // Store votes locally until final submission
 
-// Vote mapping system - numbers instead of emojis for reliable data transmission
-const voteMapping = {
-  // Seen movie ratings
-  'rewatch': { value: 1, emoji: '⭐', label: 'Rewatch' },
-  'meh': { value: 2, emoji: '😐', label: 'Meh' },
-  'hated': { value: 3, emoji: '🚫', label: 'Hated it' },
-  
-  // Unseen movie interest
-  'stoked': { value: 4, emoji: '🔥', label: 'Stoked' },
-  'indifferent': { value: 5, emoji: '⏳', label: 'Indifferent' },
-  'not-interested': { value: 6, emoji: '💤', label: 'Not interested' }
-};
-
-// Reverse mapping for display purposes
-const voteDisplay = {
-  1: { emoji: '⭐', label: 'Rewatch' },
-  2: { emoji: '😐', label: 'Meh' },
-  3: { emoji: '🚫', label: 'Hated it' },
-  4: { emoji: '🔥', label: 'Stoked' },
-  5: { emoji: '⏳', label: 'Indifferent' },
-  6: { emoji: '💤', label: 'Not interested' }
-};
+// Simple vote values - no complex mapping needed
 
 // Step 1: Fetch movie titles list from Google Sheet
 function fetchMovieTitles() {
@@ -188,13 +167,13 @@ function createSlides(movies) {
             <div id="rating-${i}" class="voting-step hidden">
               <h3 class="text-lg font-medium mb-3">How did you like it?</h3>
               <div class="flex gap-3">
-                <button onclick="submitVote(${i}, 'rewatch')" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">
+                <button onclick="submitVote(${i}, 1)" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">
                   ⭐ Rewatch
                 </button>
-                <button onclick="submitVote(${i}, 'meh')" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg transition">
+                <button onclick="submitVote(${i}, 2)" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg transition">
                   😐 Meh
                 </button>
-                <button onclick="submitVote(${i}, 'hated')" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded-lg transition">
+                <button onclick="submitVote(${i}, 3)" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded-lg transition">
                   🚫 Hated it
                 </button>
               </div>
@@ -204,13 +183,13 @@ function createSlides(movies) {
             <div id="interest-${i}" class="voting-step hidden">
               <h3 class="text-lg font-medium mb-3">Are you interested in watching it?</h3>
               <div class="flex gap-3">
-                <button onclick="submitVote(${i}, 'stoked')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition">
+                <button onclick="submitVote(${i}, 4)" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition">
                   🔥 Stoked
                 </button>
-                <button onclick="submitVote(${i}, 'indifferent')" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                <button onclick="submitVote(${i}, 5)" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
                   ⏳ Indifferent
                 </button>
-                <button onclick="submitVote(${i}, 'not-interested')" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition">
+                <button onclick="submitVote(${i}, 6)" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition">
                   💤 Not interested
                 </button>
               </div>
@@ -261,7 +240,7 @@ function answerSeen(movieIndex, hasSeen) {
 }
 
 // Submit a vote (store locally and advance slide)
-function submitVote(movieIndex, voteKey) {
+function submitVote(movieIndex, voteValue) {
   if (!userName) { 
     alert("Please enter your name."); 
     return; 
@@ -273,24 +252,16 @@ function submitVote(movieIndex, voteKey) {
     return;
   }
   
-  // Get the numeric vote value from the mapping
-  const voteData = voteMapping[voteKey];
-  if (!voteData) {
-    console.error('Invalid vote key:', voteKey);
-    return;
-  }
-  
   // Determine if user has seen the movie based on which buttons are visible
   const ratingDiv = document.getElementById(`rating-${movieIndex}`);
   const hasSeen = !ratingDiv.classList.contains('hidden');
-  const seen = hasSeen ? "✅" : "❌";
+  const seen = hasSeen ? "true" : "false"; // Simple true/false instead of emojis
   
-  // Store vote locally with numeric value
+  // Store vote locally with simple values
   userVotes[movieIndex] = {
     movieTitle: movie.title,
-    vote: voteData.value, // Store numeric value instead of emoji
-    voteKey: voteKey, // Keep the key for display purposes
-    seen: seen,
+    vote: voteValue, // Direct numeric value
+    seen: seen, // Simple true/false
     timestamp: Date.now()
   };
   
@@ -308,12 +279,10 @@ function showVoteConfirmationAndAdvance(movieIndex) {
   ratingDiv.classList.add('hidden');
   interestDiv.classList.add('hidden');
   
-  // Show confirmation with the selected vote
-  const vote = userVotes[movieIndex];
-  const voteDisplayData = voteDisplay[vote.vote];
+  // Show simple confirmation
   confirmationDiv.innerHTML = `
     <div class="bg-green-800 border border-green-600 rounded-lg p-4">
-      <p class="text-green-200">✅ Vote submitted! You selected: ${voteDisplayData.emoji} ${voteDisplayData.label}</p>
+      <p class="text-green-200">✅ Vote submitted! Thanks for your input.</p>
     </div>
   `;
   confirmationDiv.classList.remove('hidden');
