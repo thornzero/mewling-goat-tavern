@@ -11,6 +11,7 @@ let swiper;
 let userName = '';
 let moviesLoaded = false;
 let currentMovieIndex = 0;
+let userVotes = []; // Store votes locally until final submission
 
 // Step 1: Fetch movie titles list from Google Sheet
 function fetchMovieTitles() {
@@ -126,13 +127,14 @@ function createSlides(movies) {
   
   movies.forEach((m, i) => {
     const slide = document.createElement("div");
+    const video = m.videos[0]
     slide.className = "swiper-slide bg-gray-700 p-6 rounded-lg shadow-lg";
     slide.innerHTML = `
       <div class="flex gap-6 h-full">
         <div class="w-1/3">
           <img class="w-full rounded-md mb-4" src="${m.poster}" alt="${m.title}">
           <div class="flex flex-wrap gap-2 mb-4">
-            ${m.videos.map(v => `<button onclick="openVideo('${v.key}')" class="px-3 py-1 bg-pink-500 rounded hover:bg-pink-600 transition text-sm">▶ ${v.type}</button>`).join('')}
+            <button onclick="openVideo('${video.key}')" class="px-3 py-1 bg-pink-500 rounded hover:bg-pink-600 transition text-sm">▶ ${video.type}</button>
           </div>
         </div>
         
@@ -163,17 +165,14 @@ function createSlides(movies) {
             <div id="rating-${i}" class="voting-step hidden">
               <h3 class="text-lg font-medium mb-3">How did you like it?</h3>
               <div class="flex gap-3">
-                <button onclick="submitVote(${i}, 'love')" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">
-                  ❤️ Love it
+                <button onclick="submitVote(${i}, '⭐')" class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">
+                  ⭐ Rewatch
                 </button>
-                <button onclick="submitVote(${i}, 'like')" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">
-                  👍 Like it
+                <button onclick="submitVote(${i}, '😐')" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg transition">
+                  😐 Meh
                 </button>
-                <button onclick="submitVote(${i}, 'meh')" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg transition">
-                  😐 It's okay
-                </button>
-                <button onclick="submitVote(${i}, 'dislike')" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded-lg transition">
-                  👎 Dislike it
+                <button onclick="submitVote(${i}, '🚫')" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded-lg transition">
+                  🚫 Hated it
                 </button>
               </div>
             </div>
@@ -182,14 +181,14 @@ function createSlides(movies) {
             <div id="interest-${i}" class="voting-step hidden">
               <h3 class="text-lg font-medium mb-3">Are you interested in watching it?</h3>
               <div class="flex gap-3">
-                <button onclick="submitVote(${i}, 'want-to-see')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition">
-                  🎬 Want to see it
+                <button onclick="submitVote(${i}, '🔥')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition">
+                  🔥 Stoked
                 </button>
-                <button onclick="submitVote(${i}, 'maybe')" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
-                  🤔 Maybe
+                <button onclick="submitVote(${i}, '⏳')" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                  ⏳ Indifferent
                 </button>
-                <button onclick="submitVote(${i}, 'not-interested')" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition">
-                  🚫 Not interested
+                <button onclick="submitVote(${i}, '💤')" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg transition">
+                  💤 Not interested
                 </button>
               </div>
             </div>
@@ -238,7 +237,7 @@ function answerSeen(movieIndex, hasSeen) {
   }
 }
 
-// Submit a vote via JSONP
+// Submit a vote (store locally and advance slide)
 function submitVote(movieIndex, vote) {
   if (!userName) { 
     alert("Please enter your name."); 
@@ -256,30 +255,20 @@ function submitVote(movieIndex, vote) {
   const hasSeen = !ratingDiv.classList.contains('hidden');
   const seen = hasSeen ? "✅" : "❌";
   
-  const cb = `voteCb_${movieIndex}_${Date.now()}`;
-  window[cb] = function (resp) {
-    if (resp.status === "ok") {
-      // Show confirmation
-      showVoteConfirmation(movieIndex);
-    } else {
-      alert("Error submitting vote. Please try again.");
-    }
-    delete window[cb];
+  // Store vote locally
+  userVotes[movieIndex] = {
+    movieTitle: movie.title,
+    vote: vote,
+    seen: seen,
+    timestamp: Date.now()
   };
   
-  const script = document.createElement('script');
-  script.src = `${proxyURL}`
-    + `?action=vote`
-    + `&movieTitle=${encodeURIComponent(movie.title)}`
-    + `&userName=${encodeURIComponent(userName)}`
-    + `&vote=${encodeURIComponent(vote)}`
-    + `&seen=${encodeURIComponent(seen)}`
-    + `&callback=${cb}`;
-  document.body.appendChild(script);
+  // Show confirmation and advance to next slide
+  showVoteConfirmationAndAdvance(movieIndex);
 }
 
-// Show vote confirmation
-function showVoteConfirmation(movieIndex) {
+// Show vote confirmation and advance to next slide
+function showVoteConfirmationAndAdvance(movieIndex) {
   const ratingDiv = document.getElementById(`rating-${movieIndex}`);
   const interestDiv = document.getElementById(`interest-${movieIndex}`);
   const confirmationDiv = document.getElementById(`confirmation-${movieIndex}`);
@@ -290,6 +279,91 @@ function showVoteConfirmation(movieIndex) {
   
   // Show confirmation
   confirmationDiv.classList.remove('hidden');
+  
+  // Check if this is the last movie
+  const isLastMovie = movieIndex === movieData.length - 1;
+  
+  if (isLastMovie) {
+    // Show final submission message and submit all votes
+    setTimeout(() => {
+      submitAllVotes();
+    }, 1500); // Show confirmation for 1.5 seconds before submitting
+  } else {
+    // Advance to next slide after a short delay
+    setTimeout(() => {
+      swiper.slideNext();
+    }, 1000); // Show confirmation for 1 second before advancing
+  }
+}
+
+// Submit all votes at once
+function submitAllVotes() {
+  if (userVotes.length === 0) {
+    console.log('No votes to submit');
+    return;
+  }
+  
+  // Show loading state
+  const lastSlide = document.querySelector('.swiper-slide-active');
+  if (lastSlide) {
+    const confirmationDiv = lastSlide.querySelector('[id^="confirmation-"]');
+    if (confirmationDiv) {
+      confirmationDiv.innerHTML = `
+        <div class="bg-blue-800 border border-blue-600 rounded-lg p-4">
+          <div class="flex items-center justify-center">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-400 mr-3"></div>
+            <p class="text-blue-200">Submitting all votes...</p>
+          </div>
+        </div>
+      `;
+    }
+  }
+  
+  // Submit votes one by one
+  let submittedCount = 0;
+  const totalVotes = userVotes.filter(vote => vote !== undefined).length;
+  
+  userVotes.forEach((vote, index) => {
+    if (vote) {
+      const cb = `finalVoteCb_${index}_${Date.now()}`;
+      window[cb] = function (resp) {
+        submittedCount++;
+        if (submittedCount === totalVotes) {
+          // All votes submitted, show final success message
+          showFinalSuccessMessage();
+        }
+        delete window[cb];
+      };
+      
+      const script = document.createElement('script');
+      script.src = `${proxyURL}`
+        + `?action=vote`
+        + `&movieTitle=${encodeURIComponent(vote.movieTitle)}`
+        + `&userName=${encodeURIComponent(userName)}`
+        + `&vote=${encodeURIComponent(vote.vote)}`
+        + `&seen=${encodeURIComponent(vote.seen)}`
+        + `&callback=${cb}`;
+      document.body.appendChild(script);
+    }
+  });
+}
+
+// Show final success message
+function showFinalSuccessMessage() {
+  const lastSlide = document.querySelector('.swiper-slide-active');
+  if (lastSlide) {
+    const confirmationDiv = lastSlide.querySelector('[id^="confirmation-"]');
+    if (confirmationDiv) {
+      confirmationDiv.innerHTML = `
+        <div class="bg-green-800 border border-green-600 rounded-lg p-6 text-center">
+          <div class="text-4xl mb-4">🎉</div>
+          <h3 class="text-xl font-bold text-green-200 mb-2">All Done!</h3>
+          <p class="text-green-200">Thanks for voting on all the movies, ${userName}!</p>
+          <p class="text-green-300 text-sm mt-2">Your votes have been submitted successfully.</p>
+        </div>
+      `;
+    }
+  }
 }
 
 // Initialize the app
@@ -305,6 +379,20 @@ function initializeApp() {
     if (name) {
       userName = name;
     }
+  });
+  
+  // Add Enter key support for name input
+  usernameInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && userName && !startBtn.disabled) {
+      event.preventDefault();
+      startBtn.click();
+    }
+  });
+  
+  // Add focus management for better mobile experience
+  usernameInput.addEventListener('focus', function() {
+    // On mobile, this helps with keyboard behavior
+    this.setAttribute('autocomplete', 'name');
   });
   
   startBtn.addEventListener('click', function() {
@@ -327,6 +415,9 @@ function showMoviePoll() {
   document.getElementById('name-entry-screen').classList.add('hidden');
   document.getElementById('movie-poll-screen').classList.remove('hidden');
   document.getElementById('user-greeting').textContent = `Welcome, ${userName}!`;
+  
+  // Initialize votes array
+  userVotes = new Array(movieData.length);
   
   // Initialize swiper if not already done
   if (!swiper && movieData.length > 0) {
