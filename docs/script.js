@@ -13,6 +13,8 @@ let moviesLoaded = false;
 let currentMovieIndex = 0;
 let userVotes = []; // Store votes locally until final submission
 
+
+
 // Simple vote values - no complex mapping needed
 
 // Step 1: Fetch movie titles list from Google Sheet

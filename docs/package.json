@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
-    "build": "tailwindcss -i ./input.css -o ./output.css --watch",
-    "build:prod": "tailwindcss -i ./input.css -o ./output.css --minify && cat ./custom.css >> ./output.css",
-    "dev": "tailwindcss -i ./input.css -o ./output.css --watch",
+    "build": "tailwindcss -i ./build/input.css -o ./build/output.css --watch",
+    "build:prod": "tailwindcss -i ./build/input.css -o ./build/output.css --minify && cat ./build/custom.css >> ./build/output.css",
+    "dev": "tailwindcss -i ./build/input.css -o ./build/output.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
