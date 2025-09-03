@@ -4,7 +4,7 @@
   "main": "script.js",
   "scripts": {
     "build": "tailwindcss -i ./input.css -o ./output.css --watch",
-    "build:prod": "tailwindcss -i ./input.css -o ./output.css --minify",
+    "build:prod": "tailwindcss -i ./input.css -o ./output.css --minify && cat ./custom.css >> ./output.css",
     "dev": "tailwindcss -i ./input.css -o ./output.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
