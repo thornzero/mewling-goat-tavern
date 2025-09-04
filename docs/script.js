@@ -87,12 +87,19 @@ function startSearchAndFetch() {
     window[searchCb] = function (resp) {
       if (resp && resp.results && resp.results.length > 0) {
         debugLog('Search result', 'debug', resp.results);
+        let foundMatch = false;
         resp.results.forEach(r => {
           debugLog('Search result', 'debug', r);
           if (r.year === m.year) {
             fetchDetails(r.id, i);
+            foundMatch = true;
           }
         });
+        // If no exact year match found, still call handleDone to prevent hanging
+        if (!foundMatch) {
+          debugLog(`No exact year match for "${m.title}" (${m.year})`, 'warn');
+          handleDone();
+        }
       } else {
         debugLog(`No result for "${m.title}"`, 'error');
         handleDone();
@@ -138,6 +145,7 @@ function fetchDetails(id, idx) {
     };
     // cache it 
     localStorage.setItem(storageKey, JSON.stringify(movieData[idx])); 
+    console.log(`Movie details fetched for: ${data.title}`);
     delete window[detailCb];
     fetchVideos(id, idx);
   };
@@ -152,6 +160,7 @@ function fetchVideos(id, idx) {
   window[videoCb] = function (resp) {
     if (resp.results && resp.results.length) {
       movieData[idx].videos = resp.results.map(v => v);
+      console.log(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
     } else {
       console.warn(`No videos for movie ID ${id}`);
     }
@@ -165,15 +174,21 @@ function fetchVideos(id, idx) {
 
 // Step 5: Track completion and render
 function handleDone() {
-  if (--remaining === 0) {
+  remaining--;
+  console.log(`Movies remaining to process: ${remaining}`);
+  
+  if (remaining === 0) {
+    console.log('All movies processed! Loading complete.');
     moviesLoaded = true;
     // If user is already waiting, show the poll
     const startBtn = document.getElementById('start-poll-btn');
     if (startBtn && startBtn.textContent === 'Loading movies...') {
+      console.log('User is waiting, showing movie poll...');
       showMoviePoll();
     }
     // If we're already in the poll screen, create slides
     if (document.getElementById('movie-poll-screen') && !document.getElementById('movie-poll-screen').classList.contains('hidden')) {
+      console.log('Already in poll screen, creating slides...');
       createSlides(movieData);
     }
   }
