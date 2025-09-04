@@ -103,7 +103,16 @@ function fetchDetails(id, idx) {
   const storageKey = `movie_${id}`
   const cached = localStorage.getItem(storageKey);
   if (cached) {
-    movieData[idx] = JSON.parse(cached);
+    const cachedData = JSON.parse(cached);
+    // Update the existing Movie object with cached data
+    movieData[idx].setTitle(cachedData.title);
+    movieData[idx].setYear(cachedData.year);
+    movieData[idx].setPoster(cachedData.poster);
+    movieData[idx].setGenres(cachedData.genres);
+    movieData[idx].setSynopsis(cachedData.synopsis);
+    movieData[idx].setRuntime(cachedData.runtime);
+    movieData[idx].setVideos(cachedData.videos);
+    console.log(`Loaded cached data for movie ${idx}:`, cachedData.title);
     handleDone();
     return;
   }
@@ -117,16 +126,21 @@ function fetchDetails(id, idx) {
       return;
     }
 
-    movieData[idx] = new Movie(
-      data.title,
-      data.year,
-      `https://image.tmdb.org/t/p/w500${data.poster_path}`,
-      data.genres.map(g => g.name),
-      data.overview,
-      `${data.runtime} min`,
-      [],
-      []
-    );
+    // Update the existing Movie object instead of replacing it
+    movieData[idx].setTitle(data.title);
+    movieData[idx].setYear(data.year);
+    movieData[idx].setPoster(`https://image.tmdb.org/t/p/w500${data.poster_path}`);
+    movieData[idx].setGenres(data.genres.map(g => g.name));
+    movieData[idx].setSynopsis(data.overview);
+    movieData[idx].setRuntime(`${data.runtime} min`);
+    movieData[idx].setVideos([]);
+    
+    console.log(`Updated movie ${idx}:`, {
+      title: movieData[idx].title,
+      poster: movieData[idx].poster,
+      genres: movieData[idx].genres,
+      synopsis: movieData[idx].synopsis
+    });
     // cache it 
     localStorage.setItem(storageKey, JSON.stringify({
       title: movieData[idx].title,
