@@ -1,0 +1,326 @@
+Raw response from Google Sheet: 
+Array(21) [ "Predator (1987)", "The Texas Chain Saw Massacre (1974)", "Summer Wars (2009)", "The Final Girls (2015)", "Idle Hands (1999)", "Scream (1996)", "Beetlejuice (1988)", "Paprika (2006)", "Perfect Blue (1997)", "The Return of the Living Dead (1985)", … ]
+script.js:34:13
+Processing movie 0: Predator (1987) script.js:38:17
+Processing movie 1: The Texas Chain Saw Massacre (1974) script.js:38:17
+Processing movie 2: Summer Wars (2009) script.js:38:17
+Processing movie 3: The Final Girls (2015) script.js:38:17
+Processing movie 4: Idle Hands (1999) script.js:38:17
+Processing movie 5: Scream (1996) script.js:38:17
+Processing movie 6: Beetlejuice (1988) script.js:38:17
+Processing movie 7: Paprika (2006) script.js:38:17
+Processing movie 8: Perfect Blue (1997) script.js:38:17
+Processing movie 9: The Return of the Living Dead (1985) script.js:38:17
+Processing movie 10: Little Shop of Horrors (1986) script.js:38:17
+Processing movie 11: Big Trouble in Little China (1986) script.js:38:17
+Processing movie 12: The Running Man (1987) script.js:38:17
+Processing movie 13: Escape from New York (1981) script.js:38:17
+Processing movie 14: They Live (1988) script.js:38:17
+Processing movie 15: House (1977) script.js:38:17
+Processing movie 16: Night of the Creeps (1986) script.js:38:17
+Processing movie 17: The Thing (1982) script.js:38:17
+Processing movie 18: Redline (2009) script.js:38:17
+Processing movie 19: Vampire Hunter D: Bloodlust (2000) script.js:38:17
+Processing movie 20: Tucker and Dale vs. Evil (2010) script.js:38:17
+Processed movie data: 
+Array(21) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:53:15
+Search results for "They Live" (1988): 
+Object { page: 1, results: (18) […], total_pages: 1, total_results: 18 }
+script.js:71:15
+Checking result: They Live (undefined) vs They Live (1988) script.js:76:19
+Checking result: The Making of 'They Live' (undefined) vs They Live (1988) script.js:76:19
+Checking result: Frogs and How They Live (undefined) vs They Live (1988) script.js:76:19
+Checking result: Hurricane Live! 2032 (undefined) vs They Live (1988) script.js:76:19
+Checking result: Long Live the Lady! (undefined) vs They Live (1988) script.js:76:19
+Checking result: To Live, to Think, to Feel, to Love... (undefined) vs They Live (1988) script.js:76:19
+Checking result: If We Live Through All This (undefined) vs They Live (1988) script.js:76:19
+Checking result: Remembering Means Living (undefined) vs They Live (1988) script.js:76:19
+Checking result: Testament:  Live at the Omni '88 (undefined) vs They Live (1988) script.js:76:19
+Checking result: Kenny G - Live at Montreux (undefined) vs They Live (1988) script.js:76:19
+Checking result: A Dead Man Visits the Living (undefined) vs They Live (1988) script.js:76:19
+Checking result: How Poets Are Enjoying Their Lives (undefined) vs They Live (1988) script.js:76:19
+Checking result: And Live Tomorrow (undefined) vs They Live (1988) script.js:76:19
+Checking result: Living Legends (undefined) vs They Live (1988) script.js:76:19
+Checking result: Oscar D' Leon - Live From London (undefined) vs They Live (1988) script.js:76:19
+Checking result: There Lived a Grandpa and Grandma (undefined) vs They Live (1988) script.js:76:19
+Checking result: Long Live Shishlov (undefined) vs They Live (1988) script.js:76:19
+Checking result: Uncle Lenin Lives in Russia (undefined) vs They Live (1988) script.js:76:19
+No exact year match for "They Live" (1988), using first result as fallback script.js:85:19
+Using fallback: They Live (undefined) script.js:87:19
+Loaded cached data for movie 14: They Live script.js:120:13
+Movies remaining to process: 20 script.js:189:11
+Search results for "Redline" (2009): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Redline (undefined) vs Redline (2009) script.js:76:19
+No exact year match for "Redline" (2009), using first result as fallback script.js:85:19
+Using fallback: Redline (undefined) script.js:87:19
+Loaded cached data for movie 18: Redline script.js:120:13
+Movies remaining to process: 19 script.js:189:11
+Search results for "Beetlejuice" (1988): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Beetlejuice (undefined) vs Beetlejuice (1988) script.js:76:19
+No exact year match for "Beetlejuice" (1988), using first result as fallback script.js:85:19
+Using fallback: Beetlejuice (undefined) script.js:87:19
+Loaded cached data for movie 6: Beetlejuice script.js:120:13
+Movies remaining to process: 18 script.js:189:11
+Search results for "Night of the Creeps" (1986): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Night of the Creeps (undefined) vs Night of the Creeps (1986) script.js:76:19
+No exact year match for "Night of the Creeps" (1986), using first result as fallback script.js:85:19
+Using fallback: Night of the Creeps (undefined) script.js:87:19
+Loaded cached data for movie 16: Night of the Creeps script.js:120:13
+Movies remaining to process: 17 script.js:189:11
+Search results for "The Texas Chain Saw Massacre" (1974): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: The Texas Chain Saw Massacre (undefined) vs The Texas Chain Saw Massacre (1974) script.js:76:19
+No exact year match for "The Texas Chain Saw Massacre" (1974), using first result as fallback script.js:85:19
+Using fallback: The Texas Chain Saw Massacre (undefined) script.js:87:19
+Loaded cached data for movie 1: The Texas Chain Saw Massacre script.js:120:13
+Movies remaining to process: 16 script.js:189:11
+Search results for "Predator" (1987): 
+Object { page: 1, results: (4) […], total_pages: 1, total_results: 4 }
+script.js:71:15
+Checking result: Predator (undefined) vs Predator (1987) 2 script.js:76:19
+Checking result: Alien Predators (undefined) vs Predator (1987) script.js:76:19
+Checking result: Raiders of the Lost Ark (undefined) vs Predator (1987) script.js:76:19
+No exact year match for "Predator" (1987), using first result as fallback script.js:85:19
+Using fallback: Predator (undefined) script.js:87:19
+Loaded cached data for movie 0: Predator script.js:120:13
+Movies remaining to process: 15 script.js:189:11
+Search results for "Escape from New York" (1981): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Escape from New York (undefined) vs Escape from New York (1981) script.js:76:19
+No exact year match for "Escape from New York" (1981), using first result as fallback script.js:85:19
+Using fallback: Escape from New York (undefined) script.js:87:19
+Loaded cached data for movie 13: Escape from New York script.js:120:13
+Movies remaining to process: 14 script.js:189:11
+Search results for "Idle Hands" (1999): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Idle Hands (undefined) vs Idle Hands (1999) script.js:76:19
+No exact year match for "Idle Hands" (1999), using first result as fallback script.js:85:19
+Using fallback: Idle Hands (undefined) script.js:87:19
+Loaded cached data for movie 4: Idle Hands script.js:120:13
+Movies remaining to process: 13 script.js:189:11
+Search results for "House" (1977): 
+Object { page: 1, results: (20) […], total_pages: 2, total_results: 34 }
+script.js:71:15
+Checking result: Private House of the SS (undefined) vs House (1977) script.js:76:19
+Checking result: Beach House (undefined) vs House (1977) script.js:76:19
+Checking result: House (undefined) vs House (1977) script.js:76:19
+Checking result: Faust's House (undefined) vs House (1977) script.js:76:19
+Checking result: The Old House (undefined) vs House (1977) script.js:76:19
+Checking result: The House by the Lake (undefined) vs House (1977) script.js:76:19
+Checking result: God Bless Each Corner of This House (undefined) vs House (1977) script.js:76:19
+Checking result: The Lion Ran Away from the House (undefined) vs House (1977) script.js:76:19
+Checking result: Christmas at the Cupiello Household (undefined) vs House (1977) script.js:76:19
+Checking result: A House on the Wheels (undefined) vs House (1977) script.js:76:19
+Checking result: Another Day of a Housewife (undefined) vs House (1977) script.js:76:19
+Checking result: House Therapy (undefined) vs House (1977) script.js:76:19
+Checking result: The House That Would Not Die (undefined) vs House (1977) script.js:76:19
+Checking result: Heartbreak House (undefined) vs House (1977) script.js:76:19
+Checking result: Eleanor and Franklin: The White House Years (undefined) vs House (1977) script.js:76:19
+Checking result: The House That Jack Built (undefined) vs House (1977) script.js:76:19
+Checking result: The House in Nightmare Park (undefined) vs House (1977) script.js:76:19
+Checking result: The Fun House (undefined) vs House (1977) script.js:76:19
+Checking result: House of Mortal Sin (undefined) vs House (1977) script.js:76:19
+Checking result: Mustang: The House That Joe Built (undefined) vs House (1977) script.js:76:19
+No exact year match for "House" (1977), using first result as fallback script.js:85:19
+Using fallback: Private House of the SS (undefined) script.js:87:19
+Loaded cached data for movie 15: Private House of the SS script.js:120:13
+Movies remaining to process: 12 script.js:189:11
+Search results for "The Return of the Living Dead" (1985): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: The Return of the Living Dead (undefined) vs The Return of the Living Dead (1985) script.js:76:19
+No exact year match for "The Return of the Living Dead" (1985), using first result as fallback script.js:85:19
+Using fallback: The Return of the Living Dead (undefined) script.js:87:19
+Loaded cached data for movie 9: The Return of the Living Dead script.js:120:13
+Movies remaining to process: 11 script.js:189:11
+Search results for "Big Trouble in Little China" (1986): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Big Trouble in Little China (undefined) vs Big Trouble in Little China (1986) script.js:76:19
+No exact year match for "Big Trouble in Little China" (1986), using first result as fallback script.js:85:19
+Using fallback: Big Trouble in Little China (undefined) script.js:87:19
+Loaded cached data for movie 11: Big Trouble in Little China script.js:120:13
+Movies remaining to process: 10 script.js:189:11
+Search results for "The Running Man" (1987): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: The Running Man (undefined) vs The Running Man (1987) script.js:76:19
+No exact year match for "The Running Man" (1987), using first result as fallback script.js:85:19
+Using fallback: The Running Man (undefined) script.js:87:19
+Loaded cached data for movie 12: The Running Man script.js:120:13
+Movies remaining to process: 9 script.js:189:11
+Search results for "Paprika" (2006): 
+Object { page: 1, results: (2) […], total_pages: 1, total_results: 2 }
+script.js:71:15
+Checking result: Paprika (undefined) vs Paprika (2006) script.js:76:19
+Checking result: Paprika Western (undefined) vs Paprika (2006) script.js:76:19
+No exact year match for "Paprika" (2006), using first result as fallback script.js:85:19
+Using fallback: Paprika (undefined) script.js:87:19
+Loaded cached data for movie 7: Paprika script.js:120:13
+Movies remaining to process: 8 script.js:189:11
+Search results for "Scream" (1996): 
+Object { page: 1, results: (10) […], total_pages: 1, total_results: 10 }
+script.js:71:15
+Checking result: Scream (undefined) vs Scream (1996) script.js:76:19
+Checking result: Screamers (undefined) vs Scream (1996) script.js:76:19
+Checking result: Scream Queens Naked Christmas (undefined) vs Scream (1996) script.js:76:19
+Checking result: Kicking and Screaming (undefined) vs Scream (1996) script.js:76:19
+Checking result: Scream, Teen, Scream! (undefined) vs Scream (1996) script.js:76:19
+Checking result: Red Scream (undefined) vs Scream (1996) script.js:76:19
+Checking result: Screaming Videotape #2 (undefined) vs Scream (1996) script.js:76:19
+Checking result: What Have You Done to Solange? (undefined) vs Scream (1996) script.js:76:19
+Checking result: Little Witches (undefined) vs Scream (1996) script.js:76:19
+Checking result: The Unspeakable (undefined) vs Scream (1996) script.js:76:19
+No exact year match for "Scream" (1996), using first result as fallback script.js:85:19
+Using fallback: Scream (undefined) script.js:87:19
+Loaded cached data for movie 5: Scream script.js:120:13
+Movies remaining to process: 7 script.js:189:11
+Search results for "Little Shop of Horrors" (1986): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Little Shop of Horrors (undefined) vs Little Shop of Horrors (1986) script.js:76:19
+No exact year match for "Little Shop of Horrors" (1986), using first result as fallback script.js:85:19
+Using fallback: Little Shop of Horrors (undefined) script.js:87:19
+Loaded cached data for movie 10: Little Shop of Horrors script.js:120:13
+Movies remaining to process: 6 script.js:189:11
+Search results for "Vampire Hunter D: Bloodlust" (2000): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Vampire Hunter D: Bloodlust (undefined) vs Vampire Hunter D: Bloodlust (2000) script.js:76:19
+No exact year match for "Vampire Hunter D: Bloodlust" (2000), using first result as fallback script.js:85:19
+Using fallback: Vampire Hunter D: Bloodlust (undefined) script.js:87:19
+Loaded cached data for movie 19: Vampire Hunter D: Bloodlust script.js:120:13
+Movies remaining to process: 5 script.js:189:11
+Search results for "Summer Wars" (2009): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Summer Wars (undefined) vs Summer Wars (2009) script.js:76:19
+No exact year match for "Summer Wars" (2009), using first result as fallback script.js:85:19
+Using fallback: Summer Wars (undefined) script.js:87:19
+Loaded cached data for movie 2: Summer Wars script.js:120:13
+Movies remaining to process: 4 script.js:189:11
+Search results for "Tucker and Dale vs. Evil" (2010): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Tucker and Dale vs. Evil (undefined) vs Tucker and Dale vs. Evil (2010) script.js:76:19
+No exact year match for "Tucker and Dale vs. Evil" (2010), using first result as fallback script.js:85:19
+Using fallback: Tucker and Dale vs. Evil (undefined) script.js:87:19
+Loaded cached data for movie 20: Tucker and Dale vs. Evil script.js:120:13
+Movies remaining to process: 3 script.js:189:11
+Search results for "Perfect Blue" (1997): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: Perfect Blue (undefined) vs Perfect Blue (1997) script.js:76:19
+No exact year match for "Perfect Blue" (1997), using first result as fallback script.js:85:19
+Using fallback: Perfect Blue (undefined) script.js:87:19
+Loaded cached data for movie 8: Perfect Blue script.js:120:13
+Movies remaining to process: 2 script.js:189:11
+Search results for "The Thing" (1982): 
+Object { page: 1, results: (9) […], total_pages: 1, total_results: 9 }
+script.js:71:15
+Checking result: The Thing (undefined) vs The Thing (1982) script.js:76:19
+Checking result: The Making of 'The Thing' (undefined) vs The Thing (1982) script.js:76:19
+Checking result: Things against the law (undefined) vs The Thing (1982) script.js:76:19
+Checking result: The State of Things (undefined) vs The Thing (1982) script.js:76:19
+Checking result: The Bright and Dark Side of Things (undefined) vs The Thing (1982) script.js:76:19
+Checking result: 2 or 3 Things I Know About Her (undefined) vs The Thing (1982) script.js:76:19
+Checking result: Forgotten Things (undefined) vs The Thing (1982) script.js:76:19
+Checking result: Things Past (undefined) vs The Thing (1982) script.js:76:19
+Checking result: Wild Things (undefined) vs The Thing (1982) script.js:76:19
+No exact year match for "The Thing" (1982), using first result as fallback script.js:85:19
+Using fallback: The Thing (undefined) script.js:87:19
+Loaded cached data for movie 17: The Thing script.js:120:13
+Movies remaining to process: 1 script.js:189:11
+The resource at “moz-extension://c8cdc247-5f87-4481-ac17-7203b7edfca4/assets/woff2/Inter-italic.var-SWFAXF2C.woff2” preloaded with link preload was not used within a few seconds. Make sure all attributes of the preload tag are set correctly. menu.html
+Search results for "The Final Girls" (2015): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:71:15
+Checking result: The Final Girls (undefined) vs The Final Girls (2015) script.js:76:19
+No exact year match for "The Final Girls" (2015), using first result as fallback script.js:85:19
+Using fallback: The Final Girls (undefined) script.js:87:19
+Loaded cached data for movie 3: The Final Girls script.js:120:13
+Movies remaining to process: 0 script.js:189:11
+All movies processed! Loading complete. script.js:192:13
+All movies fully loaded: true script.js:197:13
+Creating slides in showMoviePoll with movieData: 
+Array(21) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:561:13
+Creating slides with movies: 
+Array(21) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:231:11
+Creating slide 0: 
+Object { _title: "Predator", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/vQhYhYsOBECkQzvSC3jInKv9CLf.jpg", _genres: (4) […], _synopsis: "A team of elite commandos on a secret mission in a Central American jungle come to find themselves hunted by an extraterrestrial warrior.", _runtime: "107 min", _videos: (3) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 1: 
+Object { _title: "The Texas Chain Saw Massacre", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/mpgkRPH1GNkMCgdPk2OMyHzAks7.jpg", _genres: (1) […], _synopsis: "Five friends head out to rural Texas to visit the grave of a grandfather. On the way they stumble across what appears to be a deserted house, only to discover something sinister within. Something armed with a chainsaw.", _runtime: "83 min", _videos: (19) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 2: 
+Object { _title: "Summer Wars", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/yHy8TrRLnuBZ4t2C0l0pSpRXVHO.jpg", _genres: (2) […], _synopsis: "Teenage math whiz Kenji Koiso agrees to take a summer job at the Nagano hometown of his crush, Natsuki. When he arrives, he finds that her family have reunited to celebrate the 90th birthday of their matriarch. His job: pretend to be Natsuki's fiancé. Meanwhile, his attempt to solve a mathematical equation causes a parallel world's collision with Earth.", _runtime: "114 min", _videos: (2) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 3: 
+Object { _title: "The Final Girls", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/gQYKSRVo5iZACFOY6x50RblI6rx.jpg", _genres: (2) […], _synopsis: "A young woman grieving the loss of her mother, a famous scream queen from the 1980s, finds herself pulled into the world of her mom's most famous movie. Reunited, the women must fight off the film's maniacal killer.", _runtime: "91 min", _videos: (1) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 4: 
+Object { _title: "Idle Hands", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/mCO4gU1lkViGXTkoRBEYrvjDIJu.jpg", _genres: (4) […], _synopsis: "Anton is a cheerful but exceedingly non-ambitious 17-year-old stoner who lives to stay buzzed, watch TV, and moon over Molly, the beautiful girl who lives next door. However, it turns out that the old cliché about idle hands being the devil's playground has a kernel of truth after all.", _runtime: "92 min", _videos: (8) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 5: 
+Object { _title: "Scream", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/lr9ZIrmuwVmZhpZuTCW8D9g0ZJe.jpg", _genres: (3) […], _synopsis: "A year after the murder of her mother, a teenage girl is terrorized by a masked killer who targets her and her friends by using scary movies as part of a deadly game.", _runtime: "112 min", _videos: (21) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 6: 
+Object { _title: "Beetlejuice", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/nnl6OWkyPpuMm595hmAxNW3rZFn.jpg", _genres: (2) […], _synopsis: "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home.", _runtime: "92 min", _videos: (12) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 7: 
+Object { _title: "Paprika", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/bLUUr474Go1DfeN1HLjE3rnZXBq.jpg", _genres: (3) […], _synopsis: "When a machine that allows therapists to enter their patient's dreams is stolen, all hell breaks loose. Only a young female therapist can stop it and recover it before damage is done: Paprika.", _runtime: "90 min", _videos: (2) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 8: 
+Object { _title: "Perfect Blue", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/6WTiOCfDPP8XV4jqfloiVWf7KHq.jpg", _genres: (2) […], _synopsis: "Encouraged by her managers, rising pop star Mima takes on a recurring role on a popular TV show, when suddenly her handlers and collaborators begin turning up murdered.", _runtime: "82 min", _videos: (7) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 9: 
+Object { _title: "The Return of the Living Dead", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/oNsV9BychAe4Sk6xFKp558Rlpyz.jpg", _genres: (3) […], _synopsis: "When foreman Frank shows new employee Freddy a secret military experiment in a supply warehouse in Louisville, Kentucky, the two klutzes accidentally release a gas that reanimates corpses into flesh-eating zombies. As the epidemic spreads throughout the town, and the creatures satisfy their hunger in gory and outlandish ways, Frank and Freddy fight to survive with the help of their boss and a mysterious mortician.", _runtime: "91 min", _videos: (17) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 10: 
+Object { _title: "Little Shop of Horrors", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/iKkbN17OmFosaW6asCNZTTsyvpu.jpg", _genres: (2) […], _synopsis: "Seymour Krelborn is a nerdy orphan working at Mushnik's; a flower shop in urban Skid Row. He harbors a crush on fellow co-worker, Audrey Fulquard, and is berated by Mr. Mushnik daily. One day, Seymour finds a very mysterious unidentified plant which he calls Audrey II. The plant seems to have a craving for blood and soon begins to sing for his supper.", _runtime: "94 min", _videos: (10) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 11: 
+Object { _title: "Big Trouble in Little China", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/aeGy6SZua7eFXEZP9zAvrLkkbI2.jpg", _genres: (4) […], _synopsis: "Truck driver Jack Burton gets embroiled in a supernatural battle when his best friend Wang Chi's green-eyed fiancée is kidnapped by henchmen of the sorcerer Lo Pan, who must marry a girl with green eyes in order to return to the human realm.", _runtime: "100 min", _videos: (6) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 12: 
+Object { _title: "The Running Man", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/GTAUOhO4BN0peJVvxGEQydJvUO.jpg", _genres: (3) […], _synopsis: "By 2017, the global economy has collapsed and U.S. society has become a totalitarian police state, censoring all cultural activity. The government pacifies the populace by broadcasting a number of game shows in which convicted criminals fight for their lives, including the gladiator-style The Running Man, hosted by the ruthless Damon Killian, where “runners” attempt to evade “stalkers” and certain death for a chance to be pardoned and set free.", _runtime: "100 min", _videos: (3) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 13: 
+Object { _title: "Escape from New York", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/vH9llaphjAssRGi0k7e75tD40Ce.jpg", _genres: (2) […], _synopsis: "In a world ravaged by crime, the entire island of Manhattan has been converted into a walled prison where brutal prisoners roam free. After the US president crash-lands inside, war hero Snake Plissken has 24 hours to bring him back.", _runtime: "99 min", _videos: (11) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 14: 
+Object { _title: "They Live", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/ngnybFTuopfbfmmEeX9jjBQQmF6.jpg", _genres: (2) […], _synopsis: "A lone drifter stumbles upon a unique pair of sunglasses that reveal aliens are systematically gaining control of the Earth by masquerading as humans and lulling the public into submission.", _runtime: "93 min", _videos: (10) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 15: 
+Object { _title: "Private House of the SS", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/bQFkim4BLyg53QtmJAijiXy1JD5.jpg", _genres: (4) […], _synopsis: "Top Nazi officials, intent on rooting out traitors and those in the military who may be plotting to overthrow Adolf Hitler, recruit and train a group of beautiful prostitutes whose mission is to use any means necessary to uncover plots against the Fuhrer.", _runtime: "95 min", _videos: (1) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 16: 
+Object { _title: "Night of the Creeps", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/A3s2tQGNb6mhlr1hPZeE5F8IUwp.jpg", _genres: (3) […], _synopsis: "In 1959, an alien experiment crashes to earth and infects a fraternity member. They freeze the body, but in the modern day, two geeks pledging a fraternity accidentally thaw the corpse, which proceeds to infect the campus with parasites that transform their hosts into killer zombies.", _runtime: "88 min", _videos: (1) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 17: 
+Object { _title: "The Thing", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/tzGY49kseSE9QAKk47uuDGwnSCu.jpg", _genres: (3) […], _synopsis: "A twelve-man team at a remote Antarctic research station discovers an alien buried in the snow for over 100,000 years. Soon unfrozen, the form-changing creature wreaks havoc, creates terror...And becomes one of them.", _runtime: "109 min", _videos: (16) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 18: 
+Object { _title: "Redline", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/yUkH0y9OsY7J08Dvfzi1P0di559.jpg", _genres: (3) […], _synopsis: "A daredevil driver is determined to compete in Redline, the most popular race in the galaxy. The race only occurs every five years, but in order to participate he must overcome the mafia, the government and even love.", _runtime: "102 min", _videos: (1) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 19: 
+Object { _title: "Vampire Hunter D: Bloodlust", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/4hJUWgdmoFsNpzyTN6QjoZcaivO.jpg", _genres: (6) […], _synopsis: "D, a legendary dhampir competes with a motley family of bounty hunters to track down Charlotte Elbourne, a young woman who has seemingly been abducted by vampire nobleman Meier Link.", _runtime: "103 min", _videos: (2) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Creating slide 20: 
+Object { _title: "Tucker and Dale vs. Evil", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/8shwLEDzajJGSfLgbpac8x8xn1U.jpg", _genres: (2) […], _synopsis: "Two hillbillies are suspected of being killers by a group of paranoid college kids camping near the duo's West Virginian cabin. As the body count climbs, so does the fear and confusion as the college kids try to seek revenge against the pair.", _runtime: "89 min", _videos: (1) […], _votes: [], hasAnsweredSeen: false, hasSeen: null, … }
+script.js:236:13
+Uncaught ReferenceError: answerSeen is not defined
+    onclick https://moviepoll.mewling-goat-tavern.online/:1
+2 moviepoll.mewling-goat-tavern.online:1:1

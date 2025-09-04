@@ -335,6 +335,9 @@ function openVideo(key) {
   window.open(`https://www.youtube.com/watch?v=${key}`, '_blank');
 }
 
+// Make functions globally accessible for HTML onclick handlers
+window.openVideo = openVideo;
+
 // Handle the "Have you seen it?" question
 function answerSeen(movieIndex, hasSeen) {
   // Update the vote state data structure
@@ -345,6 +348,9 @@ function answerSeen(movieIndex, hasSeen) {
   // Update the UI to reflect the new state
   updateMovieVotingUI(movieIndex);
 }
+
+// Make functions globally accessible for HTML onclick handlers
+window.answerSeen = answerSeen;
 
 // Submit a vote (store locally and advance slide)
 function submitVote(movieIndex, voteValue) {
@@ -374,6 +380,9 @@ function submitVote(movieIndex, voteValue) {
   updateMovieVotingUI(movieIndex);
   showVoteConfirmationAndAdvance(movieIndex);
 }
+
+// Make functions globally accessible for HTML onclick handlers
+window.submitVote = submitVote;
 
 // Update the UI based on the vote state data structure
 function updateMovieVotingUI(movieIndex) {
