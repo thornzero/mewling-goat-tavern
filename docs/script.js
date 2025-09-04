@@ -1,7 +1,7 @@
 // script.js - Movie Poll Application
-
 // === CONFIGURATION ===
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
+const DEBUG = false; // Set to true for debugging
 
 // State
 const movie ={
@@ -44,13 +44,32 @@ function debugLog(message, level = 'info', data = null) {
 function fetchMovieTitles() {
   const cb = 'movieListCallback';
   window[cb] = function (resp) {  
+    console.log('Raw response from Google Sheet:', resp);
+    
     if (Array.isArray(resp)) {
-      movieData = resp.map(m => {
-        const match = m.title.match(/(.+?)\s*\((\d{4})\)$/);
-        const title = match ? match[1].trim() : m.title;
+      movieData = resp.map((m, index) => {
+        console.log(`Processing movie ${index}:`, m);
+        
+        // Handle different possible property names for title
+        const title = m.title || m.Title || m.name || m.Name || m.movie || m.Movie || '';
+        
+        if (!title) {
+          console.error('No title found for movie:', m);
+          return null;
+        }
+        
+        const match = title.match(/(.+?)\s*\((\d{4})\)$/);
+        const parsedTitle = match ? match[1].trim() : title;
         const year = match ? match[2] : null;
-        return { ...movie, title: title, year: year };
-      });
+        
+        return { 
+          title: parsedTitle, 
+          year: year,
+          originalTitle: title
+        };
+      }).filter(m => m !== null); // Remove any null entries
+      
+      console.log('Processed movie data:', movieData);
       remaining = movieData.length;
       startSearchAndFetch();
     } else {
@@ -82,8 +101,8 @@ function startSearchAndFetch() {
       }
       delete window[searchCb];
     };
-    let url = `${proxyURL}?action=search&query=${encodeURIComponent(title)}`;
-    if (year) url += `&year=${year}`;
+    let url = `${proxyURL}?action=search&query=${encodeURIComponent(m.title)}`;
+    if (m.year) url += `&year=${encodeURIComponent(m.year)}`;
     url += `&callback=${searchCb}`;
     const s = document.createElement('script');
     s.src = url;
@@ -169,21 +188,21 @@ function createSlides(movies) {
   
   movies.forEach((m, i) => {
     const slide = document.createElement("div");
-    const video = m.videos[0]
+    const video = m.videos && m.videos[0] ? m.videos[0] : null;
     slide.className = "swiper-slide bg-gray-700 p-6 rounded-lg shadow-lg";
     slide.innerHTML = `
       <div class="flex gap-6 h-full">
         <div class="w-1/3">
           <img class="w-full rounded-md mb-4" src="${m.poster}" alt="${m.title}">
           <div class="flex flex-wrap gap-2 mb-4">
-            <button onclick="openVideo('${video.key}')" class="px-3 py-1 bg-pink-500 rounded hover:bg-pink-600 transition text-sm">▶ ${video.type}</button>
+            ${video ? `<button onclick="openVideo('${video.key}')" class="px-3 py-1 bg-pink-500 rounded hover:bg-pink-600 transition text-sm">▶ ${video.type}</button>` : ''}
           </div>
         </div>
         
         <div class="flex-1 flex flex-col">
           <h2 class="text-2xl font-semibold text-pink-500 mb-2">${m.title}</h2>
           <div class="flex flex-wrap gap-2 mb-3">
-            ${m.genres.map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-sm">${t}</span>`).join('')}
+            ${m.genres ? m.genres.map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-sm">${t}</span>`).join('') : ''}
           </div>
           <p class="text-gray-200 mb-3 flex-1">${m.synopsis}</p>
           <p class="font-medium mb-4">${m.runtime}</p>

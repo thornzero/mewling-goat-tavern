@@ -5,6 +5,32 @@ if (!TMDB_API_KEY) {
   throw new Error('TMDB_API_KEY not configured in script properties');
 }
 
+// === CONSTANTS ===
+const SHEET_NAMES = {
+  MARQUEE: 'Marquee',
+  VOTES: 'Votes'
+};
+
+const VOTE_COLUMNS = {
+  TITLE: 1,    // Column B
+  VOTE: 3,      // Column D  
+  SEEN: 4       // Column E
+};
+
+const CACHE_DURATION = {
+  API_RESPONSE: 21600,  // 6 hours
+  RATE_LIMIT: 60        // 1 minute
+};
+
+const VOTE_RANKS = {
+  '⭐': 1,  // Rewatch - highest rank
+  '🔥': 2,  // Stoked
+  '⏳': 3,  // Later
+  '😐': 4,  // Meh
+  '💤': 5,  // Skip
+  '🚫': 6   // Never - lowest rank
+};
+
 // Rate limiting configuration
 const RATE_LIMIT = {
   MAX_REQUESTS_PER_MINUTE: 40,  // TMDB allows 40 requests per 10 seconds
@@ -23,6 +49,105 @@ const RATE_LIMIT = {
   };
 
 const cache = CacheService.getScriptCache();
+
+// === HELPER FUNCTIONS ===
+
+/**
+ * Creates a JSONP response
+ * @param {string} callback - JSONP callback function name
+ * @param {Object} data - Data to wrap in JSONP
+ * @returns {string} JSONP response
+ */
+function createJsonpResponse(callback, data) {
+  return callback + '(' + JSON.stringify(data) + ');';
+}
+
+/**
+ * Creates an error response
+ * @param {string} callback - JSONP callback function name
+ * @param {string} message - Error message
+ * @returns {string} JSONP error response
+ */
+function createErrorResponse(callback, message) {
+  return createJsonpResponse(callback, { error: message });
+}
+
+/**
+ * Creates a success response
+ * @param {string} callback - JSONP callback function name
+ * @param {Object} data - Additional data to include
+ * @returns {string} JSONP success response
+ */
+function createSuccessResponse(callback, data = {}) {
+  return createJsonpResponse(callback, { status: 'ok', ...data });
+}
+
+/**
+ * Gets a sheet by name with error handling
+ * @param {string} name - Sheet name
+ * @returns {GoogleAppsScript.Spreadsheet.Sheet} The sheet
+ * @throws {Error} If sheet not found
+ */
+function getSheet(name) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+  if (!sheet) {
+    throw new Error(`Sheet '${name}' not found`);
+  }
+  return sheet;
+}
+
+/**
+ * Validates required parameters
+ * @param {Object} params - Parameters object
+ * @param {string[]} requiredFields - Array of required field names
+ * @throws {Error} If any required fields are missing
+ */
+function validateRequiredParams(params, requiredFields) {
+  const missing = requiredFields.filter(field => !params[field]);
+  if (missing.length > 0) {
+    throw new Error(`Missing required parameters: ${missing.join(', ')}`);
+  }
+}
+
+/**
+ * Submits a single vote to the sheet
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - Votes sheet
+ * @param {string} movieTitle - Movie title
+ * @param {string} userName - User name
+ * @param {string} vote - Vote value
+ * @param {string} seen - Seen status
+ */
+function submitVote(sheet, movieTitle, userName, vote, seen) {
+  sheet.appendRow([
+    new Date(),
+    movieTitle || '',
+    userName || '',
+    vote || '',
+    seen || ''
+  ]);
+}
+
+/**
+ * Submits multiple votes to the sheet
+ * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - Votes sheet
+ * @param {Array} votes - Array of vote objects
+ * @returns {number} Number of votes submitted
+ */
+function submitBatchVotes(sheet, votes) {
+  const rowsToAppend = votes.map(vote => [
+    new Date(vote.timestamp || Date.now()),
+    vote.movieTitle || '',
+    vote.userName || '',
+    vote.vote || '',
+    vote.seen || ''
+  ]);
+  
+  if (rowsToAppend.length > 0) {
+    sheet.getRange(sheet.getLastRow() + 1, 1, rowsToAppend.length, 5).setValues(rowsToAppend);
+  }
+  
+  return rowsToAppend.length;
+}
 
 // Rate limiting functions
 function checkRateLimit() {
@@ -58,7 +183,7 @@ function CachedFetch(url, callback) {
       checkRateLimit();
       jsonText = UrlFetchApp.fetch(url, fetchOpts).getContentText();
       // cache for 6 hours (max is 21600 seconds)
-      cache.put(url, jsonText, 21600);
+      cache.put(url, jsonText, CACHE_DURATION.API_RESPONSE);
     } catch (error) {
       // Return rate limit error as JSONP
       return callback + '(' + JSON.stringify({ 
@@ -74,190 +199,188 @@ function doGet(e) {
   const p = e.parameter;
   const action = p.action || 'vote';
   const cb = p.callback || 'callback';
-  let body;
-
   
-
-  switch (action) {
-    // ─── listMovies ──────────────────────────────────────────────────────
-    case 'listMovies': {
-      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Marquee');
-      const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1).getValues();
-      const titles = rows.map(r => r[0]).filter(Boolean);
-      body = cb + '(' + JSON.stringify(titles) + ');';
-      break;
-    }
-
-    // ─── search by title ─────────────────────────────────────────────────
-    case 'search': {
-      if (!p.query) {
-        body = cb + '(' + JSON.stringify({ error: 'Missing query' }) + ');';
-      } else {
-        // Build URL with optional year filter
-        let url = 'https://api.themoviedb.org/3/search/movie'
-          + '?language=en-US'
-          + '&query=' + encodeURIComponent(p.query);
-        if (p.year) {
-          url += '&year=' + encodeURIComponent(p.year);
-        }
-        body = CachedFetch(url, cb);
-      }
-      break;
-    }
-
-    // ─── movie details ───────────────────────────────────────────────────
-    case 'movie': {
-      if (!p.id) {
-        body = cb + '(' + JSON.stringify({ error: 'Missing id parameter' }) + ');';
-      } else {
-        const url = 'https://api.themoviedb.org/3/movie/' + encodeURIComponent(p.id)
-          + '?language=en-US';
-        body = CachedFetch(url, cb);
-      }
-      break;
-    }
-
-    // ─── videos (trailers/teasers) ────────────────────────────────────────
-    case 'videos': {
-      if (!p.id) {
-        body = cb + '(' + JSON.stringify({ error: 'Missing id parameter' }) + ');';
-      } else {
-        const url = 'https://api.themoviedb.org/3/movie/' + encodeURIComponent(p.id)
-          + '/videos?language=en-US';
-        body = CachedFetch(url, cb);
-      }
-      break;
-    }
-
-    // ─── vote submission ─────────────────────────────────────────────────
-    case 'vote': {
-      const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Votes');
-      sheet.appendRow([
-        new Date(),
-        p.movieTitle || '',
-        p.userName || '',
-        p.vote || '',
-        p.seen || ''
-      ]);
-      body = cb + '(' + JSON.stringify({ status: 'ok' }) + ');';
-      break;
-    }
-
-    // ─── batch vote submission ───────────────────────────────────────────
-    case 'batchVote': {
-      if (!p.votes) {
-        body = cb + '(' + JSON.stringify({ error: 'Missing votes parameter' }) + ');';
-      } else {
-        try {
-          const votes = JSON.parse(p.votes);
-          const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Votes');
-          
-          // Prepare all rows to append
-          const rowsToAppend = votes.map(vote => [
-            new Date(vote.timestamp || Date.now()),
-            vote.movieTitle || '',
-            vote.userName || '',
-            vote.vote || '',
-            vote.seen || ''
-          ]);
-          
-          // Append all rows at once
-          if (rowsToAppend.length > 0) {
-            sheet.getRange(sheet.getLastRow() + 1, 1, rowsToAppend.length, 5).setValues(rowsToAppend);
-            
-            // Automatically update appeal values after votes are submitted
-            try {
-              const appealResult = updateAppealValues();
-              body = cb + '(' + JSON.stringify({ 
-                status: 'ok',
-                submitted: rowsToAppend.length,
-                appealUpdated: appealResult.updated,
-                appealTotal: appealResult.total
-              }) + ');';
-            } catch (appealError) {
-              // If appeal update fails, still return success for vote submission
-              body = cb + '(' + JSON.stringify({ 
-                status: 'ok',
-                submitted: rowsToAppend.length,
-                appealError: appealError.message
-              }) + ');';
-            }
-          } else {
-            body = cb + '(' + JSON.stringify({ 
-              status: 'ok',
-              submitted: 0 
-            }) + ');';
-          }
-        } catch (error) {
-          body = cb + '(' + JSON.stringify({ 
-            error: 'Invalid votes JSON: ' + error.message 
-          }) + ');';
-        }
-      }
-      break;
-    }
-
-    // ─── update appeal values ────────────────────────────────────────────
-    case 'updateAppeal': {
-      try {
-        const result = updateAppealValues();
-        body = cb + '(' + JSON.stringify({ 
-          status: 'ok',
-          updated: result.updated,
-          total: result.total
-        }) + ');';
-      } catch (error) {
-        body = cb + '(' + JSON.stringify({ 
-          error: 'Failed to update appeal: ' + error.message 
-        }) + ');';
-      }
-      break;
-    }
-
-    // ─── invalid action ──────────────────────────────────────────────────
-    default: {
-      body = cb + '(' + JSON.stringify({ error: 'Invalid action' }) + ');';
-    }
+  try {
+    let body = handleAction(action, p, cb);
+    return ContentService
+      .createTextOutput(body)
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  } catch (error) {
+    console.error('Error in doGet:', error);
+    return ContentService
+      .createTextOutput(createErrorResponse(cb, error.message))
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
   }
-
-  // Return JSONP-wrapped response as JavaScript
-  return ContentService
-    .createTextOutput(body)
-    .setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
 
-// Function to update appeal values based on vote ranks
+/**
+ * Handles different actions based on the action parameter
+ * @param {string} action - The action to perform
+ * @param {Object} params - Request parameters
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleAction(action, params, callback) {
+  switch (action) {
+    case 'listMovies':
+      return handleListMovies(callback);
+    case 'search':
+      return handleSearch(params, callback);
+    case 'movie':
+      return handleMovie(params, callback);
+    case 'videos':
+      return handleVideos(params, callback);
+    case 'vote':
+      return handleVote(params, callback);
+    case 'batchVote':
+      return handleBatchVote(params, callback);
+    case 'updateAppeal':
+      return handleUpdateAppeal(callback);
+    default:
+      throw new Error('Invalid action');
+  }
+}
+
+/**
+ * Fetches movie titles from the Marquee sheet
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response with movie titles array
+ */
+function handleListMovies(callback) {
+  const sheet = getSheet(SHEET_NAMES.MARQUEE);
+  const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1).getValues();
+  const titles = rows.map(r => r[0]).filter(Boolean);
+  return createJsonpResponse(callback, titles);
+}
+
+/**
+ * Handles movie search requests
+ * @param {Object} params - Request parameters
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleSearch(params, callback) {
+  validateRequiredParams(params, ['query']);
+  
+  // Build URL with optional year filter
+  let url = 'https://api.themoviedb.org/3/search/movie'
+    + '?language=en-US'
+    + '&query=' + encodeURIComponent(params.query);
+  if (params.year) {
+    url += '&year=' + encodeURIComponent(params.year);
+  }
+  return CachedFetch(url, callback);
+}
+
+/**
+ * Handles movie details requests
+ * @param {Object} params - Request parameters
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleMovie(params, callback) {
+  validateRequiredParams(params, ['id']);
+  
+  const url = 'https://api.themoviedb.org/3/movie/' + encodeURIComponent(params.id)
+    + '?language=en-US';
+  return CachedFetch(url, callback);
+}
+
+/**
+ * Handles movie videos requests
+ * @param {Object} params - Request parameters
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleVideos(params, callback) {
+  validateRequiredParams(params, ['id']);
+  
+  const url = 'https://api.themoviedb.org/3/movie/' + encodeURIComponent(params.id)
+    + '/videos?language=en-US';
+  return CachedFetch(url, callback);
+}
+
+/**
+ * Handles single vote submission
+ * @param {Object} params - Request parameters
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleVote(params, callback) {
+  const sheet = getSheet(SHEET_NAMES.VOTES);
+  submitVote(sheet, params.movieTitle, params.userName, params.vote, params.seen);
+  return createSuccessResponse(callback);
+}
+
+/**
+ * Handles batch vote submission
+ * @param {Object} params - Request parameters
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleBatchVote(params, callback) {
+  validateRequiredParams(params, ['votes']);
+  
+  try {
+    const votes = JSON.parse(params.votes);
+    const sheet = getSheet(SHEET_NAMES.VOTES);
+    
+    const submittedCount = submitBatchVotes(sheet, votes);
+    
+    // Automatically update appeal values after votes are submitted
+    try {
+      const appealResult = updateAppealValues();
+      return createSuccessResponse(callback, {
+        submitted: submittedCount,
+        appealUpdated: appealResult.updated,
+        appealTotal: appealResult.total
+      });
+    } catch (appealError) {
+      // If appeal update fails, still return success for vote submission
+      return createSuccessResponse(callback, {
+        submitted: submittedCount,
+        appealError: appealError.message
+      });
+    }
+  } catch (error) {
+    throw new Error('Invalid votes JSON: ' + error.message);
+  }
+}
+
+/**
+ * Handles appeal values update
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleUpdateAppeal(callback) {
+  const result = updateAppealValues();
+  return createSuccessResponse(callback, {
+    updated: result.updated,
+    total: result.total
+  });
+}
+
+/**
+ * Updates appeal values based on vote ranks
+ * @returns {Object} Result with updated and total counts
+ */
 function updateAppealValues() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const votesSheet = ss.getSheetByName('Votes');
-  const marqueeSheet = ss.getSheetByName('Marquee');
-  
-  if (!votesSheet || !marqueeSheet) {
-    throw new Error('Required sheets not found');
-  }
+  const votesSheet = getSheet(SHEET_NAMES.VOTES);
+  const marqueeSheet = getSheet(SHEET_NAMES.MARQUEE);
   
   // Get all votes
   const votesData = votesSheet.getRange(2, 1, votesSheet.getLastRow() - 1, 5).getValues();
-  
-  // Vote rank mapping based on emoji
-  const voteRanks = {
-    '⭐': 1,  // Rewatch - highest rank
-    '🔥': 2,  // Stoked
-    '⏳': 3,  // Later
-    '😐': 4,  // Meh
-    '💤': 5,  // Skip
-    '🚫': 6   // Never - lowest rank
-  };
   
   // Calculate appeal for each movie
   const movieAppeals = {};
   
   votesData.forEach(row => {
-    const movieTitle = row[1]; // Column B - Movie Title
-    const vote = row[3];       // Column D - Vote (emoji)
-    const seen = row[4];       // Column E - Seen status
+    const movieTitle = row[VOTE_COLUMNS.TITLE]; // Column B - Movie Title
+    const vote = row[VOTE_COLUMNS.VOTE];       // Column D - Vote (emoji)
+    const seen = row[VOTE_COLUMNS.SEEN];       // Column E - Seen status
     
-    if (movieTitle && vote && voteRanks.hasOwnProperty(vote)) {
+    if (movieTitle && vote && VOTE_RANKS.hasOwnProperty(vote)) {
       if (!movieAppeals[movieTitle]) {
         movieAppeals[movieTitle] = {
           totalVotes: 0,
@@ -268,7 +391,7 @@ function updateAppealValues() {
       }
       
       movieAppeals[movieTitle].totalVotes++;
-      movieAppeals[movieTitle].totalAppeal += voteRanks[vote];
+      movieAppeals[movieTitle].totalAppeal += VOTE_RANKS[vote];
       
       // Track seen status for visibility score
       if (seen === "✅") {
