@@ -68,22 +68,27 @@ function startSearchAndFetch() {
   movieData.forEach((m, i) => {
     const searchCb = `searchCb_${i}`;
     window[searchCb] = function (resp) {
+      console.log(`Search results for "${m.title}" (${m.year}):`, resp);
       if (resp && resp.results && resp.results.length > 0) {
         debugLog('Search result', 'debug', resp.results);
         let foundMatch = false;
         resp.results.forEach(r => {
-          debugLog('Search result', 'debug', r);
-          if (r.year === m.year) {
+          console.log(`Checking result: ${r.title} (${r.year}) vs ${m.title} (${m.year})`);
+          if (r.year == m.year) { // Use == instead of === to handle string vs number comparison
+            console.log(`Found match! Fetching details for ${r.title}`);
             fetchDetails(r.id, i);
             foundMatch = true;
           }
         });
-        // If no exact year match found, still call handleDone to prevent hanging
+        // If no exact year match found, try using the first result as fallback
         if (!foundMatch) {
-          debugLog(`No exact year match for "${m.title}" (${m.year})`, 'warn');
-          handleDone();
+          console.log(`No exact year match for "${m.title}" (${m.year}), using first result as fallback`);
+          const firstResult = resp.results[0];
+          console.log(`Using fallback: ${firstResult.title} (${firstResult.year})`);
+          fetchDetails(firstResult.id, i);
         }
       } else {
+        console.log(`No search results for "${m.title}"`);
         debugLog(`No result for "${m.title}"`, 'error');
         handleDone();
       }
