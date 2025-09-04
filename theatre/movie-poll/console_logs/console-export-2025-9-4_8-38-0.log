@@ -1,0 +1,53 @@
+Raw response from Google Sheet: 
+Array(21) [ "Predator (1987)", "The Texas Chain Saw Massacre (1974)", "Summer Wars (2009)", "The Final Girls (2015)", "Idle Hands (1999)", "Scream (1996)", "Beetlejuice (1988)", "Paprika (2006)", "Perfect Blue (1997)", "The Return of the Living Dead (1985)", … ]
+script.js:47:13
+Processing movie 0: Predator (1987) script.js:51:17
+Processing movie 1: The Texas Chain Saw Massacre (1974) script.js:51:17
+Processing movie 2: Summer Wars (2009) script.js:51:17
+Processing movie 3: The Final Girls (2015) script.js:51:17
+Processing movie 4: Idle Hands (1999) script.js:51:17
+Processing movie 5: Scream (1996) script.js:51:17
+Processing movie 6: Beetlejuice (1988) script.js:51:17
+Processing movie 7: Paprika (2006) script.js:51:17
+Processing movie 8: Perfect Blue (1997) script.js:51:17
+Processing movie 9: The Return of the Living Dead (1985) script.js:51:17
+Processing movie 10: Little Shop of Horrors (1986) script.js:51:17
+Processing movie 11: Big Trouble in Little China (1986) script.js:51:17
+Processing movie 12: The Running Man (1987) script.js:51:17
+Processing movie 13: Escape from New York (1981) script.js:51:17
+Processing movie 14: They Live (1988) script.js:51:17
+Processing movie 15: House (1977) script.js:51:17
+Processing movie 16: Night of the Creeps (1986) script.js:51:17
+Processing movie 17: The Thing (1982) script.js:51:17
+Processing movie 18: Redline (2009) script.js:51:17
+Processing movie 19: Vampire Hunter D: Bloodlust (2000) script.js:51:17
+Processing movie 20: Tucker and Dale vs. Evil (2010) script.js:51:17
+Processed movie data: 
+Array(21) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:70:15
+Movies remaining to process: 20 script.js:178:11
+Movies remaining to process: 19 script.js:178:11
+Movies remaining to process: 18 script.js:178:11
+Movies remaining to process: 17 script.js:178:11
+Movies remaining to process: 16 script.js:178:11
+Movies remaining to process: 15 script.js:178:11
+Movies remaining to process: 14 script.js:178:11
+Movies remaining to process: 13 script.js:178:11
+Movies remaining to process: 12 script.js:178:11
+Movies remaining to process: 11 script.js:178:11
+Movies remaining to process: 10 script.js:178:11
+Movies remaining to process: 9 script.js:178:11
+Movies remaining to process: 8 script.js:178:11
+Movies remaining to process: 7 script.js:178:11
+Movies remaining to process: 6 script.js:178:11
+Movies remaining to process: 5 script.js:178:11
+Movies remaining to process: 4 script.js:178:11
+Movies remaining to process: 3 script.js:178:11
+Movies remaining to process: 2 script.js:178:11
+Movies remaining to process: 1 script.js:178:11
+Movies remaining to process: 0 script.js:178:11
+All movies processed! Loading complete. script.js:181:13
+GET
+https://moviepoll.mewling-goat-tavern.online/undefined
+[HTTP/2 404  31ms]
+

@@ -180,33 +180,63 @@ function handleDone() {
   if (remaining === 0) {
     console.log('All movies processed! Loading complete.');
     moviesLoaded = true;
-    // If user is already waiting, show the poll
-    const startBtn = document.getElementById('start-poll-btn');
-    if (startBtn && startBtn.textContent === 'Loading movies...') {
-      console.log('User is waiting, showing movie poll...');
-      showMoviePoll();
-    }
-    // If we're already in the poll screen, create slides
-    if (document.getElementById('movie-poll-screen') && !document.getElementById('movie-poll-screen').classList.contains('hidden')) {
-      console.log('Already in poll screen, creating slides...');
-      createSlides(movieData);
+    
+    // Check if all movies have been fully loaded (have poster, genres, etc.)
+    const allMoviesLoaded = movieData.every(movie => movie.poster && movie.genres && movie.synopsis);
+    console.log('All movies fully loaded:', allMoviesLoaded);
+    
+    if (allMoviesLoaded) {
+      // If user is already waiting, show the poll
+      const startBtn = document.getElementById('start-poll-btn');
+      if (startBtn && startBtn.textContent === 'Loading movies...') {
+        console.log('User is waiting, showing movie poll...');
+        showMoviePoll();
+      }
+      // If we're already in the poll screen, create slides
+      if (document.getElementById('movie-poll-screen') && !document.getElementById('movie-poll-screen').classList.contains('hidden')) {
+        console.log('Already in poll screen, creating slides...');
+        createSlides(movieData);
+      }
+    } else {
+      console.log('Movies not fully loaded yet, waiting...');
+      // Wait a bit and check again
+      setTimeout(() => {
+        if (remaining === 0) {
+          const allMoviesLoaded = movieData.every(movie => movie.poster && movie.genres && movie.synopsis);
+          if (allMoviesLoaded) {
+            const startBtn = document.getElementById('start-poll-btn');
+            if (startBtn && startBtn.textContent === 'Loading movies...') {
+              showMoviePoll();
+            }
+          }
+        }
+      }, 2000);
     }
   }
 }
 
 // Render carousel slides with guided voting flow
 function createSlides(movies) {
+  console.log('Creating slides with movies:', movies);
   const container = document.getElementById("movie-carousel");
   container.innerHTML = "";
   
   movies.forEach((m, i) => {
+    console.log(`Creating slide ${i}:`, m);
+    
+    // Safety checks for missing data
+    if (!m || !m.title) {
+      console.error(`Invalid movie data at index ${i}:`, m);
+      return;
+    }
+    
     const slide = document.createElement("div");
     const video = m.videos && m.videos[0] ? m.videos[0] : null;
     slide.className = "swiper-slide bg-gray-700 p-6 rounded-lg shadow-lg";
     slide.innerHTML = `
       <div class="flex gap-6 h-full">
         <div class="w-1/3">
-          <img class="w-full rounded-md mb-4" src="${m.poster}" alt="${m.title}">
+          <img class="w-full rounded-md mb-4" src="${m.poster || 'https://via.placeholder.com/300x450?text=No+Image'}" alt="${m.title}">
           <div class="flex flex-wrap gap-2 mb-4">
             ${video ? `<button onclick="openVideo('${video.key}')" class="px-3 py-1 bg-pink-500 rounded hover:bg-pink-600 transition text-sm">▶ ${video.type}</button>` : ''}
           </div>
@@ -215,10 +245,10 @@ function createSlides(movies) {
         <div class="flex-1 flex flex-col">
           <h2 class="text-2xl font-semibold text-pink-500 mb-2">${m.title}</h2>
           <div class="flex flex-wrap gap-2 mb-3">
-            ${m.genres ? m.genres.map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-sm">${t}</span>`).join('') : ''}
+            ${m.genres && Array.isArray(m.genres) ? m.genres.map(t => `<span class="px-2 py-1 bg-gray-600 rounded-full text-sm">${t}</span>`).join('') : ''}
           </div>
-          <p class="text-gray-200 mb-3 flex-1">${m.synopsis}</p>
-          <p class="font-medium mb-4">${m.runtime}</p>
+          <p class="text-gray-200 mb-3 flex-1">${m.synopsis || 'No synopsis available'}</p>
+          <p class="font-medium mb-4">${m.runtime || 'Runtime unknown'}</p>
           
           <!-- Voting Flow -->
           <div id="voting-flow-${i}" class="space-y-4">
@@ -537,6 +567,7 @@ function showMoviePoll() {
   
   // Initialize swiper if not already done
   if (!swiper && movieData.length > 0) {
+    console.log('Creating slides in showMoviePoll with movieData:', movieData);
     createSlides(movieData);
   }
 }
