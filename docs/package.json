@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "version": "1.0.0",
-  "main": "script.js",
+  "main": "js/script.js",
   "scripts": {
     "build": "tailwindcss -i ./build/input.css -o ./build/output.css --watch",
     "build:prod": "tailwindcss -i ./build/input.css -o ./build/output.css --minify && cat ./build/custom.css >> ./build/output.css",

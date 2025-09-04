@@ -37,7 +37,8 @@ Add `?desktop=true` to the URL to force the desktop version on mobile devices.
 docs/
 ├── index.html              # Desktop version (auto-redirects mobile)
 ├── index-mobile.html       # Mobile-optimized version
-├── script.js               # Desktop JavaScript
+├── js/
+│   └── script.js           # Desktop JavaScript
 ├── script-mobile.js        # Mobile JavaScript
 ├── output.css              # Compiled Tailwind CSS
 ├── input.css               # Tailwind source + custom styles
