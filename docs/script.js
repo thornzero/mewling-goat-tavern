@@ -47,25 +47,23 @@ function fetchMovieTitles() {
     console.log('Raw response from Google Sheet:', resp);
     
     if (Array.isArray(resp)) {
-      movieData = resp.map((m, index) => {
-        console.log(`Processing movie ${index}:`, m);
+      movieData = resp.map((movieTitle, index) => {
+        console.log(`Processing movie ${index}:`, movieTitle);
         
-        // Handle different possible property names for title
-        const title = m.title || m.Title || m.name || m.Name || m.movie || m.Movie || '';
-        
-        if (!title) {
-          console.error('No title found for movie:', m);
+        // The response is an array of strings, not objects
+        if (!movieTitle || typeof movieTitle !== 'string') {
+          console.error('Invalid movie title:', movieTitle);
           return null;
         }
         
-        const match = title.match(/(.+?)\s*\((\d{4})\)$/);
-        const parsedTitle = match ? match[1].trim() : title;
+        const match = movieTitle.match(/(.+?)\s*\((\d{4})\)$/);
+        const parsedTitle = match ? match[1].trim() : movieTitle;
         const year = match ? match[2] : null;
         
         return { 
           title: parsedTitle, 
           year: year,
-          originalTitle: title
+          originalTitle: movieTitle
         };
       }).filter(m => m !== null); // Remove any null entries
       

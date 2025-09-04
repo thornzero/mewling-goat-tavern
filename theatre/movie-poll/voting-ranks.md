@@ -1,3 +1,5 @@
+# Voting Ranks
+
 | Rank  | Label   | Emoji  | Seen   | Meaning                       |
 | :---: | :-----: | :----: | :----: | :---------------------------- |
 |   1   | Rewatch |   ⭐   |   ✅   | would happily watch it again. |

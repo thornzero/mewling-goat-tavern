@@ -1,0 +1,51 @@
+Raw response from Google Sheet: 
+Array(21) [ "Predator (1987)", "The Texas Chain Saw Massacre (1974)", "Summer Wars (2009)", "The Final Girls (2015)", "Idle Hands (1999)", "Scream (1996)", "Beetlejuice (1988)", "Paprika (2006)", "Perfect Blue (1997)", "The Return of the Living Dead (1985)", … ]
+script.js:47:13
+Processing movie 0: Predator (1987) script.js:51:17
+No title found for movie: Predator (1987) script.js:57:19
+Processing movie 1: The Texas Chain Saw Massacre (1974) script.js:51:17
+No title found for movie: The Texas Chain Saw Massacre (1974) script.js:57:19
+    movieData https://moviepoll.mewling-goat-tavern.online/script.js:57
+    cb https://moviepoll.mewling-goat-tavern.online/script.js:50
+    <anonymous> https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec?action=listMovies&callback=movieListCallback:1
+Processing movie 2: Summer Wars (2009) script.js:51:17
+No title found for movie: Summer Wars (2009) script.js:57:19
+Processing movie 3: The Final Girls (2015) script.js:51:17
+No title found for movie: The Final Girls (2015) script.js:57:19
+Processing movie 4: Idle Hands (1999) script.js:51:17
+No title found for movie: Idle Hands (1999) script.js:57:19
+Processing movie 5: Scream (1996) script.js:51:17
+No title found for movie: Scream (1996) script.js:57:19
+Processing movie 6: Beetlejuice (1988) script.js:51:17
+No title found for movie: Beetlejuice (1988) script.js:57:19
+Processing movie 7: Paprika (2006) script.js:51:17
+No title found for movie: Paprika (2006) script.js:57:19
+Processing movie 8: Perfect Blue (1997) script.js:51:17
+No title found for movie: Perfect Blue (1997) script.js:57:19
+Processing movie 9: The Return of the Living Dead (1985) script.js:51:17
+No title found for movie: The Return of the Living Dead (1985) script.js:57:19
+Processing movie 10: Little Shop of Horrors (1986) script.js:51:17
+No title found for movie: Little Shop of Horrors (1986) script.js:57:19
+Processing movie 11: Big Trouble in Little China (1986) script.js:51:17
+No title found for movie: Big Trouble in Little China (1986) script.js:57:19
+Processing movie 12: The Running Man (1987) script.js:51:17
+No title found for movie: The Running Man (1987) script.js:57:19
+Processing movie 13: Escape from New York (1981) script.js:51:17
+No title found for movie: Escape from New York (1981) script.js:57:19
+Processing movie 14: They Live (1988) script.js:51:17
+No title found for movie: They Live (1988) script.js:57:19
+Processing movie 15: House (1977) script.js:51:17
+No title found for movie: House (1977) script.js:57:19
+Processing movie 16: Night of the Creeps (1986) script.js:51:17
+No title found for movie: Night of the Creeps (1986) script.js:57:19
+Processing movie 17: The Thing (1982) script.js:51:17
+No title found for movie: The Thing (1982) script.js:57:19
+Processing movie 18: Redline (2009) script.js:51:17
+No title found for movie: Redline (2009) script.js:57:19
+Processing movie 19: Vampire Hunter D: Bloodlust (2000) script.js:51:17
+No title found for movie: Vampire Hunter D: Bloodlust (2000) script.js:57:19
+Processing movie 20: Tucker and Dale vs. Evil (2010) script.js:51:17
+No title found for movie: Tucker and Dale vs. Evil (2010) script.js:57:19
+Processed movie data: 
+Array []
+script.js:72:15
