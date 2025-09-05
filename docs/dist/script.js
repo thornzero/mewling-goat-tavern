@@ -484,8 +484,19 @@ function showVoteConfirmationAndAdvance(movieIndex) {
  */
 function submitAllVotes() {
     // Get all movies that have been voted on
-    const votedMovies = movieData.filter(movie => movie.hasVoted);
-    if (votedMovies.length === 0) {
+    const movieVotes = {
+        votes: movieData.map((movie) => {
+            return {
+                timestamp: movie.vote?.timestamp ?? Date.now(),
+                movieTitle: movie.title,
+                userName: userName,
+                vibe: movie.vote?.vibe ?? 0,
+                seen: movie.vote?.seen ?? false
+            };
+        })
+    };
+    const totalVotes = movieVotes.votes.length;
+    if (totalVotes === 0) {
         logging('No votes to submit');
         return;
     }
@@ -505,35 +516,24 @@ function submitAllVotes() {
         }
     }
     // Submit votes one by one
-    let submittedCount = 0;
-    const totalVotes = votedMovies.length;
-    votedMovies.forEach((movie, index) => {
-        const cb = `finalVoteCb_${index}_${Date.now()}`;
-        window[cb] = function (resp) {
-            submittedCount++;
-            logging(`Vote ${submittedCount}/${totalVotes} submitted:`, resp);
-            if (submittedCount === totalVotes) {
-                // All votes submitted, show final success message
-                showFinalSuccessMessage();
-            }
-            delete window[cb];
-        };
-        // Get vote data from the Vote object
-        const vote = movie.vote;
-        if (!vote) {
-            logging('No vote found for movie:', 'error', movie.title);
+    const cb = `finalVoteCb_${Date.now()}`;
+    window[cb] = function (resp) {
+        if ('error' in resp) {
+            logging(`Vote ${totalVotes} submitted:`, 'error', resp);
             return;
         }
-        const script = document.createElement('script');
-        script.src = `${proxyURL}`
-            + `?action=vote`
-            + `&movieTitle=${encodeURIComponent(movie.title)}`
-            + `&userName=${encodeURIComponent(userName)}`
-            + `&vote=${encodeURIComponent(vote.vibe)}`
-            + `&seen=${encodeURIComponent(vote.seen ? "true" : "false")}`
-            + `&callback=${cb}`;
-        document.body.appendChild(script);
-    });
+        if ('appealUpdated' in resp) {
+            logging(`AppealUpdated: ${resp.appealUpdated} AppealTotal: ${resp.appealTotal} `, 'debug', resp);
+            showFinalSuccessMessage();
+        }
+        delete window[cb];
+    };
+    const script = document.createElement('script');
+    script.src = `${proxyURL}`
+        + `?action=batchVote`
+        + `&votes=${encodeURIComponent(JSON.stringify(movieVotes.votes))}`
+        + `&callback=${cb}`;
+    document.body.appendChild(script);
 }
 /**
  * Shows final success message after all votes are submitted
