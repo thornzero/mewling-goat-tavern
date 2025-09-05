@@ -6,12 +6,10 @@
 
 import Movie from './movie.js';
 import Vote from './vote.js';
-import Swiper from 'swiper';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+// Swiper is loaded from CDN in HTML
 
 // Global type declarations
+declare const Swiper: any;
 declare global {
   interface Window {
     openVideo: (key: string) => void;
@@ -39,7 +37,7 @@ const DEBUG = false; // Set to true for debugging
 // State
 let movieData: Movie[] = [];
 let remaining: number = 0;
-let swiper: Swiper | null = null;
+let swiper: any = null;
 let moviesLoaded: boolean = false;
 let userName: string = '';
 
@@ -387,7 +385,6 @@ function createSlides(movies: Movie[]): void {
 
   // Initialize Swiper
   swiper = new Swiper('.swiper', {
-    modules: [Navigation],
     slidesPerView: 1,
     spaceBetween: 20,
     centeredSlides: false,

@@ -5,10 +5,6 @@
  */
 import Movie from './movie.js';
 import Vote from './vote.js';
-import Swiper from 'swiper';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
 // === CONFIGURATION ===
 /** @constant {string} Google Apps Script proxy URL for API calls */
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
@@ -350,7 +346,6 @@ function createSlides(movies) {
     });
     // Initialize Swiper
     swiper = new Swiper('.swiper', {
-        modules: [Navigation],
         slidesPerView: 1,
         spaceBetween: 20,
         centeredSlides: false,

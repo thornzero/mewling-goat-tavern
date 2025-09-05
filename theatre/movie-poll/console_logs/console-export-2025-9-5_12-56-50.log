@@ -1,0 +1,1 @@
+Uncaught TypeError: The specifier “swiper” was a bare specifier, but was not remapped to anything. Relative module specifiers must start with “./”, “../” or “/”. script.js:8:20
