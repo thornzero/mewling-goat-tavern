@@ -5,7 +5,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # TypeScript build output
-dist/
+dist/*.ts
+dist/*.ts.map
+
 *.tsbuildinfo
 
 # CSS build output (generated files)
@@ -85,7 +87,7 @@ jspm_packages/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# dist - commented out because we need dist/ for production deployment
 
 # Gatsby files
 .cache/
