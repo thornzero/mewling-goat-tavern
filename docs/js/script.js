@@ -1,18 +1,44 @@
-// script.js - Movie Poll Application
+/**
+ * @file Movie Poll Application - Main script for handling movie voting interface
+ * @author Mewling Goat Tavern
+ * @version 1.0.0
+ */
+
 import Movie from './movie.js';
+import Vote from './vote.js';
+
+/**
+ * @typedef {object} Swiper
+ * @property {Function} slideNext - Move to next slide
+ * @property {Function} slidePrev - Move to previous slide
+ * @property {Function} slideTo - Move to specific slide
+ * @property {object} navigation - Navigation controls
+ * @property {object} pagination - Pagination controls
+ */
 
 // === CONFIGURATION ===
+/** @constant {string} Google Apps Script proxy URL for API calls */
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
+
+/** @constant {boolean} Debug mode flag */
 const DEBUG = false; // Set to true for debugging
 
 // State
+/** @type {Movie[]} */
 let movieData = [];
+/** @type {number} */
 let remaining = 0;
-let swiper;
-let userName = '';
+/** @type {Swiper | null} */
+let swiper = null;
+/** @type {boolean} */
 let moviesLoaded = false;
-let currentMovieIndex = 0;
 
+/**
+ * Logs debug messages when DEBUG mode is enabled
+ * @param {string} message - The message to log
+ * @param {string} [level='info'] - Log level: 'debug', 'info', 'error', 'warn'
+ * @param {*} [data=null] - Additional data to log
+ */
 function debugLog(message, level = 'info', data = null) {
   if (DEBUG) {
     if (level === 'debug') {
@@ -27,7 +53,11 @@ function debugLog(message, level = 'info', data = null) {
   }
 }
 
-// Step 1: Fetch movie titles list from Google Sheet
+/**
+ * Fetches movie titles list from Google Sheet
+ * @async
+ * @function
+ */
 function fetchMovieTitles() {
   const cb = 'movieListCallback';
   window[cb] = function (resp) {
@@ -39,6 +69,7 @@ function fetchMovieTitles() {
 
         // The response is an array of strings, not objects
         if (!movieTitle || typeof movieTitle !== 'string') {
+          
           console.error('Invalid movie title:', movieTitle);
           return null;
         }
@@ -63,7 +94,10 @@ function fetchMovieTitles() {
   document.body.appendChild(s);
 }
 
-// Step 2: Search TMDb for each title to get ID
+/**
+ * Searches TMDb for each movie title to get movie IDs
+ * @function
+ */
 function startSearchAndFetch() {
   movieData.forEach((m, i) => {
     const searchCb = `searchCb_${i}`;
@@ -103,7 +137,12 @@ function startSearchAndFetch() {
   });
 }
 
-// Step 3: Fetch movie details by ID
+/**
+ * Fetches detailed movie information by TMDb ID
+ * @param {number} id - TMDb movie ID
+ * @param {number} idx - Index in movieData array
+ * @function
+ */
 function fetchDetails(id, idx) {
   const storageKey = `movie_${id}`
   const cached = localStorage.getItem(storageKey);
@@ -139,7 +178,7 @@ function fetchDetails(id, idx) {
     movieData[idx].setSynopsis(data.overview);
     movieData[idx].setRuntime(`${data.runtime} min`);
     movieData[idx].setVideos([]);
-    
+
     console.log(`Updated movie ${idx}:`, {
       title: movieData[idx].title,
       poster: movieData[idx].poster,
@@ -160,12 +199,17 @@ function fetchDetails(id, idx) {
     delete window[detailCb];
     fetchVideos(id, idx);
   };
-const s = document.createElement('script');
-s.src = `${proxyURL}?action=movie&id=${id}&callback=${detailCb}`;
-document.body.appendChild(s);
+  const s = document.createElement('script');
+  s.src = `${proxyURL}?action=movie&id=${id}&callback=${detailCb}`;
+  document.body.appendChild(s);
 }
 
-// Step 4: Fetch videos (trailers/teasers) by movie ID
+/**
+ * Fetches movie videos (trailers/teasers) by TMDb ID
+ * @param {number} id - TMDb movie ID
+ * @param {number} idx - Index in movieData array
+ * @function
+ */
 function fetchVideos(id, idx) {
   const videoCb = `videoCb_${idx}`;
   window[videoCb] = function (resp) {
@@ -183,7 +227,10 @@ function fetchVideos(id, idx) {
   document.body.appendChild(s);
 }
 
-// Step 5: Track completion and render
+/**
+ * Tracks completion of movie data loading and renders UI when ready
+ * @function
+ */
 function handleDone() {
   remaining--;
   console.log(`Movies remaining to process: ${remaining}`);
@@ -226,7 +273,11 @@ function handleDone() {
   }
 }
 
-// Render carousel slides with guided voting flow
+/**
+ * Renders carousel slides with guided voting flow
+ * @param {Movie[]} movies - Array of Movie objects to render
+ * @function
+ */
 function createSlides(movies) {
   console.log('Creating slides with movies:', movies);
   const container = document.getElementById("movie-carousel");
@@ -330,7 +381,11 @@ function createSlides(movies) {
   });
 }
 
-// Open YouTube video in new tab
+/**
+ * Opens a YouTube video in a new tab
+ * @param {string} key - YouTube video key
+ * @function
+ */
 function openVideo(key) {
   window.open(`https://www.youtube.com/watch?v=${key}`, '_blank');
 }
@@ -338,7 +393,12 @@ function openVideo(key) {
 // Make functions globally accessible for HTML onclick handlers
 window.openVideo = openVideo;
 
-// Handle the "Have you seen it?" question
+/**
+ * Handles the "Have you seen it?" question response
+ * @param {number} movieIndex - Index of the movie in movieData array
+ * @param {boolean} hasSeen - Whether the user has seen the movie
+ * @function
+ */
 function answerSeen(movieIndex, hasSeen) {
   // Update the vote state data structure
   movieData[movieIndex].hasAnsweredSeen = true;
@@ -352,9 +412,14 @@ function answerSeen(movieIndex, hasSeen) {
 // Make functions globally accessible for HTML onclick handlers
 window.answerSeen = answerSeen;
 
-// Submit a vote (store locally and advance slide)
+/**
+ * Submits a vote for a movie and advances to next slide
+ * @param {number} movieIndex - Index of the movie in movieData array
+ * @param {number} voteValue - Vote value (1-6 rating)
+ * @function
+ */
 function submitVote(movieIndex, voteValue) {
-  if (!userName) {
+  if (!movieData[movieIndex].hasUserName()) {
     alert("Please enter your name.");
     return;
   }
@@ -371,10 +436,14 @@ function submitVote(movieIndex, voteValue) {
   }
 
   // Update the vote state
+  movieData[movieIndex].setUserName(userName);
   movieData[movieIndex].hasVoted = true;
-  movieData[movieIndex].vote = voteValue;
   movieData[movieIndex].currentStep = 'confirmation';
   movieData[movieIndex].timestamp = Date.now();
+  
+  // Create and set the Vote object
+  const vote = new Vote(userName, voteValue, movieData[movieIndex].hasSeen, Date.now());
+  movieData[movieIndex].setVote(vote);
 
   // Update UI and advance to next slide
   updateMovieVotingUI(movieIndex);
@@ -384,7 +453,11 @@ function submitVote(movieIndex, voteValue) {
 // Make functions globally accessible for HTML onclick handlers
 window.submitVote = submitVote;
 
-// Update the UI based on the vote state data structure
+/**
+ * Updates the UI based on the vote state data structure
+ * @param {number} movieIndex - Index of the movie in movieData array
+ * @function
+ */
 function updateMovieVotingUI(movieIndex) {
   const seenQuestion = document.getElementById(`seen-question-${movieIndex}`);
   const ratingDiv = document.getElementById(`rating-${movieIndex}`);
@@ -414,7 +487,11 @@ function updateMovieVotingUI(movieIndex) {
   }
 }
 
-// Show vote confirmation and advance to next slide
+/**
+ * Shows vote confirmation and advances to next slide
+ * @param {number} movieIndex - Index of the movie in movieData array
+ * @function
+ */
 function showVoteConfirmationAndAdvance(movieIndex) {
   const confirmationDiv = document.getElementById(`confirmation-${movieIndex}`);
 
@@ -441,11 +518,14 @@ function showVoteConfirmationAndAdvance(movieIndex) {
   }
 }
 
-// Submit all votes at once
+/**
+ * Submits all votes to the Google Sheet at once
+ * @function
+ */
 function submitAllVotes() {
   // Get all movies that have been voted on
   const votedMovies = movieData.filter(movie => movie.hasVoted);
-  
+
   if (votedMovies.length === 0) {
     console.log('No votes to submit');
     return;
@@ -476,7 +556,7 @@ function submitAllVotes() {
     window[cb] = function (resp) {
       submittedCount++;
       console.log(`Vote ${submittedCount}/${totalVotes} submitted:`, resp);
-      
+
       if (submittedCount === totalVotes) {
         // All votes submitted, show final success message
         showFinalSuccessMessage();
@@ -484,19 +564,24 @@ function submitAllVotes() {
       delete window[cb];
     };
 
+    // Get vote data from the Vote object
+    const vote = movie.vote;
     const script = document.createElement('script');
     script.src = `${proxyURL}`
       + `?action=vote`
       + `&movieTitle=${encodeURIComponent(movie.title)}`
-      + `&userName=${encodeURIComponent(userName)}`
-      + `&vote=${encodeURIComponent(movie.vote)}`
-      + `&seen=${encodeURIComponent(movie.hasSeen ? "true" : "false")}`
+      + `&userName=${encodeURIComponent(vote.userName)}`
+      + `&vote=${encodeURIComponent(vote.vote)}`
+      + `&seen=${encodeURIComponent(vote.seen ? "true" : "false")}`
       + `&callback=${cb}`;
     document.body.appendChild(script);
   });
 }
 
-// Show final success message
+/**
+ * Shows final success message after all votes are submitted
+ * @function
+ */
 function showFinalSuccessMessage() {
   const lastSlide = document.querySelector('.swiper-slide-active');
   if (lastSlide) {
@@ -515,6 +600,10 @@ function showFinalSuccessMessage() {
 }
 
 // Initialize the app
+/**
+ * Initializes the application and sets up event listeners
+ * @function
+ */
 function initializeApp() {
   // Set up name input handling
   const usernameInput = document.getElementById('username');
@@ -558,13 +647,16 @@ function initializeApp() {
   fetchMovieTitles();
 }
 
-// Show the movie poll screen
+/**
+ * Shows the movie poll screen and initializes the carousel
+ * @function
+ */
 function showMoviePoll() {
   document.getElementById('name-entry-screen').classList.add('hidden');
   document.getElementById('movie-poll-screen').classList.remove('hidden');
   document.getElementById('user-greeting').textContent = `Welcome, ${userName}!`;
 
-  
+
   // Initialize swiper if not already done
   if (!swiper && movieData.length > 0) {
     console.log('Creating slides in showMoviePoll with movieData:', movieData);
