@@ -47,12 +47,12 @@ let userName: string = '';
  * @param {string} [level='info'] - Log level: 'debug', 'info', 'error', 'warn'
  * @param {*} [data=null] - Additional data to log
  */
-function debugLog(message: string, level: string = 'info', data: any = null): void {
+function logging(message: string, level: string = 'info', data: any = null): void {
   if (DEBUG) {
     if (level === 'debug') {
       console.debug(message, data);
     } else if (level === 'info') {
-      console.log(message, data);
+      console.info(message, data);
     } else if (level === 'error') {
       console.error(message, data);
     } else if (level === 'warn') {
@@ -69,16 +69,16 @@ function debugLog(message: string, level: string = 'info', data: any = null): vo
 function fetchMovieTitles(): void {
   const cb = 'movieListCallback';
   window[cb] = function (resp: string[]) {
-    console.log('Raw response from Google Sheet:', resp);
+    logging('Raw response from Google Sheet:', 'debug', resp);
 
     if (Array.isArray(resp)) {
       movieData = resp.map((movieTitle: string, index: number) => {
-        console.log(`Processing movie ${index}:`, movieTitle);
+        logging(`Processing movie ${index}:`, movieTitle);
 
         // The response is an array of strings, not objects
         if (!movieTitle || typeof movieTitle !== 'string') {
           
-          console.error('Invalid movie title:', movieTitle);
+          logging('Invalid movie title:','error', movieTitle);
           return null;
         }
 
@@ -89,11 +89,11 @@ function fetchMovieTitles(): void {
         return new Movie(parsedTitle, year, '', [], '', '', [], null);
       }).filter(m => m !== null); // Remove any null entries
 
-      console.log('Processed movie data:', movieData);
+      logging('Processed movie data:', 'debug', movieData);
       remaining = movieData.length;
       startSearchAndFetch();
     } else {
-      console.error('Invalid movie list response', resp);
+      logging('Invalid movie list response','error', resp);
     }
     delete window[cb];
   };
@@ -102,6 +102,29 @@ function fetchMovieTitles(): void {
   document.body.appendChild(s);
 }
 
+declare global {
+  interface tmdbSearchResponse {
+      page: number;
+      results: Array<{
+        adult: boolean;
+        backdrop_path: string;
+        genre_ids: number[];
+        id: number;
+        original_language: string;
+        original_title: string;
+        overview: string;
+        popularity: number;
+        poster_path: string;
+        release_date: string;
+        title: string;
+        video: boolean;
+        vote_average: number;
+        vote_count: number;
+      }>
+      total_pages: number;
+      total_results: number;
+  }
+}
 /**
  * Searches TMDb for each movie title to get movie IDs
  * @function
@@ -109,29 +132,30 @@ function fetchMovieTitles(): void {
 function startSearchAndFetch(): void {
   movieData.forEach((m: Movie, i: number) => {
     const searchCb = `searchCb_${i}`;
-    window[searchCb] = function (resp: any) {
-      console.log(`Search results for "${m.title}" (${m.year}):`, resp);
+    window[searchCb] = function (resp: tmdbSearchResponse) {
+      logging(`Search results for "${m.title}" (${m.year}):`, 'debug', resp);
       if (resp && resp.results && resp.results.length > 0) {
-        debugLog('Search result', 'debug', resp.results);
+        logging('Search result', 'debug', resp.results);
         let foundMatch = false;
-        resp.results.forEach((r: any) => {
-          console.log(`Checking result: ${r.title} (${r.year}) vs ${m.title} (${m.year})`);
-          if (r.year == m.year) { // Use == instead of === to handle string vs number comparison
-            console.log(`Found match! Fetching details for ${r.title}`);
+        resp.results.forEach((r) => {
+          // Extract year from release_date (format: "YYYY-MM-DD")
+          const rYear = r.release_date ? r.release_date.slice(0, 4) : '';
+          logging(`Checking result: ${r.title} (${rYear}) vs ${m.title} (${m.year})`, 'debug');
+          if (rYear == m.year) { // Use == instead of === to handle string vs number comparison
+            logging(`Found match! Fetching details for ${r.title}`);
             fetchDetails(r.id, i);
             foundMatch = true;
           }
         });
         // If no exact year match found, try using the first result as fallback
         if (!foundMatch) {
-          console.log(`No exact year match for "${m.title}" (${m.year}), using first result as fallback`);
+          logging(`No exact year match for "${m.title}" (${m.year}), using first result as fallback`, 'debug');
           const firstResult = resp.results[0];
-          console.log(`Using fallback: ${firstResult.title} (${firstResult.year})`);
+          logging(`Using fallback: ${firstResult.title} (${firstResult.release_date.slice(0, 4)})`, 'debug');
           fetchDetails(firstResult.id, i);
         }
       } else {
-        console.log(`No search results for "${m.title}"`);
-        debugLog(`No result for "${m.title}"`, 'error');
+        logging(`No search results for "${m.title}"`, 'warn');
         handleDone();
       }
       delete window[searchCb];
@@ -164,16 +188,16 @@ function fetchDetails(id: number, idx: number): void {
     movieData[idx].setSynopsis(cachedData.synopsis);
     movieData[idx].setRuntime(cachedData.runtime);
     movieData[idx].setVideos(cachedData.videos);
-    console.log(`Loaded cached data for movie ${idx}:`, cachedData.title);
+    logging(`Loaded cached data for movie ${idx}:`, cachedData.title);
     handleDone();
     return;
   }
 
   const detailCb = `detailCb_${idx}`;
   window[detailCb] = function (data: any) {
-    debugLog('Detail result', 'debug', data);
+    logging('Detail result', 'debug', data);
     if (data.error) {
-      debugLog('Detail error', 'error', data.error);
+      logging('Detail error', 'error', data.error);
       handleDone();
       return;
     }
@@ -187,7 +211,7 @@ function fetchDetails(id: number, idx: number): void {
     movieData[idx].setRuntime(`${data.runtime} min`);
     movieData[idx].setVideos([]);
 
-    console.log(`Updated movie ${idx}:`, {
+    logging(`Updated movie ${idx}:`, 'debug', {
       title: movieData[idx].title,
       poster: movieData[idx].poster,
       genres: movieData[idx].genres,
@@ -203,13 +227,32 @@ function fetchDetails(id: number, idx: number): void {
       runtime: movieData[idx].runtime,
       videos: movieData[idx].videos
     }));
-    console.log(`Movie details fetched for: ${data.title}`);
+    logging(`Movie details fetched for: ${data.title}`);
     delete window[detailCb];
     fetchVideos(id, idx);
   };
   const s = document.createElement('script');
   s.src = `${proxyURL}?action=movie&id=${id}&callback=${detailCb}`;
   document.body.appendChild(s);
+}
+
+
+declare global {
+  interface tmdbVideosResponse {
+    id: number;
+    results: Array<{
+      iso_639_1: string;
+      iso_3166_1: string;
+      name: string;
+      key: string;
+      site: string;
+      size: number;
+      type: string;
+      official: boolean;
+      published_at: string;
+      id: string;
+    }>
+  }
 }
 
 /**
@@ -220,12 +263,12 @@ function fetchDetails(id: number, idx: number): void {
  */
 function fetchVideos(id: number, idx: number): void {
   const videoCb = `videoCb_${idx}`;
-  window[videoCb] = function (resp: any) {
+  window[videoCb] = function (resp: tmdbVideosResponse) {
     if (resp.results && resp.results.length) {
-      movieData[idx].setVideos(resp.results.map((v: any) => v));
-      console.log(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
+      movieData[idx].setVideos(resp.results.map((v: tmdbVideosResponse['results'][number]) => v));
+      logging(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
     } else {
-      console.warn(`No videos for movie ID ${id}`);
+      logging(`No videos for movie ID ${id}`, 'warn');
     }
     delete window[videoCb];
     handleDone();
@@ -241,31 +284,31 @@ function fetchVideos(id: number, idx: number): void {
  */
 function handleDone(): void {
   remaining--;
-  console.log(`Movies remaining to process: ${remaining}`);
+  logging(`Movies remaining to process: ${remaining}`);
 
   if (remaining === 0) {
-    console.log('All movies processed! Loading complete.');
+    logging('All movies processed! Loading complete.');
     moviesLoaded = true;
 
     // Check if all movies have been fully loaded (have poster, genres, etc.)
     const allMoviesLoaded = movieData.every(movie => movie.poster && movie.genres && movie.synopsis);
-    console.log('All movies fully loaded:', allMoviesLoaded);
+    logging('All movies fully loaded:', 'debug', allMoviesLoaded);
 
     if (allMoviesLoaded) {
       // If user is already waiting, show the poll
       const startBtn = document.getElementById('start-poll-btn');
       if (startBtn && startBtn.textContent === 'Loading movies...') {
-        console.log('User is waiting, showing movie poll...');
+        logging('User is waiting, showing movie poll...');
         showMoviePoll();
       }
       // If we're already in the poll screen, create slides
       const moviePollScreen = document.getElementById('movie-poll-screen');
     if (moviePollScreen && !moviePollScreen.classList.contains('hidden')) {
-        console.log('Already in poll screen, creating slides...');
+        logging('Already in poll screen, creating slides...');
         createSlides(movieData);
       }
     } else {
-      console.log('Movies not fully loaded yet, waiting...');
+      logging('Movies not fully loaded yet, waiting...');
       // Wait a bit and check again
       setTimeout(() => {
         if (remaining === 0) {
@@ -288,18 +331,18 @@ function handleDone(): void {
  * @function
  */
 function createSlides(movies: Movie[]): void {
-  console.log('Creating slides with movies:', movies);
+  logging('Creating slides with movies:', 'debug', movies);
   const container = document.getElementById("movie-carousel");
   if (!container) return;
   
   container.innerHTML = "";
 
   movies.forEach((m: Movie, i: number) => {
-    console.log(`Creating slide ${i}:`, m);
+    logging(`Creating slide ${i}:`, 'debug', m);
 
     // Safety checks for missing data
     if (!m || !m.title) {
-      console.error(`Invalid movie data at index ${i}:`, m);
+      logging(`Invalid movie data at index ${i}:`, 'error', m);
       return;
     }
 
@@ -440,12 +483,12 @@ function submitVote(movieIndex: number, voteVibe: number): void {
 
   const movie = movieData[movieIndex];
   if (!movie) {
-    console.error('Movie not found for index:', movieIndex);
+    logging('Movie not found for index:','error', movieIndex);
     return;
   }
 
   if (!movieData[movieIndex].hasAnsweredSeen) {
-    console.error('User has not answered the seen question yet');
+    logging('User has not answered the seen question yet','error');
     return;
   }
 
@@ -544,7 +587,7 @@ function submitAllVotes(): void {
   const votedMovies = movieData.filter(movie => movie.hasVoted);
 
   if (votedMovies.length === 0) {
-    console.log('No votes to submit');
+    logging('No votes to submit');
     return;
   }
 
@@ -572,7 +615,7 @@ function submitAllVotes(): void {
     const cb = `finalVoteCb_${index}_${Date.now()}`;
     window[cb] = function (resp: any) {
       submittedCount++;
-      console.log(`Vote ${submittedCount}/${totalVotes} submitted:`, resp);
+      logging(`Vote ${submittedCount}/${totalVotes} submitted:`, resp);
 
       if (submittedCount === totalVotes) {
         // All votes submitted, show final success message
@@ -584,7 +627,7 @@ function submitAllVotes(): void {
     // Get vote data from the Vote object
     const vote = movie.vote;
     if (!vote) {
-      console.error('No vote found for movie:', movie.title);
+      logging('No vote found for movie:','error', movie.title);
       return;
     }
     
@@ -697,7 +740,7 @@ function showMoviePoll(): void {
 
   // Initialize swiper if not already done
   if (!swiper && movieData.length > 0) {
-    console.log('Creating slides in showMoviePoll with movieData:', movieData);
+    logging('Creating slides in showMoviePoll with movieData:', 'debug', movieData);
     createSlides(movieData);
   }
 }

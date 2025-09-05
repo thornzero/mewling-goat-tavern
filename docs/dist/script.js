@@ -22,13 +22,13 @@ let userName = '';
  * @param {string} [level='info'] - Log level: 'debug', 'info', 'error', 'warn'
  * @param {*} [data=null] - Additional data to log
  */
-function debugLog(message, level = 'info', data = null) {
+function logging(message, level = 'info', data = null) {
     if (DEBUG) {
         if (level === 'debug') {
             console.debug(message, data);
         }
         else if (level === 'info') {
-            console.log(message, data);
+            console.info(message, data);
         }
         else if (level === 'error') {
             console.error(message, data);
@@ -46,13 +46,13 @@ function debugLog(message, level = 'info', data = null) {
 function fetchMovieTitles() {
     const cb = 'movieListCallback';
     window[cb] = function (resp) {
-        console.log('Raw response from Google Sheet:', resp);
+        logging('Raw response from Google Sheet:', 'debug', resp);
         if (Array.isArray(resp)) {
             movieData = resp.map((movieTitle, index) => {
-                console.log(`Processing movie ${index}:`, movieTitle);
+                logging(`Processing movie ${index}:`, movieTitle);
                 // The response is an array of strings, not objects
                 if (!movieTitle || typeof movieTitle !== 'string') {
-                    console.error('Invalid movie title:', movieTitle);
+                    logging('Invalid movie title:', 'error', movieTitle);
                     return null;
                 }
                 const match = movieTitle.match(/(.+?)\s*\((\d{4})\)$/);
@@ -60,12 +60,12 @@ function fetchMovieTitles() {
                 const year = match ? match[2] : '';
                 return new Movie(parsedTitle, year, '', [], '', '', [], null);
             }).filter(m => m !== null); // Remove any null entries
-            console.log('Processed movie data:', movieData);
+            logging('Processed movie data:', 'debug', movieData);
             remaining = movieData.length;
             startSearchAndFetch();
         }
         else {
-            console.error('Invalid movie list response', resp);
+            logging('Invalid movie list response', 'error', resp);
         }
         delete window[cb];
     };
@@ -81,29 +81,30 @@ function startSearchAndFetch() {
     movieData.forEach((m, i) => {
         const searchCb = `searchCb_${i}`;
         window[searchCb] = function (resp) {
-            console.log(`Search results for "${m.title}" (${m.year}):`, resp);
+            logging(`Search results for "${m.title}" (${m.year}):`, 'debug', resp);
             if (resp && resp.results && resp.results.length > 0) {
-                debugLog('Search result', 'debug', resp.results);
+                logging('Search result', 'debug', resp.results);
                 let foundMatch = false;
                 resp.results.forEach((r) => {
-                    console.log(`Checking result: ${r.title} (${r.year}) vs ${m.title} (${m.year})`);
-                    if (r.year == m.year) { // Use == instead of === to handle string vs number comparison
-                        console.log(`Found match! Fetching details for ${r.title}`);
+                    // Extract year from release_date (format: "YYYY-MM-DD")
+                    const rYear = r.release_date ? r.release_date.slice(0, 4) : '';
+                    logging(`Checking result: ${r.title} (${rYear}) vs ${m.title} (${m.year})`, 'debug');
+                    if (rYear == m.year) { // Use == instead of === to handle string vs number comparison
+                        logging(`Found match! Fetching details for ${r.title}`);
                         fetchDetails(r.id, i);
                         foundMatch = true;
                     }
                 });
                 // If no exact year match found, try using the first result as fallback
                 if (!foundMatch) {
-                    console.log(`No exact year match for "${m.title}" (${m.year}), using first result as fallback`);
+                    logging(`No exact year match for "${m.title}" (${m.year}), using first result as fallback`, 'debug');
                     const firstResult = resp.results[0];
-                    console.log(`Using fallback: ${firstResult.title} (${firstResult.year})`);
+                    logging(`Using fallback: ${firstResult.title} (${firstResult.release_date.slice(0, 4)})`, 'debug');
                     fetchDetails(firstResult.id, i);
                 }
             }
             else {
-                console.log(`No search results for "${m.title}"`);
-                debugLog(`No result for "${m.title}"`, 'error');
+                logging(`No search results for "${m.title}"`, 'warn');
                 handleDone();
             }
             delete window[searchCb];
@@ -136,15 +137,15 @@ function fetchDetails(id, idx) {
         movieData[idx].setSynopsis(cachedData.synopsis);
         movieData[idx].setRuntime(cachedData.runtime);
         movieData[idx].setVideos(cachedData.videos);
-        console.log(`Loaded cached data for movie ${idx}:`, cachedData.title);
+        logging(`Loaded cached data for movie ${idx}:`, cachedData.title);
         handleDone();
         return;
     }
     const detailCb = `detailCb_${idx}`;
     window[detailCb] = function (data) {
-        debugLog('Detail result', 'debug', data);
+        logging('Detail result', 'debug', data);
         if (data.error) {
-            debugLog('Detail error', 'error', data.error);
+            logging('Detail error', 'error', data.error);
             handleDone();
             return;
         }
@@ -156,7 +157,7 @@ function fetchDetails(id, idx) {
         movieData[idx].setSynopsis(data.overview);
         movieData[idx].setRuntime(`${data.runtime} min`);
         movieData[idx].setVideos([]);
-        console.log(`Updated movie ${idx}:`, {
+        logging(`Updated movie ${idx}:`, 'debug', {
             title: movieData[idx].title,
             poster: movieData[idx].poster,
             genres: movieData[idx].genres,
@@ -172,7 +173,7 @@ function fetchDetails(id, idx) {
             runtime: movieData[idx].runtime,
             videos: movieData[idx].videos
         }));
-        console.log(`Movie details fetched for: ${data.title}`);
+        logging(`Movie details fetched for: ${data.title}`);
         delete window[detailCb];
         fetchVideos(id, idx);
     };
@@ -191,10 +192,10 @@ function fetchVideos(id, idx) {
     window[videoCb] = function (resp) {
         if (resp.results && resp.results.length) {
             movieData[idx].setVideos(resp.results.map((v) => v));
-            console.log(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
+            logging(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
         }
         else {
-            console.warn(`No videos for movie ID ${id}`);
+            logging(`No videos for movie ID ${id}`, 'warn');
         }
         delete window[videoCb];
         handleDone();
@@ -209,29 +210,29 @@ function fetchVideos(id, idx) {
  */
 function handleDone() {
     remaining--;
-    console.log(`Movies remaining to process: ${remaining}`);
+    logging(`Movies remaining to process: ${remaining}`);
     if (remaining === 0) {
-        console.log('All movies processed! Loading complete.');
+        logging('All movies processed! Loading complete.');
         moviesLoaded = true;
         // Check if all movies have been fully loaded (have poster, genres, etc.)
         const allMoviesLoaded = movieData.every(movie => movie.poster && movie.genres && movie.synopsis);
-        console.log('All movies fully loaded:', allMoviesLoaded);
+        logging('All movies fully loaded:', 'debug', allMoviesLoaded);
         if (allMoviesLoaded) {
             // If user is already waiting, show the poll
             const startBtn = document.getElementById('start-poll-btn');
             if (startBtn && startBtn.textContent === 'Loading movies...') {
-                console.log('User is waiting, showing movie poll...');
+                logging('User is waiting, showing movie poll...');
                 showMoviePoll();
             }
             // If we're already in the poll screen, create slides
             const moviePollScreen = document.getElementById('movie-poll-screen');
             if (moviePollScreen && !moviePollScreen.classList.contains('hidden')) {
-                console.log('Already in poll screen, creating slides...');
+                logging('Already in poll screen, creating slides...');
                 createSlides(movieData);
             }
         }
         else {
-            console.log('Movies not fully loaded yet, waiting...');
+            logging('Movies not fully loaded yet, waiting...');
             // Wait a bit and check again
             setTimeout(() => {
                 if (remaining === 0) {
@@ -253,16 +254,16 @@ function handleDone() {
  * @function
  */
 function createSlides(movies) {
-    console.log('Creating slides with movies:', movies);
+    logging('Creating slides with movies:', 'debug', movies);
     const container = document.getElementById("movie-carousel");
     if (!container)
         return;
     container.innerHTML = "";
     movies.forEach((m, i) => {
-        console.log(`Creating slide ${i}:`, m);
+        logging(`Creating slide ${i}:`, 'debug', m);
         // Safety checks for missing data
         if (!m || !m.title) {
-            console.error(`Invalid movie data at index ${i}:`, m);
+            logging(`Invalid movie data at index ${i}:`, 'error', m);
             return;
         }
         const slide = document.createElement("div");
@@ -394,11 +395,11 @@ function submitVote(movieIndex, voteVibe) {
     }
     const movie = movieData[movieIndex];
     if (!movie) {
-        console.error('Movie not found for index:', movieIndex);
+        logging('Movie not found for index:', 'error', movieIndex);
         return;
     }
     if (!movieData[movieIndex].hasAnsweredSeen) {
-        console.error('User has not answered the seen question yet');
+        logging('User has not answered the seen question yet', 'error');
         return;
     }
     // Update the vote state
@@ -485,7 +486,7 @@ function submitAllVotes() {
     // Get all movies that have been voted on
     const votedMovies = movieData.filter(movie => movie.hasVoted);
     if (votedMovies.length === 0) {
-        console.log('No votes to submit');
+        logging('No votes to submit');
         return;
     }
     // Show loading state
@@ -510,7 +511,7 @@ function submitAllVotes() {
         const cb = `finalVoteCb_${index}_${Date.now()}`;
         window[cb] = function (resp) {
             submittedCount++;
-            console.log(`Vote ${submittedCount}/${totalVotes} submitted:`, resp);
+            logging(`Vote ${submittedCount}/${totalVotes} submitted:`, resp);
             if (submittedCount === totalVotes) {
                 // All votes submitted, show final success message
                 showFinalSuccessMessage();
@@ -520,7 +521,7 @@ function submitAllVotes() {
         // Get vote data from the Vote object
         const vote = movie.vote;
         if (!vote) {
-            console.error('No vote found for movie:', movie.title);
+            logging('No vote found for movie:', 'error', movie.title);
             return;
         }
         const script = document.createElement('script');
@@ -622,7 +623,7 @@ function showMoviePoll() {
     }
     // Initialize swiper if not already done
     if (!swiper && movieData.length > 0) {
-        console.log('Creating slides in showMoviePoll with movieData:', movieData);
+        logging('Creating slides in showMoviePoll with movieData:', 'debug', movieData);
         createSlides(movieData);
     }
 }
