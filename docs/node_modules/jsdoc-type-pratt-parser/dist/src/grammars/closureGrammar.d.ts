@@ -1,2 +1,1 @@
-import { GrammarFactory } from './Grammar';
-export declare const closureGrammar: GrammarFactory;
+export declare const closureGrammar: import("../parslets/Parslet").ParsletFunction[];

@@ -1,18 +1,22 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
+    es2022: true,
     node: true
   },
   extends: [
-    'eslint:recommended'
+    'eslint:recommended',
+    '@typescript-eslint/recommended'
   ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 12,
-    sourceType: 'module'
+    ecmaVersion: 2022,
+    sourceType: 'module',
+    project: './tsconfig.json'
   },
   plugins: [
-    'jsdoc'
+    'jsdoc',
+    '@typescript-eslint'
   ],
   rules: {
     // Basic JSDoc rules that work with older Node.js
