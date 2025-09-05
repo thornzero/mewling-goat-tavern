@@ -77,8 +77,8 @@ function fetchMovieTitles(): void {
 
         // The response is an array of strings, not objects
         if (!movieTitle || typeof movieTitle !== 'string') {
-          
-          logging('Invalid movie title:','error', movieTitle);
+
+          logging('Invalid movie title:', 'error', movieTitle);
           return null;
         }
 
@@ -93,7 +93,7 @@ function fetchMovieTitles(): void {
       remaining = movieData.length;
       startSearchAndFetch();
     } else {
-      logging('Invalid movie list response','error', resp);
+      logging('Invalid movie list response', 'error', resp);
     }
     delete window[cb];
   };
@@ -104,25 +104,25 @@ function fetchMovieTitles(): void {
 
 declare global {
   interface tmdbSearchResponse {
-      page: number;
-      results: Array<{
-        adult: boolean;
-        backdrop_path: string;
-        genre_ids: number[];
-        id: number;
-        original_language: string;
-        original_title: string;
-        overview: string;
-        popularity: number;
-        poster_path: string;
-        release_date: string;
-        title: string;
-        video: boolean;
-        vote_average: number;
-        vote_count: number;
-      }>
-      total_pages: number;
-      total_results: number;
+    page: number;
+    results: Array<{
+      adult: boolean;
+      backdrop_path: string;
+      genre_ids: number[];
+      id: number;
+      original_language: string;
+      original_title: string;
+      overview: string;
+      popularity: number;
+      poster_path: string;
+      release_date: string;
+      title: string;
+      video: boolean;
+      vote_average: number;
+      vote_count: number;
+    }>
+    total_pages: number;
+    total_results: number;
   }
 }
 /**
@@ -303,7 +303,7 @@ function handleDone(): void {
       }
       // If we're already in the poll screen, create slides
       const moviePollScreen = document.getElementById('movie-poll-screen');
-    if (moviePollScreen && !moviePollScreen.classList.contains('hidden')) {
+      if (moviePollScreen && !moviePollScreen.classList.contains('hidden')) {
         logging('Already in poll screen, creating slides...');
         createSlides(movieData);
       }
@@ -334,7 +334,7 @@ function createSlides(movies: Movie[]): void {
   logging('Creating slides with movies:', 'debug', movies);
   const container = document.getElementById("movie-carousel");
   if (!container) return;
-  
+
   container.innerHTML = "";
 
   movies.forEach((m: Movie, i: number) => {
@@ -431,9 +431,9 @@ function createSlides(movies: Movie[]): void {
     slidesPerView: 1,
     spaceBetween: 20,
     centeredSlides: false,
-    navigation: { 
-      nextEl: '.swiper-button-next', 
-      prevEl: '.swiper-button-prev' 
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
     }
   });
 }
@@ -483,12 +483,12 @@ function submitVote(movieIndex: number, voteVibe: number): void {
 
   const movie = movieData[movieIndex];
   if (!movie) {
-    logging('Movie not found for index:','error', movieIndex);
+    logging('Movie not found for index:', 'error', movieIndex);
     return;
   }
 
   if (!movieData[movieIndex].hasAnsweredSeen) {
-    logging('User has not answered the seen question yet','error');
+    logging('User has not answered the seen question yet', 'error');
     return;
   }
 
@@ -496,7 +496,7 @@ function submitVote(movieIndex: number, voteVibe: number): void {
   movieData[movieIndex].hasVoted = true;
   movieData[movieIndex].currentStep = 'confirmation';
   movieData[movieIndex].timestamp = Date.now();
-  
+
   // Create and set the Vote object
   const vote = new Vote(voteVibe, movieData[movieIndex].hasSeen || false, Date.now());
   movieData[movieIndex].setVote(vote);
@@ -578,19 +578,49 @@ function showVoteConfirmationAndAdvance(movieIndex: number): void {
   }
 }
 
+declare global {
+  interface BatchVoteReq {
+    votes: Array<{
+      timestamp: number;
+      movieTitle: string;
+      userName: string;
+      vibe: number;
+      seen: boolean;
+    }>
+  }
+  interface BatchVoteResp {
+    submitted: number;
+    appealUpdated: number;
+    appealTotal: number;
+  }
+
+  interface BatchVoteErrorRes {
+    submitted: number;
+    appealError: string;
+  }
+}
 /**
  * Submits all votes to the Google Sheet at once
  * @function
  */
 function submitAllVotes(): void {
   // Get all movies that have been voted on
-  const votedMovies = movieData.filter(movie => movie.hasVoted);
-
-  if (votedMovies.length === 0) {
+  const movieVotes: BatchVoteReq = {
+    votes: movieData.map((movie: Movie) => {
+      return {
+        timestamp: movie.vote?.timestamp ?? Date.now(),
+        movieTitle: movie.title,
+        userName: userName,
+        vibe: movie.vote?.vibe ?? 0,
+        seen: movie.vote?.seen ?? false
+      };
+    })
+  };
+  const totalVotes = movieVotes.votes.length;
+  if (totalVotes === 0) {
     logging('No votes to submit');
     return;
   }
-
   // Show loading state
   const lastSlide = document.querySelector('.swiper-slide-active');
   if (lastSlide) {
@@ -608,39 +638,26 @@ function submitAllVotes(): void {
   }
 
   // Submit votes one by one
-  let submittedCount = 0;
-  const totalVotes = votedMovies.length;
 
-  votedMovies.forEach((movie, index) => {
-    const cb = `finalVoteCb_${index}_${Date.now()}`;
-    window[cb] = function (resp: any) {
-      submittedCount++;
-      logging(`Vote ${submittedCount}/${totalVotes} submitted:`, resp);
-
-      if (submittedCount === totalVotes) {
-        // All votes submitted, show final success message
-        showFinalSuccessMessage();
-      }
-      delete window[cb];
-    };
-
-    // Get vote data from the Vote object
-    const vote = movie.vote;
-    if (!vote) {
-      logging('No vote found for movie:','error', movie.title);
+  const cb = `finalVoteCb_${Date.now()}`;
+  window[cb] = function (resp: BatchVoteResp | BatchVoteErrorRes) {
+    if ('error' in resp) {
+      logging(`Vote ${totalVotes} submitted:`, 'error', resp);
       return;
     }
-    
-    const script = document.createElement('script');
-    script.src = `${proxyURL}`
-      + `?action=vote`
-      + `&movieTitle=${encodeURIComponent(movie.title)}`
-      + `&userName=${encodeURIComponent(userName)}`
-      + `&vote=${encodeURIComponent(vote.vibe)}`
-      + `&seen=${encodeURIComponent(vote.seen ? "true" : "false")}`
-      + `&callback=${cb}`;
-    document.body.appendChild(script);
-  });
+    if ('appealUpdated' in resp) {
+      logging(`AppealUpdated: ${resp.appealUpdated} AppealTotal: ${resp.appealTotal} `, 'debug', resp);
+      showFinalSuccessMessage();
+    }
+    delete window[cb];
+  };
+
+  const script = document.createElement('script');
+  script.src = `${proxyURL}`
+    + `?action=batchVote`
+    + `&votes=${encodeURIComponent(JSON.stringify(movieVotes.votes))}`
+    + `&callback=${cb}`;
+  document.body.appendChild(script);
 }
 
 /**
@@ -730,7 +747,7 @@ function showMoviePoll(): void {
   const nameEntryScreen = document.getElementById('name-entry-screen');
   const moviePollScreen = document.getElementById('movie-poll-screen');
   const userGreeting = document.getElementById('user-greeting');
-  
+
   nameEntryScreen?.classList.add('hidden');
   moviePollScreen?.classList.remove('hidden');
   if (userGreeting) {
