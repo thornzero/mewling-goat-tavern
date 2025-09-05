@@ -9,7 +9,7 @@ import Vote from './vote.js';
 /** @constant {string} Google Apps Script proxy URL for API calls */
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
 /** @constant {boolean} Debug mode flag */
-const DEBUG = false; // Set to true for debugging
+const DEBUG = true; // Set to true for debugging
 // State
 let movieData = [];
 let remaining = 0;
