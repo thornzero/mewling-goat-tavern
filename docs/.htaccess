@@ -1,0 +1,9 @@
+# Force correct MIME type for JavaScript modules
+<FilesMatch "\.(js|mjs)$">
+    Header set Content-Type "application/javascript; charset=utf-8"
+</FilesMatch>
+
+# Enable CORS for ES modules
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type"

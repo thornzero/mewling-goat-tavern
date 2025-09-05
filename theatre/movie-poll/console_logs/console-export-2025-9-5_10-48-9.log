@@ -1,0 +1,3 @@
+Loading module from “https://moviepoll.mewling-goat-tavern.online/dist/script.js” was blocked because of a disallowed MIME type (“text/html”). moviepoll.mewling-goat-tavern.online
+Loading failed for the module with source “https://moviepoll.mewling-goat-tavern.online/dist/script.js”. moviepoll.mewling-goat-tavern.online:56:52
+The resource at “moz-extension://c8cdc247-5f87-4481-ac17-7203b7edfca4/assets/woff2/Inter-italic.var-SWFAXF2C.woff2” preloaded with link preload was not used within a few seconds. Make sure all attributes of the preload tag are set correctly. menu.html
