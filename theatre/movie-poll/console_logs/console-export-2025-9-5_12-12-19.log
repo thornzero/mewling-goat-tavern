@@ -1,0 +1,16 @@
+GET
+https://moviepoll.mewling-goat-tavern.online/dist/script.mjs
+NS_ERROR_CORRUPTED_CONTENT
+
+	
+GET
+	https://moviepoll.mewling-goat-tavern.online/dist/script.mjs
+Status
+404
+VersionHTTP/2
+Transferred665 B (0 B size)
+Referrer Policystrict-origin-when-cross-origin
+DNS ResolutionSystem
+
+Loading module from “https://moviepoll.mewling-goat-tavern.online/dist/script.mjs” was blocked because of a disallowed MIME type (“text/html”). moviepoll.mewling-goat-tavern.online
+Loading failed for the module with source “https://moviepoll.mewling-goat-tavern.online/dist/script.mjs”. moviepoll.mewling-goat-tavern.online:56:53
