@@ -572,5 +572,5 @@ function showMoviePoll() {
   }
 }
 
-// Start the flow
-initializeApp();
+// Start the flow when DOM is ready
+document.addEventListener('DOMContentLoaded', initializeApp);
