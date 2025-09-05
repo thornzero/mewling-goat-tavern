@@ -433,7 +433,7 @@ window.answerSeen = answerSeen;
  * @function
  */
 function submitVote(movieIndex: number, voteVibe: number): void {
-  if (!movieData[movieIndex].hasUserName()) {
+  if (!userName) {
     alert("Please enter your name.");
     return;
   }
@@ -450,13 +450,12 @@ function submitVote(movieIndex: number, voteVibe: number): void {
   }
 
   // Update the vote state
-  movieData[movieIndex].setUserName(userName);
   movieData[movieIndex].hasVoted = true;
   movieData[movieIndex].currentStep = 'confirmation';
   movieData[movieIndex].timestamp = Date.now();
   
   // Create and set the Vote object
-  const vote = new Vote(userName, voteVibe, movieData[movieIndex].hasSeen || false, Date.now());
+  const vote = new Vote(voteVibe, movieData[movieIndex].hasSeen || false, Date.now());
   movieData[movieIndex].setVote(vote);
 
   // Update UI and advance to next slide
@@ -593,7 +592,7 @@ function submitAllVotes(): void {
     script.src = `${proxyURL}`
       + `?action=vote`
       + `&movieTitle=${encodeURIComponent(movie.title)}`
-      + `&userName=${encodeURIComponent(vote.userName)}`
+      + `&userName=${encodeURIComponent(userName)}`
       + `&vote=${encodeURIComponent(vote.vibe)}`
       + `&seen=${encodeURIComponent(vote.seen ? "true" : "false")}`
       + `&callback=${cb}`;

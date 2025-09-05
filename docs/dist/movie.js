@@ -27,7 +27,6 @@ class Movie {
         this._videos = videos || [];
         this._vote = vote || null;
         // State properties for voting flow
-        this.userName = '';
         this.hasAnsweredSeen = false;
         this.hasSeen = null;
         this.hasVoted = false;
@@ -145,20 +144,6 @@ class Movie {
      */
     setVote(vote) {
         this._vote = vote;
-    }
-    /**
-     * Sets the user name for this movie
-     * @param {string} userName - The user name
-     */
-    setUserName(userName) {
-        this.userName = userName;
-    }
-    /**
-     * Checks if the movie has a user name
-     * @returns {boolean} - True if the movie has a user name, false otherwise
-     */
-    hasUserName() {
-        return this.userName !== null && typeof this.userName === 'string' && this.userName.length > 0;
     }
 }
 export default Movie;
