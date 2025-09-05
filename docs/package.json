@@ -4,8 +4,8 @@
   "main": "js/script.js",
   "scripts": {
     "build": "npm run build:ts",
-    "build:css": "tailwindcss -i ./build/input.css -o ./build/output.css --watch",
-    "build:css:prod": "tailwindcss -i ./build/input.css -o ./build/output.css --minify && cat ./build/custom.css >> ./build/output.css",
+    "build:css": "tailwindcss -i ./build/input.css -o ./build/output.css --config ./build/tailwind.config.js --watch",
+    "build:css:prod": "tailwindcss -i ./build/input.css -o ./build/output.css --config ./build/tailwind.config.js --minify && cat ./build/custom.css >> ./build/output.css",
     "build:ts": "tsc && npm run build:css:prod",
     "dev": "npm run tsc:watch & npm run build:css",
     "tsc": "tsc",
