@@ -624,13 +624,15 @@ function submitAllVotes(): void {
   // Get all movies that have been voted on
   const movieVotes: BatchVoteReq = {
     votes: movieData.map((movie: Movie) => {
-      return {
+      const voteData = {
         timestamp: movie.vote?.timestamp ?? Date.now(),
         movieTitle: movie.title,
         userName: userName,
         vibe: movie.vote?.vibe ?? 0,
         seen: movie.vote?.seen ?? false
       };
+      logging(`Vote data for ${movie.title}:`, 'debug', voteData);
+      return voteData;
     })
   };
   const totalVotes = movieVotes.votes.length;

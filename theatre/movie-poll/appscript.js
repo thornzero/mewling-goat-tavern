@@ -12,7 +12,9 @@ const SHEET_NAMES = {
 };
 
 const VOTE_COLUMNS = {
-  TITLE: 1,    // Column B
+  TIMESTAMP: 0, // Column A
+  TITLE: 1,     // Column B
+  USER: 2,      // Column C
   VOTE: 3,      // Column D  
   SEEN: 4       // Column E
 };
@@ -20,15 +22,6 @@ const VOTE_COLUMNS = {
 const CACHE_DURATION = {
   API_RESPONSE: 21600,  // 6 hours
   RATE_LIMIT: 60        // 1 minute
-};
-
-const VOTE_RANKS = {
-  '⭐': 1,  // Rewatch - highest rank
-  '🔥': 2,  // Stoked
-  '⏳': 3,  // Later
-  '😐': 4,  // Meh
-  '💤': 5,  // Skip
-  '🚫': 6   // Never - lowest rank
 };
 
 // Rate limiting configuration
@@ -118,12 +111,23 @@ function validateRequiredParams(params, requiredFields) {
  * @param {string} seen - Seen status
  */
 function submitVote(sheet, movieTitle, userName, vote, seen) {
+  // Validate required parameters
+  if (!movieTitle || !userName || !vote) {
+    throw new Error('Missing required vote parameters: movieTitle, userName, and vote are required');
+  }
+  
+  // Validate vote is a number
+  const voteNum = parseInt(vote);
+  if (isNaN(voteNum) || voteNum < 1 || voteNum > 6) {
+    throw new Error('Invalid vote value: must be a number between 1 and 6');
+  }
+  
   sheet.appendRow([
     new Date(),
-    movieTitle || '',
-    userName || '',
-    vote || '',
-    seen || ''
+    movieTitle.trim(),
+    userName.trim(),
+    voteNum.toString(),
+    seen === 'true' || seen === 'TRUE' ? 'TRUE' : 'FALSE'
   ]);
 }
 
@@ -134,13 +138,36 @@ function submitVote(sheet, movieTitle, userName, vote, seen) {
  * @returns {number} Number of votes submitted
  */
 function submitBatchVotes(sheet, votes) {
-  const rowsToAppend = votes.map(vote => [
-    new Date(vote.timestamp || Date.now()),
-    vote.movieTitle || '',
-    vote.userName || '',
-    vote.vote || '',
-    vote.seen || ''
-  ]);
+  if (!Array.isArray(votes)) {
+    throw new Error('Votes must be an array');
+  }
+  
+  console.log('Received votes:', JSON.stringify(votes, null, 2));
+  
+  const rowsToAppend = votes.map((vote, index) => {
+    console.log(`Processing vote ${index}:`, vote);
+    
+    // Validate each vote
+    if (!vote.movieTitle || !vote.userName || !vote.vibe) {
+      throw new Error(`Vote at index ${index} is missing required fields: movieTitle, userName, and vibe are required`);
+    }
+    
+    const voteNum = parseInt(vote.vibe);
+    if (isNaN(voteNum) || voteNum < 1 || voteNum > 6) {
+      throw new Error(`Vote at index ${index} has invalid vibe value: must be a number between 1 and 6`);
+    }
+    
+    const rowData = [
+      new Date(vote.timestamp || Date.now()),
+      vote.movieTitle.trim(),
+      vote.userName.trim(),
+      voteNum.toString(),
+      vote.seen === 'true' || vote.seen === 'TRUE' ? 'TRUE' : 'FALSE'
+    ];
+    
+    console.log(`Row data for vote ${index}:`, rowData);
+    return rowData;
+  });
   
   if (rowsToAppend.length > 0) {
     sheet.getRange(sheet.getLastRow() + 1, 1, rowsToAppend.length, 5).setValues(rowsToAppend);
@@ -365,39 +392,57 @@ function handleUpdateAppeal(callback) {
  * @returns {Object} Result with updated and total counts
  */
 function updateAppealValues() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const votesSheet = getSheet(SHEET_NAMES.VOTES);
-  const marqueeSheet = getSheet(SHEET_NAMES.MARQUEE);
-  
-  // Get all votes
-  const votesData = votesSheet.getRange(2, 1, votesSheet.getLastRow() - 1, 5).getValues();
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const votesSheet = getSheet(SHEET_NAMES.VOTES);
+    const marqueeSheet = getSheet(SHEET_NAMES.MARQUEE);
+    
+    // Get all votes - handle case where there are no votes
+    const lastRow = votesSheet.getLastRow();
+    if (lastRow < 2) {
+      console.log('No votes found in sheet');
+      return { updated: 0, total: 0 };
+    }
+    
+    const votesData = votesSheet.getRange(2, 1, lastRow - 1, 5).getValues();
   
   // Calculate appeal for each movie
   const movieAppeals = {};
-  
+  const uniqueVoters = new Set();
+
   votesData.forEach(row => {
+    const voter = row[VOTE_COLUMNS.USER];       // Column C - Voter Name
     const movieTitle = row[VOTE_COLUMNS.TITLE]; // Column B - Movie Title
     const vote = row[VOTE_COLUMNS.VOTE];       // Column D - Vote (emoji)
     const seen = row[VOTE_COLUMNS.SEEN];       // Column E - Seen status
     
-    if (movieTitle && vote && VOTE_RANKS.hasOwnProperty(vote)) {
+    if (movieTitle && vote) {
+      // Track unique voters
+      if (voter) {
+        uniqueVoters.add(voter);
+      }
+      
       if (!movieAppeals[movieTitle]) {
         movieAppeals[movieTitle] = {
           totalVotes: 0,
           totalAppeal: 0,
           seenCount: 0,
-          totalVoters: 0
+          voters: new Set()
         };
       }
       
       movieAppeals[movieTitle].totalVotes++;
-      movieAppeals[movieTitle].totalAppeal += VOTE_RANKS[vote];
+      movieAppeals[movieTitle].totalAppeal += parseInt(vote) || 0;
       
       // Track seen status for visibility score
-      if (seen === "✅") {
+      if (seen === "true" || seen === "TRUE") {
         movieAppeals[movieTitle].seenCount++;
       }
-      movieAppeals[movieTitle].totalVoters++;
+      
+      // Track unique voters for this movie
+      if (voter) {
+        movieAppeals[movieTitle].voters.add(voter);
+      }
     }
   });
   
@@ -427,12 +472,15 @@ function updateAppealValues() {
   
   // Calculate visibility scores and final appeal values
   const finalAppeals = {};
+  const totalUniqueVoters = uniqueVoters.size;
+  
   Object.keys(movieAppeals).forEach(voteTitle => {
     const movie = movieAppeals[voteTitle];
+    const movieVoterCount = movie.voters.size;
     
     // Calculate visibility score (lower = less seen = better for tie-breaking)
-    // Formula: (seenCount / totalVoters) * 0.1 to make it a small modifier
-    const visibilityRatio = movie.totalVoters > 0 ? movie.seenCount / movie.totalVoters : 0;
+    // Formula: (seenCount / movieVoterCount) * 0.1 to make it a small modifier
+    const visibilityRatio = movieVoterCount > 0 ? movie.seenCount / movieVoterCount : 0;
     const visibilityModifier = visibilityRatio * 0.1;
     
     // Final appeal = total appeal - visibility modifier
@@ -445,7 +493,8 @@ function updateAppealValues() {
       visibilityModifier: visibilityModifier,
       finalAppeal: finalAppeal,
       seenCount: movie.seenCount,
-      totalVoters: movie.totalVoters
+      totalVoters: movieVoterCount,
+      totalUniqueVoters: totalUniqueVoters
     };
   });
   
@@ -461,15 +510,19 @@ function updateAppealValues() {
       updatedCount++;
       
       // Log the calculation for debugging
-      console.log(`${voteTitle}: Original=${appealData.originalAppeal}, Seen=${appealData.seenCount}/${appealData.totalVoters} (${(appealData.visibilityRatio * 100).toFixed(1)}%), Modifier=${appealData.visibilityModifier.toFixed(3)}, Final=${appealData.finalAppeal.toFixed(3)}`);
+      console.log(`${voteTitle}: Original=${appealData.originalAppeal}, Seen=${appealData.seenCount}/${appealData.totalVoters} (${(appealData.visibilityRatio * 100).toFixed(1)}%), Modifier=${appealData.visibilityModifier.toFixed(3)}, Final=${appealData.finalAppeal.toFixed(3)}, TotalVoters=${appealData.totalUniqueVoters}`);
     } else {
       // Log unmatched titles for debugging
       console.log(`No match found for vote title: "${voteTitle}" (normalized: "${normalizedVoteTitle}")`);
     }
   });
   
-  return {
-    updated: updatedCount,
-    total: Object.keys(movieAppeals).length
-  };
+    return {
+      updated: updatedCount,
+      total: Object.keys(movieAppeals).length
+    };
+  } catch (error) {
+    console.error('Error in updateAppealValues:', error);
+    throw new Error('Failed to update appeal values: ' + error.message);
+  }
 }

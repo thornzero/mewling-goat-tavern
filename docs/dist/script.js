@@ -499,13 +499,15 @@ function submitAllVotes() {
     // Get all movies that have been voted on
     const movieVotes = {
         votes: movieData.map((movie) => {
-            return {
+            const voteData = {
                 timestamp: movie.vote?.timestamp ?? Date.now(),
                 movieTitle: movie.title,
                 userName: userName,
                 vibe: movie.vote?.vibe ?? 0,
                 seen: movie.vote?.seen ?? false
             };
+            logging(`Vote data for ${movie.title}:`, 'debug', voteData);
+            return voteData;
         })
     };
     const totalVotes = movieVotes.votes.length;
