@@ -90,18 +90,30 @@ function startSearchAndFetch() {
                     const similarity = movieTitleSimilarity(r.title, m.title);
                     const rYear = r.release_date ? r.release_date.slice(0, 4) : '';
                     logging(`Similarity: ${similarity}`, 'debug');
-                    if (similarity > 0.8 && rYear == m.year) {
+                    // Use a much stricter similarity threshold and require exact year match
+                    if (similarity <= 2.0 && rYear == m.year) {
                         logging(`Found match! Fetching details for ${r.title}`);
                         fetchDetails(r.id, i);
                         foundMatch = true;
+                        return; // Stop processing once we find a good match
                     }
                 });
-                // If no exact year match found, try using the first result as fallback
+                // If no exact year match found, try using the best similarity match as fallback
                 if (!foundMatch) {
-                    logging(`No exact name and year match for "${m.title}" (${m.year}), using first result as fallback`, 'debug');
-                    const firstResult = resp.results[0];
-                    logging(`Using fallback: ${firstResult.title} (${firstResult.release_date.slice(0, 4)})`, 'debug');
-                    fetchDetails(firstResult.id, i);
+                    logging(`No exact name and year match for "${m.title}" (${m.year}), using best similarity match as fallback`, 'debug');
+                    // Find the result with the best (lowest) similarity score
+                    let bestMatch = resp.results[0];
+                    let bestSimilarity = movieTitleSimilarity(bestMatch.title, m.title);
+                    for (let j = 1; j < resp.results.length; j++) {
+                        const similarity = movieTitleSimilarity(resp.results[j].title, m.title);
+                        if (similarity < bestSimilarity) {
+                            bestSimilarity = similarity;
+                            bestMatch = resp.results[j];
+                        }
+                    }
+                    logging(`Using fallback: ${bestMatch.title} (${bestMatch.release_date.slice(0, 4)}) - similarity: ${bestSimilarity}`, 'debug');
+                    fetchDetails(bestMatch.id, i);
+                    foundMatch = true;
                 }
             }
             else {
