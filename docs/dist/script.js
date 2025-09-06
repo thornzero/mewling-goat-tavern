@@ -77,7 +77,18 @@ function fetchMovieTitles() {
                 // Create empty movie data to prevent hanging
                 movieData = [];
                 remaining = 0;
+                // Don't start search process if we have no movies
+                logging('No movies to process, skipping search and fetch', 'warn');
                 handleDone();
+                return;
+            }
+            // If it's an HTML response (redirect/error), handle gracefully
+            if (typeof resp === 'string' && resp.includes('<HTML>')) {
+                logging('Received HTML response instead of JSON - API may be down or URL incorrect', 'error');
+                movieData = [];
+                remaining = 0;
+                handleDone();
+                return;
             }
         }
     });
@@ -87,6 +98,12 @@ function fetchMovieTitles() {
  * @function
  */
 function startSearchAndFetch() {
+    // Safety check: don't start search if we have no movies
+    if (!movieData || movieData.length === 0) {
+        logging('No movies to search, skipping search and fetch', 'warn');
+        handleDone();
+        return;
+    }
     movieData.forEach((m, i) => {
         const params = { query: m.title };
         if (m.year)
@@ -163,6 +180,12 @@ function startSearchAndFetch() {
  * @function
  */
 function fetchDetails(id, idx) {
+    // Safety check: ensure movieData array has the expected index
+    if (!movieData || idx >= movieData.length || !movieData[idx]) {
+        logging(`Invalid movie index ${idx} - movieData length: ${movieData?.length || 0}`, 'error');
+        handleDone();
+        return;
+    }
     const storageKey = `movie_${id}`;
     const cached = localStorage.getItem(storageKey);
     if (cached) {
@@ -183,6 +206,12 @@ function fetchDetails(id, idx) {
         logging('Detail result', 'debug', data);
         if (data.error) {
             logging('Detail error', 'error', data.error);
+            handleDone();
+            return;
+        }
+        // Double-check movieData array is still valid
+        if (!movieData || idx >= movieData.length || !movieData[idx]) {
+            logging(`Movie data no longer valid for index ${idx}`, 'error');
             handleDone();
             return;
         }
@@ -221,7 +250,19 @@ function fetchDetails(id, idx) {
  * @function
  */
 function fetchVideos(id, idx) {
+    // Safety check: ensure movieData array has the expected index
+    if (!movieData || idx >= movieData.length || !movieData[idx]) {
+        logging(`Invalid movie index ${idx} for videos - movieData length: ${movieData?.length || 0}`, 'error');
+        handleDone();
+        return;
+    }
     makeJsonpCall(API_CONFIG.ACTIONS.VIDEOS, { id: id }, (resp) => {
+        // Double-check movieData array is still valid
+        if (!movieData || idx >= movieData.length || !movieData[idx]) {
+            logging(`Movie data no longer valid for videos index ${idx}`, 'error');
+            handleDone();
+            return;
+        }
         if (resp.results && resp.results.length) {
             movieData[idx].setVideos(resp.results.map((v) => v));
             logging(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
@@ -242,6 +283,12 @@ function handleDone() {
     if (remaining === 0) {
         logging('All movies processed! Loading complete.');
         moviesLoaded = true;
+        // Check if we have no movies (API error)
+        if (movieData.length === 0) {
+            logging('No movies loaded - API may be down', 'error');
+            showApiError();
+            return;
+        }
         // Check if all movies have been fully loaded (have poster, genres, etc.)
         const allMoviesLoaded = movieData.every(movie => movie.poster && movie.genres && movie.synopsis);
         logging('All movies fully loaded:', 'debug', allMoviesLoaded);
@@ -568,6 +615,27 @@ function fetchDebug() {
         DEBUG = resp.debug;
         logging('Debug status set to:', 'info', DEBUG);
     });
+}
+/**
+ * Shows API error message when movies can't be loaded
+ * @function
+ */
+function showApiError() {
+    const startBtn = document.getElementById('start-poll-btn');
+    if (startBtn) {
+        startBtn.innerHTML = `
+      <div class="text-center">
+        <div class="text-red-400 text-lg font-semibold mb-2">⚠️ API Error</div>
+        <div class="text-gray-300 text-sm mb-4">
+          Unable to load movies. The API may be temporarily unavailable.
+        </div>
+        <button onclick="location.reload()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+          Retry
+        </button>
+      </div>
+    `;
+        startBtn.disabled = false;
+    }
 }
 /**
  * Shows final success message after all votes are submitted
