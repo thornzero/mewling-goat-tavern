@@ -17,7 +17,10 @@ export const API_CONFIG = {
         MOVIE: 'movie',
         VOTE: 'vote',
         BATCH_VOTE: 'batchVote',
-        UPDATE_APPEAL: 'updateAppeal'
+        UPDATE_APPEAL: 'updateAppeal',
+        ADD_MOVIE: 'addMovie',
+        UPDATE_MOVIE: 'updateMovie',
+        DELETE_MOVIE: 'deleteMovie'
     }
 };
 /**
