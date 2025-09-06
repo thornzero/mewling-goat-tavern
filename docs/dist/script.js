@@ -245,7 +245,7 @@ async function fetchDetails(id, idx) {
         }
         // Update the existing Movie object instead of replacing it
         movieData[idx].setTitle(data.title);
-        movieData[idx].setYear(data.year);
+        movieData[idx].setYear(data.release_date ? data.release_date.slice(0, 4) : '');
         movieData[idx].setPoster(data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : '');
         movieData[idx].setGenres(data.genres.map((g) => g.name));
         movieData[idx].setSynopsis(data.overview);
