@@ -58,7 +58,7 @@ function handleCors(request: Request, env: Env): Response | null {
       headers: {
         'Access-Control-Allow-Origin': origin,
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With, Accept, Origin',
         'Access-Control-Max-Age': '86400',
       },
     });
@@ -970,5 +970,5 @@ export default {
     } catch (error) {
       return handleError(error);
     }
-  },
+	},
 } satisfies ExportedHandler<Env>;
