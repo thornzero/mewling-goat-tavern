@@ -16,6 +16,13 @@ import {
   BatchVoteRequest,
   BatchVoteResponse,
   AppealResponse,
+  AddMovieRequest,
+  AddMovieResponse,
+  UpdateMovieRequest,
+  UpdateMovieResponse,
+  DeleteMovieRequest,
+  DeleteMovieResponse,
+  ListMoviesResponse,
   TMDBMovie,
   TMDBMovieDetails,
   TMDBSearchResponse,
@@ -532,6 +539,366 @@ async function handleUpdateAppeal(env: Env): Promise<Response> {
 }
 
 // ============================================================================
+// Movie Management Handlers
+// ============================================================================
+
+async function handleAddMovie(request: Request, env: Env): Promise<Response> {
+  try {
+    const body: AddMovieRequest = await request.json();
+    
+    // Validate input
+    if (!body.title || !body.year) {
+      throw new ValidationError('Title and year are required');
+    }
+    
+    const useMatching = body.use_matching !== false; // Default to true
+    
+    let tmdbMovie: TMDBMovie;
+    let matchInfo: any = null;
+    
+    if (useMatching) {
+      // Use sophisticated matching algorithm
+      const searchResponse = await fetch(
+        `https://api.themoviedb.org/3/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(body.title)}&page=1`
+      );
+      
+      if (!searchResponse.ok) {
+        throw new ApiError('TMDB API request failed', searchResponse.status);
+      }
+      
+      const searchData: TMDBSearchResponse = await searchResponse.json();
+      const bestMatch = findBestMovieMatch(body.title, body.year, searchData.results);
+      
+      if (!bestMatch || bestMatch.matchType === 'none') {
+        throw new ApiError(`No good match found for "${body.title}" (${body.year})`, 404, 'NO_MATCH');
+      }
+      
+      tmdbMovie = bestMatch.match;
+      matchInfo = {
+        match_type: bestMatch.matchType,
+        similarity_score: bestMatch.score,
+        search_title: body.title,
+        search_year: body.year
+      };
+    } else {
+      // Use first result from TMDB search
+      const searchResponse = await fetch(
+        `https://api.themoviedb.org/3/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(body.title)}&page=1`
+      );
+      
+      if (!searchResponse.ok) {
+        throw new ApiError('TMDB API request failed', searchResponse.status);
+      }
+      
+      const searchData: TMDBSearchResponse = await searchResponse.json();
+      
+      if (!searchData.results || searchData.results.length === 0) {
+        throw new ApiError(`No results found for "${body.title}"`, 404, 'NO_RESULTS');
+      }
+      
+      tmdbMovie = searchData.results[0];
+    }
+    
+    // Get detailed movie information
+    const detailsResponse = await fetch(
+      `https://api.themoviedb.org/3/movie/${tmdbMovie.id}?api_key=${env.TMDB_API_KEY}&append_to_response=videos`
+    );
+    
+    if (!detailsResponse.ok) {
+      throw new ApiError('TMDB API request failed', detailsResponse.status);
+    }
+    
+    const details: TMDBMovieDetails = await detailsResponse.json();
+    
+    // Check if movie already exists
+    const existingMovie = await env.mewlinggoat_db
+      .prepare('SELECT id FROM movies WHERE tmdb_id = ?')
+      .bind(tmdbMovie.id)
+      .first();
+    
+    if (existingMovie) {
+      throw new ApiError(`Movie already exists in database`, 409, 'MOVIE_EXISTS');
+    }
+    
+    // Insert movie into database
+    const insertResult = await env.mewlinggoat_db
+      .prepare(`
+        INSERT INTO movies (
+          tmdb_id, title, year, poster_path, backdrop_path, 
+          overview, release_date, runtime, adult, original_language, 
+          original_title, popularity, vote_average, vote_count, video
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+      .bind(
+        details.id as number,
+        details.title,
+        details.release_date ? parseInt(details.release_date.split('-')[0]) : null,
+        details.poster_path,
+        details.backdrop_path,
+        details.overview,
+        details.release_date,
+        details.runtime,
+        details.adult ? 1 : 0,
+        (details.original_language || 'en') as string,
+        (details.original_title || details.title) as string,
+        details.popularity || 0,
+        details.vote_average || 0,
+        details.vote_count || 0,
+        details.video ? 1 : 0
+      )
+      .run();
+    
+    // Get the inserted movie
+    const insertedMovie = await env.mewlinggoat_db
+      .prepare('SELECT * FROM movies WHERE id = ?')
+      .bind(insertResult.meta.last_row_id)
+      .first();
+    
+    if (!insertedMovie) {
+      throw new ApiError('Failed to retrieve inserted movie', 500, 'INSERT_RETRIEVAL_ERROR');
+    }
+    
+    const response: AddMovieResponse = {
+      success: true,
+      message: `Movie "${details.title}" added successfully`,
+      movie: {
+        id: insertedMovie.id as number,
+        tmdb_id: insertedMovie.tmdb_id as number,
+        title: insertedMovie.title as string,
+        year: insertedMovie.year as number,
+        poster_path: insertedMovie.poster_path as string | null,
+        overview: insertedMovie.overview as string | null,
+        match_info: matchInfo
+      }
+    };
+    
+    return new Response(JSON.stringify(response), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    if (error instanceof ValidationError || error instanceof ApiError) {
+      const response: AddMovieResponse = {
+        success: false,
+        message: error.message,
+        error: error.code
+      };
+      return new Response(JSON.stringify(response), {
+        status: error.status,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    throw new ApiError('Failed to add movie', 500, 'ADD_MOVIE_ERROR');
+  }
+}
+
+async function handleUpdateMovie(request: Request, env: Env): Promise<Response> {
+  try {
+    const body: UpdateMovieRequest = await request.json();
+    
+    if (!body.id) {
+      throw new ValidationError('Movie ID is required');
+    }
+    
+    // Get existing movie
+    const existingMovie = await env.mewlinggoat_db
+      .prepare('SELECT * FROM movies WHERE id = ?')
+      .bind(body.id)
+      .first();
+    
+    if (!existingMovie) {
+      throw new NotFoundError('Movie', body.id);
+    }
+    
+    // If title or year changed, search for new match
+    if (body.title || body.year) {
+      const newTitle = (body.title || existingMovie.title) as string;
+      const newYear = (body.year || existingMovie.year) as number;
+      const useMatching = body.use_matching !== false;
+      
+      let tmdbMovie: TMDBMovie;
+      
+      if (useMatching) {
+        const searchResponse = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(newTitle)}&page=1`
+        );
+        
+        if (!searchResponse.ok) {
+          throw new ApiError('TMDB API request failed', searchResponse.status);
+        }
+        
+        const searchData: TMDBSearchResponse = await searchResponse.json();
+        const bestMatch = findBestMovieMatch(newTitle, newYear, searchData.results);
+        
+        if (!bestMatch || bestMatch.matchType === 'none') {
+          throw new ApiError(`No good match found for "${newTitle}" (${newYear})`, 404, 'NO_MATCH');
+        }
+        
+        tmdbMovie = bestMatch.match;
+      } else {
+        const searchResponse = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(newTitle)}&page=1`
+        );
+        
+        if (!searchResponse.ok) {
+          throw new ApiError('TMDB API request failed', searchResponse.status);
+        }
+        
+        const searchData: TMDBSearchResponse = await searchResponse.json();
+        
+        if (!searchData.results || searchData.results.length === 0) {
+          throw new ApiError(`No results found for "${newTitle}"`, 404, 'NO_RESULTS');
+        }
+        
+        tmdbMovie = searchData.results[0];
+      }
+      
+      // Get detailed movie information
+      const detailsResponse = await fetch(
+        `https://api.themoviedb.org/3/movie/${tmdbMovie.id}?api_key=${env.TMDB_API_KEY}&append_to_response=videos`
+      );
+      
+      if (!detailsResponse.ok) {
+        throw new ApiError('TMDB API request failed', detailsResponse.status);
+      }
+      
+      const details: TMDBMovieDetails = await detailsResponse.json();
+      
+      // Update movie in database
+      await env.mewlinggoat_db
+        .prepare(`
+          UPDATE movies SET
+            tmdb_id = ?, title = ?, year = ?, poster_path = ?, backdrop_path = ?,
+            overview = ?, release_date = ?, runtime = ?, adult = ?, original_language = ?,
+            original_title = ?, popularity = ?, vote_average = ?, vote_count = ?, video = ?,
+            updated_at = strftime('%s','now')
+          WHERE id = ?
+        `)
+        .bind(
+          details.id as number,
+          details.title,
+          details.release_date ? parseInt(details.release_date.split('-')[0]) : null,
+          details.poster_path,
+          details.backdrop_path,
+          details.overview,
+          details.release_date,
+          details.runtime,
+          details.adult ? 1 : 0,
+          (details.original_language || 'en') as string,
+          (details.original_title || details.title) as string,
+          details.popularity || 0,
+          details.vote_average || 0,
+          details.vote_count || 0,
+          details.video ? 1 : 0,
+          body.id
+        )
+        .run();
+    }
+    
+    // Get updated movie
+    const updatedMovie = await env.mewlinggoat_db
+      .prepare('SELECT * FROM movies WHERE id = ?')
+      .bind(body.id)
+      .first();
+    
+    const response: UpdateMovieResponse = {
+      success: true,
+      message: `Movie updated successfully`,
+      movie: updatedMovie
+    };
+    
+    return new Response(JSON.stringify(response), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    if (error instanceof ValidationError || error instanceof ApiError || error instanceof NotFoundError) {
+      const response: UpdateMovieResponse = {
+        success: false,
+        message: error.message,
+        error: error.code
+      };
+      return new Response(JSON.stringify(response), {
+        status: error.status,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    throw new ApiError('Failed to update movie', 500, 'UPDATE_MOVIE_ERROR');
+  }
+}
+
+async function handleDeleteMovie(request: Request, env: Env): Promise<Response> {
+  try {
+    const body: DeleteMovieRequest = await request.json();
+    
+    if (!body.id) {
+      throw new ValidationError('Movie ID is required');
+    }
+    
+    // Check if movie exists
+    const existingMovie = await env.mewlinggoat_db
+      .prepare('SELECT id, title FROM movies WHERE id = ?')
+      .bind(body.id)
+      .first();
+    
+    if (!existingMovie) {
+      throw new NotFoundError('Movie', body.id);
+    }
+    
+    // Delete movie and related data
+    await env.mewlinggoat_db
+      .prepare('DELETE FROM votes WHERE movie_id = ?')
+      .bind(body.id)
+      .run();
+    
+    await env.mewlinggoat_db
+      .prepare('DELETE FROM movies WHERE id = ?')
+      .bind(body.id)
+      .run();
+    
+    const response: DeleteMovieResponse = {
+      success: true,
+      message: `Movie "${existingMovie.title}" deleted successfully`
+    };
+    
+    return new Response(JSON.stringify(response), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    if (error instanceof ValidationError || error instanceof ApiError || error instanceof NotFoundError) {
+      const response: DeleteMovieResponse = {
+        success: false,
+        message: error.message,
+        error: error.code
+      };
+      return new Response(JSON.stringify(response), {
+        status: error.status,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    throw new ApiError('Failed to delete movie', 500, 'DELETE_MOVIE_ERROR');
+  }
+}
+
+async function handleListMoviesDetailed(env: Env): Promise<Response> {
+  try {
+    const movies = await env.mewlinggoat_db
+      .prepare('SELECT * FROM movies ORDER BY title')
+      .all();
+    
+    const response: ListMoviesResponse = {
+      success: true,
+      movies: movies.results,
+      total: movies.results.length
+    };
+    
+    return new Response(JSON.stringify(response), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    throw new DatabaseError('Failed to fetch movies', error);
+  }
+}
+
+// ============================================================================
 // Main Handler
 // ============================================================================
 
@@ -560,7 +927,7 @@ export default {
           response = await handleDebug(env);
           break;
         case 'listMovies':
-          response = await handleListMovies(env);
+          response = await handleListMoviesDetailed(env);
           break;
         case 'search':
           response = await handleSearch(request, env);
@@ -576,6 +943,15 @@ export default {
           break;
         case 'updateAppeal':
           response = await handleUpdateAppeal(env);
+          break;
+        case 'addMovie':
+          response = await handleAddMovie(request, env);
+          break;
+        case 'updateMovie':
+          response = await handleUpdateMovie(request, env);
+          break;
+        case 'deleteMovie':
+          response = await handleDeleteMovie(request, env);
           break;
         default:
           throw new ApiError(`Unknown action: ${action}`, 400, 'UNKNOWN_ACTION');
