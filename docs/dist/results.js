@@ -34,10 +34,30 @@ class ResultsPage {
      * Load movies from API
      */
     loadMovies() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error('Movies loading timeout'));
+            }, 10000); // 10 second timeout
             makeJsonpCall(API_CONFIG.ACTIONS.LIST_MOVIES, {}, (response) => {
-                this.moviesData = response || [];
-                resolve();
+                clearTimeout(timeout);
+                try {
+                    // Convert string array to MovieResponse array
+                    this.moviesData = (response || []).map((title) => {
+                        const match = title.match(/(.+?)\s*\((\d{4})\)$/);
+                        const parsedTitle = match ? match[1].trim() : title;
+                        const year = match ? match[2] : '';
+                        return {
+                            title: parsedTitle,
+                            year: year ? parseInt(year) : undefined,
+                            genre: undefined,
+                            director: undefined
+                        };
+                    });
+                    resolve();
+                }
+                catch (error) {
+                    reject(error);
+                }
             });
         });
     }
@@ -45,8 +65,12 @@ class ResultsPage {
      * Load appeal data from API
      */
     loadAppealData() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                reject(new Error('Appeal data loading timeout'));
+            }, 10000); // 10 second timeout
             makeJsonpCall(API_CONFIG.ACTIONS.UPDATE_APPEAL, {}, (response) => {
+                clearTimeout(timeout);
                 this.appealData = response;
                 resolve();
             });

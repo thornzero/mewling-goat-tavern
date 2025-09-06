@@ -1,0 +1,281 @@
+Debug status set to: true script.js:34:21
+Raw response from Google Sheet: 
+Array(21) [ "Beetlejuice (1988)", "Little Shop of Horrors (1986)", "The Running Man (1987)", "They Live (1988)", "Redline (2009)", "Tucker and Dale vs. Evil (2010)", "Idle Hands (1999)", "The Return of the Living Dead (1985)", "The Thing (1982)", "Vampire Hunter D: Bloodlust (2000)", … ]
+script.js:30:25
+Processed movie data: 
+Array(21) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:30:25
+Search results for "House" (1977): 
+Object { page: 1, results: (2) […], total_pages: 1, total_results: 2 }
+script.js:30:25
+Search result 
+Array [ {…}, {…} ]
+script.js:30:25
+Similarity: 42.2 null script.js:30:25
+Similarity: 78.4 null script.js:30:25
+No exact name and year match for "House" (1977), using best similarity match as fallback null script.js:30:25
+Using fallback: Paprika (2006) - similarity: 42.2 null script.js:30:25
+Movies remaining to process: 20 null script.js:34:21
+Search results for "Night of the Creeps" (1986): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found match! Fetching details for Night of the Creeps null script.js:34:21
+Movies remaining to process: 19 null script.js:34:21
+Search results for "Paprika" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 95 null script.js:30:25
+No exact name and year match for "Paprika" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: The Final Girls (2015) - similarity: 95 null script.js:30:25
+Movies remaining to process: 18 null script.js:34:21
+Search results for "The Final Girls" (undefined): 
+Object { page: 1, results: (20) […], total_pages: 2, total_results: 34 }
+script.js:30:25
+Search result 
+Array(20) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:30:25
+Similarity: 123.2 null script.js:30:25
+Similarity: 77.8 null script.js:30:25
+Similarity: 49.9 null script.js:30:25
+Similarity: 84.8 null script.js:30:25
+Similarity: 60.2 null script.js:30:25
+Similarity: 95.39999999999999 null script.js:30:25
+Similarity: 180.2 null script.js:30:25
+Similarity: 138.2 null script.js:30:25
+Similarity: 175.4 null script.js:30:25
+Similarity: 102.6 null script.js:30:25
+Similarity: 138.2 null script.js:30:25
+Similarity: 86 null script.js:30:25
+Similarity: 125.2 null script.js:30:25
+Similarity: 90.39999999999999 null script.js:30:25
+Similarity: 209.20000000000002 null script.js:30:25
+Similarity: 109.6 null script.js:30:25
+Similarity: 121.19999999999999 null script.js:30:25
+Similarity: 50.6 null script.js:30:25
+Similarity: 96.4 null script.js:30:25
+Similarity: 155.4 null script.js:30:25
+No exact name and year match for "The Final Girls" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: House (1977) - similarity: 49.9 null script.js:30:25
+Movies remaining to process: 17 null script.js:34:21
+Search results for "The Return of the Living Dead" (1985): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 79.7 null script.js:30:25
+No exact name and year match for "The Return of the Living Dead" (1985), using best similarity match as fallback null script.js:30:25
+Using fallback: The Running Man (1987) - similarity: 79.7 null script.js:30:25
+Movies remaining to process: 16 null script.js:34:21
+Search results for "House" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 63 null script.js:30:25
+No exact name and year match for "House" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Summer Wars (2009) - similarity: 63 null script.js:30:25
+Movies remaining to process: 15 null script.js:34:21
+Search results for "The Running Man" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 107.6 null script.js:30:25
+No exact name and year match for "The Running Man" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: The Return of the Living Dead (1985) - similarity: 107.6 null script.js:30:25
+Movies remaining to process: 14 null script.js:34:21
+Search results for "Summer Wars" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 149.6 null script.js:30:25
+No exact name and year match for "Summer Wars" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: The Texas Chain Saw Massacre (1974) - similarity: 149.6 null script.js:30:25
+Movies remaining to process: 13 null script.js:34:21
+Search results for "The Texas Chain Saw Massacre" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 131 null script.js:30:25
+No exact name and year match for "The Texas Chain Saw Massacre" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Escape from New York (1981) - similarity: 131 null script.js:30:25
+Movies remaining to process: 12 null script.js:34:21
+Search results for "The Return of the Living Dead" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 86.8 null script.js:30:25
+No exact name and year match for "The Return of the Living Dead" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Idle Hands (1999) - similarity: 86.8 null script.js:30:25
+Movies remaining to process: 11 null script.js:34:21
+Search results for "Big Trouble in Little China" (1986): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found match! Fetching details for Big Trouble in Little China null script.js:34:21
+Movies remaining to process: 10 null script.js:34:21
+Search results for "Beetlejuice" (1988): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found match! Fetching details for Beetlejuice null script.js:34:21
+Movies remaining to process: 9 null script.js:34:21
+Search results for "Escape from New York" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 98 null script.js:30:25
+No exact name and year match for "Escape from New York" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Perfect Blue (1998) - similarity: 98 null script.js:30:25
+Movies remaining to process: 8 null script.js:34:21
+Search results for "Big Trouble in Little China" (undefined): 
+Object { page: 1, results: (10) […], total_pages: 1, total_results: 10 }
+script.js:30:25
+Search result 
+Array(10) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…} ]
+script.js:30:25
+Similarity: 66.3 null script.js:30:25
+Similarity: 94.8 null script.js:30:25
+Similarity: 150.79999999999998 null script.js:30:25
+Similarity: 124.8 null script.js:30:25
+Similarity: 142.8 null script.js:30:25
+Similarity: 94.99999999999999 null script.js:30:25
+Similarity: 136.39999999999998 null script.js:30:25
+Similarity: 170.4 null script.js:30:25
+Similarity: 53.8 null script.js:30:25
+Similarity: 122.99999999999999 null script.js:30:25
+No exact name and year match for "Big Trouble in Little China" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Little Witches (1996) - similarity: 53.8 null script.js:30:25
+Search results for "Idle Hands" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 44.99999999999999 null script.js:30:25
+No exact name and year match for "Idle Hands" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Redline (2009) - similarity: 44.99999999999999 null script.js:30:25
+Movies remaining to process: 7 null script.js:34:21
+Search results for "Big Trouble in Little China" (undefined): 
+Object { page: 1, results: (4) […], total_pages: 1, total_results: 4 }
+script.js:30:25
+Search result 
+Array(4) [ {…}, {…}, {…}, {…} ]
+script.js:30:25
+Similarity: 85 null 2 script.js:30:25
+Similarity: 123.89999999999999 null script.js:30:25
+Similarity: 137.2 null script.js:30:25
+No exact name and year match for "Big Trouble in Little China" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Predator (1987) - similarity: 85 null script.js:30:25
+Movies remaining to process: 6 null script.js:34:21
+Search results for "Predator" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 160.59999999999997 null script.js:30:25
+No exact name and year match for "Predator" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Vampire Hunter D: Bloodlust (2000) - similarity: 160.59999999999997 null script.js:30:25
+Movies remaining to process: 5 null script.js:34:21
+Search results for "Redline" (undefined): 
+Object { page: 1, results: (18) […], total_pages: 1, total_results: 18 }
+script.js:30:25
+Search result 
+Array(18) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:30:25
+Similarity: 49.99999999999999 null script.js:30:25
+Similarity: 153 null script.js:30:25
+Similarity: 150.4 null script.js:30:25
+Similarity: 113.2 null script.js:30:25
+Similarity: 120.6 null script.js:30:25
+Similarity: 250.59999999999997 null script.js:30:25
+Similarity: 177.79999999999998 null script.js:30:25
+Similarity: 118.39999999999999 null script.js:30:25
+Similarity: 215.2 null script.js:30:25
+Similarity: 182.79999999999998 null script.js:30:25
+Similarity: 175.8 null script.js:30:25
+Similarity: 207 null script.js:30:25
+Similarity: 97.6 null script.js:30:25
+Similarity: 75.99999999999999 null script.js:30:25
+Similarity: 226 null script.js:30:25
+Similarity: 209 null script.js:30:25
+Similarity: 106.99999999999999 null script.js:30:25
+Similarity: 151.39999999999998 null script.js:30:25
+No exact name and year match for "Redline" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: They Live (1988) - similarity: 49.99999999999999 null script.js:30:25
+Movies remaining to process: 4 null script.js:34:21
+Search results for "They Live" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 124 null script.js:30:25
+No exact name and year match for "They Live" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Little Shop of Horrors (1986) - similarity: 124 null script.js:30:25
+Movies remaining to process: 3 null script.js:34:21
+Search results for "Vampire Hunter D: Bloodlust" (undefined): 
+Object { page: 1, results: (9) […], total_pages: 1, total_results: 9 }
+script.js:30:25
+Search result 
+Array(9) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…} ]
+script.js:30:25
+Similarity: 95.7 null script.js:30:25
+Similarity: 155.6 null script.js:30:25
+Similarity: 146.6 null script.js:30:25
+Similarity: 121.4 null script.js:30:25
+Similarity: 186.39999999999998 null script.js:30:25
+Similarity: 171 null script.js:30:25
+Similarity: 126.8 null script.js:30:25
+Similarity: 112.6 null script.js:30:25
+Similarity: 114.39999999999999 null script.js:30:25
+No exact name and year match for "Vampire Hunter D: Bloodlust" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: The Thing (1982) - similarity: 95.7 null script.js:30:25
+Movies remaining to process: 2 null script.js:34:21
+Search results for "Little Shop of Horrors" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 141.2 null script.js:30:25
+No exact name and year match for "Little Shop of Horrors" (undefined), using best similarity match as fallback null script.js:30:25
+Using fallback: Tucker and Dale vs. Evil (2010) - similarity: 141.2 null script.js:30:25
+Movies remaining to process: 1 null script.js:34:21
+Detail result 
+Object { adult: false, backdrop_path: "/t6coFkKSFUtArXuCkZKTjUSXKJ2.jpg", belongs_to_collection: null, budget: 0, genres: (2) […], homepage: "", id: 33990, imdb_id: "tt0116897", origin_country: (2) […], original_language: "en", … }
+script.js:30:25
+Updated movie 12: 
+Object { title: "Little Witches", poster: "https://image.tmdb.org/t/p/w500/7bHGge6SVDOVgTek81yJ6vRB5Fb.jpg", genres: (2) […], synopsis: "When an ancient book of spells transforms 6 naughty Catholic school girls into a sexy coven of witches, all hell breaks loose. Witness the evil craft of Little Witches as the execute their devilish deeds." }
+script.js:30:25
+Movie details fetched for: Little Witches null script.js:34:21
+Videos fetched for: Little Witches (1 videos) null script.js:34:21
+Movies remaining to process: 0 null script.js:34:21
+All movies processed! Loading complete. null script.js:34:21
+All movies fully loaded: false script.js:30:25
+Movies not fully loaded yet, waiting... null script.js:34:21
