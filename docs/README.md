@@ -1,93 +1,136 @@
 # Mewling Goat Movie Poll
 
-A responsive movie voting application with mobile-optimized design.
+A modern movie voting application built with TypeScript, Tailwind CSS, and Cloudflare D1 database.
 
 ## Features
 
+### Modern Architecture
+
+- **TypeScript**: Full type safety throughout the application
+- **Tailwind CSS**: Utility-first CSS framework for responsive design
+- **Cloudflare D1**: Serverless SQL database for data persistence
+- **Cloudflare Workers**: Serverless backend API
+- **TMDB Integration**: Direct integration with The Movie Database API
+
 ### Desktop Version (`index.html`)
 
-- Full-featured carousel interface
+- Full-featured carousel interface with Swiper.js
 - Keyboard shortcuts (1=❤️, 2=😐, 3=🗑️, S=Seen it)
 - Detailed movie information display
-- Swiper pagination and navigation
+- Real-time vote submission and tracking
+- Appeal calculation and ranking system
 
-### Mobile Version (`index-mobile.html`)
+### Test Pages
 
-- Touch-optimized interface
-- Large, easy-to-tap buttons
-- Simplified navigation
-- Mobile-specific layout
-- Help modal with instructions
-- Toast notifications
-
-## Mobile Detection
-
-The application automatically detects mobile devices and redirects to the mobile-optimized version. Mobile detection is based on:
-
-- User agent string (iOS, Android, etc.)
-- Screen width (≤768px)
-
-### Force Desktop Version
-
-Add `?desktop=true` to the URL to force the desktop version on mobile devices.
+- **`test.html`**: API testing and debugging interface
+- **`results.html`**: View poll results sorted by appeal rating
+- **`test-d1-integration.html`**: Comprehensive D1 backend testing
 
 ## File Structure
 
 ```text
 docs/
-├── index.html              # Desktop version (auto-redirects mobile)
-├── index-mobile.html       # Mobile-optimized version
-├── js/
-│   └── script.js           # Desktop JavaScript
-├── script-mobile.js        # Mobile JavaScript
-├── output.css              # Compiled Tailwind CSS
-├── input.css               # Tailwind source + custom styles
+├── index.html              # Main application
+├── test.html               # API testing page
+├── results.html            # Results display page
+├── test-d1-integration.html # D1 backend testing
+├── dist/                   # Compiled TypeScript output
+│   ├── script.js           # Main application logic
+│   ├── config.js           # API configuration
+│   ├── movie.js            # Movie class
+│   ├── vote.js             # Vote class
+│   └── utils.js            # Utility functions
+├── build/                  # Build configuration
+│   ├── tailwind.config.js  # Tailwind configuration
+│   ├── input.css           # CSS source
+│   └── output.css          # Compiled CSS
 └── README.md               # This file
+
+src/js/                     # TypeScript source files
+├── script.ts               # Main application logic
+├── config.ts               # API configuration
+├── movie.ts                # Movie class
+├── vote.ts                 # Vote class
+├── utils.ts                # Utility functions
+├── test.ts                 # Test page logic
+└── results.ts              # Results page logic
+
+d1-backend/                 # Cloudflare D1 backend
+├── src/
+│   ├── index.ts            # Worker main file
+│   └── types.ts            # TypeScript interfaces
+├── migrations/             # Database schema
+└── wrangler.jsonc          # Cloudflare configuration
 ```
 
-## Mobile Features
+## Backend Architecture
 
-### Touch-Friendly Design
+### Cloudflare D1 Database
 
-- Minimum 44px touch targets
-- Large vote buttons (❤️, 😐, 🗑️)
-- Easy-to-tap navigation arrows
-- Responsive layout
+- **Movies**: Store movie information from TMDB
+- **Votes**: User vote data with timestamps
+- **Appeal Calculations**: Computed appeal ratings
+- **Genres**: Movie genre information
+- **Videos**: Movie trailers and clips
 
-### Mobile-Specific UI
+### API Endpoints
 
-- Fixed header with movie info
-- Bottom action panel
-- Floating help button
-- Modal instructions
-- Toast notifications
+- `GET /?action=debug` - System status
+- `GET /?action=listMovies` - Get all movies
+- `GET /?action=search&query=...` - Search movies
+- `GET /?action=movie&id=...` - Get movie details
+- `POST /?action=vote` - Submit single vote
+- `POST /?action=batchVote` - Submit multiple votes
+- `GET /?action=updateAppeal` - Get appeal rankings
 
-### Performance Optimizations
+## Development
 
-- Local storage caching
-- Optimized image loading
-- Minimal DOM manipulation
-- Efficient event handling
+### Prerequisites
 
-## Backend Integration
+- Node.js 18+ 
+- npm
+- Cloudflare account (for D1 backend)
 
-Both versions connect to the same Google Apps Script backend with:
+### Frontend Development
 
-- Rate limiting protection
-- TMDB API integration
-- Vote submission
-- Error handling
+```bash
+# Install dependencies
+npm install
+
+# Build TypeScript and CSS
+npm run build
+
+# Watch for changes
+npm run watch
+
+# Lint code
+npm run lint
+```
+
+### Backend Development
+
+```bash
+cd d1-backend/mewling-goat-backend
+
+# Install dependencies
+npm install
+
+# Deploy to Cloudflare
+npm run deploy
+
+# Run database migrations
+npm run db:migrate
+
+# Set TMDB API key
+npx wrangler secret put TMDB_API_KEY
+```
 
 ## Browser Support
 
 - Modern browsers (Chrome, Firefox, Safari, Edge)
-- Mobile browsers (iOS Safari, Chrome Mobile)
+- ES6+ features with TypeScript compilation
 - Progressive enhancement for older browsers
 
-## Development
+## License
 
-To rebuild CSS after changes:
-
-```bash
-npx tailwindcss -i input.css -o output.css
-```
+MIT License - see LICENSE file for details

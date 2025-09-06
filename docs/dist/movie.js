@@ -16,8 +16,9 @@ class Movie {
      * @param {string} runtime - Movie runtime
      * @param {object[]} videos - Movie video objects
      * @param {Vote} vote - Single vote object for this movie
+     * @param {number|null} tmdbId - TMDB movie ID
      */
-    constructor(title, year, poster, genres, synopsis, runtime, videos, vote) {
+    constructor(title, year, poster, genres, synopsis, runtime, videos, vote, tmdbId = null) {
         this._title = title;
         this._year = year;
         this._poster = poster;
@@ -26,6 +27,7 @@ class Movie {
         this._runtime = runtime;
         this._videos = videos || [];
         this._vote = vote || null;
+        this._tmdbId = tmdbId;
         // State properties for voting flow
         this.hasAnsweredSeen = false;
         this.hasSeen = null;
@@ -90,6 +92,13 @@ class Movie {
         return this._vote;
     }
     /**
+     * Gets the TMDB movie ID
+     * @returns {number|null} The TMDB movie ID
+     */
+    get tmdbId() {
+        return this._tmdbId;
+    }
+    /**
      * Sets the movie title
      * @param {string} title - The movie title
      */
@@ -144,6 +153,13 @@ class Movie {
      */
     setVote(vote) {
         this._vote = vote;
+    }
+    /**
+     * Sets the TMDB movie ID
+     * @param {number|null} tmdbId - The TMDB movie ID
+     */
+    setTmdbId(tmdbId) {
+        this._tmdbId = tmdbId;
     }
 }
 export default Movie;

@@ -3,18 +3,19 @@
  * Centralized location for all API endpoints and configuration values
  */
 /**
- * Google Apps Script API Configuration
+ * Cloudflare D1 Backend API Configuration
  */
-const DEPLOYMENT_ID = "AKfycbzVUKSnxgRD_CBniGKjfbJ_sr-V6DsK147-dedhf-1qPpyFRc_myzMGkcEOMbbrpOvsdg";
+const WORKER_URL = "https://mewling-goat-backend.tavern-b8d.workers.dev";
 export const API_CONFIG = {
-    PROXY_URL: `https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec`,
+    /** The Cloudflare Worker URL for API calls */
+    PROXY_URL: WORKER_URL,
     /** API action endpoints */
     ACTIONS: {
         DEBUG: 'debug',
         LIST_MOVIES: 'listMovies',
         SEARCH: 'search',
         MOVIE: 'movie',
-        VIDEOS: 'videos',
+        VIDEOS: 'videos', // Note: Videos are now included in movie details
         VOTE: 'vote',
         BATCH_VOTE: 'batchVote',
         UPDATE_APPEAL: 'updateAppeal'
@@ -38,27 +39,53 @@ export const APP_CONFIG = {
     }
 };
 /**
- * Utility function to make JSONP calls
+ * Utility function to make API calls to D1 backend
+ * Uses standard fetch instead of JSONP for better error handling
+ */
+export async function makeApiCall(action, params = {}, method = 'GET', body) {
+    const url = new URL(API_CONFIG.PROXY_URL);
+    url.searchParams.set('action', action);
+    // Add query parameters for GET requests
+    if (method === 'GET') {
+        Object.entries(params).forEach(([key, value]) => {
+            url.searchParams.set(key, String(value));
+        });
+    }
+    const options = {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    // Add body for POST requests
+    if (method === 'POST' && body) {
+        options.body = JSON.stringify(body);
+    }
+    try {
+        const response = await fetch(url.toString(), options);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    }
+    catch (error) {
+        console.error(`API call failed for action: ${action}`, error);
+        throw error;
+    }
+}
+/**
+ * Legacy JSONP function for backward compatibility
+ * @deprecated Use makeApiCall instead
  */
 export function makeJsonpCall(action, params = {}, callback) {
-    const script = document.createElement('script');
-    const urlParams = new URLSearchParams({
-        action: action,
-        callback: `jsonpCallback_${Date.now()}`,
-        ...params
+    // Convert to modern API call
+    makeApiCall(action, params)
+        .then(callback)
+        .catch(error => {
+        console.error(`API call failed for action: ${action}`, error);
+        // Call callback with error response for backward compatibility
+        callback({ success: false, error: error.message });
     });
-    // Store callback globally
-    window[`jsonpCallback_${Date.now()}`] = callback;
-    script.src = `${API_CONFIG.PROXY_URL}?${urlParams.toString()}`;
-    script.onerror = () => {
-        console.error(`JSONP call failed for action: ${action}`);
-    };
-    document.body.appendChild(script);
-    // Clean up after a delay
-    setTimeout(() => {
-        if (script.parentNode) {
-            script.parentNode.removeChild(script);
-        }
-    }, 10000);
 }
 //# sourceMappingURL=config.js.map

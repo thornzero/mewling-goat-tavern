@@ -17,6 +17,10 @@
 			"database_id": "fdcf429a-c04c-48fa-b68c-0ccb2e6abd69"
 		  }
 		],
+	"vars": {
+		"CORS_ORIGINS": "https://moviepoll.mewling-goat-tavern.online,http://localhost:3000,http://localhost:8787",
+		"DEBUG": "false"
+	},
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

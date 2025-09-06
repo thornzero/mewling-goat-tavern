@@ -6,10 +6,27 @@
 import Movie from './movie.js';
 import Vote from './vote.js';
 import { movieTitleSimilarity } from './utils.js';
-import { API_CONFIG, makeJsonpCall } from './config.js';
+import { API_CONFIG, makeApiCall } from './config.js';
 let DEBUG = false; // Default to false, will be set by fetchDebug()
+// Swiper type is now imported from the swiper package
+/**
+ * Check if two movie titles have significant word overlap
+ * @param title1 - First title
+ * @param title2 - Second title
+ * @returns true if titles share significant words
+ */
+function hasSignificantWordOverlap(title1, title2) {
+    const words1 = title1.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    const words2 = title2.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    // Check for exact word matches (excluding common words)
+    const commonWords = ['the', 'and', 'of', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'with', 'by'];
+    const significantWords1 = words1.filter(w => !commonWords.includes(w));
+    const significantWords2 = words2.filter(w => !commonWords.includes(w));
+    // Must share at least one significant word
+    return significantWords1.some(w1 => significantWords2.includes(w1));
+}
 // === CONFIGURATION ===
-/** @constant {string} Google Apps Script proxy URL for API calls */
+/** @constant {string} Cloudflare D1 backend proxy URL for API calls */
 // proxyURL is now imported from config.js
 // State
 let movieData = [];
@@ -47,60 +64,54 @@ function logging(message, level = 'info', data = null) {
  * @async
  * @function
  */
-function fetchMovieTitles() {
-    makeJsonpCall(API_CONFIG.ACTIONS.LIST_MOVIES, {}, (resp) => {
-        logging('Raw response from Google Sheet:', 'debug', resp);
+async function fetchMovieTitles() {
+    try {
+        const resp = await makeApiCall(API_CONFIG.ACTIONS.LIST_MOVIES);
+        logging('Raw response from D1 backend:', 'debug', resp);
         logging('Response type:', 'debug', typeof resp);
-        logging('Is array:', 'debug', Array.isArray(resp));
-        if (Array.isArray(resp)) {
-            movieData = resp.map((movieTitle, index) => {
+        logging('Movies array:', 'debug', resp.movies);
+        if (resp && Array.isArray(resp.movies)) {
+            movieData = resp.movies.map((movieTitle, index) => {
                 logging(`Processing movie ${index}:`, movieTitle);
                 // The response is an array of strings, not objects
                 if (!movieTitle || typeof movieTitle !== 'string') {
                     logging('Invalid movie title:', 'error', movieTitle);
                     return null;
                 }
-                const match = movieTitle.match(/(.+?)\s*\((\d{4})\)$/);
+                // Try multiple patterns to extract year and title
+                let match = movieTitle.match(/(.+?)\s*\((\d{4})\)$/); // "Title (Year)"
+                if (!match) {
+                    match = movieTitle.match(/(.+?)\s+(\d{4})$/); // "Title Year"
+                }
+                if (!match) {
+                    match = movieTitle.match(/(.+?)\s*\[(\d{4})\]$/); // "Title [Year]"
+                }
                 const parsedTitle = match ? match[1].trim() : movieTitle;
                 const year = match ? match[2] : '';
-                return new Movie(parsedTitle, year, '', [], '', '', [], null);
+                return new Movie(parsedTitle, year, '', [], '', '', [], null, null);
             }).filter(m => m !== null); // Remove any null entries
             logging('Processed movie data:', 'debug', movieData);
             remaining = movieData.length;
-            startSearchAndFetch();
+            startSearchAndFetch().catch(error => {
+                logging('Error in startSearchAndFetch:', 'error', error);
+                showApiError();
+            });
         }
         else {
-            logging('Invalid movie list response - expected array but got:', 'error', resp);
-            logging('Response keys:', 'debug', Object.keys(resp || {}));
-            // If it's a debug response, try to continue anyway
-            if (resp && typeof resp === 'object' && 'debug' in resp) {
-                logging('Received debug response instead of movie list', 'warn');
-                // Create empty movie data to prevent hanging
-                movieData = [];
-                remaining = 0;
-                searchAborted = true; // Prevent any running searches from continuing
-                // Don't start search process if we have no movies
-                logging('No movies to process, skipping search and fetch', 'warn');
-                handleDone();
-                return;
-            }
-            // If it's an HTML response (redirect/error), handle gracefully
-            if (typeof resp === 'string' && resp.includes('<HTML>')) {
-                logging('Received HTML response instead of JSON - API may be down or URL incorrect', 'error');
-                movieData = [];
-                remaining = 0;
-                searchAborted = true; // Prevent any running searches from continuing
-                handleDone();
-                return;
-            }
+            logging('Invalid movie list response - expected movies array but got:', 'error', resp);
+            showApiError();
         }
-    });
+    }
+    catch (error) {
+        logging('Error fetching movie titles:', 'error', error);
+        showApiError();
+    }
 }
 /**
  * Searches TMDb for each movie title to get movie IDs
  * @function
  */
-function startSearchAndFetch() {
+async function startSearchAndFetch() {
     // Safety check: don't start search if we have no movies
     if (!movieData || movieData.length === 0) {
         logging('No movies to search, skipping search and fetch', 'warn');
@@ -109,47 +120,50 @@ function startSearchAndFetch() {
     }
     // Reset abort flag for new search
     searchAborted = false;
-    movieData.forEach((m, i) => {
-        const params = { query: m.title };
-        if (m.year)
-            params.year = m.year;
-        makeJsonpCall(API_CONFIG.ACTIONS.SEARCH, params, (resp) => {
-            // Check if search was aborted
-            if (searchAborted) {
-                logging(`Search aborted for "${m.title}"`, 'debug');
-                return;
-            }
+    // Process movies sequentially to avoid overwhelming the API
+    for (let i = 0; i < movieData.length; i++) {
+        const m = movieData[i];
+        // Check if search was aborted
+        if (searchAborted) {
+            logging(`Search aborted for "${m.title}"`, 'debug');
+            break;
+        }
+        try {
+            const params = { query: m.title };
+            if (m.year)
+                params.year = m.year;
+            const resp = await makeApiCall(API_CONFIG.ACTIONS.SEARCH, params);
             logging(`Search results for "${m.title}" (${m.year}):`, 'debug', resp);
             if (resp && resp.results && resp.results.length > 0) {
                 logging('Search result', 'debug', resp.results);
                 let foundMatch = false;
                 // First try to find exact year match with good similarity
-                resp.results.forEach((r) => {
+                for (const r of resp.results) {
                     const similarity = movieTitleSimilarity(r.title, m.title);
                     const rYear = r.release_date ? r.release_date.slice(0, 4) : '';
                     logging(`Similarity: ${similarity}`, 'debug');
                     // Try exact year match with reasonable similarity threshold
                     if (similarity <= 5.0 && rYear == m.year) {
                         logging(`Found exact year match! Fetching details for ${r.title}`);
-                        fetchDetails(r.id, i);
+                        await fetchDetails(r.id, i);
                         foundMatch = true;
-                        return; // Stop processing once we find a good match
+                        break; // Stop processing once we find a good match
                     }
-                });
+                }
                 // If no exact year match found, try flexible year matching (±2 years)
                 if (!foundMatch) {
-                    resp.results.forEach((r) => {
+                    for (const r of resp.results) {
                         const similarity = movieTitleSimilarity(r.title, m.title);
                         const rYear = r.release_date ? parseInt(r.release_date.slice(0, 4)) : 0;
                         const mYear = m.year ? parseInt(m.year.toString()) : 0;
                         // Allow year difference of ±2 years for better matching
                         if (similarity <= 8.0 && Math.abs(rYear - mYear) <= 2) {
                             logging(`Found flexible year match! Fetching details for ${r.title} (${rYear} vs ${mYear})`);
-                            fetchDetails(r.id, i);
+                            await fetchDetails(r.id, i);
                             foundMatch = true;
-                            return;
+                            break;
                         }
-                    });
+                    }
                 }
                 // If still no match found, use best similarity as fallback
                 if (!foundMatch) {
@@ -164,14 +178,15 @@ function startSearchAndFetch() {
                             bestMatch = resp.results[j];
                         }
                     }
-                    // Only use fallback if similarity is reasonable (not completely wrong)
-                    if (bestSimilarity <= 20.0) { // Much more reasonable threshold for good matches
-                        logging(`Using fallback: ${bestMatch.title} (${bestMatch.release_date.slice(0, 4)}) - similarity: ${bestSimilarity}`, 'debug');
-                        fetchDetails(bestMatch.id, i);
+                    // Only use fallback if similarity is reasonable AND the titles share some common words
+                    const hasCommonWords = hasSignificantWordOverlap(m.title, bestMatch.title);
+                    if (bestSimilarity <= 15.0 && hasCommonWords) { // Stricter threshold and word overlap check
+                        logging(`Using fallback: ${bestMatch.title} (${bestMatch.release_date ? bestMatch.release_date.slice(0, 4) : 'unknown'}) - similarity: ${bestSimilarity}`, 'debug');
+                        await fetchDetails(bestMatch.id, i);
                         foundMatch = true;
                     }
                     else {
-                        logging(`No good match found for "${m.title}" - best similarity too poor: ${bestSimilarity}`, 'warn');
+                        logging(`No good match found for "${m.title}" - best similarity too poor: ${bestSimilarity} or no word overlap`, 'warn');
                         handleDone();
                     }
                 }
@@ -180,8 +195,12 @@ function startSearchAndFetch() {
                 logging(`No search results for "${m.title}"`, 'warn');
                 handleDone();
             }
-        });
-    });
+        }
+        catch (error) {
+            logging(`Error searching for "${m.title}":`, 'error', error);
+            handleDone();
+        }
+    }
 }
 /**
  * Fetches detailed movie information by TMDb ID
@@ -189,7 +208,7 @@ function startSearchAndFetch() {
  * @param {number} idx - Index in movieData array
  * @function
  */
-function fetchDetails(id, idx) {
+async function fetchDetails(id, idx) {
     // Check if search was aborted
     if (searchAborted) {
         logging(`Fetch details aborted for movie ${idx}`, 'debug');
@@ -217,7 +236,8 @@ function fetchDetails(id, idx) {
         handleDone();
         return;
     }
-    makeJsonpCall(API_CONFIG.ACTIONS.MOVIE, { id: id }, (data) => {
+    try {
+        const data = await makeApiCall(API_CONFIG.ACTIONS.MOVIE, { id: id });
         logging('Detail result', 'debug', data);
         if (data.error) {
             logging('Detail error', 'error', data.error);
@@ -233,11 +253,12 @@ function fetchDetails(id, idx) {
         // Update the existing Movie object instead of replacing it
         movieData[idx].setTitle(data.title);
         movieData[idx].setYear(data.year);
-        movieData[idx].setPoster(`https://image.tmdb.org/t/p/w500${data.poster_path}`);
+        movieData[idx].setPoster(data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : '');
         movieData[idx].setGenres(data.genres.map((g) => g.name));
         movieData[idx].setSynopsis(data.overview);
-        movieData[idx].setRuntime(`${data.runtime} min`);
-        movieData[idx].setVideos([]);
+        movieData[idx].setRuntime(data.runtime ? `${data.runtime} min` : '');
+        movieData[idx].setVideos(data.videos || []);
+        movieData[idx].setTmdbId(data.id);
         logging(`Updated movie ${idx}:`, 'debug', {
             title: movieData[idx].title,
             poster: movieData[idx].poster,
@@ -255,43 +276,13 @@ function fetchDetails(id, idx) {
             videos: movieData[idx].videos
         }));
         logging(`Movie details fetched for: ${data.title}`);
-        fetchVideos(id, idx);
-    });
-}
-/**
- * Fetches movie videos (trailers/teasers) by TMDb ID
- * @param {number} id - TMDb movie ID
- * @param {number} idx - Index in movieData array
- * @function
- */
-function fetchVideos(id, idx) {
-    // Check if search was aborted
-    if (searchAborted) {
-        logging(`Fetch videos aborted for movie ${idx}`, 'debug');
-        return;
-    }
-    // Safety check: ensure movieData array has the expected index
-    if (!movieData || idx >= movieData.length || !movieData[idx]) {
-        logging(`Invalid movie index ${idx} for videos - movieData length: ${movieData?.length || 0}`, 'error');
+        // Videos are now included in the movie details response, so no need for separate fetchVideos call
         handleDone();
-        return;
     }
-    makeJsonpCall(API_CONFIG.ACTIONS.VIDEOS, { id: id }, (resp) => {
-        // Double-check movieData array is still valid
-        if (!movieData || idx >= movieData.length || !movieData[idx]) {
-            logging(`Movie data no longer valid for videos index ${idx}`, 'error');
-            handleDone();
-            return;
-        }
-        if (resp.results && resp.results.length) {
-            movieData[idx].setVideos(resp.results.map((v) => v));
-            logging(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
-        }
-        else {
-            logging(`No videos for movie ID ${id}`, 'warn');
-        }
+    catch (error) {
+        logging('Error fetching movie details:', 'error', error);
         handleDone();
-    });
+    }
 }
 /**
  * Tracks completion of movie data loading and renders UI when ready
@@ -561,7 +552,10 @@ function showVoteConfirmationAndAdvance(movieIndex) {
     if (isLastMovie) {
         // Show final submission message and submit all votes
         setTimeout(() => {
-            submitAllVotes();
+            submitAllVotes().catch(error => {
+                logging('Error in submitAllVotes:', 'error', error);
+                showApiError();
+            });
         }, 1500); // Show confirmation for 1.5 seconds before submitting
     }
     else {
@@ -577,20 +571,19 @@ function showVoteConfirmationAndAdvance(movieIndex) {
  * Submits all votes to the Google Sheet at once
  * @function
  */
-function submitAllVotes() {
+async function submitAllVotes() {
     // Get all movies that have been voted on
     const movieVotes = {
         votes: movieData.map((movie) => {
             const voteData = {
-                timestamp: movie.vote?.timestamp ?? Date.now(),
-                movieTitle: movie.title,
-                userName: userName,
+                movie_id: movie.tmdbId || 0, // We'll need to store TMDB ID in Movie class
+                user_name: userName,
                 vibe: movie.vote?.vibe ?? 0,
                 seen: movie.vote?.seen ?? false
             };
             logging(`Vote data for ${movie.title}:`, 'debug', voteData);
             return voteData;
-        })
+        }).filter(vote => vote.movie_id > 0) // Only include votes with valid movie IDs
     };
     const totalVotes = movieVotes.votes.length;
     if (totalVotes === 0) {
@@ -612,29 +605,38 @@ function submitAllVotes() {
       `;
         }
     }
-    // Submit votes one by one
-    makeJsonpCall(API_CONFIG.ACTIONS.BATCH_VOTE, { votes: JSON.stringify(movieVotes.votes) }, (resp) => {
-        if ('error' in resp) {
-            logging(`Vote ${totalVotes} submitted:`, 'error', resp);
-            return;
-        }
-        if ('appealUpdated' in resp) {
-            logging(`AppealUpdated: ${resp.appealUpdated} AppealTotal: ${resp.appealTotal} `, 'debug', resp);
+    try {
+        const resp = await makeApiCall(API_CONFIG.ACTIONS.BATCH_VOTE, {}, 'POST', movieVotes);
+        if (resp.success) {
+            logging(`Successfully submitted ${resp.submitted_count} votes`, 'debug', resp);
             showFinalSuccessMessage();
         }
-    });
+        else {
+            logging(`Vote submission failed:`, 'error', resp);
+            showApiError();
+        }
+    }
+    catch (error) {
+        logging('Error submitting votes:', 'error', error);
+        showApiError();
+    }
 }
 /**
  * Fetches debug status from Google Sheet
  * @async
  * @function
  */
-function fetchDebug() {
-    makeJsonpCall(API_CONFIG.ACTIONS.DEBUG, {}, (resp) => {
+async function fetchDebug() {
+    try {
+        const resp = await makeApiCall(API_CONFIG.ACTIONS.DEBUG);
         logging(`Debug response:`, 'debug', resp);
         DEBUG = resp.debug;
         logging('Debug status set to:', 'info', DEBUG);
-    });
+    }
+    catch (error) {
+        logging('Error fetching debug status:', 'error', error);
+        DEBUG = false; // Default to false on error
+    }
 }
 /**
  * Shows API error message when movies can't be loaded
@@ -728,8 +730,13 @@ function initializeApp() {
         });
     }
     // Start loading movies in background
-    fetchDebug();
-    fetchMovieTitles();
+    fetchDebug().catch(error => {
+        logging('Error in fetchDebug:', 'error', error);
+    });
+    fetchMovieTitles().catch(error => {
+        logging('Error in fetchMovieTitles:', 'error', error);
+        showApiError();
+    });
 }
 /**
  * Shows the movie poll screen and initializes the carousel
