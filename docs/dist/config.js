@@ -5,10 +5,9 @@
 /**
  * Google Apps Script API Configuration
  */
+const DEPLOYMENT_ID = "AKfycbysUhxHRCM6TspMeVRldxzLXm9B8ED-RIgGF9FBSW9C3vD-hd2xvr5Nxdx8CFUy_jquKg";
 export const API_CONFIG = {
-    DEPLOYMENT_ID: "AKfycbysUhxHRCM6TspMeVRldxzLXm9B8ED-RIgGF9FBSW9C3vD-hd2xvr5Nxdx8CFUy_jquKg",
-    /** The Google Apps Script deployment URL for API calls */
-    PROXY_URL: "https://script.google.com/macros/s/${API_CONFIG.DEPLOYMENT_ID}/exec",
+    PROXY_URL: `https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec`,
     /** API action endpoints */
     ACTIONS: {
         DEBUG: 'debug',
