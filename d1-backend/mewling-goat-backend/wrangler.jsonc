@@ -19,7 +19,7 @@
 		],
 	"vars": {
 		"CORS_ORIGINS": "https://moviepoll.mewling-goat-tavern.online,http://localhost:3000,http://localhost:8787",
-		"DEBUG": "false"
+		"DEBUG": "true"
 	},
 	/**
 	 * Smart Placement
