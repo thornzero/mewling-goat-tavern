@@ -72,7 +72,7 @@ async function fetchMovieTitles() {
         logging('Movies array:', 'debug', resp.movies);
         if (resp && Array.isArray(resp.movies)) {
             movieData = resp.movies.map((movieTitle, index) => {
-                logging(`Processing movie ${index}:`, movieTitle);
+                logging(`Processing movie ${index}: ${movieTitle}`, 'debug');
                 // The response is an array of strings, not objects
                 if (!movieTitle || typeof movieTitle !== 'string') {
                     logging('Invalid movie title:', 'error', movieTitle);
@@ -232,7 +232,7 @@ async function fetchDetails(id, idx) {
         movieData[idx].setSynopsis(cachedData.synopsis);
         movieData[idx].setRuntime(cachedData.runtime);
         movieData[idx].setVideos(cachedData.videos);
-        logging(`Loaded cached data for movie ${idx}:`, cachedData.title);
+        logging(`Loaded cached data for movie ${idx}: ${cachedData.title}`, 'debug');
         handleDone();
         return;
     }
@@ -307,18 +307,18 @@ function handleDone() {
             // If user is already waiting, show the poll
             const startBtn = document.getElementById('start-poll-btn');
             if (startBtn && startBtn.textContent === 'Loading movies...') {
-                logging('User is waiting, showing movie poll...');
+                logging('User is waiting, showing movie poll...', 'debug');
                 showMoviePoll();
             }
             // If we're already in the poll screen, create slides
             const moviePollScreen = document.getElementById('movie-poll-screen');
             if (moviePollScreen && !moviePollScreen.classList.contains('hidden')) {
-                logging('Already in poll screen, creating slides...');
+                logging('Already in poll screen, creating slides...', 'debug');
                 createSlides(movieData);
             }
         }
         else {
-            logging('Movies not fully loaded yet, waiting...');
+            logging('Movies not fully loaded yet, waiting...', 'debug');
             // Wait a bit and check again
             setTimeout(() => {
                 if (remaining === 0) {
@@ -481,7 +481,7 @@ function submitVote(movieIndex, voteVibe) {
     }
     const movie = movieData[movieIndex];
     if (!movie) {
-        logging('Movie not found for index:', 'error', movieIndex);
+        logging(`Movie not found for index: ${movieIndex}`, 'error');
         return;
     }
     if (!movieData[movieIndex].hasAnsweredSeen) {

@@ -2,7 +2,7 @@
  * Test page functionality for Movie Poll API testing
  * Provides comprehensive testing interface for all API endpoints
  */
-import { API_CONFIG, APP_CONFIG, makeJsonpCall } from './config.js';
+import { API_CONFIG, APP_CONFIG, makeApiCall } from './config.js';
 class TestPage {
     constructor() {
         this.testResults = [];
@@ -32,59 +32,85 @@ class TestPage {
     /**
      * Test debug status endpoint
      */
-    testDebugStatus() {
-        makeJsonpCall(API_CONFIG.ACTIONS.DEBUG, {}, (response) => {
+    async testDebugStatus() {
+        try {
+            const response = await makeApiCall(API_CONFIG.ACTIONS.DEBUG);
             this.logResult('debug-result', `Debug Status: ${JSON.stringify(response, null, 2)}`, 'success');
             this.addTestResult('Debug Status', true, 'Debug status retrieved successfully', response);
-        });
+        }
+        catch (error) {
+            this.logResult('debug-result', `Error fetching debug status:\n${error}`, 'error');
+            this.addTestResult('Debug Status', false, `Failed to retrieve debug status: ${error}`, null);
+        }
     }
     /**
      * Test movie list endpoint
      */
-    testMovieList() {
-        makeJsonpCall(API_CONFIG.ACTIONS.LIST_MOVIES, {}, (response) => {
+    async testMovieList() {
+        try {
+            const response = await makeApiCall(API_CONFIG.ACTIONS.LIST_MOVIES);
             this.logResult('movies-result', `Movie List (${response.length} movies):\n${JSON.stringify(response, null, 2)}`, 'success');
             this.addTestResult('Movie List', true, `Retrieved ${response.length} movies`, response);
-        });
+        }
+        catch (error) {
+            this.logResult('movies-result', `Error fetching movie list:\n${error}`, 'error');
+            this.addTestResult('Movie List', false, `Failed to retrieve movie list: ${error}`, null);
+        }
     }
     /**
      * Test movie search endpoint
      */
-    testMovieSearch() {
+    async testMovieSearch() {
         const query = document.getElementById('search-query')?.value || APP_CONFIG.TEST_DEFAULTS.SEARCH_QUERY;
         const year = document.getElementById('search-year')?.value || APP_CONFIG.TEST_DEFAULTS.SEARCH_YEAR;
         const params = { query: query };
         if (year)
             params.year = year;
-        makeJsonpCall(API_CONFIG.ACTIONS.SEARCH, params, (response) => {
+        try {
+            const response = await makeApiCall(API_CONFIG.ACTIONS.SEARCH, params);
             this.logResult('search-result', `Search Results for "${query}" (${year || 'any year'}):\n${JSON.stringify(response, null, 2)}`, 'success');
             this.addTestResult('Movie Search', true, `Found ${response.results?.length || 0} results for "${query}"`, response);
-        });
+        }
+        catch (error) {
+            this.logResult('search-result', `Error searching for movies:\n${error}`, 'error');
+            this.addTestResult('Movie Search', false, `Failed to search movies: ${error}`, null);
+        }
     }
     /**
      * Test movie details endpoint
      */
-    testMovieDetails() {
+    async testMovieDetails() {
         const movieId = document.getElementById('movie-id')?.value || APP_CONFIG.TEST_DEFAULTS.MOVIE_ID;
-        makeJsonpCall(API_CONFIG.ACTIONS.MOVIE, { id: movieId }, (response) => {
+        try {
+            const response = await makeApiCall(API_CONFIG.ACTIONS.MOVIE, { id: movieId });
             this.logResult('movie-result', `Movie Details for ID ${movieId}:\n${JSON.stringify(response, null, 2)}`, 'success');
             this.addTestResult('Movie Details', true, `Retrieved details for movie ID ${movieId}`, response);
-        });
+        }
+        catch (error) {
+            this.logResult('movie-result', `Error fetching movie details:\n${error}`, 'error');
+            this.addTestResult('Movie Details', false, `Failed to retrieve movie details: ${error}`, null);
+        }
     }
     /**
-     * Test movie videos endpoint
+     * Test movie videos endpoint (now included in movie details)
      */
-    testMovieVideos() {
+    async testMovieVideos() {
         const videoId = document.getElementById('video-id')?.value || APP_CONFIG.TEST_DEFAULTS.MOVIE_ID;
-        makeJsonpCall(API_CONFIG.ACTIONS.VIDEOS, { id: videoId }, (response) => {
-            this.logResult('videos-result', `Videos for Movie ID ${videoId}:\n${JSON.stringify(response, null, 2)}`, 'success');
-            this.addTestResult('Movie Videos', true, `Retrieved ${response.results?.length || 0} videos for movie ID ${videoId}`, response);
-        });
+        try {
+            const response = await makeApiCall(API_CONFIG.ACTIONS.MOVIE, { id: videoId });
+            const videos = response.videos || [];
+            this.logResult('videos-result', `Videos for Movie ID ${videoId}:\n${JSON.stringify(videos, null, 2)}`, 'success');
+            this.addTestResult('Movie Videos', true, `Retrieved ${videos.length} videos for movie ID ${videoId}`, videos);
+        }
+        catch (error) {
+            this.logResult('videos-result', `Error fetching videos for Movie ID ${videoId}:\n${error}`, 'error');
+            this.addTestResult('Movie Videos', false, `Failed to retrieve videos: ${error}`, null);
+        }
     }
     /**
      * Test single vote submission
      */
-    testSingleVote() {
+    async testSingleVote() {
         const vote = {
             timestamp: Date.now(),
             movieTitle: document.getElementById('test-movie-title')?.value || APP_CONFIG.TEST_DEFAULTS.MOVIE_TITLE,
@@ -92,15 +118,20 @@ class TestPage {
             vibe: parseInt(document.getElementById('test-vibe')?.value || APP_CONFIG.TEST_DEFAULTS.VIBE.toString()),
             seen: document.getElementById('test-seen')?.value === 'true' || APP_CONFIG.TEST_DEFAULTS.SEEN
         };
-        makeJsonpCall(API_CONFIG.ACTIONS.VOTE, vote, (response) => {
+        try {
+            const response = await makeApiCall(API_CONFIG.ACTIONS.VOTE, vote, 'POST');
             this.logResult('vote-result', `Single Vote Submitted:\nVote: ${JSON.stringify(vote, null, 2)}\nResponse: ${JSON.stringify(response, null, 2)}`, 'success');
             this.addTestResult('Single Vote', true, 'Vote submitted successfully', { vote, response });
-        });
+        }
+        catch (error) {
+            this.logResult('vote-result', `Error submitting vote:\n${error}`, 'error');
+            this.addTestResult('Single Vote', false, `Failed to submit vote: ${error}`, null);
+        }
     }
     /**
      * Test batch vote submission
      */
-    testBatchVote() {
+    async testBatchVote() {
         const votes = [
             {
                 timestamp: Date.now(),
@@ -124,19 +155,29 @@ class TestPage {
                 seen: true
             }
         ];
-        makeJsonpCall(API_CONFIG.ACTIONS.BATCH_VOTE, { votes: JSON.stringify(votes) }, (response) => {
+        try {
+            const response = await makeApiCall(API_CONFIG.ACTIONS.BATCH_VOTE, { votes: JSON.stringify(votes) }, 'POST');
             this.logResult('vote-result', `Batch Vote Submitted:\nVotes: ${JSON.stringify(votes, null, 2)}\nResponse: ${JSON.stringify(response, null, 2)}`, 'success');
             this.addTestResult('Batch Vote', true, `Submitted ${votes.length} votes successfully`, { votes, response });
-        });
+        }
+        catch (error) {
+            this.logResult('vote-result', `Error submitting batch vote:\n${error}`, 'error');
+            this.addTestResult('Batch Vote', false, `Failed to submit batch vote: ${error}`, null);
+        }
     }
     /**
      * Test appeal calculation
      */
-    testAppealCalculation() {
-        makeJsonpCall(API_CONFIG.ACTIONS.UPDATE_APPEAL, {}, (response) => {
+    async testAppealCalculation() {
+        try {
+            const response = await makeApiCall(API_CONFIG.ACTIONS.UPDATE_APPEAL);
             this.logResult('appeal-result', `Appeal Calculation Results:\n${JSON.stringify(response, null, 2)}`, 'success');
             this.addTestResult('Appeal Calculation', true, 'Appeal values calculated successfully', response);
-        });
+        }
+        catch (error) {
+            this.logResult('appeal-result', `Error calculating appeal values:\n${error}`, 'error');
+            this.addTestResult('Appeal Calculation', false, `Failed to calculate appeal values: ${error}`, null);
+        }
     }
     /**
      * Run all tests sequentially
@@ -145,14 +186,14 @@ class TestPage {
         this.testResults = [];
         this.logResult('all-tests-result', 'Running all tests...', 'info');
         // Run tests with delays
-        setTimeout(() => this.testDebugStatus(), 100);
-        setTimeout(() => this.testMovieList(), 500);
-        setTimeout(() => this.testMovieSearch(), 1000);
-        setTimeout(() => this.testMovieDetails(), 1500);
-        setTimeout(() => this.testMovieVideos(), 2000);
-        setTimeout(() => this.testSingleVote(), 2500);
-        setTimeout(() => this.testBatchVote(), 3000);
-        setTimeout(() => this.testAppealCalculation(), 3500);
+        setTimeout(async () => await this.testDebugStatus(), 100);
+        setTimeout(async () => await this.testMovieList(), 500);
+        setTimeout(async () => await this.testMovieSearch(), 1000);
+        setTimeout(async () => await this.testMovieDetails(), 1500);
+        setTimeout(async () => await this.testMovieVideos(), 2000);
+        setTimeout(async () => await this.testSingleVote(), 2500);
+        setTimeout(async () => await this.testBatchVote(), 3000);
+        setTimeout(async () => await this.testAppealCalculation(), 3500);
         // Show results after all tests complete
         setTimeout(() => {
             const successCount = this.testResults.filter(r => r.success).length;

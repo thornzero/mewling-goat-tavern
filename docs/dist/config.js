@@ -15,7 +15,6 @@ export const API_CONFIG = {
         LIST_MOVIES: 'listMovies',
         SEARCH: 'search',
         MOVIE: 'movie',
-        VIDEOS: 'videos', // Note: Videos are now included in movie details
         VOTE: 'vote',
         BATCH_VOTE: 'batchVote',
         UPDATE_APPEAL: 'updateAppeal'

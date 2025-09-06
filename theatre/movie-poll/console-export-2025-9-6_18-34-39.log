@@ -1,0 +1,15 @@
+Debug status set to: true script.js:52:21
+Raw response from D1 backend: 
+Object { success: true, movies: (21) […], total: 21 }
+script.js:48:25
+Response type: object script.js:48:25
+Movies array: 
+Array(21) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:48:25
+Error fetching movie titles: TypeError: level.toUpperCase is not a function
+    logging script.ts:71
+    movieData script.ts:103
+    fetchMovieTitles script.ts:102
+    initializeApp script.ts:892
+    EventListener.handleEvent* script.ts:922
+script.js:55:21
