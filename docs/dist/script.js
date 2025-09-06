@@ -15,6 +15,7 @@ let DEBUG = false; // Default to false, will be set by fetchDebug()
 let movieData = [];
 let remaining = 0;
 let swiper = null;
+let searchAborted = false;
 let moviesLoaded = false;
 let userName = '';
 /**
@@ -77,6 +78,7 @@ function fetchMovieTitles() {
                 // Create empty movie data to prevent hanging
                 movieData = [];
                 remaining = 0;
+                searchAborted = true; // Prevent any running searches from continuing
                 // Don't start search process if we have no movies
                 logging('No movies to process, skipping search and fetch', 'warn');
                 handleDone();
@@ -87,6 +89,7 @@ function fetchMovieTitles() {
                 logging('Received HTML response instead of JSON - API may be down or URL incorrect', 'error');
                 movieData = [];
                 remaining = 0;
+                searchAborted = true; // Prevent any running searches from continuing
                 handleDone();
                 return;
             }
@@ -104,11 +107,18 @@ function startSearchAndFetch() {
         handleDone();
         return;
     }
+    // Reset abort flag for new search
+    searchAborted = false;
     movieData.forEach((m, i) => {
         const params = { query: m.title };
         if (m.year)
             params.year = m.year;
         makeJsonpCall(API_CONFIG.ACTIONS.SEARCH, params, (resp) => {
+            // Check if search was aborted
+            if (searchAborted) {
+                logging(`Search aborted for "${m.title}"`, 'debug');
+                return;
+            }
             logging(`Search results for "${m.title}" (${m.year}):`, 'debug', resp);
             if (resp && resp.results && resp.results.length > 0) {
                 logging('Search result', 'debug', resp.results);
@@ -155,7 +165,7 @@ function startSearchAndFetch() {
                         }
                     }
                     // Only use fallback if similarity is reasonable (not completely wrong)
-                    if (bestSimilarity <= 50.0) {
+                    if (bestSimilarity <= 100.0) {
                         logging(`Using fallback: ${bestMatch.title} (${bestMatch.release_date.slice(0, 4)}) - similarity: ${bestSimilarity}`, 'debug');
                         fetchDetails(bestMatch.id, i);
                         foundMatch = true;
@@ -180,6 +190,11 @@ function startSearchAndFetch() {
  * @function
  */
 function fetchDetails(id, idx) {
+    // Check if search was aborted
+    if (searchAborted) {
+        logging(`Fetch details aborted for movie ${idx}`, 'debug');
+        return;
+    }
     // Safety check: ensure movieData array has the expected index
     if (!movieData || idx >= movieData.length || !movieData[idx]) {
         logging(`Invalid movie index ${idx} - movieData length: ${movieData?.length || 0}`, 'error');
@@ -250,6 +265,11 @@ function fetchDetails(id, idx) {
  * @function
  */
 function fetchVideos(id, idx) {
+    // Check if search was aborted
+    if (searchAborted) {
+        logging(`Fetch videos aborted for movie ${idx}`, 'debug');
+        return;
+    }
     // Safety check: ensure movieData array has the expected index
     if (!movieData || idx >= movieData.length || !movieData[idx]) {
         logging(`Invalid movie index ${idx} for videos - movieData length: ${movieData?.length || 0}`, 'error');
