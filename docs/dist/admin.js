@@ -269,7 +269,7 @@ function displayCurrentMovies() {
                         <p class="text-sm text-gray-300">${movie.year}</p>
                         <p class="text-sm text-gray-400 mt-1 line-clamp-2">${movie.overview}</p>
                         <div class="flex items-center mt-2 space-x-4">
-                            <span class="text-pink-400 text-sm">Appeal: ${movie.appeal_value.toFixed(2)}</span>
+                            <span class="text-pink-400 text-sm">Appeal: ${movie.appeal_value ? movie.appeal_value.toFixed(2) : 'Not calculated'}</span>
                             <span class="text-gray-400 text-sm">TMDB ID: ${movie.tmdb_id}</span>
                         </div>
                     </div>

@@ -133,6 +133,10 @@ open:
 open-test:
 	open https://moviepoll.mewling-goat-tavern.online/test
 
+# Open admin page
+open-admin:
+	open https://moviepoll.mewling-goat-tavern.online/admin
+
 # Open results page
 open-results:
 	open https://moviepoll.mewling-goat-tavern.online/results
@@ -202,6 +206,7 @@ help:
 	@echo "UTILITY COMMANDS:"
 	@echo "  make open           - Open live page in browser"
 	@echo "  make open-test      - Open test page"
+	@echo "  make open-admin     - Open admin page"
 	@echo "  make open-results   - Open results page"
 	@echo "  make status         - Show project status"
 	@echo "  make help           - Show this help message"
@@ -212,4 +217,4 @@ help:
 .PHONY: db-status db-movies
 .PHONY: test-backend test-frontend
 .PHONY: clean clean-deps
-.PHONY: open open-test open-results status help
+.PHONY: open open-test open-admin open-results status help

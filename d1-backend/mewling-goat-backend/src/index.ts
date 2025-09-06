@@ -881,7 +881,17 @@ async function handleDeleteMovie(request: Request, env: Env): Promise<Response> 
 async function handleListMoviesDetailed(env: Env): Promise<Response> {
   try {
     const movies = await env.mewlinggoat_db
-      .prepare('SELECT * FROM movies ORDER BY title')
+      .prepare(`
+        SELECT 
+          m.*,
+          ac.final_appeal as appeal_value,
+          ac.seen_count,
+          ac.total_unique_voters,
+          ac.visibility_ratio
+        FROM movies m
+        LEFT JOIN appeal_calculations ac ON m.id = ac.movie_id
+        ORDER BY m.title
+      `)
       .all();
     
     const response: ListMoviesResponse = {
