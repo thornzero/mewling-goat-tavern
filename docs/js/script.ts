@@ -11,7 +11,7 @@ import { movieTitleSimilarity } from './utils.js';
 
 // Global type declarations
 declare const Swiper: any;
-let DEBUG: boolean;
+let DEBUG: boolean = false; // Default to false, will be set by fetchDebug()
 declare global {
   interface Window {
     openVideo: (key: string) => void;
@@ -51,8 +51,8 @@ function logging(message: string, level: string = 'info', data: any = null): voi
     case 'DEBUG':
       if (DEBUG) {
         console.debug(message, data);
-        break;
       }
+      break;
     case 'INFO':
       console.info(message, data);
       break;

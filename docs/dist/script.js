@@ -6,7 +6,7 @@
 import Movie from './movie.js';
 import Vote from './vote.js';
 import { movieTitleSimilarity } from './utils.js';
-let DEBUG;
+let DEBUG = false; // Default to false, will be set by fetchDebug()
 // === CONFIGURATION ===
 /** @constant {string} Google Apps Script proxy URL for API calls */
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
@@ -27,8 +27,8 @@ function logging(message, level = 'info', data = null) {
         case 'DEBUG':
             if (DEBUG) {
                 console.debug(message, data);
-                break;
             }
+            break;
         case 'INFO':
             console.info(message, data);
             break;

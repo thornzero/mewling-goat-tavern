@@ -263,6 +263,8 @@ function handleAction(action, params, callback) {
       return handleBatchVote(params, callback);
     case 'updateAppeal':
       return handleUpdateAppeal(callback);
+    case 'debug':
+      return handleDebug(callback);
     default:
       throw new Error('Invalid action');
   }
@@ -385,6 +387,17 @@ function handleUpdateAppeal(callback) {
     updated: result.updated,
     total: result.total
   });
+}
+
+/**
+ * Handles debug status requests
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleDebug(callback) {
+  // You can set this to true/false or read from a sheet cell
+  // For now, we'll return true to enable debugging
+  return createJsonpResponse(callback, { debug: true });
 }
 
 /**
