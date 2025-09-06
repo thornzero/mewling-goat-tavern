@@ -6,10 +6,11 @@
 import Movie from './movie.js';
 import Vote from './vote.js';
 import { movieTitleSimilarity } from './utils.js';
+import { API_CONFIG, makeJsonpCall } from './config.js';
 let DEBUG = false; // Default to false, will be set by fetchDebug()
 // === CONFIGURATION ===
 /** @constant {string} Google Apps Script proxy URL for API calls */
-const proxyURL = "https://script.google.com/macros/s/AKfycbzptNgn0rQa31JQDqbfoZVfXZ9_2EbqZUdNVILErOXlakue2GK3pxirTLzt6HBrUZR9ag/exec";
+// proxyURL is now imported from config.js
 // State
 let movieData = [];
 let remaining = 0;
@@ -46,8 +47,7 @@ function logging(message, level = 'info', data = null) {
  * @function
  */
 function fetchMovieTitles() {
-    const cb = 'movieListCallback';
-    window[cb] = function (resp) {
+    makeJsonpCall(API_CONFIG.ACTIONS.LIST_MOVIES, {}, (resp) => {
         logging('Raw response from Google Sheet:', 'debug', resp);
         if (Array.isArray(resp)) {
             movieData = resp.map((movieTitle, index) => {
@@ -69,11 +69,7 @@ function fetchMovieTitles() {
         else {
             logging('Invalid movie list response', 'error', resp);
         }
-        delete window[cb];
-    };
-    const s = document.createElement('script');
-    s.src = `${proxyURL}?action=listMovies&callback=${cb}`;
-    document.body.appendChild(s);
+    });
 }
 /**
  * Searches TMDb for each movie title to get movie IDs
@@ -81,8 +77,10 @@ function fetchMovieTitles() {
  */
 function startSearchAndFetch() {
     movieData.forEach((m, i) => {
-        const searchCb = `searchCb_${i}`;
-        window[searchCb] = function (resp) {
+        const params = { query: m.title };
+        if (m.year)
+            params.year = m.year;
+        makeJsonpCall(API_CONFIG.ACTIONS.SEARCH, params, (resp) => {
             logging(`Search results for "${m.title}" (${m.year}):`, 'debug', resp);
             if (resp && resp.results && resp.results.length > 0) {
                 logging('Search result', 'debug', resp.results);
@@ -121,15 +119,7 @@ function startSearchAndFetch() {
                 logging(`No search results for "${m.title}"`, 'warn');
                 handleDone();
             }
-            delete window[searchCb];
-        };
-        let url = `${proxyURL}?action=search&query=${encodeURIComponent(m.title)}`;
-        if (m.year)
-            url += `&year=${encodeURIComponent(m.year)}`;
-        url += `&callback=${searchCb}`;
-        const s = document.createElement('script');
-        s.src = url;
-        document.body.appendChild(s);
+        });
     });
 }
 /**
@@ -155,8 +145,7 @@ function fetchDetails(id, idx) {
         handleDone();
         return;
     }
-    const detailCb = `detailCb_${idx}`;
-    window[detailCb] = function (data) {
+    makeJsonpCall(API_CONFIG.ACTIONS.MOVIE, { id: id }, (data) => {
         logging('Detail result', 'debug', data);
         if (data.error) {
             logging('Detail error', 'error', data.error);
@@ -188,12 +177,8 @@ function fetchDetails(id, idx) {
             videos: movieData[idx].videos
         }));
         logging(`Movie details fetched for: ${data.title}`);
-        delete window[detailCb];
         fetchVideos(id, idx);
-    };
-    const s = document.createElement('script');
-    s.src = `${proxyURL}?action=movie&id=${id}&callback=${detailCb}`;
-    document.body.appendChild(s);
+    });
 }
 /**
  * Fetches movie videos (trailers/teasers) by TMDb ID
@@ -202,8 +187,7 @@ function fetchDetails(id, idx) {
  * @function
  */
 function fetchVideos(id, idx) {
-    const videoCb = `videoCb_${idx}`;
-    window[videoCb] = function (resp) {
+    makeJsonpCall(API_CONFIG.ACTIONS.VIDEOS, { id: id }, (resp) => {
         if (resp.results && resp.results.length) {
             movieData[idx].setVideos(resp.results.map((v) => v));
             logging(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
@@ -211,12 +195,8 @@ function fetchVideos(id, idx) {
         else {
             logging(`No videos for movie ID ${id}`, 'warn');
         }
-        delete window[videoCb];
         handleDone();
-    };
-    const s = document.createElement('script');
-    s.src = `${proxyURL}?action=videos&id=${id}&callback=${videoCb}`;
-    document.body.appendChild(s);
+    });
 }
 /**
  * Tracks completion of movie data loading and renders UI when ready
@@ -532,8 +512,7 @@ function submitAllVotes() {
         }
     }
     // Submit votes one by one
-    const cb = `finalVoteCb_${Date.now()}`;
-    window[cb] = function (resp) {
+    makeJsonpCall(API_CONFIG.ACTIONS.BATCH_VOTE, { votes: JSON.stringify(movieVotes.votes) }, (resp) => {
         if ('error' in resp) {
             logging(`Vote ${totalVotes} submitted:`, 'error', resp);
             return;
@@ -542,14 +521,7 @@ function submitAllVotes() {
             logging(`AppealUpdated: ${resp.appealUpdated} AppealTotal: ${resp.appealTotal} `, 'debug', resp);
             showFinalSuccessMessage();
         }
-        delete window[cb];
-    };
-    const script = document.createElement('script');
-    script.src = `${proxyURL}`
-        + `?action=batchVote`
-        + `&votes=${encodeURIComponent(JSON.stringify(movieVotes.votes))}`
-        + `&callback=${cb}`;
-    document.body.appendChild(script);
+    });
 }
 /**
  * Fetches debug status from Google Sheet
@@ -557,18 +529,11 @@ function submitAllVotes() {
  * @function
  */
 function fetchDebug() {
-    const cb = `debugCb_${Date.now()}`;
-    window[cb] = function (resp) {
+    makeJsonpCall(API_CONFIG.ACTIONS.DEBUG, {}, (resp) => {
         logging(`Debug response:`, 'debug', resp);
         DEBUG = resp.debug;
         logging('Debug status set to:', 'info', DEBUG);
-        delete window[cb];
-    };
-    const script = document.createElement('script');
-    script.src = `${proxyURL}`
-        + `?action=debug`
-        + `&callback=${cb}`;
-    document.body.appendChild(script);
+    });
 }
 /**
  * Shows final success message after all votes are submitted

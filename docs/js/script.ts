@@ -7,6 +7,7 @@
 import Movie from './movie.js';
 import Vote from './vote.js';
 import { movieTitleSimilarity } from './utils.js';
+import { API_CONFIG, makeJsonpCall } from './config.js';
 // Swiper is loaded from CDN in HTML
 
 // Global type declarations
@@ -31,7 +32,7 @@ interface Video {
 
 // === CONFIGURATION ===
 /** @constant {string} Google Apps Script proxy URL for API calls */
-const proxyURL = "https://script.google.com/macros/s/AKfycbzptNgn0rQa31JQDqbfoZVfXZ9_2EbqZUdNVILErOXlakue2GK3pxirTLzt6HBrUZR9ag/exec";
+// proxyURL is now imported from config.js
 
 // State
 let movieData: Movie[] = [];
@@ -71,8 +72,7 @@ function logging(message: string, level: string = 'info', data: any = null): voi
  * @function
  */
 function fetchMovieTitles(): void {
-  const cb = 'movieListCallback';
-  window[cb] = function (resp: string[]) {
+  makeJsonpCall<string[]>(API_CONFIG.ACTIONS.LIST_MOVIES, {}, (resp) => {
     logging('Raw response from Google Sheet:', 'debug', resp);
 
     if (Array.isArray(resp)) {
@@ -99,11 +99,7 @@ function fetchMovieTitles(): void {
     } else {
       logging('Invalid movie list response', 'error', resp);
     }
-    delete window[cb];
-  };
-  const s = document.createElement('script');
-  s.src = `${proxyURL}?action=listMovies&callback=${cb}`;
-  document.body.appendChild(s);
+  });
 }
 
 declare global {
@@ -135,8 +131,10 @@ declare global {
  */
 function startSearchAndFetch(): void {
   movieData.forEach((m: Movie, i: number) => {
-    const searchCb = `searchCb_${i}`;
-    window[searchCb] = function (resp: tmdbSearchResponse) {
+    const params: Record<string, any> = { query: m.title };
+    if (m.year) params.year = m.year;
+    
+    makeJsonpCall<tmdbSearchResponse>(API_CONFIG.ACTIONS.SEARCH, params, (resp) => {
       logging(`Search results for "${m.title}" (${m.year}):`, 'debug', resp);
       if (resp && resp.results && resp.results.length > 0) {
         logging('Search result', 'debug', resp.results);
@@ -178,14 +176,7 @@ function startSearchAndFetch(): void {
         logging(`No search results for "${m.title}"`, 'warn');
         handleDone();
       }
-      delete window[searchCb];
-    };
-    let url = `${proxyURL}?action=search&query=${encodeURIComponent(m.title)}`;
-    if (m.year) url += `&year=${encodeURIComponent(m.year)}`;
-    url += `&callback=${searchCb}`;
-    const s = document.createElement('script');
-    s.src = url;
-    document.body.appendChild(s);
+    });
   });
 }
 
@@ -213,8 +204,7 @@ function fetchDetails(id: number, idx: number): void {
     return;
   }
 
-  const detailCb = `detailCb_${idx}`;
-  window[detailCb] = function (data: any) {
+  makeJsonpCall<any>(API_CONFIG.ACTIONS.MOVIE, { id: id }, (data) => {
     logging('Detail result', 'debug', data);
     if (data.error) {
       logging('Detail error', 'error', data.error);
@@ -248,12 +238,8 @@ function fetchDetails(id: number, idx: number): void {
       videos: movieData[idx].videos
     }));
     logging(`Movie details fetched for: ${data.title}`);
-    delete window[detailCb];
     fetchVideos(id, idx);
-  };
-  const s = document.createElement('script');
-  s.src = `${proxyURL}?action=movie&id=${id}&callback=${detailCb}`;
-  document.body.appendChild(s);
+  });
 }
 
 
@@ -282,20 +268,15 @@ declare global {
  * @function
  */
 function fetchVideos(id: number, idx: number): void {
-  const videoCb = `videoCb_${idx}`;
-  window[videoCb] = function (resp: tmdbVideosResponse) {
+  makeJsonpCall<tmdbVideosResponse>(API_CONFIG.ACTIONS.VIDEOS, { id: id }, (resp) => {
     if (resp.results && resp.results.length) {
       movieData[idx].setVideos(resp.results.map((v: tmdbVideosResponse['results'][number]) => v));
       logging(`Videos fetched for: ${movieData[idx].title} (${resp.results.length} videos)`);
     } else {
       logging(`No videos for movie ID ${id}`, 'warn');
     }
-    delete window[videoCb];
     handleDone();
-  };
-  const s = document.createElement('script');
-  s.src = `${proxyURL}?action=videos&id=${id}&callback=${videoCb}`;
-  document.body.appendChild(s);
+  });
 }
 
 /**
@@ -661,8 +642,7 @@ function submitAllVotes(): void {
 
   // Submit votes one by one
 
-  const cb = `finalVoteCb_${Date.now()}`;
-  window[cb] = function (resp: BatchVoteResp | BatchVoteErrorRes) {
+  makeJsonpCall<BatchVoteResp | BatchVoteErrorRes>(API_CONFIG.ACTIONS.BATCH_VOTE, { votes: JSON.stringify(movieVotes.votes) }, (resp) => {
     if ('error' in resp) {
       logging(`Vote ${totalVotes} submitted:`, 'error', resp);
       return;
@@ -671,15 +651,7 @@ function submitAllVotes(): void {
       logging(`AppealUpdated: ${resp.appealUpdated} AppealTotal: ${resp.appealTotal} `, 'debug', resp);
       showFinalSuccessMessage();
     }
-    delete window[cb];
-  };
-
-  const script = document.createElement('script');
-  script.src = `${proxyURL}`
-    + `?action=batchVote`
-    + `&votes=${encodeURIComponent(JSON.stringify(movieVotes.votes))}`
-    + `&callback=${cb}`;
-  document.body.appendChild(script);
+  });
 }
 declare global {
   interface DebugResp {
@@ -693,18 +665,11 @@ declare global {
  * @function
  */
 function fetchDebug(): void {
-  const cb: string = `debugCb_${Date.now()}`;
-  window[cb] = function (resp: DebugResp) {
+  makeJsonpCall<DebugResp>(API_CONFIG.ACTIONS.DEBUG, {}, (resp) => {
     logging(`Debug response:`, 'debug', resp);
     DEBUG = resp.debug;
     logging('Debug status set to:', 'info', DEBUG);
-    delete window[cb];
-  };
-  const script = document.createElement('script');
-  script.src = `${proxyURL}`
-    + `?action=debug`
-    + `&callback=${cb}`;
-  document.body.appendChild(script);
+  });
 }
 
 /**

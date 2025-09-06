@@ -1,0 +1,89 @@
+Pty Language       Age/Gender VoiceName          File                 Other Languages
+ 7  af              --/M      afrikaans-mbrola-1 mb/mb-af1            
+ 1  ar              --/M      arabic-mbrola-1    mb/mb-ar1            
+ 2  ar              --/M      arabic-mbrola-2    mb/mb-ar2            
+ 6  pt-br           --/M      brazil-mbrola-1    mb/mb-br1            (pt 8)
+ 6  pt-br           --/F      brazil-mbrola-2    mb/mb-br2            (pt 8)
+ 6  pt-br           --/M      brazil-mbrola-3    mb/mb-br3            (pt 8)
+ 6  pt-br           --/F      brazil-mbrola-4    mb/mb-br4            (pt 8)
+ 5  zh              --/M      chinese-mb-cn1     mb/mb-cn1            
+ 7  hr              --/M      croatian-mbrola-1  mb/mb-cr1            
+ 1  cs              --/F      czech-mbrola-1     mb/mb-cz1            
+ 2  cs              --/M      czech-mbrola-2     mb/mb-cz2            
+ 9  nl              --/M      dutch-mbrola-1     mb/mb-nl1            
+ 7  nl              --/M      dutch-mbrola-2     mb/mb-nl2            
+ 9  nl              --/F      dutch-mbrola-3     mb/mb-nl3            
+11  en              --/M      en-afrikaans       mb/mb-af1-en         
+10  en              --/M      en-dutch           mb/mb-nl2-en         
+10  en              --/M      en-french          mb/mb-fr1-en         
+10  en              --/F      en-french          mb/mb-fr4-en         
+ 9  en              --/F      en-german-1        mb/mb-de1-en         
+ 9  en              --/M      en-german-2        mb/mb-de2-en         
+ 9  en              --/F      en-german-3        mb/mb-de3-en         
+ 9  en              --/M      en-german-4        mb/mb-de4-en         
+ 9  en              --/F      en-german-5        mb/mb-de5-en         
+ 9  en              --/M      en-german-6        mb/mb-de6-en         
+ 9  en              --/M      en-greek           mb/mb-gr2-en         
+10  en              --/F      en-hungarian       mb/mb-hu1-en         
+11  en              --/F      en-polish          mb/mb-pl1-en         
+ 9  en              --/M      en-romanian        mb/mb-ro1-en         
+11  en              --/M      en-swedish         mb/mb-sw1-en         
+10  en              --/F      en-swedish-f       mb/mb-sw2-en         
+ 3  en-gb           --/M      english-mb-en1     mb/mb-en1            (en 2)
+ 5  et              --/M      estonian-mbrola    mb/mb-ee1            
+ 6  fr-ca           --/M      fr-canadian-mbrola-1 mb/mb-ca1            (fr 10)
+ 6  fr-ca           --/M      fr-canadian-mbrola-2 mb/mb-ca2            (fr 10)
+ 7  fr-fr           --/M      french-mbrola-1    mb/mb-fr1            (fr 7)
+ 8  fr-fr           --/F      french-mbrola-2    mb/mb-fr2            (fr 8)
+ 8  fr-fr           --/M      french-mbrola-3    mb/mb-fr3            (fr 8)
+ 7  fr-fr           --/F      french-mbrola-4    mb/mb-fr4            (fr 7)
+ 6  fr-be           --/M      french-mbrola-5    mb/mb-fr5            (fr 9)
+ 6  fr-be           --/M      french-mbrola-5    mb/mb-fr7            (fr 9)
+ 8  fr-fr           --/M      french-mbrola-6    mb/mb-fr6            (fr 8)
+ 6  de              --/F      german-mbrola-1    mb/mb-de1            
+ 6  de              --/M      german-mbrola-2    mb/mb-de2            
+ 6  de              --/F      german-mbrola-3    mb/mb-de3            
+ 6  de              --/M      german-mbrola-4    mb/mb-de4            
+ 7  de              --/F      german-mbrola-5    mb/mb-de5            
+ 6  de              --/M      german-mbrola-6    mb/mb-de6            
+ 6  grc             --/M      german-mbrola-6    mb/mb-de6-grc        
+ 7  de              --/F      german-mbrola-7    mb/mb-de7            
+ 8  de              --/M      german-mbrola-8    mb/mb-de8            
+ 7  el              --/M      greek-mbrola-1     mb/mb-gr1            
+ 2  el              --/M      greek-mbrola-2     mb/mb-gr2            
+ 1  hi              --/M      hindi-mbrola-1     mb/mb-in1            
+ 2  hi              --/F      hindi-mbrola-2     mb/mb-in2            
+ 7  hu              --/F      hungarian-mbrola-1 mb/mb-hu1            
+ 7  id              --/M      indonesian-mbrola-1 mb/mb-id1            
+ 8  it              --/M      italian-mbrola-1   mb/mb-it1            
+ 8  it              --/F      italian-mbrola-2   mb/mb-it2            
+ 7  it              --/M      italian-mbrola-3   mb/mb-it3            
+ 7  it              --/F      italian-mbrola-4   mb/mb-it4            
+ 1  ja              --/M      japanese-mbrola-1  mb/mb-jp1            
+ 2  ja              --/F      japanese-mbrola-2  mb/mb-jp2            
+ 3  ja              --/F      japanese-mbrola-3  mb/mb-jp3            
+ 7  la              --/M      latin-mbrola-1     mb/mb-la1            
+ 7  lt              --/M      lithuanian-mbrola-1 mb/mb-lt1            
+ 7  lt              --/M      lithuanian-mbrola-2 mb/mb-lt2            
+ 1  ms              --/F      malay-mbrola-1     mb/mb-ma1            
+ 5  mi              --/M      maori-mbrola-1     mb/mb-nz1            
+ 6  is              --/M      mbrola-icelandic   mb/mb-ic1            
+ 7  es-mx           --/M      mexican-mbrola-1   mb/mb-mx1            (es 8)
+ 7  es-mx           --/M      mexican-mbrola-2   mb/mb-mx2            (es 8)
+ 5  fa              --/M      persian-mb-ir1     mb/mb-ir1            
+ 7  pl              --/F      polish-mbrola-1    mb/mb-pl1            
+ 7  pt-pt           --/F      portugal-mbrola-1  mb/mb-pt1            (pt 7)
+ 7  ro              --/M      romanian-mbrola-1  mb/mb-ro1            
+ 7  es              --/M      spanish-mbrola-1   mb/mb-es1            
+ 7  es              --/M      spanish-mbrola-2   mb/mb-es2            
+ 3  es              --/F      spanish-mbrola-3   mb/mb-es3            
+ 4  es              --/M      spanish-mbrola-4   mb/mb-es4            
+ 7  sv              --/M      swedish-mbrola-1   mb/mb-sw1            
+ 8  sv              --/F      swedish-mbrola-2   mb/mb-sw2            
+ 5  te              --/F      telugu-mbrola-1    mb/mb-tl1            
+ 7  tr              --/F      turkish-mbrola-1   mb/mb-tr2            
+ 7  tr              --/M      turkish-mbrola-1   mb/mb-tr1            
+ 5  en-us           --/F      us-mbrola-1        mb/mb-us1            (en 8)
+ 5  en-us           --/M      us-mbrola-2        mb/mb-us2            (en 7)
+ 5  en-us           --/M      us-mbrola-3        mb/mb-us3            (en 8)
+ 7  es-vz           --/M      venezuala-mbrola-1 mb/mb-vz1            (es 8)

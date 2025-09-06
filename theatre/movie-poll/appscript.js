@@ -516,7 +516,9 @@ function updateAppealValues() {
   
     return {
       updated: updatedCount,
-      total: Object.keys(movieAppeals).length
+      total: Object.keys(movieAppeals).length,
+      movies: finalAppeals,
+      totalUniqueVoters: totalUniqueVoters
     };
   } catch (error) {
     console.error('Error in updateAppealValues:', error);
