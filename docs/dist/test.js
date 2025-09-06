@@ -112,9 +112,8 @@ class TestPage {
      */
     async testSingleVote() {
         const vote = {
-            timestamp: Date.now(),
-            movieTitle: document.getElementById('test-movie-title')?.value || APP_CONFIG.TEST_DEFAULTS.MOVIE_TITLE,
-            userName: document.getElementById('test-user')?.value || APP_CONFIG.TEST_DEFAULTS.USER_NAME,
+            movie_id: parseInt(document.getElementById('movie-id')?.value || APP_CONFIG.TEST_DEFAULTS.MOVIE_ID.toString()),
+            user_name: document.getElementById('test-user')?.value || APP_CONFIG.TEST_DEFAULTS.USER_NAME,
             vibe: parseInt(document.getElementById('test-vibe')?.value || APP_CONFIG.TEST_DEFAULTS.VIBE.toString()),
             seen: document.getElementById('test-seen')?.value === 'true' || APP_CONFIG.TEST_DEFAULTS.SEEN
         };
@@ -134,29 +133,26 @@ class TestPage {
     async testBatchVote() {
         const votes = [
             {
-                timestamp: Date.now(),
-                movieTitle: "The Thing (1982)",
-                userName: document.getElementById('test-user')?.value || APP_CONFIG.TEST_DEFAULTS.USER_NAME,
+                movie_id: 28, // Beetlejuice (internal DB ID)
+                user_name: document.getElementById('test-user')?.value || APP_CONFIG.TEST_DEFAULTS.USER_NAME,
                 vibe: 5,
                 seen: true
             },
             {
-                timestamp: Date.now() + 1000,
-                movieTitle: "Predator (1987)",
-                userName: document.getElementById('test-user')?.value || APP_CONFIG.TEST_DEFAULTS.USER_NAME,
+                movie_id: 33, // Big Trouble in Little China (internal DB ID)
+                user_name: document.getElementById('test-user')?.value || APP_CONFIG.TEST_DEFAULTS.USER_NAME,
                 vibe: 4,
                 seen: true
             },
             {
-                timestamp: Date.now() + 2000,
-                movieTitle: "Alien (1979)",
-                userName: document.getElementById('test-user')?.value || APP_CONFIG.TEST_DEFAULTS.USER_NAME,
+                movie_id: 35, // Escape from New York (internal DB ID)
+                user_name: document.getElementById('test-user')?.value || APP_CONFIG.TEST_DEFAULTS.USER_NAME,
                 vibe: 6,
                 seen: true
             }
         ];
         try {
-            const response = await makeApiCall(API_CONFIG.ACTIONS.BATCH_VOTE, { votes: JSON.stringify(votes) }, 'POST');
+            const response = await makeApiCall(API_CONFIG.ACTIONS.BATCH_VOTE, { votes: votes }, 'POST');
             this.logResult('vote-result', `Batch Vote Submitted:\nVotes: ${JSON.stringify(votes, null, 2)}\nResponse: ${JSON.stringify(response, null, 2)}`, 'success');
             this.addTestResult('Batch Vote', true, `Submitted ${votes.length} votes successfully`, { votes, response });
         }
