@@ -6,6 +6,7 @@
 
 import Movie from './movie.js';
 import Vote from './vote.js';
+import { movieTitleSimilarity } from './utils.js';
 // Swiper is loaded from CDN in HTML
 
 // Global type declarations
@@ -138,10 +139,10 @@ function startSearchAndFetch(): void {
         logging('Search result', 'debug', resp.results);
         let foundMatch = false;
         resp.results.forEach((r) => {
-          // Extract year from release_date (format: "YYYY-MM-DD")
+          const similarity = movieTitleSimilarity(r.title, m.title);
           const rYear = r.release_date ? r.release_date.slice(0, 4) : '';
-          logging(`Checking result: ${r.title} (${rYear}) vs ${m.title} (${m.year})`, 'debug');
-          if (rYear == m.year) { // Use == instead of === to handle string vs number comparison
+          logging(`Similarity: ${similarity}`, 'debug');
+          if (similarity > 0.8 && rYear == m.year) {
             logging(`Found match! Fetching details for ${r.title}`);
             fetchDetails(r.id, i);
             foundMatch = true;
@@ -149,7 +150,7 @@ function startSearchAndFetch(): void {
         });
         // If no exact year match found, try using the first result as fallback
         if (!foundMatch) {
-          logging(`No exact year match for "${m.title}" (${m.year}), using first result as fallback`, 'debug');
+          logging(`No exact name and year match for "${m.title}" (${m.year}), using first result as fallback`, 'debug');
           const firstResult = resp.results[0];
           logging(`Using fallback: ${firstResult.title} (${firstResult.release_date.slice(0, 4)})`, 'debug');
           fetchDetails(firstResult.id, i);
