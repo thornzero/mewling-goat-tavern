@@ -129,7 +129,7 @@ function startSearchAndFetch() {
                     const rYear = r.release_date ? r.release_date.slice(0, 4) : '';
                     logging(`Similarity: ${similarity}`, 'debug');
                     // Try exact year match with reasonable similarity threshold
-                    if (similarity <= 10.0 && rYear == m.year) {
+                    if (similarity <= 5.0 && rYear == m.year) {
                         logging(`Found exact year match! Fetching details for ${r.title}`);
                         fetchDetails(r.id, i);
                         foundMatch = true;
@@ -143,7 +143,7 @@ function startSearchAndFetch() {
                         const rYear = r.release_date ? parseInt(r.release_date.slice(0, 4)) : 0;
                         const mYear = m.year ? parseInt(m.year.toString()) : 0;
                         // Allow year difference of ±2 years for better matching
-                        if (similarity <= 15.0 && Math.abs(rYear - mYear) <= 2) {
+                        if (similarity <= 8.0 && Math.abs(rYear - mYear) <= 2) {
                             logging(`Found flexible year match! Fetching details for ${r.title} (${rYear} vs ${mYear})`);
                             fetchDetails(r.id, i);
                             foundMatch = true;
@@ -165,7 +165,7 @@ function startSearchAndFetch() {
                         }
                     }
                     // Only use fallback if similarity is reasonable (not completely wrong)
-                    if (bestSimilarity <= 100.0) {
+                    if (bestSimilarity <= 20.0) { // Much more reasonable threshold for good matches
                         logging(`Using fallback: ${bestMatch.title} (${bestMatch.release_date.slice(0, 4)}) - similarity: ${bestSimilarity}`, 'debug');
                         fetchDetails(bestMatch.id, i);
                         foundMatch = true;

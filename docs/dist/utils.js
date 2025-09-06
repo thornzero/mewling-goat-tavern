@@ -220,13 +220,14 @@ export function isLikelySameTitle(title1, title2, threshold = 5.0) {
  * @returns Similarity score optimized for movie titles
  */
 export function movieTitleSimilarity(searchTitle, candidateTitle) {
-    // Movie-specific weights that work well for film titles
+    // Movie-specific weights optimized based on console log analysis
+    // These weights produce scores in the 0-50 range for good matches
     const movieWeights = {
-        phraseWeight: 0.6, // Slightly higher weight for phrase matching
-        wordsWeight: 1.2, // Higher weight for word matching (important for movie titles)
-        lengthWeight: -0.2, // Less penalty for length differences (titles vary in length)
-        minWeight: 8, // Moderate weight for minimum score
-        maxWeight: 1.5 // Slightly higher weight for maximum score
+        phraseWeight: 0.3, // Lower weight for phrase matching
+        wordsWeight: 0.8, // Moderate weight for word matching
+        lengthWeight: -0.1, // Small penalty for length differences
+        minWeight: 2, // Much lower weight for minimum score
+        maxWeight: 0.5 // Much lower weight for maximum score
     };
     return calculateSimilarity(searchTitle, candidateTitle, movieWeights);
 }

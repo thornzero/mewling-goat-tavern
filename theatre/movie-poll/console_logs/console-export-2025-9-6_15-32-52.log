@@ -1,0 +1,332 @@
+Debug status set to: true script.js:34:21
+Search results for "Beetlejuice" (1988): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found exact year match! Fetching details for Beetlejuice null script.js:34:21
+Movies remaining to process: 20 null script.js:34:21
+Search results for "Big Trouble in Little China" (1986): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found exact year match! Fetching details for Big Trouble in Little China null script.js:34:21
+Movies remaining to process: 19 null script.js:34:21
+Search results for "Escape from New York" (1981): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 138.20000000000002 null script.js:30:25
+No year match found for "Escape from New York" (1981), using best similarity match as fallback null script.js:30:25
+No good match found for "Escape from New York" - best similarity too poor: 138.20000000000002 null script.js:40:21
+Movies remaining to process: 18 null script.js:34:21
+Search results for "Big Trouble in Little China" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 151.2 null script.js:30:25
+No year match found for "Big Trouble in Little China" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Big Trouble in Little China" - best similarity too poor: 151.2 null script.js:40:21
+Movies remaining to process: 17 null script.js:34:21
+Search results for "Escape from New York" (1981): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found exact year match! Fetching details for Escape from New York null script.js:34:21
+Movies remaining to process: 16 null script.js:34:21
+Search results for "The Thing" (1982): 
+Object { page: 1, results: (9) […], total_pages: 1, total_results: 9 }
+script.js:30:25
+Search result 
+Array(9) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found exact year match! Fetching details for The Thing null script.js:34:21
+Movies remaining to process: 15 null script.js:34:21
+Similarity: 87.99999999999999 null script.js:30:25
+Similarity: 97 null script.js:30:25
+Similarity: 60.4 null script.js:30:25
+Similarity: 149.2 null script.js:30:25
+Similarity: 156 null script.js:30:25
+Similarity: 57.99999999999999 null script.js:30:25
+Similarity: 51.8 null script.js:30:25
+Similarity: 32.6 null script.js:30:25
+Search results for "The Running Man" (1987): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found exact year match! Fetching details for The Running Man null script.js:34:21
+Movies remaining to process: 14 null script.js:34:21
+Search results for "Tucker and Dale vs. Evil" (2010): 
+Object { page: 1, results: (18) […], total_pages: 1, total_results: 18 }
+script.js:30:25
+Search result 
+Array(18) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:30:25
+Similarity: 82.2 null script.js:30:25
+Similarity: 128.20000000000002 null script.js:30:25
+Similarity: 113.19999999999999 null script.js:30:25
+Similarity: 112.6 null script.js:30:25
+Similarity: 118.4 null script.js:30:25
+Similarity: 195.2 null script.js:30:25
+Similarity: 142.79999999999998 null script.js:30:25
+Similarity: 120 null script.js:30:25
+Similarity: 168.20000000000002 null script.js:30:25
+Similarity: 154.99999999999997 null script.js:30:25
+Similarity: 136 null script.js:30:25
+Similarity: 172.6 null script.js:30:25
+Similarity: 107.8 null script.js:30:25
+Similarity: 102.39999999999999 null script.js:30:25
+Similarity: 168.8 null script.js:30:25
+Similarity: 155.39999999999998 null script.js:30:25
+Similarity: 116.39999999999999 null script.js:30:25
+Similarity: 127.80000000000001 null script.js:30:25
+No year match found for "Tucker and Dale vs. Evil" (2010), using best similarity match as fallback null script.js:30:25
+No good match found for "Tucker and Dale vs. Evil" - best similarity too poor: 82.2 null script.js:40:21
+Movies remaining to process: 13 null script.js:34:21
+Search results for "The Thing" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 127.4 null script.js:30:25
+No year match found for "The Thing" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "The Thing" - best similarity too poor: 127.4 null script.js:40:21
+Movies remaining to process: 12 null script.js:34:21
+Search results for "Big Trouble in Little China" (undefined): 
+Object { page: 1, results: (4) […], total_pages: 1, total_results: 4 }
+script.js:30:25
+Search result 
+Array(4) [ {…}, {…}, {…}, {…} ]
+script.js:30:25
+Similarity: 85 null 2 script.js:30:25
+Similarity: 123.89999999999999 null script.js:30:25
+Similarity: 137.2 null script.js:30:25
+No year match found for "Big Trouble in Little China" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Big Trouble in Little China" - best similarity too poor: 85 null script.js:40:21
+Movies remaining to process: 11 null script.js:34:21
+Search results for "The Running Man" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 122.19999999999999 null script.js:30:25
+No year match found for "The Running Man" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "The Running Man" - best similarity too poor: 122.19999999999999 null script.js:40:21
+Movies remaining to process: 10 null script.js:34:21
+Search results for "The Thing" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 52.599999999999994 null script.js:30:25
+No year match found for "The Thing" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "The Thing" - best similarity too poor: 52.599999999999994 null script.js:40:21
+Movies remaining to process: 9 null script.js:34:21
+Search results for "Night of the Creeps" (1986): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found exact year match! Fetching details for Night of the Creeps null script.js:34:21
+Movies remaining to process: 8 null script.js:34:21
+Search results for "Night of the Creeps" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 89.79999999999998 null script.js:30:25
+No year match found for "Night of the Creeps" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Night of the Creeps" - best similarity too poor: 89.79999999999998 null script.js:40:21
+Movies remaining to process: 7 null script.js:34:21
+Search results for "Night of the Creeps" (undefined): 
+Object { page: 1, results: (20) […], total_pages: 2, total_results: 34 }
+script.js:30:25
+Search result 
+Array(20) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:30:25
+Similarity: 100.6 null script.js:30:25
+Similarity: 96.2 null script.js:30:25
+Similarity: 50.9 null script.js:30:25
+Similarity: 93.6 null script.js:30:25
+Similarity: 89.99999999999999 null script.js:30:25
+Similarity: 94.39999999999999 null script.js:30:25
+Similarity: 173.8 null script.js:30:25
+Similarity: 149.8 null script.js:30:25
+Similarity: 156.4 null script.js:30:25
+Similarity: 70.39999999999999 null script.js:30:25
+Similarity: 123.39999999999999 null script.js:30:25
+Similarity: 82.2 null script.js:30:25
+Similarity: 142.2 null script.js:30:25
+Similarity: 93.6 null script.js:30:25
+Similarity: 102.6 null script.js:30:25
+Similarity: 215.39999999999998 null script.js:30:25
+Similarity: 128.4 null script.js:30:25
+Similarity: 131 null script.js:30:25
+Similarity: 89.99999999999999 null script.js:30:25
+Similarity: 155 null script.js:30:25
+No year match found for "Night of the Creeps" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Night of the Creeps" - best similarity too poor: 50.9 null script.js:40:21
+Movies remaining to process: 6 null script.js:34:21
+Search results for "Big Trouble in Little China" (undefined): 
+Object { page: 1, results: (10) […], total_pages: 1, total_results: 10 }
+script.js:30:25
+Search result 
+Array(10) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…} ]
+script.js:30:25
+Similarity: 66.3 null script.js:30:25
+Similarity: 94.8 null script.js:30:25
+Similarity: 150.79999999999998 null script.js:30:25
+Similarity: 124.8 null script.js:30:25
+Similarity: 142.8 null script.js:30:25
+Similarity: 94.99999999999999 null script.js:30:25
+Similarity: 136.39999999999998 null script.js:30:25
+Similarity: 170.4 null script.js:30:25
+Similarity: 53.8 null script.js:30:25
+Similarity: 122.99999999999999 null script.js:30:25
+No year match found for "Big Trouble in Little China" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Big Trouble in Little China" - best similarity too poor: 53.8 null script.js:40:21
+Movies remaining to process: 5 null script.js:34:21
+Search results for "Escape from New York" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 102.19999999999999 null script.js:30:25
+No year match found for "Escape from New York" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Escape from New York" - best similarity too poor: 102.19999999999999 null script.js:40:21
+Movies remaining to process: 4 null script.js:34:21
+Search results for "Tucker and Dale vs. Evil" (2010): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 0 null script.js:30:25
+Found exact year match! Fetching details for Tucker and Dale vs. Evil null script.js:34:21
+Movies remaining to process: 3 null script.js:34:21
+Search results for "Tucker and Dale vs. Evil" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 63.50000000000001 null script.js:30:25
+No year match found for "Tucker and Dale vs. Evil" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Tucker and Dale vs. Evil" - best similarity too poor: 63.50000000000001 null script.js:40:21
+Movies remaining to process: 2 null script.js:34:21
+Search results for "Escape from New York" (undefined): 
+Object { page: 1, results: (2) […], total_pages: 1, total_results: 2 }
+script.js:30:25
+Search result 
+Array [ {…}, {…} ]
+script.js:30:25
+Similarity: 60.699999999999996 null script.js:30:25
+Similarity: 90.8 null script.js:30:25
+No year match found for "Escape from New York" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Escape from New York" - best similarity too poor: 60.699999999999996 null script.js:40:21
+Movies remaining to process: 1 null script.js:34:21
+Search results for "Escape from New York" (undefined): 
+Object { page: 1, results: (1) […], total_pages: 1, total_results: 1 }
+script.js:30:25
+Search result 
+Array [ {…} ]
+script.js:30:25
+Similarity: 89.39999999999999 null script.js:30:25
+No year match found for "Escape from New York" (undefined), using best similarity match as fallback null script.js:30:25
+No good match found for "Escape from New York" - best similarity too poor: 89.39999999999999 null script.js:40:21
+Movies remaining to process: 0 null script.js:34:21
+All movies processed! Loading complete. null script.js:34:21
+All movies fully loaded: false script.js:30:25
+Movies not fully loaded yet, waiting... null script.js:34:21
+Creating slides in showMoviePoll with movieData: 
+Array(21) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:30:25
+Creating slides with movies: 
+Array(21) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ]
+script.js:30:25
+Creating slide 0: 
+Object { _title: "Beetlejuice", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/nnl6OWkyPpuMm595hmAxNW3rZFn.jpg", _genres: (2) […], _synopsis: "A newly dead New England couple seeks help from a deranged demon exorcist to scare an affluent New York family out of their home.", _runtime: "92 min", _videos: (12) […], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 1: 
+Object { _title: "Little Shop of Horrors", _year: "1986", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 2: 
+Object { _title: "The Running Man", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/GTAUOhO4BN0peJVvxGEQydJvUO.jpg", _genres: (3) […], _synopsis: "By 2017, the global economy has collapsed and U.S. society has become a totalitarian police state, censoring all cultural activity. The government pacifies the populace by broadcasting a number of game shows in which convicted criminals fight for their lives, including the gladiator-style The Running Man, hosted by the ruthless Damon Killian, where “runners” attempt to evade “stalkers” and certain death for a chance to be pardoned and set free.", _runtime: "100 min", _videos: (3) […], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 3: 
+Object { _title: "They Live", _year: "1988", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 4: 
+Object { _title: "Redline", _year: "2009", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 5: 
+Object { _title: "Tucker and Dale vs. Evil", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/8shwLEDzajJGSfLgbpac8x8xn1U.jpg", _genres: (2) […], _synopsis: "Two hillbillies are suspected of being killers by a group of paranoid college kids camping near the duo's West Virginian cabin. As the body count climbs, so does the fear and confusion as the college kids try to seek revenge against the pair.", _runtime: "89 min", _videos: (1) […], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 6: 
+Object { _title: "Idle Hands", _year: "1999", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 7: 
+Object { _title: "The Return of the Living Dead", _year: "1985", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 8: 
+Object { _title: "The Thing", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/tzGY49kseSE9QAKk47uuDGwnSCu.jpg", _genres: (3) […], _synopsis: "A twelve-man team at a remote Antarctic research station discovers an alien buried in the snow for over 100,000 years. Soon unfrozen, the form-changing creature wreaks havoc, creates terror...And becomes one of them.", _runtime: "109 min", _videos: (16) […], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 9: 
+Object { _title: "Vampire Hunter D: Bloodlust", _year: "2000", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 10: 
+Object { _title: "Predator", _year: "1987", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 11: 
+Object { _title: "Scream", _year: "1996", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 12: 
+Object { _title: "Big Trouble in Little China", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/aeGy6SZua7eFXEZP9zAvrLkkbI2.jpg", _genres: (4) […], _synopsis: "Truck driver Jack Burton gets embroiled in a supernatural battle when his best friend Wang Chi's green-eyed fiancée is kidnapped by henchmen of the sorcerer Lo Pan, who must marry a girl with green eyes in order to return to the human realm.", _runtime: "100 min", _videos: (6) […], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 13: 
+Object { _title: "Summer Wars", _year: "2009", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 14: 
+Object { _title: "The Final Girls", _year: "2015", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 15: 
+Object { _title: "Paprika", _year: "2006", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 16: 
+Object { _title: "The Texas Chain Saw Massacre", _year: "1974", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 17: 
+Object { _title: "Escape from New York", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/vH9llaphjAssRGi0k7e75tD40Ce.jpg", _genres: (2) […], _synopsis: "In a world ravaged by crime, the entire island of Manhattan has been converted into a walled prison where brutal prisoners roam free. After the US president crash-lands inside, war hero Snake Plissken has 24 hours to bring him back.", _runtime: "99 min", _videos: (11) […], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 18: 
+Object { _title: "Perfect Blue", _year: "1997", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 19: 
+Object { _title: "House", _year: "1977", _poster: "", _genres: [], _synopsis: "", _runtime: "", _videos: [], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
+Creating slide 20: 
+Object { _title: "Night of the Creeps", _year: undefined, _poster: "https://image.tmdb.org/t/p/w500/A3s2tQGNb6mhlr1hPZeE5F8IUwp.jpg", _genres: (3) […], _synopsis: "In 1959, an alien experiment crashes to earth and infects a fraternity member. They freeze the body, but in the modern day, two geeks pledging a fraternity accidentally thaw the corpse, which proceeds to infect the campus with parasites that transform their hosts into killer zombies.", _runtime: "88 min", _videos: (1) […], _vote: null, hasAnsweredSeen: false, hasSeen: null, … }
+script.js:30:25
