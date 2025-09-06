@@ -11,6 +11,7 @@ import { movieTitleSimilarity } from './utils.js';
 
 // Global type declarations
 declare const Swiper: any;
+let DEBUG: boolean;
 declare global {
   interface Window {
     openVideo: (key: string) => void;
@@ -32,9 +33,6 @@ interface Video {
 /** @constant {string} Google Apps Script proxy URL for API calls */
 const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
 
-/** @constant {boolean} Debug mode flag */
-const DEBUG = true; // Set to true for debugging
-
 // State
 let movieData: Movie[] = [];
 let remaining: number = 0;
@@ -49,15 +47,20 @@ let userName: string = '';
  * @param {*} [data=null] - Additional data to log
  */
 function logging(message: string, level: string = 'info', data: any = null): void {
-  if (DEBUG) {
-    if (level === 'debug') {
-      console.debug(message, data);
-    } else if (level === 'info') {
-      console.info(message, data);
-    } else if (level === 'error') {
-      console.error(message, data);
-    } else if (level === 'warn') {
-      console.warn(message, data);
+  if (DEBUG === true) {
+    switch (level.toUpperCase()) {
+      case 'DEBUG':
+        console.debug(message, data);
+        break;
+      case 'INFO':
+        console.info(message, data);
+        break;
+      case 'ERROR':
+        console.error(message, data);
+        break;
+      case 'WARN':
+        console.warn(message, data);
+        break;
     }
   }
 }
@@ -678,6 +681,30 @@ function submitAllVotes(): void {
     + `&callback=${cb}`;
   document.body.appendChild(script);
 }
+declare global {
+  interface DebugResp {
+    debug: boolean;
+  }
+}
+
+/**
+ * Fetches debug status from Google Sheet
+ * @async
+ * @function
+ */
+function fetchDebug(): void {
+  const cb: string = `debugCb_${Date.now()}`;
+  window[cb] = function (resp: DebugResp) {
+    logging(`Debug response:`, 'debug', resp);
+    DEBUG = resp.debug;
+    delete window[cb];
+  };
+  const script = document.createElement('script');
+  script.src = `${proxyURL}`
+    + `?action=debug`
+    + `&callback=${cb}`;
+  document.body.appendChild(script);
+}
 
 /**
  * Shows final success message after all votes are submitted
@@ -755,6 +782,7 @@ function initializeApp(): void {
   }
 
   // Start loading movies in background
+  fetchDebug();
   fetchMovieTitles();
 }
 
