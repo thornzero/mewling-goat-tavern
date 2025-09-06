@@ -44,7 +44,6 @@ const RATE_LIMIT = {
 const cache = CacheService.getScriptCache();
 
 // === HELPER FUNCTIONS ===
-
 /**
  * Creates a JSONP response
  * @param {string} callback - JSONP callback function name
@@ -105,29 +104,20 @@ function validateRequiredParams(params, requiredFields) {
 /**
  * Submits a single vote to the sheet
  * @param {GoogleAppsScript.Spreadsheet.Sheet} sheet - Votes sheet
- * @param {string} movieTitle - Movie title
- * @param {string} userName - User name
- * @param {string} vote - Vote value
- * @param {string} seen - Seen status
+ * @param {object} vote
  */
-function submitVote(sheet, movieTitle, userName, vote, seen) {
-  // Validate required parameters
-  if (!movieTitle || !userName || !vote) {
-    throw new Error('Missing required vote parameters: movieTitle, userName, and vote are required');
-  }
-  
-  // Validate vote is a number
-  const voteNum = parseInt(vote);
-  if (isNaN(voteNum) || voteNum < 1 || voteNum > 6) {
-    throw new Error('Invalid vote value: must be a number between 1 and 6');
+function submitVote(sheet, vote) {
+  // Basic validation
+  if (!vote.movieTitle || !vote.userName || vote.vibe === undefined) {
+    throw new Error('Missing required vote fields: movieTitle, userName, and vibe are required');
   }
   
   sheet.appendRow([
-    new Date(),
-    movieTitle.trim(),
-    userName.trim(),
-    voteNum.toString(),
-    seen === 'true' || seen === 'TRUE' ? 'TRUE' : 'FALSE'
+    new Date(vote.timestamp || Date.now()),
+    vote.movieTitle.trim(),
+    vote.userName.trim(),
+    vote.vibe.toString(),
+    vote.seen.toString().toUpperCase() === 'TRUE' ? 'TRUE' : 'FALSE'
   ]);
 }
 
@@ -144,36 +134,30 @@ function submitBatchVotes(sheet, votes) {
   
   console.log('Received votes:', JSON.stringify(votes, null, 2));
   
-  const rowsToAppend = votes.map((vote, index) => {
+  let submittedCount = 0;
+  votes.forEach((vote, index) => {
     console.log(`Processing vote ${index}:`, vote);
     
-    // Validate each vote
-    if (!vote.movieTitle || !vote.userName || !vote.vibe) {
-      throw new Error(`Vote at index ${index} is missing required fields: movieTitle, userName, and vibe are required`);
-    }
-    
-    const voteNum = parseInt(vote.vibe);
-    if (isNaN(voteNum) || voteNum < 1 || voteNum > 6) {
-      throw new Error(`Vote at index ${index} has invalid vibe value: must be a number between 1 and 6`);
+    // Basic validation
+    if (!vote.movieTitle || !vote.userName || vote.vibe === undefined) {
+      console.error(`Skipping vote ${index} - missing required fields:`, vote);
+      return;
     }
     
     const rowData = [
       new Date(vote.timestamp || Date.now()),
       vote.movieTitle.trim(),
       vote.userName.trim(),
-      voteNum.toString(),
-      vote.seen === 'true' || vote.seen === 'TRUE' ? 'TRUE' : 'FALSE'
+      vote.vibe.toString(),
+      vote.seen.toString().toUpperCase() === 'TRUE' ? 'TRUE' : 'FALSE'
     ];
     
     console.log(`Row data for vote ${index}:`, rowData);
-    return rowData;
+    sheet.appendRow(rowData);
+    submittedCount++;
   });
   
-  if (rowsToAppend.length > 0) {
-    sheet.getRange(sheet.getLastRow() + 1, 1, rowsToAppend.length, 5).setValues(rowsToAppend);
-  }
-  
-  return rowsToAppend.length;
+  return submittedCount;
 }
 
 // Rate limiting functions
@@ -249,6 +233,8 @@ function doGet(e) {
  */
 function handleAction(action, params, callback) {
   switch (action) {
+    case 'debug':
+      return handleDebug(callback);
     case 'listMovies':
       return handleListMovies(callback);
     case 'search':
@@ -263,11 +249,20 @@ function handleAction(action, params, callback) {
       return handleBatchVote(params, callback);
     case 'updateAppeal':
       return handleUpdateAppeal(callback);
-    case 'debug':
-      return handleDebug(callback);
     default:
       throw new Error('Invalid action');
   }
+}
+
+/**
+ * Handles debug status requests
+ * @param {string} callback - JSONP callback function name
+ * @returns {string} JSONP response
+ */
+function handleDebug(callback) {
+  // You can set this to true/false or read from a sheet cell
+  // For now, we'll return true to enable debugging
+  return createJsonpResponse(callback, { debug: true });
 }
 
 /**
@@ -387,17 +382,6 @@ function handleUpdateAppeal(callback) {
     updated: result.updated,
     total: result.total
   });
-}
-
-/**
- * Handles debug status requests
- * @param {string} callback - JSONP callback function name
- * @returns {string} JSONP response
- */
-function handleDebug(callback) {
-  // You can set this to true/false or read from a sheet cell
-  // For now, we'll return true to enable debugging
-  return createJsonpResponse(callback, { debug: true });
 }
 
 /**

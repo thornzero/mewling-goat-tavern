@@ -31,7 +31,7 @@ interface Video {
 
 // === CONFIGURATION ===
 /** @constant {string} Google Apps Script proxy URL for API calls */
-const proxyURL = "https://script.google.com/macros/s/AKfycbyPj4t_9siY080jxDzSmAWfPjdSSW8872k0mVkXYVb5lU2PdkgTDy7Q9LJOQRba1uOoew/exec";
+const proxyURL = "https://script.google.com/macros/s/AKfycbzptNgn0rQa31JQDqbfoZVfXZ9_2EbqZUdNVILErOXlakue2GK3pxirTLzt6HBrUZR9ag/exec";
 
 // State
 let movieData: Movie[] = [];
