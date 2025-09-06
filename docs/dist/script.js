@@ -23,21 +23,21 @@ let userName = '';
  * @param {*} [data=null] - Additional data to log
  */
 function logging(message, level = 'info', data = null) {
-    if (DEBUG === true) {
-        switch (level.toUpperCase()) {
-            case 'DEBUG':
+    switch (level.toUpperCase()) {
+        case 'DEBUG':
+            if (DEBUG) {
                 console.debug(message, data);
                 break;
-            case 'INFO':
-                console.info(message, data);
-                break;
-            case 'ERROR':
-                console.error(message, data);
-                break;
-            case 'WARN':
-                console.warn(message, data);
-                break;
-        }
+            }
+        case 'INFO':
+            console.info(message, data);
+            break;
+        case 'ERROR':
+            console.error(message, data);
+            break;
+        case 'WARN':
+            console.warn(message, data);
+            break;
     }
 }
 /**
@@ -561,6 +561,7 @@ function fetchDebug() {
     window[cb] = function (resp) {
         logging(`Debug response:`, 'debug', resp);
         DEBUG = resp.debug;
+        logging('Debug status set to:', 'info', DEBUG);
         delete window[cb];
     };
     const script = document.createElement('script');
