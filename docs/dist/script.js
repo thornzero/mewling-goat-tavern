@@ -71,24 +71,17 @@ async function fetchMovieTitles() {
         logging('Response type:', 'debug', typeof resp);
         logging('Movies array:', 'debug', resp.movies);
         if (resp && Array.isArray(resp.movies)) {
-            movieData = resp.movies.map((movieTitle, index) => {
-                logging(`Processing movie ${index}: ${movieTitle}`, 'debug');
-                // The response is an array of strings, not objects
-                if (!movieTitle || typeof movieTitle !== 'string') {
-                    logging('Invalid movie title:', 'error', movieTitle);
+            movieData = resp.movies.map((movie, index) => {
+                logging(`Processing movie ${index}: ${movie.title}`, 'debug');
+                // The response is an array of movie objects from D1 backend
+                if (!movie || typeof movie !== 'object' || !movie.title) {
+                    logging('Invalid movie object:', 'error', movie);
                     return null;
                 }
-                // Try multiple patterns to extract year and title
-                let match = movieTitle.match(/(.+?)\s*\((\d{4})\)$/); // "Title (Year)"
-                if (!match) {
-                    match = movieTitle.match(/(.+?)\s+(\d{4})$/); // "Title Year"
-                }
-                if (!match) {
-                    match = movieTitle.match(/(.+?)\s*\[(\d{4})\]$/); // "Title [Year]"
-                }
-                const parsedTitle = match ? match[1].trim() : movieTitle;
-                const year = match ? match[2] : '';
-                return new Movie(parsedTitle, year, '', [], '', '', [], null, null);
+                // Extract title and year from the movie object
+                const title = movie.title || '';
+                const year = movie.year ? movie.year.toString() : '';
+                return new Movie(title, year, '', [], '', '', [], null, null);
             }).filter(m => m !== null); // Remove any null entries
             logging('Processed movie data:', 'debug', movieData);
             remaining = movieData.length;
