@@ -5,7 +5,7 @@
 /**
  * Google Apps Script API Configuration
  */
-const DEPLOYMENT_ID = "AKfycbysUhxHRCM6TspMeVRldxzLXm9B8ED-RIgGF9FBSW9C3vD-hd2xvr5Nxdx8CFUy_jquKg";
+const DEPLOYMENT_ID = "AKfycbzVUKSnxgRD_CBniGKjfbJ_sr-V6DsK147-dedhf-1qPpyFRc_myzMGkcEOMbbrpOvsdg";
 export const API_CONFIG = {
     PROXY_URL: `https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec`,
     /** API action endpoints */
