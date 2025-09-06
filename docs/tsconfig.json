@@ -5,7 +5,7 @@
     "moduleResolution": "node",
     "lib": ["ES2020", "DOM"],
     "outDir": "./dist",
-    "rootDir": "./js",
+    "rootDir": "../src/js",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -21,7 +21,7 @@
     "noUnusedParameters": true
   },
   "include": [
-    "js/**/*"
+    "../src/js/**/*"
   ],
   "exclude": [
     "node_modules",

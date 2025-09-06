@@ -49,6 +49,8 @@ function logging(message, level = 'info', data = null) {
 function fetchMovieTitles() {
     makeJsonpCall(API_CONFIG.ACTIONS.LIST_MOVIES, {}, (resp) => {
         logging('Raw response from Google Sheet:', 'debug', resp);
+        logging('Response type:', 'debug', typeof resp);
+        logging('Is array:', 'debug', Array.isArray(resp));
         if (Array.isArray(resp)) {
             movieData = resp.map((movieTitle, index) => {
                 logging(`Processing movie ${index}:`, movieTitle);
@@ -67,7 +69,16 @@ function fetchMovieTitles() {
             startSearchAndFetch();
         }
         else {
-            logging('Invalid movie list response', 'error', resp);
+            logging('Invalid movie list response - expected array but got:', 'error', resp);
+            logging('Response keys:', 'debug', Object.keys(resp || {}));
+            // If it's a debug response, try to continue anyway
+            if (resp && typeof resp === 'object' && 'debug' in resp) {
+                logging('Received debug response instead of movie list', 'warn');
+                // Create empty movie data to prevent hanging
+                movieData = [];
+                remaining = 0;
+                handleDone();
+            }
         }
     });
 }
@@ -103,7 +114,7 @@ function startSearchAndFetch() {
                     resp.results.forEach((r) => {
                         const similarity = movieTitleSimilarity(r.title, m.title);
                         const rYear = r.release_date ? parseInt(r.release_date.slice(0, 4)) : 0;
-                        const mYear = parseInt(m.year.toString()) || 0;
+                        const mYear = m.year ? parseInt(m.year.toString()) : 0;
                         // Allow year difference of ±2 years for better matching
                         if (similarity <= 15.0 && Math.abs(rYear - mYear) <= 2) {
                             logging(`Found flexible year match! Fetching details for ${r.title} (${rYear} vs ${mYear})`);
