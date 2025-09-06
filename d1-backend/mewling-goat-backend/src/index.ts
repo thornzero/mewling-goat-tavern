@@ -24,6 +24,7 @@ import {
   NotFoundError,
   DatabaseError
 } from './types';
+import { findBestMovieMatch } from './matching';
 
 // ============================================================================
 // Environment Configuration
@@ -124,6 +125,7 @@ async function handleSearch(request: Request, env: Env): Promise<Response> {
   try {
     const url = new URL(request.url);
     const query = url.searchParams.get('query');
+    const year = url.searchParams.get('year');
     
     if (!query) {
       throw new ValidationError('Query parameter is required');
@@ -140,30 +142,89 @@ async function handleSearch(request: Request, env: Env): Promise<Response> {
     
     const tmdbData: TMDBSearchResponse = await tmdbResponse.json();
     
-    const response: SearchResponse = {
-      results: tmdbData.results.map((movie: TMDBMovie) => ({
-        id: movie.id,
-        title: movie.title,
-        release_date: movie.release_date,
-        poster_path: movie.poster_path,
-        overview: movie.overview,
-        genre_ids: movie.genre_ids,
-        adult: movie.adult,
-        original_language: movie.original_language,
-        original_title: movie.original_title,
-        popularity: movie.popularity,
-        vote_average: movie.vote_average,
-        vote_count: movie.vote_count,
-        video: movie.video
-      })),
-      total_pages: tmdbData.total_pages,
-      total_results: tmdbData.total_results,
-      page: tmdbData.page
-    };
-    
-    return new Response(JSON.stringify(response), {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    // If year is provided, use sophisticated matching algorithm
+    if (year && !isNaN(parseInt(year))) {
+      const searchYear = parseInt(year);
+      const bestMatch = findBestMovieMatch(query, searchYear, tmdbData.results);
+      
+      if (bestMatch && bestMatch.matchType !== 'none') {
+        // Return only the best match
+        const response: SearchResponse = {
+          results: [{
+            id: bestMatch.match.id,
+            title: bestMatch.match.title,
+            release_date: bestMatch.match.release_date,
+            poster_path: bestMatch.match.poster_path,
+            overview: bestMatch.match.overview,
+            genre_ids: bestMatch.match.genre_ids,
+            adult: bestMatch.match.adult,
+            original_language: bestMatch.match.original_language,
+            original_title: bestMatch.match.original_title,
+            popularity: bestMatch.match.popularity,
+            vote_average: bestMatch.match.vote_average,
+            vote_count: bestMatch.match.vote_count,
+            video: bestMatch.match.video
+          }],
+          total_pages: 1,
+          total_results: 1,
+          page: 1,
+          match_info: {
+            match_type: bestMatch.matchType,
+            similarity_score: bestMatch.score,
+            search_title: query,
+            search_year: searchYear
+          }
+        };
+        
+        return new Response(JSON.stringify(response), {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      } else {
+        // No good match found, return empty results
+        const response: SearchResponse = {
+          results: [],
+          total_pages: 0,
+          total_results: 0,
+          page: 1,
+          match_info: {
+            match_type: 'none',
+            similarity_score: Infinity,
+            search_title: query,
+            search_year: searchYear
+          }
+        };
+        
+        return new Response(JSON.stringify(response), {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    } else {
+      // No year provided, return all results (original behavior)
+      const response: SearchResponse = {
+        results: tmdbData.results.map((movie: TMDBMovie) => ({
+          id: movie.id,
+          title: movie.title,
+          release_date: movie.release_date,
+          poster_path: movie.poster_path,
+          overview: movie.overview,
+          genre_ids: movie.genre_ids,
+          adult: movie.adult,
+          original_language: movie.original_language,
+          original_title: movie.original_title,
+          popularity: movie.popularity,
+          vote_average: movie.vote_average,
+          vote_count: movie.vote_count,
+          video: movie.video
+        })),
+        total_pages: tmdbData.total_pages,
+        total_results: tmdbData.total_results,
+        page: tmdbData.page
+      };
+      
+      return new Response(JSON.stringify(response), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
   } catch (error) {
     if (error instanceof ValidationError) {
       throw error;
