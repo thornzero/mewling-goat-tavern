@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Poll - API Test Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .test-section {
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .test-result {
+            background-color: #1f2937;
+            border-radius: 4px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .success { border-left: 4px solid #10b981; }
+        .error { border-left: 4px solid #ef4444; }
+        .warning { border-left: 4px solid #f59e0b; }
+        .info { border-left: 4px solid #3b82f6; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen p-4">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-pink-500 mb-6">Movie Poll API Test Page</h1>
+        
+        <!-- Debug Status -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold mb-4">🔧 Debug Status</h2>
+            <button id="test-debug" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded mr-2">Test Debug Status</button>
+            <div id="debug-result" class="test-result hidden"></div>
+        </div>
+
+        <!-- Movie List Test -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold mb-4">🎬 Movie List Test</h2>
+            <button id="test-movies" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded mr-2">Fetch Movie List</button>
+            <div id="movies-result" class="test-result hidden"></div>
+        </div>
+
+        <!-- Movie Search Test -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold mb-4">🔍 Movie Search Test</h2>
+            <div class="flex gap-2 mb-4">
+                <input id="search-query" type="text" placeholder="Movie title" class="bg-gray-700 text-white px-3 py-2 rounded flex-1" value="The Thing">
+                <input id="search-year" type="number" placeholder="Year" class="bg-gray-700 text-white px-3 py-2 rounded w-24" value="1982">
+                <button id="test-search" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded">Search</button>
+            </div>
+            <div id="search-result" class="test-result hidden"></div>
+        </div>
+
+        <!-- Movie Details Test -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold mb-4">📋 Movie Details Test</h2>
+            <div class="flex gap-2 mb-4">
+                <input id="movie-id" type="number" placeholder="TMDB Movie ID" class="bg-gray-700 text-white px-3 py-2 rounded" value="694">
+                <button id="test-movie" class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded">Get Details</button>
+            </div>
+            <div id="movie-result" class="test-result hidden"></div>
+        </div>
+
+        <!-- Movie Videos Test -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold mb-4">🎥 Movie Videos Test</h2>
+            <div class="flex gap-2 mb-4">
+                <input id="video-id" type="number" placeholder="TMDB Movie ID" class="bg-gray-700 text-white px-3 py-2 rounded" value="694">
+                <button id="test-videos" class="bg-cyan-600 hover:bg-cyan-700 px-4 py-2 rounded">Get Videos</button>
+            </div>
+            <div id="videos-result" class="test-result hidden"></div>
+        </div>
+
+        <!-- Vote Submission Test -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold mb-4">🗳️ Vote Submission Test</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Test User Name:</label>
+                    <input id="test-user" type="text" class="bg-gray-700 text-white px-3 py-2 rounded w-full" value="TestUser">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Test Movie Title:</label>
+                    <input id="test-movie-title" type="text" class="bg-gray-700 text-white px-3 py-2 rounded w-full" value="The Thing (1982)">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Vibe (1-6):</label>
+                    <select id="test-vibe" class="bg-gray-700 text-white px-3 py-2 rounded w-full">
+                        <option value="1">1 - Hated it</option>
+                        <option value="2">2 - Disliked it</option>
+                        <option value="3">3 - It was okay</option>
+                        <option value="4" selected>4 - Liked it</option>
+                        <option value="5">5 - Loved it</option>
+                        <option value="6">6 - Masterpiece</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Seen Status:</label>
+                    <select id="test-seen" class="bg-gray-700 text-white px-3 py-2 rounded w-full">
+                        <option value="true">Yes, I've seen it</option>
+                        <option value="false" selected>No, I haven't seen it</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Action:</label>
+                    <button id="test-single-vote" class="bg-orange-600 hover:bg-orange-700 px-4 py-2 rounded w-full">Single Vote</button>
+                </div>
+            </div>
+            <button id="test-batch-vote" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Test Batch Vote (Multiple Movies)</button>
+            <div id="vote-result" class="test-result hidden"></div>
+        </div>
+
+        <!-- Appeal Calculation Test -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold mb-4">📊 Appeal Calculation Test</h2>
+            <button id="test-appeal" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded mr-2">Calculate Appeal Values</button>
+            <div id="appeal-result" class="test-result hidden"></div>
+        </div>
+
+        <!-- All Tests -->
+        <div class="test-section">
+            <h2 class="text-xl font-semibold mb-4">🚀 Run All Tests</h2>
+            <button id="run-all-tests" class="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded text-lg font-semibold">Run Complete Test Suite</button>
+            <div id="all-tests-result" class="test-result hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test configuration
+        const proxyURL = "https://script.google.com/macros/s/AKfycbzptNgn0rQa31JQDqbfoZVfXZ9_2EbqZUdNVILErOXlakue2GK3pxirTLzt6HBrUZR9ag/exec";
+        let testResults = [];
+
+        // Utility functions
+        function logResult(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.classList.remove('hidden');
+            element.className = `test-result ${type}`;
+            element.textContent = message;
+        }
+
+        function addTestResult(testName, success, message, data = null) {
+            testResults.push({
+                test: testName,
+                success: success,
+                message: message,
+                data: data,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        // JSONP helper
+        function makeJsonpCall(action, params = {}, callback) {
+            const script = document.createElement('script');
+            const urlParams = new URLSearchParams({
+                action: action,
+                callback: callback,
+                ...params
+            });
+            script.src = `${proxyURL}?${urlParams.toString()}`;
+            document.body.appendChild(script);
+        }
+
+        // Test functions
+        function testDebugStatus() {
+            const callback = `debugCb_${Date.now()}`;
+            window[callback] = function(response) {
+                logResult('debug-result', `Debug Status: ${JSON.stringify(response, null, 2)}`, 'success');
+                addTestResult('Debug Status', true, 'Debug status retrieved successfully', response);
+                delete window[callback];
+            };
+            makeJsonpCall('debug', {}, callback);
+        }
+
+        function testMovieList() {
+            const callback = `moviesCb_${Date.now()}`;
+            window[callback] = function(response) {
+                logResult('movies-result', `Movie List (${response.length} movies):\n${JSON.stringify(response, null, 2)}`, 'success');
+                addTestResult('Movie List', true, `Retrieved ${response.length} movies`, response);
+                delete window[callback];
+            };
+            makeJsonpCall('listMovies', {}, callback);
+        }
+
+        function testMovieSearch() {
+            const query = document.getElementById('search-query').value;
+            const year = document.getElementById('search-year').value;
+            const params = { query: query };
+            if (year) params.year = year;
+            
+            const callback = `searchCb_${Date.now()}`;
+            window[callback] = function(response) {
+                logResult('search-result', `Search Results for "${query}" (${year || 'any year'}):\n${JSON.stringify(response, null, 2)}`, 'success');
+                addTestResult('Movie Search', true, `Found ${response.results?.length || 0} results for "${query}"`, response);
+                delete window[callback];
+            };
+            makeJsonpCall('search', params, callback);
+        }
+
+        function testMovieDetails() {
+            const movieId = document.getElementById('movie-id').value;
+            const callback = `movieCb_${Date.now()}`;
+            window[callback] = function(response) {
+                logResult('movie-result', `Movie Details for ID ${movieId}:\n${JSON.stringify(response, null, 2)}`, 'success');
+                addTestResult('Movie Details', true, `Retrieved details for movie ID ${movieId}`, response);
+                delete window[callback];
+            };
+            makeJsonpCall('movie', { id: movieId }, callback);
+        }
+
+        function testMovieVideos() {
+            const videoId = document.getElementById('video-id').value;
+            const callback = `videosCb_${Date.now()}`;
+            window[callback] = function(response) {
+                logResult('videos-result', `Videos for Movie ID ${videoId}:\n${JSON.stringify(response, null, 2)}`, 'success');
+                addTestResult('Movie Videos', true, `Retrieved ${response.results?.length || 0} videos for movie ID ${videoId}`, response);
+                delete window[callback];
+            };
+            makeJsonpCall('videos', { id: videoId }, callback);
+        }
+
+        function testSingleVote() {
+            const vote = {
+                timestamp: Date.now(),
+                movieTitle: document.getElementById('test-movie-title').value,
+                userName: document.getElementById('test-user').value,
+                vibe: parseInt(document.getElementById('test-vibe').value),
+                seen: document.getElementById('test-seen').value === 'true'
+            };
+
+            const callback = `voteCb_${Date.now()}`;
+            window[callback] = function(response) {
+                logResult('vote-result', `Single Vote Submitted:\nVote: ${JSON.stringify(vote, null, 2)}\nResponse: ${JSON.stringify(response, null, 2)}`, 'success');
+                addTestResult('Single Vote', true, 'Vote submitted successfully', { vote, response });
+                delete window[callback];
+            };
+            makeJsonpCall('vote', vote, callback);
+        }
+
+        function testBatchVote() {
+            const votes = [
+                {
+                    timestamp: Date.now(),
+                    movieTitle: "The Thing (1982)",
+                    userName: document.getElementById('test-user').value,
+                    vibe: 5,
+                    seen: true
+                },
+                {
+                    timestamp: Date.now() + 1000,
+                    movieTitle: "Predator (1987)",
+                    userName: document.getElementById('test-user').value,
+                    vibe: 4,
+                    seen: true
+                },
+                {
+                    timestamp: Date.now() + 2000,
+                    movieTitle: "Alien (1979)",
+                    userName: document.getElementById('test-user').value,
+                    vibe: 6,
+                    seen: true
+                }
+            ];
+
+            const callback = `batchVoteCb_${Date.now()}`;
+            window[callback] = function(response) {
+                logResult('vote-result', `Batch Vote Submitted:\nVotes: ${JSON.stringify(votes, null, 2)}\nResponse: ${JSON.stringify(response, null, 2)}`, 'success');
+                addTestResult('Batch Vote', true, `Submitted ${votes.length} votes successfully`, { votes, response });
+                delete window[callback];
+            };
+            makeJsonpCall('batchVote', { votes: JSON.stringify(votes) }, callback);
+        }
+
+        function testAppealCalculation() {
+            const callback = `appealCb_${Date.now()}`;
+            window[callback] = function(response) {
+                logResult('appeal-result', `Appeal Calculation Results:\n${JSON.stringify(response, null, 2)}`, 'success');
+                addTestResult('Appeal Calculation', true, 'Appeal values calculated successfully', response);
+                delete window[callback];
+            };
+            makeJsonpCall('updateAppeal', {}, callback);
+        }
+
+        function runAllTests() {
+            testResults = [];
+            logResult('all-tests-result', 'Running all tests...', 'info');
+            
+            // Run tests sequentially
+            setTimeout(() => testDebugStatus(), 100);
+            setTimeout(() => testMovieList(), 500);
+            setTimeout(() => testMovieSearch(), 1000);
+            setTimeout(() => testMovieDetails(), 1500);
+            setTimeout(() => testMovieVideos(), 2000);
+            setTimeout(() => testSingleVote(), 2500);
+            setTimeout(() => testBatchVote(), 3000);
+            setTimeout(() => testAppealCalculation(), 3500);
+            
+            // Show results after all tests complete
+            setTimeout(() => {
+                const successCount = testResults.filter(r => r.success).length;
+                const totalCount = testResults.length;
+                const summary = testResults.map(r => 
+                    `${r.success ? '✅' : '❌'} ${r.test}: ${r.message}`
+                ).join('\n');
+                
+                logResult('all-tests-result', 
+                    `Test Results Summary:\n${successCount}/${totalCount} tests passed\n\n${summary}`, 
+                    successCount === totalCount ? 'success' : 'warning'
+                );
+            }, 4000);
+        }
+
+        // Event listeners
+        document.getElementById('test-debug').addEventListener('click', testDebugStatus);
+        document.getElementById('test-movies').addEventListener('click', testMovieList);
+        document.getElementById('test-search').addEventListener('click', testMovieSearch);
+        document.getElementById('test-movie').addEventListener('click', testMovieDetails);
+        document.getElementById('test-videos').addEventListener('click', testMovieVideos);
+        document.getElementById('test-single-vote').addEventListener('click', testSingleVote);
+        document.getElementById('test-batch-vote').addEventListener('click', testBatchVote);
+        document.getElementById('test-appeal').addEventListener('click', testAppealCalculation);
+        document.getElementById('run-all-tests').addEventListener('click', runAllTests);
+
+        // Auto-run debug test on page load
+        window.addEventListener('load', () => {
+            testDebugStatus();
+        });
+    </script>
+</body>
+</html>

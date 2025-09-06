@@ -57,6 +57,13 @@
         <!-- Swiper JS -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <!-- Your app logic -->
-        <script type="module" src="dist/script.js"></script>
-    </body>
+    <script type="module" src="dist/script.js"></script>
+    
+    <!-- Handle test route -->
+    <script>
+        if (window.location.pathname === '/test') {
+            window.location.href = './test.html';
+        }
+    </script>
+</body>
 </html>
