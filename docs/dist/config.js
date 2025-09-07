@@ -65,10 +65,15 @@ export async function makeApiCall(action, params = {}, method = 'GET', body) {
     }
     try {
         const response = await fetch(url.toString(), options);
+        // Parse JSON even for error responses to get proper error messages
+        const data = await response.json();
         if (!response.ok) {
+            // For 404 responses, return the data instead of throwing
+            if (response.status === 404) {
+                return data;
+            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
         return data;
     }
     catch (error) {

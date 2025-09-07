@@ -318,7 +318,14 @@ async function handleDeleteMovie(movieId, movieTitle) {
             loadCurrentMovies();
         }
         else {
-            showStatus(`Failed to delete movie: ${response.message || 'Unknown error'}`, 'error');
+            // Handle case where movie was not found (already deleted)
+            if (response.error === 'NOT_FOUND') {
+                showStatus(`Movie "${movieTitle}" was not found (may have been already deleted)`, 'warning');
+                loadCurrentMovies(); // Refresh the list
+            }
+            else {
+                showStatus(`Failed to delete movie: ${response.message || 'Unknown error'}`, 'error');
+            }
         }
     }
     catch (error) {
