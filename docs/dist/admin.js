@@ -155,11 +155,15 @@ function displaySearchResults(movies) {
                 </div>
                 <div class="flex-1 min-w-0">
                     <h4 class="text-lg font-semibold text-white truncate">${movie.title}</h4>
+                    ${movie.original_title && movie.original_title !== movie.title ?
+            `<p class="text-sm text-gray-400 italic">${movie.original_title}</p>` : ''}
                     <p class="text-sm text-gray-300">${movie.release_date ? movie.release_date.slice(0, 4) : 'Unknown Year'}</p>
                     <p class="text-sm text-gray-400 mt-1 line-clamp-2">${movie.overview || 'No overview available'}</p>
                     <div class="flex items-center mt-2">
                         <span class="text-yellow-400 text-sm">★ ${movie.vote_average.toFixed(1)}</span>
                         <span class="text-gray-400 text-sm ml-2">TMDB ID: ${movie.id}</span>
+                        ${movie.original_language && movie.original_language !== 'en' ?
+            `<span class="text-blue-400 text-sm ml-2">${movie.original_language.toUpperCase()}</span>` : ''}
                     </div>
                 </div>
             </div>
