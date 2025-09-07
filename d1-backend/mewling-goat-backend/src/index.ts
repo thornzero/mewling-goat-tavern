@@ -938,25 +938,31 @@ async function handleDeleteMovie(request: Request, env: Env): Promise<Response> 
       throw new ValidationError('Movie ID is required');
     }
     
+    // Convert ID to integer to ensure proper type
+    const movieId = parseInt(body.id.toString());
+    if (isNaN(movieId)) {
+      throw new ValidationError('Invalid movie ID format');
+    }
+    
     // Check if movie exists
     const existingMovie = await env.mewlinggoat_db
       .prepare('SELECT id, title FROM movies WHERE id = ?')
-      .bind(body.id)
+      .bind(movieId)
       .first();
     
     if (!existingMovie) {
-      throw new NotFoundError('Movie', body.id);
+      throw new NotFoundError('Movie', movieId);
     }
     
     // Delete movie and related data
     await env.mewlinggoat_db
       .prepare('DELETE FROM votes WHERE movie_id = ?')
-      .bind(body.id)
+      .bind(movieId)
       .run();
     
     await env.mewlinggoat_db
       .prepare('DELETE FROM movies WHERE id = ?')
-      .bind(body.id)
+      .bind(movieId)
       .run();
     
     const response: DeleteMovieResponse = {
