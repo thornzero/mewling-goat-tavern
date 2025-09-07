@@ -194,6 +194,8 @@ function selectMovie(movie) {
         </div>
     `;
     addMovieForm.classList.remove('hidden');
+    // Update swap button states
+    updateSwapButtonStates();
     // Scroll to add movie form
     addMovieForm.scrollIntoView({ behavior: 'smooth' });
 }
@@ -280,6 +282,14 @@ function displayCurrentMovies() {
                 </div>
                 <div class="flex space-x-2">
                     <button 
+                        class="swap-movie-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors disabled:bg-gray-500 disabled:cursor-not-allowed"
+                        data-movie-id="${movie.id}"
+                        data-movie-title="${movie.title}"
+                        ${!selectedMovie ? 'disabled' : ''}
+                    >
+                        Swap
+                    </button>
+                    <button 
                         class="delete-movie-btn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors"
                         data-movie-id="${movie.id}"
                         data-movie-title="${movie.title}"
@@ -289,9 +299,11 @@ function displayCurrentMovies() {
                 </div>
             </div>
         `;
-        // Add delete event listener
+        // Add event listeners
         const deleteBtn = movieCard.querySelector('.delete-movie-btn');
         deleteBtn.addEventListener('click', () => handleDeleteMovie(movie.id, movie.title));
+        const swapBtn = movieCard.querySelector('.swap-movie-btn');
+        swapBtn.addEventListener('click', () => handleSwapMovie(movie.id, movie.title));
         currentMoviesList.appendChild(movieCard);
     });
 }
@@ -312,6 +324,40 @@ async function handleDeleteMovie(movieId, movieTitle) {
     catch (error) {
         console.error('Delete movie failed:', error);
         showStatus('Failed to delete movie. Please try again.', 'error');
+    }
+}
+async function handleSwapMovie(movieId, movieTitle) {
+    if (!selectedMovie) {
+        showStatus('Please select a movie from the search results first', 'error');
+        return;
+    }
+    if (!confirm(`Are you sure you want to replace "${movieTitle}" with "${selectedMovie.title}"?`)) {
+        return;
+    }
+    try {
+        // First delete the old movie
+        const deleteResponse = await makeApiCall(API_CONFIG.ACTIONS.DELETE_MOVIE, { id: movieId }, 'POST');
+        if (!deleteResponse.success) {
+            showStatus(`Failed to delete old movie: ${deleteResponse.message || 'Unknown error'}`, 'error');
+            return;
+        }
+        // Then add the new movie
+        const addResponse = await makeApiCall(API_CONFIG.ACTIONS.ADD_MOVIE, {
+            title: selectedMovie.title,
+            year: selectedMovie.release_date ? parseInt(selectedMovie.release_date.slice(0, 4)) : null
+        }, 'POST');
+        if (addResponse.success) {
+            showStatus(`Successfully swapped "${movieTitle}" with "${selectedMovie.title}"!`, 'success');
+            loadCurrentMovies();
+            clearSearch();
+        }
+        else {
+            showStatus(`Failed to add new movie: ${addResponse.message || 'Unknown error'}`, 'error');
+        }
+    }
+    catch (error) {
+        console.error('Swap movie failed:', error);
+        showStatus('Failed to swap movie. Please try again.', 'error');
     }
 }
 async function handleUpdateAppeals() {
@@ -361,6 +407,13 @@ function clearSearch() {
     searchResults.classList.add('hidden');
     addMovieForm.classList.add('hidden');
     selectedMovie = null;
+    updateSwapButtonStates();
+}
+function updateSwapButtonStates() {
+    const swapButtons = document.querySelectorAll('.swap-movie-btn');
+    swapButtons.forEach(button => {
+        button.disabled = !selectedMovie;
+    });
 }
 function showStatus(message, type = 'info') {
     const statusDiv = document.createElement('div');
