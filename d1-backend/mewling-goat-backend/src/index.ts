@@ -71,11 +71,13 @@ function handleCors(request: Request, env: Env): Response | null {
 // Error Handling
 // ============================================================================
 
-function handleError(error: any): Response {
+function handleError(error: any, request?: Request, env?: Env): Response {
   console.error('API Error:', error);
   
+  let response: Response;
+  
   if (error instanceof ApiError) {
-    return new Response(JSON.stringify({
+    response = new Response(JSON.stringify({
       success: false,
       error: error.message,
       code: error.code
@@ -83,15 +85,30 @@ function handleError(error: any): Response {
       status: error.status,
       headers: { 'Content-Type': 'application/json' }
     });
+  } else {
+    response = new Response(JSON.stringify({
+      success: false,
+      error: 'Internal server error'
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
   
-  return new Response(JSON.stringify({
-    success: false,
-    error: 'Internal server error'
-  }), {
-    status: 500,
-    headers: { 'Content-Type': 'application/json' }
-  });
+  // Add CORS headers to error response
+  if (request && env) {
+    const origin = request.headers.get('Origin');
+    const allowedOrigins = env.CORS_ORIGINS.split(',').map(o => o.trim());
+    
+    if (origin && allowedOrigins.includes(origin)) {
+      response.headers.set('Access-Control-Allow-Origin', origin);
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+      response.headers.set('Access-Control-Allow-Credentials', 'true');
+    }
+  }
+  
+  return response;
 }
 
 // ============================================================================
@@ -138,16 +155,104 @@ async function handleSearch(request: Request, env: Env): Promise<Response> {
       throw new ValidationError('Query parameter is required');
     }
     
-    // Search TMDB API
-    const tmdbResponse = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(query)}&page=1`
-    );
+    // Try multiple search strategies
+    const searchQueries = [
+      query, // Original query
+      query.replace(/\s+/g, ' ').trim(), // Normalized spacing
+      query.toLowerCase(), // Lowercase
+      query.replace(/[^\w\s]/g, ''), // Remove special characters
+    ];
     
-    if (!tmdbResponse.ok) {
-      throw new ApiError('TMDB API request failed', tmdbResponse.status);
+    // If year is provided, try with year variations
+    if (year && !isNaN(parseInt(year))) {
+      searchQueries.push(`${query} ${year}`);
+      searchQueries.push(`${query} (${year})`);
     }
     
-    const tmdbData: TMDBSearchResponse = await tmdbResponse.json();
+    // Try alternative search terms for common movie titles
+    const alternativeTerms: { [key: string]: string[] } = {
+      'house': ['hausu', 'ハウス'],
+      'spirited away': ['千と千尋の神隠し', 'sen to chihiro'],
+      'princess mononoke': ['もののけ姫', 'mononoke hime'],
+      'my neighbor totoro': ['となりのトトロ', 'tonari no totoro'],
+      'grave of the fireflies': ['火垂るの墓', 'hotaru no haka'],
+      'kiki\'s delivery service': ['魔女の宅急便', 'majo no takkyubin'],
+      'castle in the sky': ['天空の城ラピュタ', 'tenkuu no shiro rapyuta'],
+      'howl\'s moving castle': ['ハウルの動く城', 'hauru no ugoku shiro'],
+      'the wind rises': ['風立ちぬ', 'kaze tachinu'],
+      'ponyo': ['崖の上のポニョ', 'gake no ue no ponyo'],
+      'arrietty': ['借りぐらしのアリエッティ', 'karigurashi no arietti'],
+      'the tale of princess kaguya': ['かぐや姫の物語', 'kaguyahime no monogatari'],
+      'when marnie was there': ['思い出のマーニー', 'omoide no marnie'],
+      'the red turtle': ['レッドタートル ある島の物語', 'reddo taatoru aru shima no monogatari'],
+      'mirai': ['未来のミライ', 'mirai no mirai'],
+      'weathering with you': ['天気の子', 'tenki no ko'],
+      'your name': ['君の名は', 'kimi no na wa'],
+      'a silent voice': ['聲の形', 'koe no katachi'],
+      'demon slayer': ['鬼滅の刃', 'kimetsu no yaiba'],
+      'attack on titan': ['進撃の巨人', 'shingeki no kyojin'],
+      'one piece': ['ワンピース', 'wanpiisu'],
+      'naruto': ['ナルト', 'naruto'],
+      'dragon ball': ['ドラゴンボール', 'doragon booru'],
+      'pokemon': ['ポケモン', 'pokemon'],
+      'studio ghibli': ['スタジオジブリ', 'sutajio jiburi'],
+      'ghibli': ['ジブリ', 'jiburi']
+    };
+    
+    // Add alternative terms for the query
+    const lowerQuery = query.toLowerCase();
+    if (alternativeTerms[lowerQuery]) {
+      searchQueries.push(...alternativeTerms[lowerQuery]);
+    }
+    
+    // Also try partial matches
+    for (const [key, alternatives] of Object.entries(alternativeTerms)) {
+      if (lowerQuery.includes(key) || key.includes(lowerQuery)) {
+        searchQueries.push(...alternatives);
+      }
+    }
+    
+    let allResults: any[] = [];
+    let totalResults = 0;
+    
+    // Try each search query and collect all results
+    console.log('Search queries:', searchQueries);
+    for (const searchQuery of searchQueries) {
+      if (searchQuery.trim() === '') continue;
+      
+      try {
+        console.log(`Trying search query: ${searchQuery}`);
+        const tmdbResponse = await fetch(
+          `https://api.themoviedb.org/3/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(searchQuery)}&page=1`
+        );
+        
+        if (tmdbResponse.ok) {
+          const data: TMDBSearchResponse = await tmdbResponse.json();
+          console.log(`Query "${searchQuery}" returned ${data.results?.length || 0} results`);
+          if (data.results && data.results.length > 0) {
+            // Add results that aren't already in our collection
+            for (const result of data.results) {
+              if (!allResults.find(r => r.id === result.id)) {
+                allResults.push(result);
+                console.log(`Added result: ${result.title} (${result.original_title}) - ${result.release_date}`);
+              }
+            }
+            totalResults = Math.max(totalResults, data.total_results);
+          }
+        }
+      } catch (error) {
+        console.error(`Search failed for query: ${searchQuery}`, error);
+        // Continue with next query
+      }
+    }
+    
+    // Create combined results
+    const tmdbData: TMDBSearchResponse = {
+      results: allResults,
+      total_pages: 1,
+      total_results: totalResults,
+      page: 1
+    };
     
     // If year is provided, use sophisticated matching algorithm
     if (year && !isNaN(parseInt(year))) {
@@ -968,17 +1073,20 @@ export default {
       }
       
       // Add CORS headers to response
-      if (corsResponse) {
-        const origin = request.headers.get('Origin');
-        if (origin) {
-          response.headers.set('Access-Control-Allow-Origin', origin);
-        }
+      const origin = request.headers.get('Origin');
+      const allowedOrigins = env.CORS_ORIGINS.split(',').map(o => o.trim());
+      
+      if (origin && allowedOrigins.includes(origin)) {
+        response.headers.set('Access-Control-Allow-Origin', origin);
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+        response.headers.set('Access-Control-Allow-Credentials', 'true');
       }
       
       return response;
       
     } catch (error) {
-      return handleError(error);
+      return handleError(error, request, env);
     }
 	},
 } satisfies ExportedHandler<Env>;
