@@ -209,7 +209,7 @@ async function handleAddMovie() {
     try {
         const movieData = {
             title: selectedMovie.title,
-            year: selectedMovie.release_date ? parseInt(selectedMovie.release_date.slice(0, 4)) : null,
+            year: selectedMovie.release_date ? parseInt(selectedMovie.release_date.slice(0, 4)) : 0,
             use_matching: false // We're manually selecting, so no need for matching
         };
         const response = await makeApiCall(API_CONFIG.ACTIONS.ADD_MOVIE, movieData, 'POST');
@@ -344,7 +344,8 @@ async function handleSwapMovie(movieId, movieTitle) {
         // Then add the new movie
         const addResponse = await makeApiCall(API_CONFIG.ACTIONS.ADD_MOVIE, {
             title: selectedMovie.title,
-            year: selectedMovie.release_date ? parseInt(selectedMovie.release_date.slice(0, 4)) : null
+            year: selectedMovie.release_date ? parseInt(selectedMovie.release_date.slice(0, 4)) : 0,
+            use_matching: false
         }, 'POST');
         if (addResponse.success) {
             showStatus(`Successfully swapped "${movieTitle}" with "${selectedMovie.title}"!`, 'success');

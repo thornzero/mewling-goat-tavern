@@ -652,7 +652,7 @@ async function handleAddMovie(request: Request, env: Env): Promise<Response> {
     const body: AddMovieRequest = await request.json();
     
     // Validate input
-    if (!body.title || !body.year) {
+    if (!body.title || body.year === undefined || body.year === null) {
       throw new ValidationError('Title and year are required');
     }
     
@@ -686,7 +686,7 @@ async function handleAddMovie(request: Request, env: Env): Promise<Response> {
         search_year: body.year
       };
     } else {
-      // Use first result from TMDB search
+      // Use first result from TMDB search (simple search, no matching)
       const searchResponse = await fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=${env.TMDB_API_KEY}&query=${encodeURIComponent(body.title)}&page=1`
       );
