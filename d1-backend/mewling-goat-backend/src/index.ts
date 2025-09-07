@@ -781,6 +781,7 @@ async function handleAddMovie(request: Request, env: Env): Promise<Response> {
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('AddMovie error:', error);
     if (error instanceof ValidationError || error instanceof ApiError) {
       const response: AddMovieResponse = {
         success: false,
@@ -792,7 +793,15 @@ async function handleAddMovie(request: Request, env: Env): Promise<Response> {
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    throw new ApiError('Failed to add movie', 500, 'ADD_MOVIE_ERROR');
+    const response: AddMovieResponse = {
+      success: false,
+      message: 'Failed to add movie',
+      error: 'ADD_MOVIE_ERROR'
+    };
+    return new Response(JSON.stringify(response), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
@@ -915,6 +924,7 @@ async function handleUpdateMovie(request: Request, env: Env): Promise<Response> 
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('UpdateMovie error:', error);
     if (error instanceof ValidationError || error instanceof ApiError || error instanceof NotFoundError) {
       const response: UpdateMovieResponse = {
         success: false,
@@ -926,7 +936,15 @@ async function handleUpdateMovie(request: Request, env: Env): Promise<Response> 
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    throw new ApiError('Failed to update movie', 500, 'UPDATE_MOVIE_ERROR');
+    const response: UpdateMovieResponse = {
+      success: false,
+      message: 'Failed to update movie',
+      error: 'UPDATE_MOVIE_ERROR'
+    };
+    return new Response(JSON.stringify(response), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
@@ -974,6 +992,7 @@ async function handleDeleteMovie(request: Request, env: Env): Promise<Response> 
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('DeleteMovie error:', error);
     if (error instanceof ValidationError || error instanceof ApiError || error instanceof NotFoundError) {
       const response: DeleteMovieResponse = {
         success: false,
@@ -985,7 +1004,15 @@ async function handleDeleteMovie(request: Request, env: Env): Promise<Response> 
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    throw new ApiError('Failed to delete movie', 500, 'DELETE_MOVIE_ERROR');
+    const response: DeleteMovieResponse = {
+      success: false,
+      message: 'Failed to delete movie',
+      error: 'DELETE_MOVIE_ERROR'
+    };
+    return new Response(JSON.stringify(response), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
 
