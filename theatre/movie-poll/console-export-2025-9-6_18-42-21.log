@@ -1,5 +1,0 @@
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://mewling-goat-backend.tavern-b8d.workers.dev/?action=videos&id=694. (Reason: CORS header ‘Access-Control-Allow-Origin’ missing). Status code: 400.
-API call failed for action: videos TypeError: NetworkError when attempting to fetch resource. config.js:73:17
-    makeApiCall config.ts:195
-API call failed for action: videos TypeError: NetworkError when attempting to fetch resource. config.js:86:17
-    makeJsonpCall config.ts:213

@@ -1,0 +1,38 @@
+{
+	"name": "mewling-goat-backend",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Movie Poll Backend - Cloudflare D1 + TMDB API",
+	"scripts": {
+		"deploy": "npm run build:frontend && wrangler deploy",
+		"dev": "npm run build:frontend && wrangler dev",
+		"start": "npm run build:frontend && wrangler dev",
+		"build": "npm run build:frontend",
+		"build:frontend": "cd src/frontend && npm run build",
+		"build:frontend:scripts": "cd src/frontend && npm run build:scripts",
+		"dev:frontend": "cd src/frontend && npm run dev",
+		"test": "vitest",
+		"cf-typegen": "wrangler types",
+		"db:create": "wrangler d1 create mewlinggoat_db",
+		"db:migrate": "wrangler d1 migrations apply mewlinggoat_db",
+		"db:seed": "wrangler d1 execute mewlinggoat_db --file=./seed.sql",
+		"db:reset": "wrangler d1 execute mewlinggoat_db --command='DROP TABLE IF EXISTS movies; DROP TABLE IF EXISTS votes; DROP TABLE IF EXISTS appeal_calculations;' && npm run db:migrate"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "^0.8.19",
+		"@types/node": "^20.0.0",
+		"typescript": "^5.5.2",
+		"vitest": "~3.2.0",
+		"wrangler": "^4.34.0"
+	},
+	"dependencies": {
+		"@cloudflare/workers-types": "^4.20240925.0",
+		"moviedb-promise": "^4.0.7",
+		"@astrojs/cloudflare": "^12.6.7",
+		"@tailwindcss/typography": "^0.5.16",
+		"@tailwindcss/vite": "^4.1.13",
+		"astro": "^5.13.5",
+		"autoprefixer": "^10.4.21",
+		"tailwindcss": "^4.1.13"
+	}
+}

@@ -1,8 +1,0 @@
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://mewling-goat-backend.tavern-b8d.workers.dev/?action=vote. (Reason: CORS header ‘Access-Control-Allow-Origin’ missing). Status code: 500.
-API call failed for action: vote TypeError: NetworkError when attempting to fetch resource. config.js:72:17
-Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://mewling-goat-backend.tavern-b8d.workers.dev/?action=vote. (Reason: CORS header ‘Access-Control-Allow-Origin’ missing). Status code: 500.
-API call failed for action: vote TypeError: NetworkError when attempting to fetch resource. config.js:72:17
-Error while fetching an original source: request failed with status 404
-Stack in the worker:networkRequest@resource://devtools/client/shared/source-map-loader/utils/network-request.js:43:9
-
-Source URL: https://moviepoll.mewling-goat-tavern.online/src/js/config.ts
