@@ -1,0 +1,25 @@
+Layout was forced before the page was fully loaded. If stylesheets are not yet loaded this may cause a flash of unstyled content. node.js:417:1
+Initializing movie poll app null script.js:23:21
+Loading movies... null script.js:23:21
+XHRGET
+https://mewling-goat-backend.tavern-b8d.workers.dev/api/listMovies
+[HTTP/2 404  74ms]
+
+API call failed: api/listMovies Error: HTTP error! status: 404
+    makeApiCall script.ts:64
+    loadMovies script.ts:80
+    initializeApp script.ts:380
+    EventListener.handleEvent* script.ts:417
+script.js:26:21
+Failed to load movies Error: HTTP error! status: 404
+    makeApiCall script.ts:64
+    loadMovies script.ts:80
+    initializeApp script.ts:380
+    EventListener.handleEvent* script.ts:417
+script.js:26:21
+Failed to initialize app Error: HTTP error! status: 404
+    makeApiCall script.ts:64
+    loadMovies script.ts:80
+    initializeApp script.ts:380
+    EventListener.handleEvent* script.ts:417
+script.js:26:21
