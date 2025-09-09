@@ -23,7 +23,7 @@ The Mewling Goat Tavern Movie Poll system is built as a microservices architectu
 
 ## Data Flow
 
-```
+```flow
 User Request → Frontend → Backend → D1 Database
                 ↓
             Frontend ← Backend ← D1 Database

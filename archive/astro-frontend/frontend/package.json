@@ -1,0 +1,28 @@
+{
+	"name": "mewling-goat-tavern-frontend",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "npm run build:scripts && astro dev",
+		"build": "npm run build:scripts && astro build && npm run postbuild",
+		"build:scripts": "tsc --build scripts/tsconfig-script.json",
+		"postbuild": "echo '_worker.js' > dist/.assetsignore",
+		"preview": "astro build && wrangler dev",
+		"astro": "astro",
+		"deploy": "npm run build && wrangler deploy",
+		"cf-typegen": "wrangler types"
+	},
+	"dependencies": {
+		"@astrojs/cloudflare": "^12.6.7",
+		"@tailwindcss/typography": "^0.5.16",
+		"@tailwindcss/vite": "^4.1.13",
+		"astro": "^5.13.5",
+		"autoprefixer": "^10.4.21",
+		"tailwindcss": "^4.1.13"
+	},
+	"devDependencies": {
+		"@types/node": "^24.3.1",
+		"typescript": "^5.0.0",
+		"wrangler": "^4.34.0"
+	}
+}

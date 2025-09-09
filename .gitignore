@@ -2,3 +2,11 @@ secrets.yaml
 
 # Source TypeScript files (compiled to docs/dist/)
 src/
+
+# Node modules
+node_modules/
+**/node_modules/
+
+# Large binary files
+*.bin
+workerd

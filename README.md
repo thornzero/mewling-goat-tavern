@@ -4,7 +4,7 @@ A full-stack movie polling application built with Cloudflare Workers, D1 Databas
 
 ## 🏗️ Architecture
 
-```
+```flow
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │    Frontend     │    │     Backend     │    │   D1 Database   │
 │   (Astro +      │◄──►│  (Cloudflare    │◄──►│   (SQLite)      │
@@ -14,7 +14,7 @@ A full-stack movie polling application built with Cloudflare Workers, D1 Databas
 
 ## 📁 Project Structure
 
-```
+```tree
 mewling-goat-tavern/
 ├── backend/                    # Backend API service
 │   ├── src/                   # TypeScript source code
