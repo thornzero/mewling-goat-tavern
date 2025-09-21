@@ -4,7 +4,7 @@
 
 The movie appeal formula calculates a score from 0-9.5 points using five components:
 
-```
+```math
 Final Appeal = Base Appeal + Novelty Bonus + Participation Bonus + Quality Bonus + Consensus Bonus
 ```
 
@@ -35,6 +35,7 @@ graph TD
 ## Component Details
 
 ### 1. Base Appeal (0-5.0 points)
+
 **Formula**: `(avgInterest - 1.0) × 2.5`
 
 - Based on average interest votes from people who haven't seen the movie
@@ -42,6 +43,7 @@ graph TD
 - Converts to 0-5.0 point scale
 
 ### 2. Novelty Bonus (0-1.0 points)
+
 **Formula**: `(notSeenCount / totalVotes) × 1.0`
 
 - Rewards movies that fewer people have seen
@@ -49,6 +51,7 @@ graph TD
 - Higher ratio = higher bonus
 
 ### 3. Participation Bonus (0-0.5 points)
+
 **Formula**: `(totalVotes / uniqueVoters) × 0.5`
 
 - Uses the `uniqueVoters` parameter
@@ -56,6 +59,7 @@ graph TD
 - Prevents low-participation movies from dominating
 
 ### 4. Quality Bonus (0-2.0 points)
+
 **Formula**: `(avgRating - 1.0) × 1.0`
 
 - Only applies to movies people have seen
@@ -63,6 +67,7 @@ graph TD
 - Scale: 1=Meh, 2=Good, 3=Rewatch
 
 ### 5. Consensus Bonus (0-1.0 points)
+
 **Formula**: `((highRatingRatio + highInterestRatio) × 0.5`
 
 - Uses `highRatingCount` and `highInterestCount` parameters
@@ -72,6 +77,7 @@ graph TD
 ## Sample Data Scenarios
 
 ### Scenario 1: "The Matrix" - High Interest, Some Seen
+
 ```mermaid
 pie title Vote Distribution
     "Stoked (3)" : 4
@@ -79,6 +85,7 @@ pie title Vote Distribution
 ```
 
 **Data:**
+
 - Total Votes: 5
 - Unique Voters: 5
 - Seen: 2, Not Seen: 3
@@ -86,6 +93,7 @@ pie title Vote Distribution
 - High Interest: 2, High Rating: 2
 
 **Calculation:**
+
 ```mermaid
 graph LR
     A[Base: 4.0] --> E[Total: 7.5]
@@ -98,6 +106,7 @@ graph LR
 ```
 
 ### Scenario 2: "Some Obscure Indie Film" - Low Interest, Nobody Seen
+
 ```mermaid
 pie title Vote Distribution
     "Stoked (3)" : 1
@@ -105,6 +114,7 @@ pie title Vote Distribution
 ```
 
 **Data:**
+
 - Total Votes: 2
 - Unique Voters: 5
 - Seen: 0, Not Seen: 2
@@ -112,6 +122,7 @@ pie title Vote Distribution
 - High Interest: 1, High Rating: 0
 
 **Calculation:**
+
 ```mermaid
 graph LR
     A[Base: 2.5] --> E[Total: 3.95]
@@ -124,6 +135,7 @@ graph LR
 ```
 
 ### Scenario 3: "Avengers: Endgame" - High Interest, Everyone Seen
+
 ```mermaid
 pie title Vote Distribution
     "Stoked (3)" : 3
@@ -131,6 +143,7 @@ pie title Vote Distribution
 ```
 
 **Data:**
+
 - Total Votes: 5
 - Unique Voters: 5
 - Seen: 5, Not Seen: 0
@@ -138,6 +151,7 @@ pie title Vote Distribution
 - High Interest: 0, High Rating: 4
 
 **Calculation:**
+
 ```mermaid
 graph LR
     A[Base: 3.0] --> E[Total: 5.7]
@@ -150,6 +164,7 @@ graph LR
 ```
 
 ### Scenario 4: "Terrible Movie" - Low Interest, Some Seen
+
 ```mermaid
 pie title Vote Distribution
     "Stoked (3)" : 1
@@ -157,6 +172,7 @@ pie title Vote Distribution
 ```
 
 **Data:**
+
 - Total Votes: 4
 - Unique Voters: 5
 - Seen: 2, Not Seen: 2
@@ -164,6 +180,7 @@ pie title Vote Distribution
 - High Interest: 1, High Rating: 0
 
 **Calculation:**
+
 ```mermaid
 graph LR
     A[Base: 1.25] --> E[Total: 2.275]
