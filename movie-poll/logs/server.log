@@ -1875,3 +1875,50 @@
 2025/09/21 19:52:50 logging.go:44: === Server Starting ===
 2025/09/21 19:52:50 logging.go:44: Admin users already exist, skipping default admin creation
 2025/09/21 19:52:50 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:52:56 logging.go:44: === Server Starting ===
+2025/09/21 19:52:56 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:52:56 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:53:16 logging.go:44: 🛑 Shutting down server...
+2025/09/21 19:53:16 logging.go:44: ✅ Server shutdown complete
+2025/09/21 19:53:17 logging.go:44: === Server Starting ===
+2025/09/21 19:53:17 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:53:17 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:53:22 logging.go:44: === Server Starting ===
+2025/09/21 19:53:22 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:53:22 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:54:07 logging.go:44: === Server Starting ===
+2025/09/21 19:54:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:54:07 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:54:07 logging.go:44: 🛑 Shutting down server...
+2025/09/21 19:54:27 logging.go:44: === Server Starting ===
+2025/09/21 19:54:27 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:54:27 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:54:27 logging.go:44: === Server Starting ===
+2025/09/21 19:54:27 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:54:27 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:54:28 logging.go:44: 🛑 Shutting down server...
+2025/09/21 19:54:31 logging.go:44: === Server Starting ===
+2025/09/21 19:54:31 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:54:31 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:54:31 logging.go:44: === Server Starting ===
+2025/09/21 19:54:31 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:54:31 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:54:31 logging.go:44: 🛑 Shutting down server...
+2025/09/21 19:54:32 logging.go:44: === Server Starting ===
+2025/09/21 19:54:32 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:54:32 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:54:37 logging.go:44: 🛑 Shutting down server...
+2025/09/21 19:54:37 logging.go:44: ✅ Server shutdown complete
+2025/09/21 19:54:47 logging.go:44: === Server Starting ===
+2025/09/21 19:54:47 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:54:47 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:55:00 logging.go:44: 🛑 Shutting down server...
+2025/09/21 19:55:00 logging.go:44: ✅ Server shutdown complete
+2025/09/21 19:55:07 logging.go:44: === Server Starting ===
+2025/09/21 19:55:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:55:07 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:55:12 logging.go:44: 🛑 Shutting down server...
+2025/09/21 19:55:12 logging.go:44: ✅ Server shutdown complete
+2025/09/21 19:55:18 logging.go:44: === Server Starting ===
+2025/09/21 19:55:18 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:55:18 logging.go:49: 🚀 Movie Poll Server starting on :3000

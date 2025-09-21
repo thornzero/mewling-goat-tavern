@@ -295,16 +295,16 @@ func SearchResults(searchResults []tmdb.MovieShort) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(`{"tmdb_id": ` + strconv.Itoa(movie.ID) + `, "title": "` + movie.Title + `", "year": ` + strconv.Itoa(func() int {
+				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(`{"tmdb_id": ` + strconv.Itoa(movie.ID) + `, "title": "` + movie.Title + `", "year": ` + func() string {
 					if len(movie.ReleaseDate) >= 4 {
 						year, _ := strconv.Atoi(movie.ReleaseDate[:4])
-						return year
+						return strconv.Itoa(year)
 					} else {
-						return 0
+						return "0"
 					}
-				}()) + `}`)
+				}() + `}`)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 187, Col: 21}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 187, Col: 19}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {

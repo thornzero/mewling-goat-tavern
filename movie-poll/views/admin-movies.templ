@@ -177,14 +177,14 @@ templ SearchResults(searchResults []tmdb.MovieShort) {
 									<div class="mt-3 flex gap-2">
 										<button
 											hx-post="/api/admin/add-movie"
-											hx-vals={ `{"tmdb_id": ` + strconv.Itoa(movie.ID) + `, "title": "` + movie.Title + `", "year": ` + strconv.Itoa(func() int {
-												if len(movie.ReleaseDate) >= 4 {
-													year, _ := strconv.Atoi(movie.ReleaseDate[:4])
-													return year
-												} else {
-													return 0
-												}
-											}()) + `}` }
+											hx-vals={ `{"tmdb_id": ` + strconv.Itoa(movie.ID) + `, "title": "` + movie.Title + `", "year": ` + func() string {
+											if len(movie.ReleaseDate) >= 4 {
+												year, _ := strconv.Atoi(movie.ReleaseDate[:4])
+												return strconv.Itoa(year)
+											} else {
+												return "0"
+											}
+										}() + `}` }
 											hx-target="#search-results"
 											hx-swap="innerHTML"
 											class="px-3 py-1 bg-tavern-500 hover:bg-tavern-600 text-white text-sm rounded transition-colors"
