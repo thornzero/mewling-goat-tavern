@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -80,6 +81,7 @@ func (hr *HandlerRegistry) registerHandlers() {
 
 	// Movie management handlers
 	hr.handlers["add-movie"] = hr.handleAddMovie
+	hr.handlers["import-movies"] = hr.handleImportMovies
 }
 
 // Get retrieves a handler by name
@@ -501,6 +503,119 @@ func (hr *HandlerRegistry) handleAddMovie(w http.ResponseWriter, r *http.Request
 		"message": "Movie added successfully",
 		"title":   title,
 	})
+}
+
+func (hr *HandlerRegistry) handleImportMovies(w http.ResponseWriter, r *http.Request) {
+	// Parse multipart form
+	err := r.ParseMultipartForm(10 << 20) // 10 MB max file size
+	if err != nil {
+		http.Error(w, "Failed to parse form", http.StatusBadRequest)
+		return
+	}
+
+	// Get the uploaded file
+	file, _, err := r.FormFile("json_file")
+	if err != nil {
+		http.Error(w, "No file uploaded", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	// Read file content
+	fileContent, err := io.ReadAll(file)
+	if err != nil {
+		http.Error(w, "Failed to read file", http.StatusInternalServerError)
+		return
+	}
+
+	// Parse JSON
+	var movies []struct {
+		Title       string   `json:"title"`
+		Year        int      `json:"year"`
+		TMDBID      int      `json:"tmdb_id"`
+		AppealValue *float64 `json:"appeal_value,omitempty"`
+	}
+
+	err = json.Unmarshal(fileContent, &movies)
+	if err != nil {
+		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
+		return
+	}
+
+	// Import results
+	var results struct {
+		Success  int      `json:"success"`
+		Skipped  int      `json:"skipped"`
+		Errors   int      `json:"errors"`
+		Messages []string `json:"messages"`
+	}
+
+	for _, movieData := range movies {
+		if movieData.Title == "" || movieData.TMDBID <= 0 {
+			results.Errors++
+			results.Messages = append(results.Messages, fmt.Sprintf("Skipped invalid movie: %s (TMDB ID: %d)", movieData.Title, movieData.TMDBID))
+			continue
+		}
+
+		// Try to add movie using TMDB ID
+		title, err := DB.AddMovieFromTMDB(movieData.TMDBID)
+		if err != nil {
+			// If TMDB fails, try adding with basic info
+			movie := types.Movie{
+				TMDBID: &movieData.TMDBID,
+				Title:  movieData.Title,
+				Year:   &movieData.Year,
+			}
+
+			_, err = DB.AddMovie(movie)
+			if err != nil {
+				results.Errors++
+				results.Messages = append(results.Messages, fmt.Sprintf("Failed to add '%s': %v", movieData.Title, err))
+				continue
+			}
+			results.Success++
+			results.Messages = append(results.Messages, fmt.Sprintf("Added '%s' (basic info)", movieData.Title))
+		} else {
+			results.Success++
+			results.Messages = append(results.Messages, fmt.Sprintf("Added '%s' (from TMDB)", title))
+		}
+	}
+
+	// Return results as HTML for display
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusOK)
+
+	// Generate HTML response
+	fmt.Fprintf(w, `
+		<div class="bg-goat-700 rounded-lg p-4">
+			<h3 class="text-lg font-bold text-tavern-400 mb-3">Import Results</h3>
+			<div class="grid grid-cols-3 gap-4 mb-4">
+				<div class="text-center">
+					<div class="text-2xl font-bold text-green-400">%d</div>
+					<div class="text-sm text-goat-300">Successfully Added</div>
+				</div>
+				<div class="text-center">
+					<div class="text-2xl font-bold text-yellow-400">%d</div>
+					<div class="text-sm text-goat-300">Skipped</div>
+				</div>
+				<div class="text-center">
+					<div class="text-2xl font-bold text-red-400">%d</div>
+					<div class="text-sm text-goat-300">Errors</div>
+				</div>
+			</div>
+			<div class="max-h-60 overflow-y-auto">
+				<ul class="space-y-1 text-sm">
+	`, results.Success, results.Skipped, results.Errors)
+
+	for _, message := range results.Messages {
+		fmt.Fprintf(w, `<li class="text-goat-300">• %s</li>`, message)
+	}
+
+	fmt.Fprintf(w, `
+				</ul>
+			</div>
+		</div>
+	`)
 }
 
 // Voting flow handlers

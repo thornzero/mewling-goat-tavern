@@ -288,7 +288,7 @@ func (s *SQLite) GetMovieByID(id int) (*Movie, error) {
 }
 
 // AddMovie adds a new movie to the database (with duplicate prevention)
-func (s *SQLite) AddMovie(movie Movie) (int64, error) {
+func (s *SQLite) AddMovie(movie types.Movie) (int64, error) {
 	// First check if movie already exists by tmdb_id or title+year
 	var existingID int64
 	var err error

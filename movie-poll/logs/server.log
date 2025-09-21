@@ -1369,3 +1369,81 @@
 2025/09/21 18:48:29 logging.go:44: ✅ Server shutdown complete
 2025/09/21 18:48:29 logging.go:44: 🛑 Shutting down server...
 2025/09/21 18:48:29 logging.go:44: ✅ Server shutdown complete
+2025/09/21 19:08:18 logging.go:44: === Server Starting ===
+2025/09/21 19:08:18 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:08:18 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:08:22 logging.go:44: === Server Starting ===
+2025/09/21 19:08:22 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:08:22 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:08:31 logging.go:44: === Server Starting ===
+2025/09/21 19:08:31 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:08:31 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:08:40 logging.go:44: === Server Starting ===
+2025/09/21 19:08:40 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:08:40 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:08:48 logging.go:44: === Server Starting ===
+2025/09/21 19:08:48 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:08:48 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:08:48 logging.go:44: === Server Starting ===
+2025/09/21 19:08:48 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:08:48 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:08:50 logging.go:44: === Server Starting ===
+2025/09/21 19:08:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:08:50 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:09:03 logging.go:44: === Server Starting ===
+2025/09/21 19:09:03 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:09:03 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:09:25 logging.go:44: === Server Starting ===
+2025/09/21 19:09:25 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:09:25 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:09:35 logging.go:44: === Server Starting ===
+2025/09/21 19:09:35 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:09:35 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:09:48 logging.go:44: === Server Starting ===
+2025/09/21 19:09:48 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:09:48 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:10:00 logging.go:44: === Server Starting ===
+2025/09/21 19:10:00 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:10:00 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:10:11 logging.go:44: === Server Starting ===
+2025/09/21 19:10:11 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:10:11 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:10:23 logging.go:44: === Server Starting ===
+2025/09/21 19:10:23 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:10:23 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:10:26 logging.go:44: === Server Starting ===
+2025/09/21 19:10:26 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:10:26 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:10:43 logging.go:44: === Server Starting ===
+2025/09/21 19:10:43 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:10:43 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:10:48 logging.go:44: === Server Starting ===
+2025/09/21 19:10:48 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:10:48 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:10:54 logging.go:44: === Server Starting ===
+2025/09/21 19:10:54 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:10:54 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:10:58 logging.go:44: === Server Starting ===
+2025/09/21 19:10:58 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:10:58 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:11:01 logging.go:44: === Server Starting ===
+2025/09/21 19:11:01 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:11:01 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:11:21 logging.go:44: === Server Starting ===
+2025/09/21 19:11:21 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:11:21 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:11:26 logging.go:44: === Server Starting ===
+2025/09/21 19:11:26 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:11:26 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:11:38 logging.go:44: === Server Starting ===
+2025/09/21 19:11:38 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:11:38 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:11:48 logging.go:44: === Server Starting ===
+2025/09/21 19:11:48 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:11:48 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:11:56 logging.go:44: === Server Starting ===
+2025/09/21 19:11:56 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:11:56 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:11:59 logging.go:44: === Server Starting ===
+2025/09/21 19:11:59 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:11:59 logging.go:49: 🚀 Movie Poll Server starting on :3000

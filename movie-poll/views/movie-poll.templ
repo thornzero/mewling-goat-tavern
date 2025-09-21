@@ -7,21 +7,21 @@ templ MoviePollLayout(components []templ.Component, userName string, totalMovies
 }
 
 templ MoviePollContent(components []templ.Component, userName string, totalMovies, votedMovies int) {
-	<div class="container mx-auto">
+	<div class="container mx-auto px-4 sm:px-6 lg:px-8">
 		<div class="text-center mb-6">
-			<h1 class="text-3xl font-bold text-tavern-500 mb-2">Mewling Goat Tavern</h1>
-			<h2 class="text-xl text-tavern-400 mb-4">Movie Poll</h2>
-			<p class="text-goat-300">Welcome, { userName }!</p>
-			<p class="text-sm text-goat-400 mb-4">Voting on { totalMovies } movies</p>
+			<h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-tavern-500 mb-2">Mewling Goat Tavern</h1>
+			<h2 class="text-lg sm:text-xl lg:text-2xl text-tavern-400 mb-4">Movie Poll</h2>
+			<p class="text-goat-300 text-sm sm:text-base">Welcome, { userName }!</p>
+			<p class="text-xs sm:text-sm text-goat-400 mb-4">Voting on { totalMovies } movies</p>
 			<!-- Progress Bar -->
-			<div class="mt-6 max-w-md mx-auto">
-				<div class="flex justify-between text-sm text-goat-300 mb-2">
+			<div class="mt-4 sm:mt-6 max-w-sm sm:max-w-md lg:max-w-lg mx-auto">
+				<div class="flex justify-between text-xs sm:text-sm text-goat-300 mb-2">
 					<span>Progress</span>
 					<span>{ votedMovies } / { totalMovies } movies voted</span>
 				</div>
-				<div class="w-full bg-goat-600 rounded-full h-3">
+				<div class="w-full bg-goat-600 rounded-full h-2 sm:h-3">
 					<div
-						class="bg-tavern-500 h-3 rounded-full transition-all duration-300 ease-in-out"
+						class="bg-tavern-500 h-2 sm:h-3 rounded-full transition-all duration-300 ease-in-out"
 						style={ "width: " + fmt.Sprintf("%.1f", float64(votedMovies)/float64(totalMovies)*100) + "%" }
 					></div>
 				</div>
@@ -42,13 +42,15 @@ templ MoviePollContent(components []templ.Component, userName string, totalMovie
 				<div class="swiper-button-prev"></div>
 			</div>
 		</div>
-		<div class="text-center mt-8">
-			<a href="/results" class="bg-goat-600 hover:bg-goat-500 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 mr-4">
-				View Results
-			</a>
-			<button onclick="logout()" class="bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
-				Logout
-			</button>
+		<div class="text-center mt-6 sm:mt-8">
+			<div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+				<a href="/results" class="bg-goat-600 hover:bg-goat-500 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base">
+					View Results
+				</a>
+				<button onclick="logout()" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base">
+					Logout
+				</button>
+			</div>
 		</div>
 	</div>
 	<script>

@@ -17,27 +17,30 @@ type MovieCard struct {
 
 templ MovieCardTemplate(movie MovieCard, hasVoted bool, userVote types.Vote) {
 	<div class="swiper-slide">
-		<div class="movie-card bg-goat-700 p-6 rounded-lg text-center max-w-md mx-auto">
-			<div class="movie-poster mb-4">
+		<div class="movie-card bg-goat-700 p-4 sm:p-6 rounded-lg text-center w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl mx-auto shadow-xl border border-goat-600 hover:border-tavern-500 transition-all duration-300">
+			<div class="movie-poster mb-4 relative">
 				if movie.PosterPath != nil && *movie.PosterPath != "" {
 					<img
 						src={ "https://image.tmdb.org/t/p/w200" + *movie.PosterPath }
 						alt={ movie.Title }
-						class="w-48 h-72 object-cover rounded-lg mx-auto"
+						class="w-32 h-48 sm:w-40 sm:h-60 lg:w-48 lg:h-72 object-cover rounded-lg mx-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
 					/>
 				} else {
-					<div class="w-48 h-72 bg-goat-600 rounded-lg mx-auto flex items-center justify-center">
-						<span class="text-goat-400 text-sm">No Image</span>
+					<div class="w-32 h-48 sm:w-40 sm:h-60 lg:w-48 lg:h-72 bg-gradient-to-br from-goat-600 to-goat-500 rounded-lg mx-auto flex items-center justify-center shadow-lg">
+						<span class="text-goat-300 text-xs sm:text-sm font-medium">No Image</span>
+					</div>
+				}
+				<!-- Movie year badge -->
+				if movie.Year != nil {
+					<div class="absolute top-2 right-2 bg-tavern-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+						{ *movie.Year }
 					</div>
 				}
 			</div>
 			<div class="movie-info">
-				<h3 class="text-xl font-bold text-tavern-400 mb-2">{ movie.Title }</h3>
-				if movie.Year != nil {
-					<p class="text-goat-300 text-sm mb-4">{ *movie.Year }</p>
-				}
+				<h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-tavern-400 mb-2 leading-tight">{ movie.Title }</h3>
 				if movie.Overview != nil && *movie.Overview != "" {
-					<p class="text-goat-400 text-xs mb-6">{ *movie.Overview }</p>
+					<p class="text-goat-400 text-xs sm:text-sm lg:text-base mb-6 line-clamp-3 leading-relaxed">{ *movie.Overview }</p>
 				}
 				<div id={ "voting-interface-" + strconv.Itoa(movie.ID) } class="voting-interface space-y-4">
 					if hasVoted {
@@ -52,23 +55,28 @@ templ MovieCardTemplate(movie MovieCard, hasVoted bool, userVote types.Vote) {
 }
 
 templ VotingInterface(movieID int) {
-	<div class="space-y-6">
+	<div class="space-y-4 sm:space-y-6">
 		<!-- Step 1: Have you seen it? -->
 		<div class="seen-section">
-			<p class="text-sm text-goat-300 mb-4">Have you seen this movie?</p>
-			<div class="flex justify-center space-x-4">
-				<form hx-post="/api/voting/seen" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+			<div class="bg-goat-600 rounded-lg p-4 mb-4">
+				<p class="text-sm sm:text-base text-goat-200 font-medium mb-2">Have you seen this movie?</p>
+				<p class="text-xs text-goat-400">Choose your experience level</p>
+			</div>
+			<div class="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+				<form hx-post="/api/voting/seen" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML" class="flex-1">
 					<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
 					<input type="hidden" name="seen" value="true"/>
-					<button type="submit" class="btn-primary">
-						✅ Yes, I've seen it
+					<button type="submit" class="btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex items-center justify-center gap-2 hover:scale-105 transition-transform duration-200">
+						<span class="text-lg">✅</span>
+						<span>Yes, I've seen it</span>
 					</button>
 				</form>
-				<form hx-post="/api/voting/seen" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+				<form hx-post="/api/voting/seen" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML" class="flex-1">
 					<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
 					<input type="hidden" name="seen" value="false"/>
-					<button type="submit" class="btn-secondary">
-						❌ No, I haven't seen it
+					<button type="submit" class="btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex items-center justify-center gap-2 hover:scale-105 transition-transform duration-200">
+						<span class="text-lg">❌</span>
+						<span>No, I haven't seen it</span>
 					</button>
 				</form>
 			</div>
@@ -78,28 +86,28 @@ templ VotingInterface(movieID int) {
 
 templ VotedState(movieID int, userVote types.Vote) {
 	<div class="space-y-4">
-		<div class="bg-goat-600 p-4 rounded-lg">
-			<p class="text-sm text-goat-300 mb-2">Your Vote:</p>
+		<div class="bg-goat-600 p-3 sm:p-4 rounded-lg">
+			<p class="text-sm sm:text-base text-goat-300 mb-2">Your Vote:</p>
 			if userVote.Seen {
 				<div class="text-center">
-					<p class="text-tavern-400 font-semibold mb-2">✅ You've seen it</p>
-					<p class="text-goat-300">
+					<p class="text-tavern-400 font-semibold mb-2 text-sm sm:text-base">✅ You've seen it</p>
+					<p class="text-goat-300 text-sm sm:text-base">
 						Rating: { getVoteLabel(userVote.Vibe) }
 					</p>
 				</div>
 			} else {
 				<div class="text-center">
-					<p class="text-tavern-400 font-semibold mb-2">❌ You haven't seen it</p>
-					<p class="text-goat-300">
+					<p class="text-tavern-400 font-semibold mb-2 text-sm sm:text-base">❌ You haven't seen it</p>
+					<p class="text-goat-300 text-sm sm:text-base">
 						Interest: { getVoteLabel(userVote.Vibe) }
 					</p>
 				</div>
 			}
 		</div>
 		<div class="text-center">
-			<p class="text-goat-400 text-sm mb-3">Moving to next movie...</p>
+			<p class="text-goat-400 text-xs sm:text-sm mb-3">Moving to next movie...</p>
 			<button
-				class="btn-secondary"
+				class="btn-secondary text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6"
 				hx-post="/api/voting/change-vote"
 				hx-vals={ `{"movie_id":` + strconv.Itoa(movieID) + `}` }
 				hx-target={ "#voting-interface-" + strconv.Itoa(movieID) }
@@ -112,28 +120,37 @@ templ VotedState(movieID int, userVote types.Vote) {
 }
 
 templ RatingInterface(movieID int) {
-	<div class="space-y-6">
-		<p class="text-sm text-goat-300 mb-4">How was it?</p>
-		<div class="grid grid-cols-3 gap-2">
+	<div class="space-y-4 sm:space-y-6">
+		<div class="bg-goat-600 rounded-lg p-4 mb-4">
+			<p class="text-sm sm:text-base text-goat-200 font-medium mb-2">How was it?</p>
+			<p class="text-xs text-goat-400">Rate your experience</p>
+		</div>
+		<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
 			<form hx-post="/api/voting/rating" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
 				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
 				<input type="hidden" name="vibe" value="1"/>
-				<button type="submit" class="btn-primary w-full">
-					⭐ Rewatch
+				<button type="submit" class="btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200">
+					<span class="text-2xl">⭐</span>
+					<span class="font-medium">Rewatch</span>
+					<span class="text-xs opacity-80">Amazing!</span>
 				</button>
 			</form>
 			<form hx-post="/api/voting/rating" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
 				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
 				<input type="hidden" name="vibe" value="2"/>
-				<button type="submit" class="btn-secondary w-full">
-					😊 Good
+				<button type="submit" class="btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200">
+					<span class="text-2xl">😊</span>
+					<span class="font-medium">Good</span>
+					<span class="text-xs opacity-80">Enjoyed it</span>
 				</button>
 			</form>
 			<form hx-post="/api/voting/rating" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
 				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
 				<input type="hidden" name="vibe" value="3"/>
-				<button type="submit" class="btn-secondary w-full">
-					😐 Meh
+				<button type="submit" class="btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200">
+					<span class="text-2xl">😐</span>
+					<span class="font-medium">Meh</span>
+					<span class="text-xs opacity-80">Not great</span>
 				</button>
 			</form>
 		</div>
@@ -141,28 +158,37 @@ templ RatingInterface(movieID int) {
 }
 
 templ InterestInterface(movieID int) {
-	<div class="space-y-6">
-		<p class="text-sm text-goat-300 mb-4">Interest level?</p>
-		<div class="grid grid-cols-3 gap-2">
+	<div class="space-y-4 sm:space-y-6">
+		<div class="bg-goat-600 rounded-lg p-4 mb-4">
+			<p class="text-sm sm:text-base text-goat-200 font-medium mb-2">Interest level?</p>
+			<p class="text-xs text-goat-400">How excited are you?</p>
+		</div>
+		<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
 			<form hx-post="/api/voting/interest" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
 				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
 				<input type="hidden" name="vibe" value="1"/>
-				<button type="submit" class="btn-primary w-full">
-					🔥 Stoked
+				<button type="submit" class="btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200">
+					<span class="text-2xl">🔥</span>
+					<span class="font-medium">Stoked</span>
+					<span class="text-xs opacity-80">Can't wait!</span>
 				</button>
 			</form>
 			<form hx-post="/api/voting/interest" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
 				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
 				<input type="hidden" name="vibe" value="2"/>
-				<button type="submit" class="btn-secondary w-full">
-					😊 Interested
+				<button type="submit" class="btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200">
+					<span class="text-2xl">😊</span>
+					<span class="font-medium">Interested</span>
+					<span class="text-xs opacity-80">Looks good</span>
 				</button>
 			</form>
 			<form hx-post="/api/voting/interest" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
 				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
 				<input type="hidden" name="vibe" value="3"/>
-				<button type="submit" class="btn-secondary w-full">
-					⏳ Later
+				<button type="submit" class="btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200">
+					<span class="text-2xl">⏳</span>
+					<span class="font-medium">Later</span>
+					<span class="text-xs opacity-80">Maybe someday</span>
 				</button>
 			</form>
 		</div>
