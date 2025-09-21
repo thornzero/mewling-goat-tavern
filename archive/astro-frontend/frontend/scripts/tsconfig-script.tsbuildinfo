@@ -1,1 +1,0 @@
-{"root":["../src/scripts/script.ts","../src/lib/api-config.ts","../src/lib/api-error-wrapper.ts","../src/lib/api-utils.ts","../src/lib/client-types.ts","../src/lib/database.ts","../src/lib/error-handler.ts","../src/lib/global-types.ts","../src/components/ErrorBoundary.ts"],"errors":true,"version":"5.9.2"}

@@ -1,0 +1,11 @@
+---
+globs: *.md
+alwaysApply: false
+---
+# Markdown Configuration
+
+- always strictly follow markdownlint rules and fix all errors and warnings.
+- always use the correct markdown syntax.
+- code fences should always be labeled with the best guess of identifier.
+- always use the correct markdown syntax.
+- headings, code fences, and lists should always be surrounded by blank lines.

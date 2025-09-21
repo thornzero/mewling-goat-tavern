@@ -1,0 +1,53 @@
+package views
+
+templ RatingButton(id int, rating int, text string) {
+	<button class="rating-btn" data-movie-id={ id } data-rating={ rating }>
+		{ text }
+	</button>
+}
+
+templ InterestButton(id int, interest int, text string) {
+	<button class="interest-btn" data-movie-id={ id } data-interest={ interest }>
+		{ text }
+	</button>
+}
+
+templ RatingVoting(id int, rating int, text string) {
+	<div class="rating-section">
+		<p class="text-sm text-goat-300 mb-2">How was it?</p>
+		<div class="flex justify-center space-x-2">
+			@RatingButton(id, 1, "Hated It")
+			@RatingButton(id, 2, "Meh")
+			@RatingButton(id, 3, "Rewatch")
+		</div>
+	</div>
+}
+
+templ InterestVoting(id int, interest int, text string) {
+	<div class="interest-section">
+		<p class="text-sm text-goat-300 mb-2">Interest level?</p>
+		<div class="flex justify-center space-x-2">
+			@InterestButton(id, 4, "Stoked")
+			@InterestButton(id, 5, "Indifferent")
+			@InterestButton(id, 6, "Not Interested")
+		</div>
+	</div>
+}
+
+templ SeenVoting(id int) {
+	<div class="flex justify-center space-x-4">
+		<button
+			class="btn-secondary seen-btn"
+			data-movie-id={ id }
+			data-seen="true"
+			hx-post="/api/seen"
+			hx-target="#voting-interface"
+			hx-swap="innerHTML"
+		>
+			Seen It
+		</button>
+		<button class="btn-secondary seen-btn" data-movie-id={ id } data-seen="false" hx-target="#voting-interface" hx-swap="innerHTML">
+			Haven't Seen
+		</button>
+	</div>
+}

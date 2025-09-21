@@ -1,0 +1,25 @@
+{
+  "recommendations": [
+    // File size and explorer enhancements
+    "alefragnani.project-manager",
+    "formulahendry.auto-rename-tag",
+    "ms-vscode.vscode-json",
+    // Audio file support
+    "ms-vscode.vscode-audio",
+    // File utilities
+    "alefragnani.file-utils",
+    //"ms-vscode.remote-containers",
+    //"ms-vscode.remote-ssh",
+    // TypeScript and JavaScript
+    //"ms-vscode.vscode-typescript-next",
+    "bradlc.vscode-tailwindcss",
+    // Git
+    "eamodio.gitlens",
+    // General productivity
+    "ms-vscode.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-prettier",
+    "biati.vscode-text-tools",
+    "pinegrow.piny"
+  ]
+}

@@ -1,0 +1,187 @@
+package views
+
+import (
+	"strconv"
+	"time"
+)
+
+// TestPageData represents data for the test page
+type TestPageData struct {
+	AdminUser     AdminUserInfo
+	SystemInfo    SystemInfo
+	DatabaseStats DatabaseStats
+	APIEndpoints  []APIEndpoint
+}
+
+// SystemInfo represents system information
+type SystemInfo struct {
+	ServerTime   time.Time
+	GoVersion    string
+	DatabasePath string
+	Uptime       string
+	MemoryUsage  string
+	Environment  string
+	TMDBEnabled  bool
+	SessionCount int
+}
+
+// DatabaseStats represents database statistics
+type DatabaseStats struct {
+	TotalMovies  int
+	TotalVotes   int
+	UniqueVoters int
+	AdminUsers   int
+	DatabaseSize string
+	LastBackup   time.Time
+}
+
+// APIEndpoint represents an API endpoint for testing
+type APIEndpoint struct {
+	Method string
+	Path   string
+	Desc   string
+}
+
+// AdminTestPage renders the admin test page
+func AdminTestPage(data TestPageData) templ.Component {
+	return BaseLayout(
+		"Test Page - Mewling Goat Tavern",
+		"System testing and debugging interface",
+		AdminTestContent(data),
+	)
+}
+
+// AdminTestContent renders the test page content
+func AdminTestContent(data TestPageData) templ.Component {
+	return AdminTestTemplate(data)
+}
+
+templ AdminTestTemplate(data TestPageData) {
+	<div class="min-h-screen bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900 p-4">
+		<div class="container mx-auto max-w-7xl">
+			<!-- Header -->
+			<div class="flex justify-between items-center mb-8">
+				<div>
+					<h1 class="text-4xl font-bold text-tavern-500 mb-2">🧪 Test Page</h1>
+					<p class="text-goat-300">System testing and debugging interface</p>
+				</div>
+				<div class="flex space-x-4">
+					<a href="/admin/" class="bg-tavern-500 hover:bg-tavern-600 text-white px-4 py-2 rounded-lg transition-colors">
+						← Back to Dashboard
+					</a>
+					<button
+						class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+						hx-get="/admin/api/test/system-info"
+						hx-target="#test-results"
+						hx-swap="innerHTML"
+					>
+						Run Tests
+					</button>
+				</div>
+			</div>
+			<!-- Test Results -->
+			<div id="test-results" class="mb-8">
+				<div class="bg-goat-800 rounded-lg p-6">
+					<h2 class="text-2xl font-bold text-tavern-400 mb-4">System Information</h2>
+					@SystemInfoCard(data.SystemInfo)
+				</div>
+			</div>
+			<!-- Database Stats -->
+			<div class="bg-goat-800 rounded-lg p-6 mb-8">
+				<h2 class="text-2xl font-bold text-tavern-400 mb-4">Database Statistics</h2>
+				@DatabaseStatsCard(data.DatabaseStats)
+			</div>
+			<!-- API Endpoints -->
+			<div class="bg-goat-800 rounded-lg p-6 mb-8">
+				<h2 class="text-2xl font-bold text-tavern-400 mb-4">API Endpoints</h2>
+				@APIEndpointsList(data.APIEndpoints)
+			</div>
+		</div>
+	</div>
+}
+
+templ SystemInfoCard(info SystemInfo) {
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Server Time</h3>
+			<p class="text-goat-300">{ info.ServerTime.Format("2006-01-02 15:04:05 MST") }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Go Version</h3>
+			<p class="text-goat-300">{ info.GoVersion }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Environment</h3>
+			<p class="text-goat-300">{ info.Environment }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Database Path</h3>
+			<p class="text-goat-300 text-sm">{ info.DatabasePath }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">TMDB Status</h3>
+			if info.TMDBEnabled {
+				<span class="text-green-400">✅ Enabled</span>
+			} else {
+				<span class="text-red-400">❌ Disabled</span>
+			}
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Active Sessions</h3>
+			<p class="text-goat-300">{ strconv.Itoa(info.SessionCount) }</p>
+		</div>
+	</div>
+}
+
+templ DatabaseStatsCard(stats DatabaseStats) {
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Total Movies</h3>
+			<p class="text-2xl font-bold text-white">{ strconv.Itoa(stats.TotalMovies) }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Total Votes</h3>
+			<p class="text-2xl font-bold text-white">{ strconv.Itoa(stats.TotalVotes) }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Unique Voters</h3>
+			<p class="text-2xl font-bold text-white">{ strconv.Itoa(stats.UniqueVoters) }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Admin Users</h3>
+			<p class="text-2xl font-bold text-white">{ strconv.Itoa(stats.AdminUsers) }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Database Size</h3>
+			<p class="text-goat-300">{ stats.DatabaseSize }</p>
+		</div>
+		<div class="bg-goat-700 p-4 rounded-lg">
+			<h3 class="font-semibold text-tavern-400 mb-2">Last Backup</h3>
+			<p class="text-goat-300">{ stats.LastBackup.Format("2006-01-02 15:04") }</p>
+		</div>
+	</div>
+}
+
+templ APIEndpointsList(endpoints []APIEndpoint) {
+	<div class="space-y-4">
+		for _, endpoint := range endpoints {
+			<div class="bg-goat-700 p-4 rounded-lg flex items-center justify-between">
+				<div class="flex items-center space-x-4">
+					<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tavern-100 text-tavern-800">
+						{ endpoint.Method }
+					</span>
+					<code class="text-goat-200 font-mono">{ endpoint.Path }</code>
+					<span class="text-goat-400">{ endpoint.Desc }</span>
+				</div>
+				<button
+					class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
+					hx-get={ endpoint.Path }
+					hx-target="#test-results"
+					hx-swap="innerHTML"
+				>
+					Test
+				</button>
+			</div>
+		}
+	</div>
+}

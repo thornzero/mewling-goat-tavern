@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="API test page for Mewling Goat Tavern movie poll">
+    <title>API Test Page - Mewling Goat Tavern</title>
+    <link rel="icon" sizes="16x16" href="./img/favicon-16x16.png">
+    <link rel="icon" sizes="32x32" href="./img/favicon-32x32.png">
+    <link rel="icon" sizes="192x192" href="./img/android-chrome-192x192.png">
+    <link rel="icon" sizes="512x512" href="./img/android-chrome-512x512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/apple-touch-icon.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="preload" href="./css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="./css/style.css"></noscript>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body class="bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900 min-h-screen flex items-center justify-center p-4">
+    <div class="container mx-auto">
+        <div class="bg-goat-800 max-w-6xl p-6 relative rounded-xl shadow-xl w-full">
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-3xl font-bold text-tavern-500">API Test Page</h1>
+                <div class="flex items-center space-x-4">
+                    <button id="run-all-tests" class="btn-primary">Run All Tests</button>
+                    <a href="/" class="btn-secondary">← Back to Poll</a>
+                    <a href="/admin" class="btn-secondary">Admin Panel</a>
+                </div>
+            </div>
+
+            <!-- Test Results Summary -->
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-tavern-400 mb-4">Test Results Summary</h2>
+                <div id="test-summary" class="bg-goat-700 p-4 rounded-lg">
+                    <p class="text-goat-300">Click "Run All Tests" to see results</p>
+                </div>
+            </div>
+
+            <!-- Individual Test Sections -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Debug Status Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Debug Status</h3>
+                    <button id="test-debug" class="btn-secondary mb-4">Test Debug Status</button>
+                    <div id="debug-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap"></div>
+                </div>
+
+                <!-- Movie List Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Movie List</h3>
+                    <button id="test-movies" class="btn-secondary mb-4">Test Movie List</button>
+                    <div id="movies-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap"></div>
+                </div>
+
+                <!-- Movie Search Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Movie Search</h3>
+                    <div class="mb-4 space-y-2">
+                        <div>
+                            <label class="form-label" for="search-query">Search Query</label>
+                            <input id="search-query" class="form-input" type="text" value="The Matrix" placeholder="Movie title">
+                        </div>
+                        <div>
+                            <label class="form-label" for="search-year">Year (Optional)</label>
+                            <input id="search-year" class="form-input" type="number" value="1999" placeholder="Year">
+                        </div>
+                    </div>
+                    <button id="test-search" class="btn-secondary mb-4">Test Search</button>
+                    <div id="search-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap"></div>
+                </div>
+
+                <!-- Movie Details Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Movie Details</h3>
+                    <div class="mb-4">
+                        <label class="form-label" for="movie-id">Movie ID</label>
+                        <input id="movie-id" class="form-input" type="number" value="603" placeholder="TMDB Movie ID">
+                    </div>
+                    <button id="test-movie" class="btn-secondary mb-4">Test Movie Details</button>
+                    <div id="movie-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap"></div>
+                </div>
+
+                <!-- Movie Videos Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Movie Videos</h3>
+                    <div class="mb-4">
+                        <label class="form-label" for="video-id">Movie ID</label>
+                        <input id="video-id" class="form-input" type="number" value="603" placeholder="TMDB Movie ID">
+                    </div>
+                    <button id="test-videos" class="btn-secondary mb-4">Test Videos</button>
+                    <div id="videos-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap"></div>
+                </div>
+
+                <!-- Single Vote Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Single Vote</h3>
+                    <div class="mb-4 space-y-2">
+                        <div>
+                            <label class="form-label" for="test-user">User Name</label>
+                            <input id="test-user" class="form-input" type="text" value="TestUser" placeholder="User name">
+                        </div>
+                        <div>
+                            <label class="form-label" for="test-vibe">Vibe Rating</label>
+                            <select id="test-vibe" class="form-input">
+                                <option value="1">1 - Hated It</option>
+                                <option value="2">2 - Meh</option>
+                                <option value="3">3 - Rewatch</option>
+                                <option value="4">4 - Stoked</option>
+                                <option value="5">5 - Indifferent</option>
+                                <option value="6">6 - Not Interested</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label" for="test-seen">Seen Status</label>
+                            <select id="test-seen" class="form-input">
+                                <option value="true">Seen It</option>
+                                <option value="false">Haven't Seen</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="test-single-vote" class="btn-secondary mb-4">Test Single Vote</button>
+                    <div id="vote-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap"></div>
+                </div>
+
+                <!-- Batch Vote Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Batch Vote</h3>
+                    <p class="text-sm text-goat-300 mb-4">Tests submitting multiple votes at once</p>
+                    <button id="test-batch-vote" class="btn-secondary mb-4">Test Batch Vote</button>
+                    <div id="batch-vote-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap"></div>
+                </div>
+
+                <!-- Appeal Calculation Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Appeal Calculation</h3>
+                    <p class="text-sm text-goat-300 mb-4">Tests the appeal value calculation system</p>
+                    <button id="test-appeal" class="btn-secondary mb-4">Test Appeal Calculation</button>
+                    <div id="appeal-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap"></div>
+                </div>
+
+                <!-- Database Test -->
+                <div class="bg-goat-700 p-6 rounded-lg">
+                    <h3 class="text-lg font-bold text-tavern-400 mb-4">Database Connection</h3>
+                    <p class="text-sm text-goat-300 mb-4">Tests database connectivity and basic operations</p>
+                    <div class="space-y-2">
+                        <button id="test-db" class="btn-secondary">Test Database</button>
+                        <button id="test-movie-insert" class="btn-secondary">Test Movie Insert</button>
+                    </div>
+                    <div id="db-result" class="test-result hidden bg-gray-800 p-4 rounded text-sm font-mono text-green-400 whitespace-pre-wrap mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test functionality
+        let testResults = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+            loadDebugStatus();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('test-debug').addEventListener('click', () => testDebugStatus());
+            document.getElementById('test-movies').addEventListener('click', () => testMovieList());
+            document.getElementById('test-search').addEventListener('click', () => testMovieSearch());
+            document.getElementById('test-movie').addEventListener('click', () => testMovieDetails());
+            document.getElementById('test-videos').addEventListener('click', () => testMovieVideos());
+            document.getElementById('test-single-vote').addEventListener('click', () => testSingleVote());
+            document.getElementById('test-batch-vote').addEventListener('click', () => testBatchVote());
+            document.getElementById('test-appeal').addEventListener('click', () => testAppealCalculation());
+            document.getElementById('test-db').addEventListener('click', () => testDatabase());
+            document.getElementById('test-movie-insert').addEventListener('click', () => testMovieInsert());
+            document.getElementById('run-all-tests').addEventListener('click', () => runAllTests());
+        }
+
+        function loadDebugStatus() {
+            testDebugStatus();
+        }
+
+        async function testDebugStatus() {
+            try {
+                const response = await fetch('/api/debug');
+                const data = await response.json();
+                logResult('debug-result', `Debug Status: ${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Debug Status', true, 'Debug status retrieved successfully', data);
+            } catch (error) {
+                logResult('debug-result', `Error fetching debug status:\n${error}`, 'error');
+                addTestResult('Debug Status', false, `Failed to retrieve debug status: ${error}`, null);
+            }
+        }
+
+        async function testMovieList() {
+            try {
+                const response = await fetch('/api/movies');
+                const data = await response.json();
+                logResult('movies-result', `Movie List (${data.movies?.length || 0} movies):\n${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Movie List', true, `Retrieved ${data.movies?.length || 0} movies`, data);
+            } catch (error) {
+                logResult('movies-result', `Error fetching movie list:\n${error}`, 'error');
+                addTestResult('Movie List', false, `Failed to retrieve movie list: ${error}`, null);
+            }
+        }
+
+        async function testMovieSearch() {
+            const query = document.getElementById('search-query').value || 'The Matrix';
+            const year = document.getElementById('search-year').value || '1999';
+            
+            const params = new URLSearchParams({ query: query });
+            if (year) params.append('year', year);
+            
+            try {
+                const response = await fetch(`/api/search?${params}`);
+                const data = await response.json();
+                logResult('search-result', `Search Results for "${query}" (${year || 'any year'}):\n${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Movie Search', true, `Found ${data.results?.length || 0} results for "${query}"`, data);
+            } catch (error) {
+                logResult('search-result', `Error searching for movies:\n${error}`, 'error');
+                addTestResult('Movie Search', false, `Failed to search movies: ${error}`, null);
+            }
+        }
+
+        async function testMovieDetails() {
+            const movieId = document.getElementById('movie-id').value || '603';
+            
+            try {
+                const response = await fetch(`/api/movie?id=${movieId}`);
+                const data = await response.json();
+                logResult('movie-result', `Movie Details for ID ${movieId}:\n${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Movie Details', true, `Retrieved details for movie ID ${movieId}`, data);
+            } catch (error) {
+                logResult('movie-result', `Error fetching movie details:\n${error}`, 'error');
+                addTestResult('Movie Details', false, `Failed to retrieve movie details: ${error}`, null);
+            }
+        }
+
+        async function testMovieVideos() {
+            const videoId = document.getElementById('video-id').value || '603';
+            
+            try {
+                const response = await fetch(`/api/movie?id=${videoId}`);
+                const data = await response.json();
+                const videos = data.videos || [];
+                logResult('videos-result', `Videos for Movie ID ${videoId}:\n${JSON.stringify(videos, null, 2)}`, 'success');
+                addTestResult('Movie Videos', true, `Retrieved ${videos.length} videos for movie ID ${videoId}`, videos);
+            } catch (error) {
+                logResult('videos-result', `Error fetching videos for Movie ID ${videoId}:\n${error}`, 'error');
+                addTestResult('Movie Videos', false, `Failed to retrieve videos: ${error}`, null);
+            }
+        }
+
+        async function testSingleVote() {
+            const vote = {
+                movie_id: parseInt(document.getElementById('movie-id').value || '603'),
+                user_name: document.getElementById('test-user').value || 'TestUser',
+                vibe: parseInt(document.getElementById('test-vibe').value || '4'),
+                seen: document.getElementById('test-seen').value === 'true'
+            };
+
+            try {
+                const response = await fetch('/api/vote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(vote)
+                });
+                const data = await response.json();
+                logResult('vote-result', `Single Vote Submitted:\nVote: ${JSON.stringify(vote, null, 2)}\nResponse: ${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Single Vote', true, 'Vote submitted successfully', { vote, response: data });
+            } catch (error) {
+                logResult('vote-result', `Error submitting vote:\n${error}`, 'error');
+                addTestResult('Single Vote', false, `Failed to submit vote: ${error}`, null);
+            }
+        }
+
+        async function testBatchVote() {
+            const votes = [
+                {
+                    movie_id: 1, // Assuming there's a movie with ID 1
+                    user_name: document.getElementById('test-user').value || 'TestUser',
+                    vibe: 5,
+                    seen: true
+                },
+                {
+                    movie_id: 2, // Assuming there's a movie with ID 2
+                    user_name: document.getElementById('test-user').value || 'TestUser',
+                    vibe: 4,
+                    seen: true
+                }
+            ];
+
+            try {
+                const response = await fetch('/api/batch-vote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ votes: votes })
+                });
+                const data = await response.json();
+                logResult('batch-vote-result', `Batch Vote Submitted:\nVotes: ${JSON.stringify(votes, null, 2)}\nResponse: ${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Batch Vote', true, `Submitted ${votes.length} votes successfully`, { votes, response: data });
+            } catch (error) {
+                logResult('batch-vote-result', `Error submitting batch vote:\n${error}`, 'error');
+                addTestResult('Batch Vote', false, `Failed to submit batch vote: ${error}`, null);
+            }
+        }
+
+        async function testAppealCalculation() {
+            try {
+                const response = await fetch('/api/update-appeal', { method: 'POST' });
+                const data = await response.json();
+                logResult('appeal-result', `Appeal Calculation Results:\n${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Appeal Calculation', true, 'Appeal values calculated successfully', data);
+            } catch (error) {
+                logResult('appeal-result', `Error calculating appeal values:\n${error}`, 'error');
+                addTestResult('Appeal Calculation', false, `Failed to calculate appeal values: ${error}`, null);
+            }
+        }
+
+        async function testDatabase() {
+            try {
+                const response = await fetch('/api/test-db');
+                const data = await response.json();
+                logResult('db-result', `Database Test Results:\n${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Database Test', true, `Database connection successful (${data.movie_count} movies)`, data);
+            } catch (error) {
+                logResult('db-result', `Error testing database:\n${error}`, 'error');
+                addTestResult('Database Test', false, `Failed to test database: ${error}`, null);
+            }
+        }
+
+        async function testMovieInsert() {
+            try {
+                const response = await fetch('/api/test-movie-insert');
+                const data = await response.json();
+                logResult('db-result', `Movie Insert Test Results:\n${JSON.stringify(data, null, 2)}`, 'success');
+                addTestResult('Movie Insert Test', true, 'Movie insert test successful', data);
+            } catch (error) {
+                logResult('db-result', `Error testing movie insert:\n${error}`, 'error');
+                addTestResult('Movie Insert Test', false, `Failed to test movie insert: ${error}`, null);
+            }
+        }
+
+        function runAllTests() {
+            testResults = [];
+            logResult('test-summary', 'Running all tests...', 'info');
+            
+            // Run tests with delays
+            setTimeout(async () => await testDebugStatus(), 100);
+            setTimeout(async () => await testMovieList(), 500);
+            setTimeout(async () => await testMovieSearch(), 1000);
+            setTimeout(async () => await testMovieDetails(), 1500);
+            setTimeout(async () => await testMovieVideos(), 2000);
+            setTimeout(async () => await testSingleVote(), 2500);
+            setTimeout(async () => await testBatchVote(), 3000);
+            setTimeout(async () => await testAppealCalculation(), 3500);
+            setTimeout(async () => await testDatabase(), 4000);
+            
+            // Show results after all tests complete
+            setTimeout(() => {
+                const successCount = testResults.filter(r => r.success).length;
+                const totalCount = testResults.length;
+                const summary = testResults.map(r => 
+                    `${r.success ? '✅' : '❌'} ${r.test}: ${r.message}`
+                ).join('\n');
+                
+                logResult('test-summary', 
+                    `Test Results Summary:\n${successCount}/${totalCount} tests passed\n\n${summary}`, 
+                    successCount === totalCount ? 'success' : 'warning'
+                );
+            }, 4500);
+        }
+
+        function logResult(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.classList.remove('hidden');
+                element.className = `test-result ${type} bg-gray-800 p-4 rounded text-sm font-mono whitespace-pre-wrap ${
+                    type === 'success' ? 'text-green-400' :
+                    type === 'error' ? 'text-red-400' :
+                    type === 'warning' ? 'text-yellow-400' :
+                    'text-blue-400'
+                }`;
+                element.textContent = message;
+            }
+        }
+
+        function addTestResult(testName, success, message, data) {
+            testResults.push({
+                test: testName,
+                success: success,
+                message: message,
+                data: data,
+                timestamp: new Date().toISOString()
+            });
+        }
+    </script>
+</body>
+</html>

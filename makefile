@@ -1,222 +1,136 @@
-# =============================================================================
-# Mewling Goat Tavern - Movie Poll Application
-# =============================================================================
-# Modern TypeScript + Astro + Cloudflare Workers + D1 Backend
+# Mewling Goat Tavern - Movie Poll Makefile
+.PHONY: help dev start stop build clean test deps
 
-# =============================================================================
-# FRONTEND COMMANDS (now in backend/src/frontend/)
-# =============================================================================
+.DEFAULT_GOAL := help
 
-# Build frontend (Astro)
-build-frontend:
-	cd backend/src/frontend && npm run build
+BINARY_NAME := server
+BUILD_DIR := ./build
 
-# Start frontend development server
-dev-frontend:
-	cd backend/src/frontend && npm run dev
-
-# Install frontend dependencies
-install-frontend:
-	cd backend/src/frontend && npm install
-
-# =============================================================================
-# BACKEND COMMANDS
-# =============================================================================
-
-# Deploy backend to Cloudflare Workers
-deploy-backend:
-	cd backend && npm run deploy
-
-# Start backend development server
-dev-backend:
-	cd backend && npm run dev
-
-# Run backend tests
-test-backend:
-	cd backend && npm test
-
-# Run D1 database migrations
-migrate:
-	cd backend && npm run db:migrate
-
-# Run D1 database migrations on remote
-migrate-remote:
-	cd backend && npm run db:migrate --remote
-
-# Reset D1 database (DANGER: deletes all data)
-reset-db:
-	cd backend && npm run db:reset
-
-# Install backend dependencies
-install-backend:
-	cd backend && npm install
-
-# =============================================================================
-# FULL STACK COMMANDS
-# =============================================================================
-
-# Install all dependencies
-install: install-frontend install-backend
-
-# Build everything (frontend + backend)
-build: build-frontend
-
-# Deploy everything using deployment script
-deploy:
-	./scripts/deploy.sh
-
-# Development mode (both frontend and backend)
-dev: dev-backend dev-frontend
-
-# =============================================================================
-# DATABASE COMMANDS
-# =============================================================================
-
-# Check database status
-db-status:
-	cd backend && npx wrangler d1 execute mewlinggoat_db --command="SELECT COUNT(*) as movie_count FROM movies;" --remote
-
-# List movies in database
-db-movies:
-	cd backend && npx wrangler d1 execute mewlinggoat_db --command="SELECT title, year, tmdb_id FROM movies ORDER BY title;" --remote
-
-# Seed database with movies
-seed-db:
-	node scripts/seed-movies-improved.js
-
-# =============================================================================
-# TESTING COMMANDS
-# =============================================================================
-
-# Test backend API endpoints
-test-api:
-	@echo "Testing backend API..."
-	@curl -s "https://mewling-goat-backend.tavern-b8d.workers.dev/?action=debug" | jq .
-	@echo "\nTesting listMovies endpoint..."
-	@curl -s "https://mewling-goat-backend.tavern-b8d.workers.dev/?action=listMovies" | jq .
-
-# Test frontend API endpoints
-test-frontend-api:
-	@echo "Testing frontend API proxy..."
-	@curl -s "https://mewling-goat-backend.tavern-b8d.workers.dev/api?action=debug" | jq .
-	@echo "\nTesting listMovies proxy..."
-	@curl -s "https://mewling-goat-backend.tavern-b8d.workers.dev/api?action=listMovies" | jq .
-
-# Test everything
-test: test-backend test-frontend-api
-
-# =============================================================================
-# CLEANUP COMMANDS
-# =============================================================================
-
-# Clean generated files
-clean:
-	rm -rf backend/src/frontend/dist/*
-	rm -rf backend/seed-movies.sql
-
-# Clean node_modules
-clean-deps:
-	rm -rf backend/src/frontend/node_modules
-	rm -rf backend/node_modules
-
-# Clean everything
-clean-all: clean clean-deps
-
-# =============================================================================
-# UTILITY COMMANDS
-# =============================================================================
-
-# Open live frontend in browser
-open:
-	open https://mewling-goat-backend.tavern-b8d.workers.dev/
-
-# Open test page
-open-test:
-	open https://mewling-goat-backend.tavern-b8d.workers.dev/test
-
-# Open results page
-open-results:
-	open https://mewling-goat-backend.tavern-b8d.workers.dev/results
-
-# Open backend API directly
-open-backend:
-	open https://mewling-goat-backend.tavern-b8d.workers.dev/
-
-# Show project status
-status:
-	@echo "=== Mewling Goat Tavern - Movie Poll Application ==="
-	@echo "Frontend: Astro + TypeScript + Tailwind CSS + Swiper.js"
-	@echo "Backend: Cloudflare Workers + D1 + TMDB API"
-	@echo ""
-	@echo "Frontend URL: https://mewling-goat-backend.tavern-b8d.workers.dev/"
-	@echo "Backend URL: https://mewling-goat-backend.tavern-b8d.workers.dev"
-	@echo ""
+help: ## Show this help message
+	@echo "Mewling Goat Tavern - Movie Poll"
+	@echo "Built-in Features: Port management, graceful shutdown, auto-restart"
+	@echo "Hot Reload: Go + Templ + CSS automatically rebuild on changes"
 	@echo "Available commands:"
-	@echo "  make build          - Build frontend"
-	@echo "  make dev            - Start development servers"
-	@echo "  make deploy         - Deploy everything"
-	@echo "  make test           - Test all APIs"
-	@echo "  make db-status      - Check database status"
-	@echo "  make open           - Open frontend in browser"
-	@echo "  make help           - Show detailed help"
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  %-15s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-# =============================================================================
-# HELP
-# =============================================================================
+# Development
+dev: ## Start development server with hot reloading (Go + Templ + CSS)
+	@cd movie-poll && ./scripts/dev.sh
 
-# Show detailed help
-help:
-	@echo "=== Mewling Goat Tavern - Movie Poll Application ==="
-	@echo ""
-	@echo "FRONTEND COMMANDS:"
-	@echo "  make build-frontend  - Build Astro frontend"
-	@echo "  make dev-frontend    - Start frontend development server"
-	@echo "  make deploy-frontend - Deploy frontend to Cloudflare Workers"
-	@echo "  make lint-frontend   - Lint frontend code"
-	@echo "  make install-frontend - Install frontend dependencies"
-	@echo ""
-	@echo "BACKEND COMMANDS:"
-	@echo "  make deploy-backend  - Deploy backend to Cloudflare Workers"
-	@echo "  make dev-backend     - Start backend development server"
-	@echo "  make test-backend    - Run backend tests"
-	@echo "  make migrate         - Run database migrations locally"
-	@echo "  make migrate-remote  - Run database migrations on remote"
-	@echo "  make reset-db        - Reset database (DANGER: deletes all data)"
-	@echo "  make install-backend - Install backend dependencies"
-	@echo ""
-	@echo "FULL STACK COMMANDS:"
-	@echo "  make install         - Install all dependencies"
-	@echo "  make build           - Build everything"
-	@echo "  make deploy          - Deploy everything using deployment script"
-	@echo "  make dev             - Start development mode (both services)"
-	@echo ""
-	@echo "DATABASE COMMANDS:"
-	@echo "  make db-status       - Check database status"
-	@echo "  make db-movies       - List movies in database"
-	@echo "  make seed-db         - Seed database with movies"
-	@echo ""
-	@echo "TESTING COMMANDS:"
-	@echo "  make test-api        - Test backend API endpoints"
-	@echo "  make test-frontend-api - Test frontend API proxy"
-	@echo "  make test            - Test everything"
-	@echo ""
-	@echo "CLEANUP COMMANDS:"
-	@echo "  make clean           - Clean generated files"
-	@echo "  make clean-deps      - Clean node_modules"
-	@echo "  make clean-all       - Clean everything"
-	@echo ""
-	@echo "UTILITY COMMANDS:"
-	@echo "  make open            - Open frontend in browser"
-	@echo "  make open-test       - Open test page"
-	@echo "  make open-results    - Open results page"
-	@echo "  make open-backend    - Open backend API"
-	@echo "  make status          - Show project status"
-	@echo "  make help            - Show this help message"
+start: build ## Start the server (with built-in port management and graceful shutdown)
+	@cd movie-poll && TMDB_API_KEY=test DB_PATH=./db/movie_poll.db ./$(BINARY_NAME)
 
-.PHONY: build-frontend dev-frontend deploy-frontend lint-frontend install-frontend
-.PHONY: deploy-backend dev-backend test-backend migrate migrate-remote reset-db install-backend
-.PHONY: install build deploy dev
-.PHONY: db-status db-movies seed-db
-.PHONY: test-api test-frontend-api test
-.PHONY: clean clean-deps clean-all
-.PHONY: open open-test open-results open-backend status help
+start-bg: build ## Start the server in background
+	@cd movie-poll && TMDB_API_KEY=test DB_PATH=./db/movie_poll.db ./$(BINARY_NAME) &
+	@echo "Server started in background. Use 'make stop' to stop it."
+
+stop: ## Stop all server instances gracefully
+	@echo "🛑 Stopping all movie-poll servers..."
+	@for port in 3000 3001 3002 3003 3004 3005; do \
+		pid=$$(lsof -ti:$$port 2>/dev/null); \
+		if [ -n "$$pid" ]; then \
+			echo "Stopping server on port $$port (PID $$pid)..."; \
+			kill -TERM $$pid 2>/dev/null || true; \
+		fi; \
+	done
+	@echo "✅ All servers stopped"
+
+# Database management
+db-stats: ## Show database statistics
+	@cd movie-poll && go run cmd/db-manager/main.go stats
+
+db-clean: ## Clean duplicate movies
+	@cd movie-poll && go run cmd/db-manager/main.go clean
+
+db-reset: ## Reset database (WARNING: deletes all data)
+	@cd movie-poll && go run cmd/db-manager/main.go reset
+
+db-movies: ## List all movies
+	@cd movie-poll && go run cmd/db-manager/main.go movies
+
+db-votes: ## List all votes
+	@cd movie-poll && go run cmd/db-manager/main.go votes
+
+db-delete-votes: ## Delete all votes
+	@cd movie-poll && go run cmd/db-manager/main.go delete-votes
+
+# Build targets
+build: generate build-css ## Build the application
+	@cd movie-poll && go build -o $(BINARY_NAME) .
+	@echo "Build complete: $(BINARY_NAME)"
+
+build-db-manager: ## Build the CLI database manager
+	@cd movie-poll && go build -o $(BUILD_DIR)/db-manager ./cmd/db-manager
+	@mv $(BUILD_DIR)/db-manager ./
+	@chmod +x ./db-manager
+	@echo "DB Manager built: ./db-manager"
+
+build-css: ## Build CSS only
+	@cd movie-poll && ./scripts/build-css.sh
+
+# Production build
+prod-build: generate build-css ## Build for production (optimized)
+	@cd movie-poll && CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o $(BINARY_NAME) .
+	@echo "Production build complete: $(BINARY_NAME)"
+
+# Code generation
+generate: ## Generate templ files
+	@cd movie-poll && go run github.com/a-h/templ/cmd/templ@latest generate
+
+# Dependencies
+deps: ## Install dependencies
+	@cd movie-poll && go mod tidy
+	@cd movie-poll && go mod download
+
+install-tools: ## Install development tools
+	@go install github.com/a-h/templ/cmd/templ@latest
+	@go install github.com/air-verse/air@latest
+
+# Testing
+test: ## Run tests
+	@cd movie-poll && go test -v ./...
+
+# Cleanup
+clean: ## Clean build artifacts
+	@cd movie-poll && rm -rf $(BUILD_DIR)
+	@cd movie-poll && rm -f coverage.out coverage.html
+
+kill: ## Force kill all running movie-poll processes
+	@echo "💀 Force killing all movie-poll processes..."
+	@for port in 3000 3001 3002 3003 3004 3005; do \
+		pid=$$(lsof -ti:$$port 2>/dev/null); \
+		if [ -n "$$pid" ]; then \
+			echo "Force killing server on port $$port (PID $$pid)..."; \
+			kill -9 $$pid 2>/dev/null || true; \
+		fi; \
+	done
+	@cd movie-poll && ./scripts/cleanup.sh
+	@echo "✅ All processes force killed"
+
+# Railway deployment
+deploy: prod-build ## Deploy to Railway
+	@cd movie-poll && railway up
+
+logs: ## View Railway logs
+	@cd movie-poll && railway logs
+
+railway-status: ## Check Railway deployment status
+	@cd movie-poll && railway status
+
+# Railpack commands (optional - requires railpack CLI)
+railpack-build: ## Build with Railpack locally
+	@cd movie-poll && railpack build
+
+railpack-run: ## Run with Railpack locally
+	@cd movie-poll && railpack run
+
+# Status
+status: ## Show project status
+	@echo "Go Version: $$(go version)"
+	@echo "Binary: $$(ls -la movie-poll/$(BINARY_NAME) 2>/dev/null || echo 'Not built')"
+	@echo "Database: $$(ls -la movie-poll/db/movie_poll.db 2>/dev/null || echo 'Not found')"
+	@echo "CSS: $$(ls -la movie-poll/static/css/style.css 2>/dev/null || echo 'Not built')"
+	@echo "Running Processes:"
+	@ps aux | grep -E "(movie-poll|$(BINARY_NAME))" | grep -v grep || echo "  No movie-poll processes running"
+	@echo "Port 3000: $$(lsof -i :3000 2>/dev/null | grep LISTEN || echo '  Not in use')"
+	@echo "Port 3001: $$(lsof -i :3001 2>/dev/null | grep LISTEN || echo '  Not in use')"

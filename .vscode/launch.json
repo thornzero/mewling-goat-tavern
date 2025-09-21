@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Show File Sizes",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/show-sizes.js",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Attach to Air",
+      "type": "go",
+      "mode": "remote",
+      "request": "attach",
+      "host": "127.0.0.1",
+      "port": 2345
+    },
+    {
+      "name": "localhost:3000",
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/movie-poll/static"
+    }
+  ]
+}

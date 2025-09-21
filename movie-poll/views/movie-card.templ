@@ -1,0 +1,184 @@
+package views
+
+import (
+	"strconv"
+
+	"github.com/thornzero/movie-poll/types"
+)
+
+type MovieCard struct {
+	ID          int     `json:"id"`
+	Title       string  `json:"title"`
+	Year        *int    `json:"year"`
+	Overview    *string `json:"overview"`
+	PosterPath  *string `json:"poster_path"`
+	ReleaseDate *string `json:"release_date"`
+}
+
+templ MovieCardTemplate(movie MovieCard, hasVoted bool, userVote types.Vote) {
+	<div class="swiper-slide">
+		<div class="movie-card bg-goat-700 p-6 rounded-lg text-center max-w-md mx-auto">
+			<div class="movie-poster mb-4">
+				if movie.PosterPath != nil && *movie.PosterPath != "" {
+					<img
+						src={ "https://image.tmdb.org/t/p/w200" + *movie.PosterPath }
+						alt={ movie.Title }
+						class="w-48 h-72 object-cover rounded-lg mx-auto"
+					/>
+				} else {
+					<div class="w-48 h-72 bg-goat-600 rounded-lg mx-auto flex items-center justify-center">
+						<span class="text-goat-400 text-sm">No Image</span>
+					</div>
+				}
+			</div>
+			<div class="movie-info">
+				<h3 class="text-xl font-bold text-tavern-400 mb-2">{ movie.Title }</h3>
+				if movie.Year != nil {
+					<p class="text-goat-300 text-sm mb-4">{ *movie.Year }</p>
+				}
+				if movie.Overview != nil && *movie.Overview != "" {
+					<p class="text-goat-400 text-xs mb-6">{ *movie.Overview }</p>
+				}
+				<div id={ "voting-interface-" + strconv.Itoa(movie.ID) } class="voting-interface space-y-4">
+					if hasVoted {
+						@VotedState(movie.ID, userVote)
+					} else {
+						@VotingInterface(movie.ID)
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+templ VotingInterface(movieID int) {
+	<div class="space-y-6">
+		<!-- Step 1: Have you seen it? -->
+		<div class="seen-section">
+			<p class="text-sm text-goat-300 mb-4">Have you seen this movie?</p>
+			<div class="flex justify-center space-x-4">
+				<form hx-post="/api/voting/seen" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+					<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
+					<input type="hidden" name="seen" value="true"/>
+					<button type="submit" class="btn-primary">
+						✅ Yes, I've seen it
+					</button>
+				</form>
+				<form hx-post="/api/voting/seen" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+					<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
+					<input type="hidden" name="seen" value="false"/>
+					<button type="submit" class="btn-secondary">
+						❌ No, I haven't seen it
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+}
+
+templ VotedState(movieID int, userVote types.Vote) {
+	<div class="space-y-4">
+		<div class="bg-goat-600 p-4 rounded-lg">
+			<p class="text-sm text-goat-300 mb-2">Your Vote:</p>
+			if userVote.Seen {
+				<div class="text-center">
+					<p class="text-tavern-400 font-semibold mb-2">✅ You've seen it</p>
+					<p class="text-goat-300">
+						Rating: { getVoteLabel(userVote.Vibe) }
+					</p>
+				</div>
+			} else {
+				<div class="text-center">
+					<p class="text-tavern-400 font-semibold mb-2">❌ You haven't seen it</p>
+					<p class="text-goat-300">
+						Interest: { getVoteLabel(userVote.Vibe) }
+					</p>
+				</div>
+			}
+		</div>
+		<div class="text-center">
+			<p class="text-goat-400 text-sm mb-3">Moving to next movie...</p>
+			<button
+				class="btn-secondary"
+				hx-post="/api/voting/change-vote"
+				hx-vals={ `{"movie_id":` + strconv.Itoa(movieID) + `}` }
+				hx-target={ "#voting-interface-" + strconv.Itoa(movieID) }
+				hx-swap="innerHTML"
+			>
+				Change Vote
+			</button>
+		</div>
+	</div>
+}
+
+templ RatingInterface(movieID int) {
+	<div class="space-y-6">
+		<p class="text-sm text-goat-300 mb-4">How was it?</p>
+		<div class="grid grid-cols-3 gap-2">
+			<form hx-post="/api/voting/rating" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
+				<input type="hidden" name="vibe" value="1"/>
+				<button type="submit" class="btn-primary w-full">
+					⭐ Rewatch
+				</button>
+			</form>
+			<form hx-post="/api/voting/rating" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
+				<input type="hidden" name="vibe" value="2"/>
+				<button type="submit" class="btn-secondary w-full">
+					😊 Good
+				</button>
+			</form>
+			<form hx-post="/api/voting/rating" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
+				<input type="hidden" name="vibe" value="3"/>
+				<button type="submit" class="btn-secondary w-full">
+					😐 Meh
+				</button>
+			</form>
+		</div>
+	</div>
+}
+
+templ InterestInterface(movieID int) {
+	<div class="space-y-6">
+		<p class="text-sm text-goat-300 mb-4">Interest level?</p>
+		<div class="grid grid-cols-3 gap-2">
+			<form hx-post="/api/voting/interest" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
+				<input type="hidden" name="vibe" value="1"/>
+				<button type="submit" class="btn-primary w-full">
+					🔥 Stoked
+				</button>
+			</form>
+			<form hx-post="/api/voting/interest" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
+				<input type="hidden" name="vibe" value="2"/>
+				<button type="submit" class="btn-secondary w-full">
+					😊 Interested
+				</button>
+			</form>
+			<form hx-post="/api/voting/interest" hx-target={ "#voting-interface-" + strconv.Itoa(movieID) } hx-swap="innerHTML">
+				<input type="hidden" name="movie_id" value={ strconv.Itoa(movieID) }/>
+				<input type="hidden" name="vibe" value="3"/>
+				<button type="submit" class="btn-secondary w-full">
+					⏳ Later
+				</button>
+			</form>
+		</div>
+	</div>
+}
+
+// Helper function to get vote label
+func getVoteLabel(vibe int) string {
+	switch vibe {
+	case 1:
+		return "⭐ Rewatch / 🔥 Stoked"
+	case 2:
+		return "😊 Good / 😊 Interested"
+	case 3:
+		return "😐 Meh / ⏳ Later"
+	default:
+		return "Unknown"
+	}
+}

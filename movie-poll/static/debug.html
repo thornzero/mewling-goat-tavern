@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Session Debug Tool</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .button {
+        padding: 10px 15px;
+        margin: 5px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .button:hover {
+        background: #0056b3;
+      }
+      .output {
+        background: #f8f9fa;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 3px;
+        white-space: pre-wrap;
+      }
+      .error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .copy-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        padding: 5px 10px;
+        background: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .copy-button:hover {
+        background: #5a6268;
+      }
+      .output {
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Session Debug Tool</h1>
+
+    <div class="section">
+      <h2>Current State</h2>
+      <button class="button" onclick="checkCurrentState()">
+        Check Current State
+      </button>
+      <div id="currentState" class="output"></div>
+    </div>
+
+    <div class="section">
+      <h2>Session Management</h2>
+      <button class="button" onclick="createSession()">Create Session</button>
+      <button class="button" onclick="testSession()">Test Session</button>
+      <div id="sessionOutput" class="output"></div>
+    </div>
+
+    <div class="section">
+      <h2>Cookie Testing</h2>
+      <button class="button" onclick="testCookies()">Test Cookies</button>
+      <button class="button" onclick="clearCookies()">Clear Cookies</button>
+      <div id="cookieOutput" class="output"></div>
+    </div>
+
+    <div class="section">
+      <h2>HTMX Testing</h2>
+      <button class="button" onclick="testHTMX()">Test HTMX Request</button>
+      <div id="htmxOutput" class="output"></div>
+    </div>
+
+    <div class="section">
+      <h2>Comprehensive Test Suite</h2>
+      <button class="button" onclick="runAllTests()">Run All Tests</button>
+      <button class="button" onclick="submitTestResults()">
+        Submit Results to Server
+      </button>
+      <div id="testResults" class="output"></div>
+    </div>
+
+    <script>
+      function addCopyButton(container, text) {
+        // Remove existing copy button if any
+        const existingButton = container.querySelector(".copy-button");
+        if (existingButton) {
+          existingButton.remove();
+        }
+
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-button";
+        copyButton.textContent = "Copy";
+        copyButton.onclick = () => {
+          navigator.clipboard.writeText(text).then(() => {
+            copyButton.textContent = "Copied!";
+            setTimeout(() => {
+              copyButton.textContent = "Copy";
+            }, 2000);
+          });
+        };
+        container.appendChild(copyButton);
+      }
+
+      function checkCurrentState() {
+        const output = document.getElementById("currentState");
+        const info = {
+          cookies: document.cookie,
+          userAgent: navigator.userAgent,
+          location: window.location.href,
+          timestamp: new Date().toISOString(),
+        };
+        const jsonOutput = JSON.stringify(info, null, 2);
+        output.textContent = jsonOutput;
+        addCopyButton(output, jsonOutput);
+      }
+
+      function createSession() {
+        const output = document.getElementById("sessionOutput");
+        output.textContent = "Creating session...";
+
+        fetch("/debug/session")
+          .then((response) => response.json())
+          .then((data) => {
+            const jsonOutput = JSON.stringify(data, null, 2);
+            output.textContent = jsonOutput;
+            output.className = "output success";
+
+            // Add copy button
+            addCopyButton(output, jsonOutput);
+          })
+          .catch((error) => {
+            output.textContent = "Error: " + error.message;
+            output.className = "output error";
+          });
+      }
+
+      function testSession() {
+        const output = document.getElementById("sessionOutput");
+        output.textContent = "Testing session...";
+
+        fetch("/debug")
+          .then((response) => response.json())
+          .then((data) => {
+            const jsonOutput = JSON.stringify(data, null, 2);
+            output.textContent = jsonOutput;
+            output.className = "output success";
+
+            // Add copy button
+            addCopyButton(output, jsonOutput);
+          })
+          .catch((error) => {
+            output.textContent = "Error: " + error.message;
+            output.className = "output error";
+          });
+      }
+
+      function testCookies() {
+        const output = document.getElementById("cookieOutput");
+        const cookies = document.cookie.split(";").map((c) => c.trim());
+        const info = {
+          allCookies: document.cookie,
+          cookieArray: cookies,
+          sessionCookie: cookies.find((c) =>
+            c.startsWith("movie_poll_session")
+          ),
+          cookieCount: cookies.length,
+        };
+        const jsonOutput = JSON.stringify(info, null, 2);
+        output.textContent = jsonOutput;
+        addCopyButton(output, jsonOutput);
+      }
+
+      function clearCookies() {
+        document.cookie.split(";").forEach(function (c) {
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(
+              /=.*/,
+              "=;expires=" + new Date().toUTCString() + ";path=/"
+            );
+        });
+        document.getElementById("cookieOutput").textContent =
+          "Cookies cleared!";
+      }
+
+      function testHTMX() {
+        const output = document.getElementById("htmxOutput");
+        output.textContent = "Testing HTMX request...";
+
+        // Test HTMX configuration
+        if (typeof htmx !== "undefined") {
+          output.textContent =
+            "HTMX loaded. Config: " +
+            JSON.stringify(
+              {
+                withCredentials: htmx.config.withCredentials,
+                timeout: htmx.config.timeout,
+              },
+              null,
+              2
+            );
+        } else {
+          output.textContent = "HTMX not loaded!";
+          output.className = "output error";
+        }
+      }
+
+      // Load HTMX
+      const script = document.createElement("script");
+      script.src = "/js/htmx.min.js";
+      script.onload = function () {
+        htmx.config.withCredentials = true;
+        console.log("HTMX loaded and configured");
+      };
+      document.head.appendChild(script);
+
+      // Test results storage
+      let testResults = {
+        timestamp: new Date().toISOString(),
+        browser: {
+          userAgent: navigator.userAgent,
+          location: window.location.href,
+          cookies: document.cookie,
+          cookieCount: document.cookie.split(";").filter((c) => c.trim())
+            .length,
+        },
+        tests: [],
+      };
+
+      function runAllTests() {
+        const output = document.getElementById("testResults");
+        output.textContent = "Running comprehensive test suite...";
+        output.className = "output";
+
+        // Clear previous results
+        testResults.tests = [];
+        testResults.timestamp = new Date().toISOString();
+
+        // Run all tests sequentially with delays
+        runTest("Initial State", checkCurrentStateTest)
+          .then(() => runTest("Session Creation", createSessionTest))
+          .then(() => new Promise((resolve) => setTimeout(resolve, 1000))) // Wait 1 second for cookie to be set
+          .then(() => runTest("Session Persistence", testSessionPersistence))
+          .then(() => runTest("Cookie Analysis", testCookieAnalysis))
+          .then(() => runTest("HTMX Configuration", testHTMXConfig))
+          .then(() => runTest("Voting Flow Simulation", testVotingFlow))
+          .then(() => {
+            output.textContent = JSON.stringify(testResults, null, 2);
+            output.className = "output success";
+            addCopyButton(output, JSON.stringify(testResults, null, 2));
+          })
+          .catch((error) => {
+            output.textContent = "Test suite failed: " + error.message;
+            output.className = "output error";
+          });
+      }
+
+      function runTest(testName, testFunction) {
+        return new Promise((resolve) => {
+          const startTime = Date.now();
+          try {
+            const result = testFunction();
+            const duration = Date.now() - startTime;
+
+            testResults.tests.push({
+              name: testName,
+              status: "success",
+              duration: duration,
+              result: result,
+              timestamp: new Date().toISOString(),
+            });
+            resolve();
+          } catch (error) {
+            const duration = Date.now() - startTime;
+            testResults.tests.push({
+              name: testName,
+              status: "error",
+              duration: duration,
+              error: error.message,
+              timestamp: new Date().toISOString(),
+            });
+            resolve();
+          }
+        });
+      }
+
+      function checkCurrentStateTest() {
+        return {
+          cookies: document.cookie,
+          userAgent: navigator.userAgent,
+          location: window.location.href,
+          timestamp: new Date().toISOString(),
+        };
+      }
+
+      function createSessionTest() {
+        return new Promise((resolve) => {
+          fetch("/debug/session", {
+            credentials: "include",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              resolve({
+                sessionCreated: true,
+                token: data.token,
+                userName: data.user_name,
+                deviceId: data.device_id,
+                cookiesSent: data.cookies_sent,
+              });
+            })
+            .catch((error) => {
+              resolve({
+                sessionCreated: false,
+                error: error.message,
+              });
+            });
+        });
+      }
+
+      function testSessionPersistence() {
+        return new Promise((resolve) => {
+          fetch("/debug", {
+            credentials: "include",
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              resolve({
+                sessionToken: data.session.token,
+                userName: data.session.user_name,
+                deviceId: data.session.device_id,
+                votes: data.session.votes,
+                cookiesReceived: data.cookies.length,
+                headers: data.headers,
+              });
+            })
+            .catch((error) => {
+              resolve({
+                error: error.message,
+              });
+            });
+        });
+      }
+
+      function testCookieAnalysis() {
+        const cookies = document.cookie
+          .split(";")
+          .map((c) => c.trim())
+          .filter((c) => c);
+
+        // Also check if we can see the cookie in the browser storage
+        const cookieVisible = document.cookie.includes("movie_poll_session");
+
+        return {
+          allCookies: document.cookie,
+          cookieArray: cookies,
+          sessionCookie: cookies.find((c) =>
+            c.startsWith("movie_poll_session")
+          ),
+          cookieCount: cookies.length,
+          cookieVisible: cookieVisible,
+          cookieDetails: cookies.map((cookie) => {
+            const [name, value] = cookie.split("=");
+            return { name: name, value: value };
+          }),
+        };
+      }
+
+      function testHTMXConfig() {
+        return {
+          htmxLoaded: typeof htmx !== "undefined",
+          withCredentials:
+            typeof htmx !== "undefined" ? htmx.config.withCredentials : "N/A",
+          timeout: typeof htmx !== "undefined" ? htmx.config.timeout : "N/A",
+          version: typeof htmx !== "undefined" ? htmx.version : "N/A",
+        };
+      }
+
+      function testVotingFlow() {
+        return new Promise((resolve) => {
+          // Test the actual voting endpoints with explicit credentials
+          const testData = new FormData();
+          testData.append("movie_id", "1");
+          testData.append("seen", "true");
+
+          fetch("/api/voting/seen", {
+            method: "POST",
+            body: testData,
+            credentials: "include", // Explicitly include cookies
+          })
+            .then((response) => {
+              resolve({
+                votingEndpointStatus: response.status,
+                votingEndpointOk: response.ok,
+                votingEndpointText: response.statusText,
+                credentials: "include",
+              });
+            })
+            .catch((error) => {
+              resolve({
+                votingEndpointError: error.message,
+              });
+            });
+        });
+      }
+
+      function submitTestResults() {
+        const output = document.getElementById("testResults");
+        output.textContent = "Submitting test results to server...";
+
+        fetch("/debug/submit-results", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(testResults),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            output.textContent =
+              "Test results submitted successfully!\n\n" +
+              JSON.stringify(data, null, 2);
+            output.className = "output success";
+          })
+          .catch((error) => {
+            output.textContent = "Failed to submit results: " + error.message;
+            output.className = "output error";
+          });
+      }
+
+      // Initial state check
+      checkCurrentState();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin panel for Mewling Goat Tavern movie poll">
+    <title>Admin Panel - Mewling Goat Tavern</title>
+    <link rel="icon" sizes="16x16" href="./img/favicon-16x16.png">
+    <link rel="icon" sizes="32x32" href="./img/favicon-32x32.png">
+    <link rel="icon" sizes="192x192" href="./img/android-chrome-192x192.png">
+    <link rel="icon" sizes="512x512" href="./img/android-chrome-512x512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/apple-touch-icon.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="preload" href="./css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="./css/style.css"></noscript>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body class="bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900 min-h-screen flex items-center justify-center p-4">
+    <div class="container mx-auto">
+        <!-- Login Screen -->
+        <div id="login-screen" class="bg-goat-800 max-w-md p-8 relative rounded-xl shadow-xl w-full z-10">
+            <h1 class="text-3xl font-bold text-tavern-500 mb-6 text-center">
+                Admin Login<br>Mewling Goat Tavern
+            </h1>
+            
+            <form id="login-form" class="mb-6">
+                <label class="form-label" for="admin-password">Admin Password</label>
+                <input id="admin-password" class="form-input" 
+                    type="password" 
+                    name="password" 
+                    placeholder="Enter admin password"
+                    required>
+                <div id="login-error" class="text-red-400 text-sm mt-2 hidden">
+                    Invalid password. Please try again.
+                </div>
+                
+                <button id="login-btn" class="btn-primary w-full" type="submit">
+                    Login
+                </button>
+            </form>
+            
+            <div class="text-center">
+                <a href="/" class="text-tavern-400 hover:text-tavern-300 text-sm">← Back to Poll</a>
+            </div>
+        </div>
+
+        <!-- Admin Interface -->
+        <div id="admin-interface" class="hidden bg-goat-800 max-w-6xl p-6 relative rounded-xl shadow-xl w-full">
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-3xl font-bold text-tavern-500">Admin Panel</h1>
+                <div class="flex items-center space-x-4">
+                    <a href="/test" class="btn-secondary">Test API</a>
+                    <button id="logout-btn" class="btn-secondary">Logout</button>
+                    <a href="/" class="btn-secondary">← Back to Poll</a>
+                </div>
+            </div>
+
+            <!-- Status Messages -->
+            <div id="status-messages" class="mb-6 space-y-2"></div>
+
+            <!-- Movie Search Section -->
+            <div class="bg-goat-700 p-6 rounded-lg mb-6">
+                <h2 class="text-xl font-bold text-tavern-400 mb-4">Add New Movie</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="form-label" for="search-title">Movie Title</label>
+                        <input id="search-title" class="form-input" 
+                            type="text" 
+                            placeholder="Enter movie title"
+                            required>
+                    </div>
+                    <div>
+                        <label class="form-label" for="search-year">Year (Optional)</label>
+                        <input id="search-year" class="form-input" 
+                            type="number" 
+                            placeholder="e.g., 2023"
+                            min="1900" max="2030">
+                    </div>
+                </div>
+                
+                <button id="search-btn" class="btn-primary">Search Movies</button>
+            </div>
+
+            <!-- Search Results -->
+            <div id="search-results" class="hidden bg-goat-700 p-6 rounded-lg mb-6">
+                <h3 class="text-lg font-bold text-tavern-400 mb-4">Search Results</h3>
+                <div id="results-list" class="space-y-4"></div>
+            </div>
+
+            <!-- Selected Movie Preview -->
+            <div id="add-movie-form" class="hidden bg-goat-700 p-6 rounded-lg mb-6">
+                <h3 class="text-lg font-bold text-tavern-400 mb-4">Selected Movie</h3>
+                <div id="selected-movie-preview" class="mb-4"></div>
+                <button id="add-movie-btn" class="btn-primary">Add to Poll</button>
+            </div>
+
+            <!-- Current Movies Management -->
+            <div class="bg-goat-700 p-6 rounded-lg">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-tavern-400">Current Movies in Poll</h2>
+                    <div class="flex space-x-2">
+                        <button id="refresh-movies-btn" class="btn-secondary">Refresh</button>
+                        <button id="update-appeals-btn" class="btn-secondary">Update Appeal Values</button>
+                        <button id="export-movies-btn" class="btn-secondary">Export Movies</button>
+                        <button id="import-movies-btn" class="btn-secondary">Import Movies</button>
+                    </div>
+                </div>
+                
+                <div id="current-movies-list" class="space-y-4">
+                    <div class="text-center text-goat-400">
+                        <div class="loading-spinner inline-block mb-2"></div>
+                        <p>Loading movies...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="import-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50" style="display: none;">
+        <div class="bg-goat-800 p-6 rounded-lg max-w-md w-full mx-4">
+            <h3 class="text-xl font-bold text-tavern-400 mb-4">Import Movies</h3>
+            
+            <div class="mb-4">
+                <label class="form-label" for="import-file">Select JSON File</label>
+                <input id="import-file" type="file" accept=".json" class="form-input">
+                <p class="text-sm text-gray-300 mt-1">
+                    Select a JSON file with the same structure as the export file.
+                </p>
+            </div>
+            
+            <div id="import-preview" class="hidden mb-4">
+                <h4 class="text-lg font-semibold text-tavern-400 mb-2">Preview</h4>
+                <div id="import-preview-content" class="bg-gray-800 p-3 rounded text-sm max-h-40 overflow-y-auto"></div>
+            </div>
+            
+            <div class="flex space-x-2">
+                <button id="import-confirm-btn" class="btn-primary flex-1" disabled>Import Movies</button>
+                <button id="import-cancel-btn" class="btn-secondary flex-1">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin functionality
+        const ADMIN_PASSWORD = 'mewling-goat-admin-2025'; // Change this to a secure password
+        
+        let selectedMovie = null;
+        let currentMovies = [];
+        let importData = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthentication();
+            setupEventListeners();
+        });
+
+        function checkAuthentication() {
+            const authToken = localStorage.getItem('admin-auth');
+            if (authToken === ADMIN_PASSWORD) {
+                showAdminInterface();
+            } else {
+                showLoginScreen();
+            }
+        }
+
+        function showLoginScreen() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('admin-interface').classList.add('hidden');
+            localStorage.removeItem('admin-auth');
+        }
+
+        function showAdminInterface() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('admin-interface').classList.remove('hidden');
+            loadCurrentMovies();
+        }
+
+        function setupEventListeners() {
+            // Authentication
+            document.getElementById('login-btn').addEventListener('click', handleLogin);
+            document.getElementById('admin-password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleLogin();
+            });
+            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+            
+            // Admin functions
+            document.getElementById('search-btn').addEventListener('click', handleSearch);
+            document.getElementById('search-title').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSearch();
+            });
+            document.getElementById('search-year').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSearch();
+            });
+            document.getElementById('add-movie-btn').addEventListener('click', handleAddMovie);
+            document.getElementById('refresh-movies-btn').addEventListener('click', loadCurrentMovies);
+            document.getElementById('update-appeals-btn').addEventListener('click', handleUpdateAppeals);
+            document.getElementById('export-movies-btn').addEventListener('click', handleExportMovies);
+            document.getElementById('import-movies-btn').addEventListener('click', showImportModal);
+            document.getElementById('import-file').addEventListener('change', handleFileSelect);
+            document.getElementById('import-confirm-btn').addEventListener('click', handleImportMovies);
+            document.getElementById('import-cancel-btn').addEventListener('click', hideImportModal);
+        }
+
+        function handleLogin() {
+            const password = document.getElementById('admin-password').value.trim();
+            
+            if (password === ADMIN_PASSWORD) {
+                localStorage.setItem('admin-auth', ADMIN_PASSWORD);
+                document.getElementById('admin-password').value = '';
+                document.getElementById('login-error').classList.add('hidden');
+                showAdminInterface();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+                document.getElementById('admin-password').value = '';
+                document.getElementById('admin-password').focus();
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('admin-auth');
+            showLoginScreen();
+        }
+
+        async function handleSearch() {
+            const title = document.getElementById('search-title').value.trim();
+            const year = document.getElementById('search-year').value.trim();
+
+            if (!title) {
+                showStatus('Please enter a movie title', 'error');
+                return;
+            }
+
+            const searchBtn = document.getElementById('search-btn');
+            searchBtn.disabled = true;
+            searchBtn.textContent = 'Searching...';
+
+            try {
+                const params = new URLSearchParams({ query: title });
+                if (year) params.append('year', year);
+
+                const response = await fetch(`/api/search?${params}`);
+                const data = await response.json();
+                
+                if (data.success && data.results && data.results.length > 0) {
+                    displaySearchResults(data.results);
+                    document.getElementById('search-results').classList.remove('hidden');
+                } else {
+                    showStatus('No movies found', 'warning');
+                    document.getElementById('search-results').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Search failed:', error);
+                showStatus('Search failed. Please try again.', 'error');
+            } finally {
+                searchBtn.disabled = false;
+                searchBtn.textContent = 'Search Movies';
+            }
+        }
+
+        function displaySearchResults(movies) {
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '';
+
+            movies.forEach((movie) => {
+                const movieCard = document.createElement('div');
+                movieCard.className = 'bg-gray-600 p-4 rounded-lg cursor-pointer hover:bg-gray-500 transition-colors';
+                movieCard.innerHTML = `
+                    <div class="flex space-x-4">
+                        <div class="flex-shrink-0">
+                            ${movie.poster_path 
+                                ? `<img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}" class="w-16 h-24 object-cover rounded">`
+                                : `<div class="w-16 h-24 bg-gray-500 rounded flex items-center justify-center text-gray-300 text-xs">No Image</div>`
+                            }
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-lg font-semibold text-white truncate">${movie.title}</h4>
+                            ${movie.original_title && movie.original_title !== movie.title ? 
+                                `<p class="text-sm text-gray-300 italic">${movie.original_title}</p>` : ''
+                            }
+                            <p class="text-sm text-gray-200">${movie.release_date ? movie.release_date.slice(0, 4) : 'Unknown Year'}</p>
+                            <p class="text-sm text-gray-300 mt-1 line-clamp-2">${movie.overview || 'No overview available'}</p>
+                            <div class="flex items-center mt-2">
+                                <span class="text-yellow-400 text-sm">★ ${movie.vote_average.toFixed(1)}</span>
+                                <span class="text-gray-300 text-sm ml-2">TMDB ID: ${movie.id}</span>
+                                ${movie.original_language && movie.original_language !== 'en' ? 
+                                    `<span class="text-blue-400 text-sm ml-2">${movie.original_language.toUpperCase()}</span>` : ''
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                movieCard.addEventListener('click', () => selectMovie(movie));
+                resultsList.appendChild(movieCard);
+            });
+        }
+
+        function selectMovie(movie) {
+            selectedMovie = movie;
+            
+            // Update preview
+            const preview = document.getElementById('selected-movie-preview');
+            preview.innerHTML = `
+                <div class="flex space-x-4">
+                    <div class="flex-shrink-0">
+                        ${movie.poster_path 
+                            ? `<img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}" class="w-20 h-30 object-cover rounded">`
+                            : `<div class="w-20 h-30 bg-gray-500 rounded flex items-center justify-center text-gray-300 text-sm">No Image</div>`
+                        }
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-xl font-bold text-white">${movie.title}</h4>
+                        <p class="text-gray-200">${movie.release_date ? movie.release_date.slice(0, 4) : 'Unknown Year'}</p>
+                        <p class="text-gray-300 mt-2">${movie.overview || 'No overview available'}</p>
+                        <div class="flex items-center mt-2">
+                            <span class="text-yellow-400">★ ${movie.vote_average.toFixed(1)}</span>
+                            <span class="text-gray-300 ml-2">TMDB ID: ${movie.id}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('add-movie-form').classList.remove('hidden');
+            
+            // Update swap button states
+            updateSwapButtonStates();
+            
+            // Scroll to add movie form
+            document.getElementById('add-movie-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function handleAddMovie() {
+            if (!selectedMovie) {
+                showStatus('No movie selected', 'error');
+                return;
+            }
+
+            const addBtn = document.getElementById('add-movie-btn');
+            addBtn.disabled = true;
+            addBtn.textContent = 'Adding...';
+
+            try {
+                const movieData = {
+                    title: selectedMovie.title,
+                    year: selectedMovie.release_date ? parseInt(selectedMovie.release_date.slice(0, 4)) : 2000,
+                    tmdb_id: selectedMovie.id,
+                    poster_path: selectedMovie.poster_path,
+                    overview: selectedMovie.overview
+                };
+
+                const response = await fetch('/api/admin/add-movie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(movieData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus(`Movie "${selectedMovie.title}" added successfully!`, 'success');
+                    clearSearch();
+                    loadCurrentMovies();
+                } else {
+                    showStatus(`Failed to add movie: ${data.message || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Add movie failed:', error);
+                showStatus('Failed to add movie. Please try again.', 'error');
+            } finally {
+                addBtn.disabled = false;
+                addBtn.textContent = 'Add to Poll';
+            }
+        }
+
+        async function loadCurrentMovies() {
+            const refreshBtn = document.getElementById('refresh-movies-btn');
+            refreshBtn.disabled = true;
+            refreshBtn.textContent = 'Loading...';
+
+            try {
+                const response = await fetch('/api/movies');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentMovies = data.movies;
+                    console.log('Loaded movies:', currentMovies);
+                    console.log('Movies count:', currentMovies.length);
+                    displayCurrentMovies();
+                } else {
+                    showStatus('Failed to load current movies', 'error');
+                }
+            } catch (error) {
+                console.error('Load movies failed:', error);
+                showStatus('Failed to load current movies', 'error');
+            } finally {
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = 'Refresh';
+            }
+        }
+
+        function displayCurrentMovies() {
+            const moviesList = document.getElementById('current-movies-list');
+            moviesList.innerHTML = '';
+
+            console.log('Displaying movies:', currentMovies);
+            console.log('Movies length:', currentMovies.length);
+
+            if (currentMovies.length === 0) {
+                moviesList.innerHTML = '<p class="text-gray-300 text-center py-4">No movies in poll yet</p>';
+                return;
+            }
+
+            currentMovies.forEach((movie, index) => {
+                try {
+                    console.log(`Processing movie ${index + 1}:`, movie);
+                    const movieCard = document.createElement('div');
+                    movieCard.className = 'bg-gray-600 p-4 rounded-lg';
+                    movieCard.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex space-x-4">
+                            <div class="flex-shrink-0">
+                                ${movie.poster_path 
+                                    ? `<img src="https://image.tmdb.org/t/p/w200${movie.poster_path}" alt="${movie.title}" class="w-16 h-24 object-cover rounded">`
+                                    : `<div class="w-16 h-24 bg-gray-500 rounded flex items-center justify-center text-gray-300 text-xs">No Image</div>`
+                                }
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-lg font-semibold text-white truncate">${movie.title}</h4>
+                                <p class="text-sm text-gray-200">${movie.year}</p>
+                                <p class="text-sm text-gray-300 mt-1 line-clamp-2">${movie.overview}</p>
+                                <div class="flex items-center mt-2 space-x-4">
+                                    <span class="text-pink-400 text-sm">Appeal: ${movie.appeal_value ? movie.appeal_value.toFixed(2) : 'Not calculated'}</span>
+                                    <span class="text-gray-300 text-sm">TMDB ID: ${movie.tmdb_id}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button 
+                                class="swap-movie-btn bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors disabled:bg-gray-500 disabled:cursor-not-allowed"
+                                data-movie-id="${movie.id}"
+                                data-movie-title="${movie.title}"
+                                ${!selectedMovie ? 'disabled' : ''}
+                            >
+                                Swap
+                            </button>
+                            <button 
+                                class="delete-movie-btn bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors"
+                                data-movie-id="${movie.id}"
+                                data-movie-title="${movie.title}"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Add event listeners
+                const deleteBtn = movieCard.querySelector('.delete-movie-btn');
+                deleteBtn.addEventListener('click', () => handleDeleteMovie(movie.id, movie.title));
+
+                const swapBtn = movieCard.querySelector('.swap-movie-btn');
+                swapBtn.addEventListener('click', () => handleSwapMovie(movie.id, movie.title));
+
+                moviesList.appendChild(movieCard);
+                } catch (error) {
+                    console.error(`Error processing movie ${index + 1}:`, error, movie);
+                }
+            });
+        }
+
+        async function handleDeleteMovie(movieId, movieTitle) {
+            if (!confirm(`Are you sure you want to delete "${movieTitle}" from the poll?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/admin/delete-movie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: movieId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus(`Movie "${movieTitle}" deleted successfully!`, 'success');
+                    loadCurrentMovies();
+                } else {
+                    showStatus(`Failed to delete movie: ${data.message || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Delete movie failed:', error);
+                showStatus('Failed to delete movie. Please try again.', 'error');
+            }
+        }
+
+        async function handleSwapMovie(movieId, movieTitle) {
+            if (!selectedMovie) {
+                showStatus('Please select a movie from the search results first', 'error');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to replace "${movieTitle}" with "${selectedMovie.title}"?`)) {
+                return;
+            }
+
+            try {
+                // First delete the old movie
+                const deleteResponse = await fetch('/api/admin/delete-movie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: movieId })
+                });
+                
+                const deleteData = await deleteResponse.json();
+                
+                if (!deleteData.success) {
+                    showStatus(`Failed to delete old movie: ${deleteData.message || 'Unknown error'}`, 'error');
+                    return;
+                }
+
+                // Then add the new movie
+                const addResponse = await fetch('/api/admin/add-movie', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: selectedMovie.title,
+                        year: selectedMovie.release_date ? parseInt(selectedMovie.release_date.slice(0, 4)) : 2000,
+                        tmdb_id: selectedMovie.id,
+                        poster_path: selectedMovie.poster_path,
+                        overview: selectedMovie.overview
+                    })
+                });
+                
+                const addData = await addResponse.json();
+                
+                if (addData.success) {
+                    showStatus(`Successfully swapped "${movieTitle}" with "${selectedMovie.title}"!`, 'success');
+                    loadCurrentMovies();
+                    clearSearch();
+                } else {
+                    showStatus(`Failed to add new movie: ${addData.message || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Swap movie failed:', error);
+                showStatus('Failed to swap movie. Please try again.', 'error');
+            }
+        }
+
+        async function handleUpdateAppeals() {
+            const updateBtn = document.getElementById('update-appeals-btn');
+            updateBtn.disabled = true;
+            updateBtn.textContent = 'Updating...';
+
+            try {
+                const response = await fetch('/api/update-appeal', { method: 'POST' });
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus('Appeal values updated successfully!', 'success');
+                    loadCurrentMovies();
+                } else {
+                    showStatus(`Failed to update appeals: ${data.message || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                console.error('Update appeals failed:', error);
+                showStatus('Failed to update appeals. Please try again.', 'error');
+            } finally {
+                updateBtn.disabled = false;
+                updateBtn.textContent = 'Update Appeal Values';
+            }
+        }
+
+        function handleExportMovies() {
+            if (currentMovies.length === 0) {
+                showStatus('No movies to export', 'warning');
+                return;
+            }
+
+            const exportData = currentMovies.map(movie => ({
+                title: movie.title,
+                year: movie.year,
+                tmdb_id: movie.tmdb_id,
+                appeal_value: movie.appeal_value
+            }));
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `movie-poll-export-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showStatus('Movie list exported successfully!', 'success');
+        }
+
+        function clearSearch() {
+            document.getElementById('search-title').value = '';
+            document.getElementById('search-year').value = '';
+            document.getElementById('search-results').classList.add('hidden');
+            document.getElementById('add-movie-form').classList.add('hidden');
+            selectedMovie = null;
+            updateSwapButtonStates();
+        }
+
+        function updateSwapButtonStates() {
+            const swapButtons = document.querySelectorAll('.swap-movie-btn');
+            swapButtons.forEach(button => {
+                button.disabled = !selectedMovie;
+            });
+        }
+
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `px-4 py-3 rounded-lg shadow-lg max-w-sm ${
+                type === 'success' ? 'bg-green-600 text-white' :
+                type === 'error' ? 'bg-red-600 text-white' :
+                type === 'warning' ? 'bg-yellow-600 text-white' :
+                'bg-blue-600 text-white'
+            }`;
+            statusDiv.textContent = message;
+
+            const statusMessages = document.getElementById('status-messages');
+            statusMessages.appendChild(statusDiv);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (statusDiv.parentNode) {
+                    statusDiv.parentNode.removeChild(statusDiv);
+                }
+            }, 5000);
+        }
+
+        function showImportModal() {
+            const modal = document.getElementById('import-modal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+            modal.classList.add('items-center', 'justify-center');
+            document.getElementById('import-file').value = '';
+            document.getElementById('import-preview').classList.add('hidden');
+            document.getElementById('import-confirm-btn').disabled = true;
+            importData = null;
+        }
+
+        function hideImportModal() {
+            const modal = document.getElementById('import-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            modal.classList.remove('items-center', 'justify-center');
+            document.getElementById('import-file').value = '';
+            document.getElementById('import-preview').classList.add('hidden');
+            document.getElementById('import-confirm-btn').disabled = true;
+            importData = null;
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                hideImportModal();
+                return;
+            }
+
+            if (file.type !== 'application/json') {
+                showStatus('Please select a JSON file', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const jsonData = JSON.parse(e.target.result);
+                    
+                    // Validate the structure matches the export format
+                    if (!Array.isArray(jsonData)) {
+                        showStatus('Invalid file format. Expected an array of movies.', 'error');
+                        return;
+                    }
+
+                    // Validate each movie object has required fields
+                    const validMovies = jsonData.filter(movie => {
+                        return movie.title && movie.year && movie.tmdb_id;
+                    });
+
+                    if (validMovies.length === 0) {
+                        showStatus('No valid movies found in file. Each movie must have title, year, and tmdb_id.', 'error');
+                        return;
+                    }
+
+                    if (validMovies.length !== jsonData.length) {
+                        showStatus(`Found ${validMovies.length} valid movies out of ${jsonData.length} total. Invalid movies will be skipped.`, 'warning');
+                    }
+
+                    importData = validMovies;
+                    
+                    // Show preview
+                    const previewContent = document.getElementById('import-preview-content');
+                    previewContent.innerHTML = `
+                        <div class="text-green-400 mb-2">✓ ${validMovies.length} movies ready to import:</div>
+                        <div class="space-y-1 max-h-32 overflow-y-auto">
+                            ${validMovies.slice(0, 10).map(movie => 
+                                `<div class="text-sm">• ${movie.title} (${movie.year}) - TMDB ID: ${movie.tmdb_id}</div>`
+                            ).join('')}
+                            ${validMovies.length > 10 ? `<div class="text-sm text-gray-400">... and ${validMovies.length - 10} more</div>` : ''}
+                        </div>
+                    `;
+                    
+                    document.getElementById('import-preview').classList.remove('hidden');
+                    document.getElementById('import-confirm-btn').disabled = false;
+                    
+                } catch (error) {
+                    showStatus('Invalid JSON file. Please check the file format.', 'error');
+                    console.error('JSON parse error:', error);
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        async function handleImportMovies() {
+            if (!importData || importData.length === 0) {
+                showStatus('No movies to import', 'error');
+                return;
+            }
+
+            const importBtn = document.getElementById('import-confirm-btn');
+            importBtn.disabled = true;
+            importBtn.textContent = 'Importing...';
+
+            let successCount = 0;
+            let duplicateCount = 0;
+            let errorCount = 0;
+            const errors = [];
+
+            try {
+                // Import movies one by one
+                for (let i = 0; i < importData.length; i++) {
+                    const movie = importData[i];
+                    
+                    try {
+                        const response = await fetch('/api/admin/add-movie', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                title: movie.title,
+                                year: movie.year,
+                                tmdb_id: movie.tmdb_id,
+                                poster_path: movie.poster_path || null,
+                                overview: movie.overview || null
+                            })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            successCount++;
+                        } else if (data.error === 'DUPLICATE') {
+                            // Count duplicates separately
+                            duplicateCount++;
+                            console.log(`Movie ${movie.title} already exists, skipping`);
+                        } else {
+                            errorCount++;
+                            const errorMsg = data.error || data.message || 'Unknown error';
+                            errors.push(`${movie.title}: ${errorMsg}`);
+                            console.error(`Import error for ${movie.title}:`, data);
+                        }
+                    } catch (error) {
+                        errorCount++;
+                        errors.push(`${movie.title}: Network error`);
+                    }
+                }
+
+                // Show results
+                if (successCount > 0 || duplicateCount > 0) {
+                    let message = `Successfully processed ${successCount + duplicateCount} movies!`;
+                    if (successCount > 0 && duplicateCount > 0) {
+                        message += ` (${successCount} new, ${duplicateCount} already existed)`;
+                    } else if (duplicateCount > 0) {
+                        message += ` (${duplicateCount} were already in the database)`;
+                    }
+                    showStatus(message, 'success');
+                }
+                
+                if (errorCount > 0) {
+                    showStatus(`Failed to import ${errorCount} movies. Check console for details.`, 'warning');
+                    console.log('Import errors:', errors);
+                    
+                    // Show detailed errors in a modal or expandable section
+                    const errorDetails = errors.slice(0, 5).join('\n');
+                    const moreErrors = errors.length > 5 ? `\n... and ${errors.length - 5} more errors` : '';
+                    showStatus(`Import errors:\n${errorDetails}${moreErrors}`, 'error');
+                }
+
+                // Refresh the movie list
+                loadCurrentMovies();
+                
+                // Close modal
+                hideImportModal();
+                
+            } catch (error) {
+                console.error('Import failed:', error);
+                showStatus('Import failed. Please try again.', 'error');
+            } finally {
+                importBtn.disabled = false;
+                importBtn.textContent = 'Import Movies';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+package views
+
+templ NameEntryPage() {
+	@BaseLayout("Enter Your Name", "Movie poll for Mewling Goat Tavern", NameEntryContent())
+}
+
+templ NameEntryContent() {
+	<div class="container mx-auto max-w-md flex items-center justify-center min-h-screen">
+		<div class="bg-goat-700 p-8 rounded-xl shadow-xl">
+			<div class="text-center mb-8">
+				<h1 class="text-3xl font-bold text-tavern-500 mb-4">Mewling Goat Tavern</h1>
+				<h2 class="text-xl text-tavern-400 mb-2">Movie Poll</h2>
+				<p class="text-goat-300">Enter your name to start voting on movies</p>
+			</div>
+			<!-- Main name entry form -->
+			<form id="nameForm" hx-post="/api/start-poll">
+				<div class="mb-6">
+					<label for="username" class="block text-sm font-medium text-goat-300 mb-2">Your Name</label>
+					<input
+						type="text"
+						id="username"
+						name="username"
+						required
+						class="w-full px-4 py-3 bg-goat-600 border border-goat-500 rounded-lg text-goat-100 placeholder-goat-400 focus:outline-none focus:ring-2 focus:ring-tavern-500 focus:border-transparent"
+						placeholder="Enter your name here..."
+						autocomplete="name"
+						hx-post="/api/check-name-similarity"
+						hx-trigger="blur delay:500ms"
+						hx-target="#nameVerification"
+						hx-indicator="#nameSpinner"
+					/>
+					<div id="nameSpinner" class="htmx-indicator mt-2">
+						<div class="text-tavern-400 text-sm">Checking for similar names...</div>
+					</div>
+				</div>
+				<!-- Name verification prompt (hidden by default) -->
+				<div id="nameVerification" class="mb-6 hidden">
+					<div class="bg-tavern-600/20 border border-tavern-500 rounded-lg p-4">
+						<div class="text-center">
+							<p class="text-tavern-300 mb-3">This device has been used before. Did you mean one of these names?</p>
+							<div id="similarNames" class="space-y-2 mb-4"></div>
+							<div class="flex space-x-3 justify-center">
+								<button
+									type="button"
+									id="confirmSimilarName"
+									class="bg-tavern-500 hover:bg-tavern-600 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+								>
+									Yes, use this name
+								</button>
+								<button
+									type="button"
+									id="rejectSimilarName"
+									class="bg-goat-600 hover:bg-goat-500 text-goat-200 px-4 py-2 rounded-lg text-sm transition-colors"
+								>
+									No, use my name
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<button
+					type="submit"
+					class="w-full bg-tavern-500 hover:bg-tavern-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-tavern-500 focus:ring-offset-2 focus:ring-offset-goat-700"
+				>
+					Start Voting
+				</button>
+			</form>
+			<div class="mt-6 text-center">
+				<p class="text-sm text-goat-400">Your votes will be saved and you can change them anytime</p>
+			</div>
+		</div>
+	</div>
+	<script>
+		// Handle name verification
+		document.addEventListener('DOMContentLoaded', function() {
+			const nameInput = document.getElementById('username');
+			const verificationDiv = document.getElementById('nameVerification');
+			const similarNamesDiv = document.getElementById('similarNames');
+			const confirmBtn = document.getElementById('confirmSimilarName');
+			const rejectBtn = document.getElementById('rejectSimilarName');
+			let currentSimilarNames = [];
+			let selectedName = '';
+			
+			// Handle similar name confirmation
+			confirmBtn.addEventListener('click', function() {
+				if (selectedName) {
+					nameInput.value = selectedName;
+					verificationDiv.classList.add('hidden');
+					// Submit the form with the confirmed name
+					document.getElementById('nameForm').submit();
+				}
+			});
+			
+			// Handle similar name rejection
+			rejectBtn.addEventListener('click', function() {
+				verificationDiv.classList.add('hidden');
+				// Continue with original name
+			});
+			
+			// Handle HTMX response for name similarity check
+			document.body.addEventListener('htmx:afterRequest', function(event) {
+				if (event.detail.xhr.status === 200) {
+					try {
+						const response = JSON.parse(event.detail.xhr.responseText);
+						
+						if (response.hasExisting) {
+							// Device already has names, show them for selection
+							selectedName = response.closestMatch || response.deviceNames[0];
+							similarNamesDiv.innerHTML = '';
+							
+							response.deviceNames.forEach((name, index) => {
+								const nameDiv = document.createElement('div');
+								nameDiv.className = 'bg-tavern-500/30 border border-tavern-400 rounded p-3 cursor-pointer hover:bg-tavern-500/40 transition-colors';
+								nameDiv.setAttribute('data-name', name);
+								
+								const isClosest = name === response.closestMatch;
+								const isRecent = index === 0;
+								
+								nameDiv.innerHTML = `
+									<span class="text-tavern-200 font-medium">${name}</span>
+									<span class="text-tavern-400 text-sm ml-2">
+										${isClosest ? '(Closest match)' : isRecent ? '(Most recent)' : '(Previous name)'}
+									</span>
+								`;
+								
+								nameDiv.addEventListener('click', function() {
+									// Remove previous selection
+									similarNamesDiv.querySelectorAll('div').forEach(div => {
+										div.classList.remove('bg-tavern-500/50', 'ring-2', 'ring-tavern-400');
+										div.classList.add('bg-tavern-500/30');
+									});
+									
+									// Select this name
+									this.classList.remove('bg-tavern-500/30');
+									this.classList.add('bg-tavern-500/50', 'ring-2', 'ring-tavern-400');
+									selectedName = this.getAttribute('data-name');
+								});
+								
+								similarNamesDiv.appendChild(nameDiv);
+							});
+							
+							verificationDiv.classList.remove('hidden');
+						} else if (response.hasSimilar) {
+							// Found similar names, show them
+							currentSimilarNames = response.similarNames;
+							similarNamesDiv.innerHTML = '';
+							
+							response.similarNames.forEach(name => {
+								const nameDiv = document.createElement('div');
+								nameDiv.className = 'bg-tavern-500/30 border border-tavern-400 rounded p-3 cursor-pointer hover:bg-tavern-500/40 transition-colors';
+								nameDiv.setAttribute('data-name', name);
+								nameDiv.innerHTML = `<span class="text-tavern-200 font-medium">${name}</span>`;
+								
+								nameDiv.addEventListener('click', function() {
+									// Remove previous selection
+									similarNamesDiv.querySelectorAll('div').forEach(div => {
+										div.classList.remove('bg-tavern-500/50', 'ring-2', 'ring-tavern-400');
+										div.classList.add('bg-tavern-500/30');
+									});
+									
+									// Select this name
+									this.classList.remove('bg-tavern-500/30');
+									this.classList.add('bg-tavern-500/50', 'ring-2', 'ring-tavern-400');
+									selectedName = this.getAttribute('data-name');
+								});
+								
+								similarNamesDiv.appendChild(nameDiv);
+							});
+							
+							verificationDiv.classList.remove('hidden');
+						} else {
+							// No similar names found, hide verification
+							verificationDiv.classList.add('hidden');
+						}
+					} catch (e) {
+						console.error('Error parsing name similarity response:', e);
+					}
+				}
+			});
+		});
+	</script>
+}

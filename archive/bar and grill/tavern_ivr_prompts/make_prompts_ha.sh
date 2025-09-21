@@ -66,7 +66,8 @@ check_tts_engines() {
   echo "Checking available TTS engines..."
   local engines
   engines=$(curl -s -H "Authorization: Bearer $HA_TOKEN" \
-    "$HA_URL/api/states" | jq -r '.[] | select(.entity_id | startswith("tts.")) | .entity_id' | sed 's/tts\.//')
+    "$HA_URL/api/states" | jq -r '.[] | select(.entity_id | startswith("tts.")) | .entity_id')
+  engines=${engines//tts./}
   
   if [[ -z "$engines" ]]; then
     echo "ERROR: No TTS engines found in Home Assistant" >&2
@@ -109,7 +110,7 @@ generate_tts_legacy() {
     -d "{
       \"message\": \"$message\"
     }" \
-    "$HA_URL/api/services/tts/$(echo "$TTS_ENGINE" | sed 's/tts\.//')_say")
+    "$HA_URL/api/services/tts/${TTS_ENGINE#tts.}_say")
   
   # Extract HTTP code and response body
   http_code=$(echo "$response" | tail -n1)
@@ -179,19 +180,20 @@ generate_tts() {
   # Download the audio file (it might be MP3, WAV, or other format)
   # Extract file extension from URL
   local file_ext
-  file_ext=$(echo "$tts_url" | sed 's/.*\.\([^.]*\)$/\1/')
+  file_ext=${tts_url##*.}
   if [[ -z "$file_ext" ]]; then
     file_ext="mp3"  # Default to MP3 if no extension found
   fi
   
-  local temp_file="$TMPDIR/$(basename "$output_file" .wav)_raw.$file_ext"
+  local temp_file
+  temp_file="$TMPDIR/$(basename "$output_file" .wav)_raw.$file_ext"
   if ! curl -s -o "$temp_file" "$tts_url"; then
     echo "ERROR: Failed to download audio from $tts_url" >&2
     return 1
   fi
   
   # Convert to phone system format (handle any input format)
-  convert_to_pcm8k "$temp_file" "$output_file"
+  ivr "$temp_file" "$output_file"
   echo "✓ Wrote $output_file"
 }
 
@@ -221,7 +223,7 @@ convert_to_pcm8k() {
 
 # ---------- Prompts with enhanced clarity and natural pacing ----------
 # Using natural speech patterns and clear phrasing for better comprehension
-MAIN_GREETING="Welcome to The Mewling Goat Tavern! Press 1 for our hours, Press 2 for upcoming events, Press 3 to leave a message, or Press 4 for something special. Don't worry, the goats are friendly."
+MAIN_GREETING="Welcome to The Mewling Goat Tavern! Press 1 for our hours, Press 2 for upcoming events, Press 3 to leave a message, Press 4 to connect to the bar, Press 5 for something special. Don't worry, the goats are friendly."
 
 OPTION_1="Our regular hours are Fridays and Saturdays from six P-M until late. Weeknights, we're open by chance or appointment. Press star to return to the main menu."
 
@@ -229,7 +231,9 @@ OPTION_2="Upcoming events include Movie Nights on Saturdays, and game nights whe
 
 OPTION_3="Please leave your message after the tone. Tell us your story, request a song, or just say hello. We'll get back to you soon."
 
-OPTION_4_PREFIX="You've found the secret option! Here's what our namesake has to say."
+OPTION_5_PREFIX="You've found the secret option! Here's what our namesake has to say."
+
+
 
 # ---------- Goat bleats ----------
 generate_goat_bleats() {
@@ -271,7 +275,7 @@ generate_tts "$MAIN_GREETING" "$OUTDIR/main_greeting.wav"
 generate_tts "$OPTION_1" "$OUTDIR/option_1_hours.wav"
 generate_tts "$OPTION_2" "$OUTDIR/option_2_events.wav"
 generate_tts "$OPTION_3" "$OUTDIR/option_3_voicemail.wav"
-generate_tts "$OPTION_4_PREFIX" "$OUTDIR/option_4_goats_intro.wav"
+generate_tts "$OPTION_5_PREFIX" "$OUTDIR/option_5_goats_intro.wav"
 
 # Generate goat bleats
 generate_goat_bleats

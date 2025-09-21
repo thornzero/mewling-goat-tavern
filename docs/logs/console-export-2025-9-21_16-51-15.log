@@ -1,0 +1,36 @@
+GET
+http://localhost:3000/admin/css/style.css
+NS_ERROR_CORRUPTED_CONTENT
+
+GET
+http://localhost:3000/admin/js/script.js
+NS_ERROR_CORRUPTED_CONTENT
+
+GET
+http://localhost:3000/admin/js/htmx.min.js
+NS_ERROR_CORRUPTED_CONTENT
+
+The resource from “http://localhost:3000/admin/css/style.css” was blocked due to MIME type (“text/plain”) mismatch (X-Content-Type-Options: nosniff). movies
+The resource from “http://localhost:3000/admin/js/htmx.min.js” was blocked due to MIME type (“text/plain”) mismatch (X-Content-Type-Options: nosniff). movies
+Loading failed for the <script> with source “http://localhost:3000/admin/js/htmx.min.js”. movies:1:719
+The resource from “http://localhost:3000/admin/js/script.js” was blocked due to MIME type (“text/plain”) mismatch (X-Content-Type-Options: nosniff). movies
+GET
+http://localhost:3000/admin/js/script.js
+NS_ERROR_CORRUPTED_CONTENT
+
+The resource from “http://localhost:3000/admin/js/script.js” was blocked due to MIME type (“text/plain”) mismatch (X-Content-Type-Options: nosniff). movies
+Loading failed for the <script> with source “http://localhost:3000/admin/js/script.js”. movies:11:4951
+Uncaught ReferenceError: htmx is not defined
+    <anonymous> http://localhost:3000/admin/movies:5
+    EventListener.handleEvent* http://localhost:3000/admin/movies:3
+movies:5:6
+GET
+http://localhost:3000/admin/img/android-chrome-512x512.png
+[HTTP/1.1 404 Not Found 0ms]
+
+GET
+http://localhost:3000/admin/img/favicon-32x32.png
+[HTTP/1.1 404 Not Found 0ms]
+
+The resource at “moz-extension://c8cdc247-5f87-4481-ac17-7203b7edfca4/assets/woff2/Inter-italic.var-SWFAXF2C.woff2” preloaded with link preload was not used within a few seconds. Make sure all attributes of the preload tag are set correctly. notification.html
+The resource at “moz-extension://c8cdc247-5f87-4481-ac17-7203b7edfca4/assets/woff2/Inter-roman.var-WIJJYAE4.woff2” preloaded with link preload was not used within a few seconds. Make sure all attributes of the preload tag are set correctly. notification.html

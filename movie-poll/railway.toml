@@ -1,0 +1,12 @@
+[build]
+builder = "railpack"
+
+[deploy]
+startCommand = "./server"
+healthcheckPath = "/"
+healthcheckTimeout = 300
+port = 3000
+
+[env]
+PORT = "3000"
+DB_PATH = "/app/db/movie_poll.db"

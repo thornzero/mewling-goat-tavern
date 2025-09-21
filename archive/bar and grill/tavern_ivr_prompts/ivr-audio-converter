@@ -1,0 +1,372 @@
+#!/usr/bin/env bash
+# IVR Audio Converter - Convert audio files to IVR-appropriate format
+# Converts WAV/MP3 files to mono, 8kHz, PCM s16le format optimized for phone systems
+# Usage: ivr-audio-converter <input_file> [output_file] [options]
+
+set -euo pipefail
+
+# Default settings
+SAMPLE_RATE="8000"
+OUTPUT_FORMAT="wav"
+VERBOSE=false
+DRY_RUN=false
+
+# Color codes for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Help text
+show_help() {
+    cat << EOF
+IVR Audio Converter - Convert audio files to IVR-appropriate format
+
+USAGE:
+    ivr-audio-converter <input_file> [output_file] [options]
+
+ARGUMENTS:
+    input_file          Input audio file (WAV, MP3, or other supported format)
+    output_file         Output file path (optional, defaults to input_name_ivr.wav)
+
+OPTIONS:
+    -r, --rate RATE     Sample rate in Hz (default: 8000)
+    -o, --output FILE   Output file path
+    -f, --format FORMAT Output format: wav or mp3 (default: wav)
+    -v, --verbose       Verbose output
+    -n, --dry-run       Show what would be done without converting
+    -h, --help          Show this help message
+
+DESCRIPTION:
+    Converts audio files to IVR-optimized format:
+    - Mono channel (single channel)
+    - 8kHz sample rate (standard for phone systems)
+    - 16-bit signed PCM encoding
+    - Phone-optimized frequency filtering (300Hz-3400Hz)
+    - Normalized audio levels to prevent clipping
+
+REQUIREMENTS:
+    Requires either 'sox' (preferred) or 'ffmpeg' to be installed.
+    
+    Install sox: sudo apt install sox
+    Install ffmpeg: sudo apt install ffmpeg
+
+EXAMPLES:
+    # Convert with default settings
+    ivr-audio-converter input.wav
+    
+    # Convert with custom output name
+    ivr-audio-converter input.mp3 output_ivr.wav
+    
+    # Convert with custom sample rate
+    ivr-audio-converter input.wav -r 16000
+    
+    # Convert to MP3 format
+    ivr-audio-converter input.wav -f mp3
+    
+    # Dry run to see what would happen
+    ivr-audio-converter input.wav -n
+
+OUTPUT FORMAT:
+    The converter produces audio files optimized for:
+    - Callcentric and other VoIP providers
+    - FreePBX and Asterisk systems
+    - General phone system compatibility
+    - Clear voice transmission over phone lines
+
+EOF
+}
+
+# Logging functions
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $1" >&2
+}
+
+log_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1" >&2
+}
+
+log_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1" >&2
+}
+
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $1" >&2
+}
+
+# Check if command exists
+have_cmd() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Detect available audio processing tool
+detect_tool() {
+    # For MP3 output, prefer ffmpeg since sox doesn't support MP3 encoding
+    if [[ "$OUTPUT_FORMAT" == "mp3" ]]; then
+        if have_cmd ffmpeg; then
+            echo "ffmpeg"
+        elif have_cmd sox; then
+            echo "sox"
+        else
+            log_error "No audio processing tool found. Please install sox or ffmpeg:"
+            log_error "  sudo apt install sox"
+            log_error "  sudo apt install ffmpeg"
+            exit 1
+        fi
+    else
+        if have_cmd sox; then
+            echo "sox"
+        elif have_cmd ffmpeg; then
+            echo "ffmpeg"
+        else
+            log_error "No audio processing tool found. Please install sox or ffmpeg:"
+            log_error "  sudo apt install sox"
+            log_error "  sudo apt install ffmpeg"
+            exit 1
+        fi
+    fi
+}
+
+# Convert audio to IVR format using sox
+convert_with_sox() {
+    local input="$1"
+    local output="$2"
+    local sample_rate="$3"
+    local format="$4"
+    
+    if [[ "$VERBOSE" == "true" ]]; then
+        log_info "Converting with sox: $input -> $output"
+        log_info "Settings: rate=$sample_rate, mono, 16-bit, phone-optimized filtering, format=$format"
+    fi
+    
+    if [[ "$format" == "mp3" ]]; then
+        # For MP3 output, we need to use a different approach since sox doesn't directly support MP3 encoding
+        # We'll convert to WAV first, then use ffmpeg for MP3 encoding
+        local temp_wav="${output%.*}_temp.wav"
+        sox "$input" -r "$sample_rate" -c 1 -e signed -b 16 "$temp_wav" \
+            norm -6 \
+            highpass 300 lowpass 3400 \
+            gain -3
+        
+        # Convert WAV to MP3 using ffmpeg
+        ffmpeg -hide_banner -loglevel error -y -i "$temp_wav" -c:a libmp3lame -b:a 64k "$output"
+        rm -f "$temp_wav"
+    else
+        sox "$input" -r "$sample_rate" -c 1 -e signed -b 16 "$output" \
+            norm -6 \
+            highpass 300 lowpass 3400 \
+            gain -3
+    fi
+}
+
+# Convert audio to IVR format using ffmpeg
+convert_with_ffmpeg() {
+    local input="$1"
+    local output="$2"
+    local sample_rate="$3"
+    local format="$4"
+    
+    if [[ "$VERBOSE" == "true" ]]; then
+        log_info "Converting with ffmpeg: $input -> $output"
+        log_info "Settings: rate=$sample_rate, mono, 16-bit, phone-optimized filtering, format=$format"
+    fi
+    
+    if [[ "$format" == "mp3" ]]; then
+        ffmpeg -hide_banner -loglevel error -y -hwaccel none \
+            -i "$input" -ar "$sample_rate" -ac 1 -c:a libmp3lame -b:a 64k \
+            -af "highpass=f=300,lowpass=f=3400,volume=-6dB" "$output"
+    else
+        ffmpeg -hide_banner -loglevel error -y -hwaccel none \
+            -i "$input" -ar "$sample_rate" -ac 1 -c:a pcm_s16le \
+            -af "highpass=f=300,lowpass=f=3400,volume=-6dB" "$output"
+    fi
+}
+
+# Main conversion function
+convert_to_ivr() {
+    local input="$1"
+    local output="$2"
+    local sample_rate="$3"
+    local tool="$4"
+    
+    # Handle dry run first
+    if [[ "$DRY_RUN" == "true" ]]; then
+        log_info "DRY RUN: Would convert '$input' to '$output'"
+        log_info "  Tool: $tool"
+        log_info "  Sample rate: $sample_rate Hz"
+        log_info "  Format: mono, 16-bit ${OUTPUT_FORMAT^^}, phone-optimized"
+        return 0
+    fi
+    
+    # Check if input file exists
+    if [[ ! -f "$input" ]]; then
+        log_error "Input file does not exist: $input"
+        exit 1
+    fi
+    
+    # Create output directory if it doesn't exist
+    local output_dir
+    output_dir=$(dirname "$output")
+    if [[ ! -d "$output_dir" ]]; then
+        mkdir -p "$output_dir"
+        log_info "Created output directory: $output_dir"
+    fi
+    
+    # Perform conversion
+    if [[ "$tool" == "sox" ]]; then
+        convert_with_sox "$input" "$output" "$sample_rate" "$OUTPUT_FORMAT"
+    else
+        convert_with_ffmpeg "$input" "$output" "$sample_rate" "$OUTPUT_FORMAT"
+    fi
+    
+    log_success "Converted: $input -> $output"
+    
+    # Show file info if verbose
+    if [[ "$VERBOSE" == "true" ]]; then
+        if have_cmd file; then
+            log_info "Output file info: $(file "$output")"
+        fi
+        if have_cmd soxi && [[ "$tool" == "sox" ]]; then
+            log_info "Audio details:"
+            soxi "$output" 2>/dev/null || true
+        fi
+    fi
+}
+
+# Generate default output filename
+generate_output_name() {
+    local input="$1"
+    local sample_rate="$2"
+    
+    local base_name
+    base_name=$(basename "$input")
+    base_name="${base_name%.*}"  # Remove extension
+    
+    local output_dir
+    output_dir=$(dirname "$input")
+    
+    # Use the correct extension based on output format
+    local ext
+    if [[ "$OUTPUT_FORMAT" == "mp3" ]]; then
+        ext=".mp3"
+    else
+        ext=".wav"
+    fi
+    
+    echo "${output_dir}/${base_name}_ivr_${sample_rate}Hz${ext}"
+}
+
+# Parse command line arguments
+parse_args() {
+    local input_file=""
+    local output_file=""
+    local HELP=false
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -h|--help)
+                HELP=true
+                show_help
+                exit 0
+                ;;
+            -r|--rate)
+                SAMPLE_RATE="$2"
+                shift 2
+                ;;
+            -o|--output)
+                output_file="$2"
+                shift 2
+                ;;
+            -f|--format)
+                OUTPUT_FORMAT="$2"
+                shift 2
+                ;;
+            -v|--verbose)
+                VERBOSE=true
+                shift
+                ;;
+            -n|--dry-run)
+                DRY_RUN=true
+                shift
+                ;;
+            -*)
+                log_error "Unknown option: $1"
+                log_error "Use --help for usage information"
+                exit 1
+                ;;
+            *)
+                if [[ -z "$input_file" ]]; then
+                    input_file="$1"
+                else
+                    log_error "Multiple input files specified. Only one input file allowed."
+                    exit 1
+                fi
+                shift
+                ;;
+        esac
+    done
+    if [[ "$HELP" == "true" ]]; then
+        # Validate input file
+        if [[ -z "$input_file" ]]; then
+            log_error "No input file specified"
+            log_error "Use --help for usage information"
+            exit 1
+        fi
+        
+        # Generate output filename if not provided
+        if [[ -z "$output_file" ]]; then
+            output_file=$(generate_output_name "$input_file" "$SAMPLE_RATE")
+        fi
+        
+        # Validate sample rate
+        if ! [[ "$SAMPLE_RATE" =~ ^[0-9]+$ ]] || [[ "$SAMPLE_RATE" -lt 1000 ]] || [[ "$SAMPLE_RATE" -gt 192000 ]]; then
+            log_error "Invalid sample rate: $SAMPLE_RATE (must be between 1000 and 192000)"
+            exit 1
+        fi
+        
+        # Validate output format
+        if [[ "$OUTPUT_FORMAT" != "wav" && "$OUTPUT_FORMAT" != "mp3" ]]; then
+            log_error "Invalid output format: $OUTPUT_FORMAT (must be 'wav' or 'mp3')"
+            exit 1
+        fi
+        
+        
+        echo "$input_file|$output_file|$OUTPUT_FORMAT"
+    fi
+}
+
+# Main function
+main() {
+    # Parse arguments
+    local args_result
+    args_result=$(parse_args "$@")
+    if [[ "$args_result" == "" ]]; then
+        exit 1
+    fi
+    IFS='|' read -r input_file output_file OUTPUT_FORMAT <<< "$args_result"
+    
+    # Detect available tool (after format is determined)
+    local tool
+    tool=$(detect_tool)
+    
+    if [[ "$VERBOSE" == "true" ]]; then
+        log_info "Using audio processing tool: $tool"
+        log_info "Input file: $input_file"
+        log_info "Output file: $output_file"
+        log_info "Sample rate: $SAMPLE_RATE Hz"
+        log_info "Output format: $OUTPUT_FORMAT"
+    fi
+    
+    # Perform conversion
+    convert_to_ivr "$input_file" "$output_file" "$SAMPLE_RATE" "$tool"
+    
+    if [[ "$DRY_RUN" == "false" ]]; then
+        log_success "Conversion completed successfully!"
+        log_info "Output file: $output_file"
+        log_info "Format: Mono, ${SAMPLE_RATE}Hz, 16-bit ${OUTPUT_FORMAT^^}, phone-optimized"
+    fi
+}
+
+# Run main function with all arguments
+main "$@"

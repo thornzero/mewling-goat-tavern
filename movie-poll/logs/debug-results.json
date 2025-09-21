@@ -1,0 +1,898 @@
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T11:55:22-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T15:55:18.320Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:55:18.320Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:55:18.321Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:55:18.321Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:55:18.321Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:55:18.321Z"
+      },
+      {
+        "duration": 0,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:55:18.321Z"
+      }
+    ],
+    "timestamp": "2025-09-20T15:55:18.320Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T11:57:03-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T15:56:54.728Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:56:54.728Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:56:54.729Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:56:54.729Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:56:54.729Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:56:54.729Z"
+      },
+      {
+        "duration": 0,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:56:54.729Z"
+      }
+    ],
+    "timestamp": "2025-09-20T15:56:54.728Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T11:58:35-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T15:58:27.925Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:58:27.925Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:58:27.925Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:58:27.925Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:58:27.925Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:58:27.925Z"
+      },
+      {
+        "duration": 1,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:58:27.926Z"
+      }
+    ],
+    "timestamp": "2025-09-20T15:58:27.925Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T11:59:47-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T15:59:42.510Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:59:42.510Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:59:42.511Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:59:42.511Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:59:42.511Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T15:59:42.511Z"
+      },
+      {
+        "duration": 0,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T15:59:42.511Z"
+      }
+    ],
+    "timestamp": "2025-09-20T15:59:42.510Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T12:10:27-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T16:10:22.448Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:10:22.448Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:10:22.450Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:10:22.450Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:10:22.450Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:10:22.450Z"
+      },
+      {
+        "duration": 1,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:10:22.451Z"
+      }
+    ],
+    "timestamp": "2025-09-20T16:10:22.448Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T12:13:23-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T16:13:17.922Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.922Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.923Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      }
+    ],
+    "timestamp": "2025-09-20T16:13:17.922Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T12:13:26-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T16:13:17.922Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.922Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.923Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      }
+    ],
+    "timestamp": "2025-09-20T16:13:17.922Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T12:13:27-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T16:13:17.922Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.922Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.923Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      },
+      {
+        "duration": 0,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:13:17.924Z"
+      }
+    ],
+    "timestamp": "2025-09-20T16:13:17.922Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T12:15:02-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T16:14:55.214Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:14:55.214Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:14:55.216Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:14:55.216Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "",
+          "cookieArray": [],
+          "cookieCount": 0,
+          "cookieDetails": []
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:14:55.216Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:14:55.216Z"
+      },
+      {
+        "duration": 0,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:14:55.216Z"
+      }
+    ],
+    "timestamp": "2025-09-20T16:14:55.214Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T12:16:58-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T16:16:51.311Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:16:51.311Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:16:51.312Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:16:52.317Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "movie_poll_session=oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc",
+          "cookieArray": [
+            "movie_poll_session=oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc"
+          ],
+          "cookieCount": 1,
+          "cookieDetails": [
+            {
+              "name": "movie_poll_session",
+              "value": "oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc"
+            }
+          ],
+          "cookieVisible": true,
+          "sessionCookie": "movie_poll_session=oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:16:52.317Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T16:16:52.317Z"
+      },
+      {
+        "duration": 0,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T16:16:52.317Z"
+      }
+    ],
+    "timestamp": "2025-09-20T16:16:51.311Z"
+  }
+}
+{
+  "diagnosis": {
+    "issues": [
+      "No cookies found in browser"
+    ],
+    "recommendations": [
+      "Check cookie SameSite policy and ensure cookies are being set properly"
+    ],
+    "status": "issues_found"
+  },
+  "server_timestamp": "2025-09-20T16:05:32-04:00",
+  "test_results": {
+    "browser": {
+      "cookieCount": 0,
+      "cookies": "",
+      "location": "http://localhost:3000/debug-page",
+      "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+    },
+    "tests": [
+      {
+        "duration": 0,
+        "name": "Initial State",
+        "result": {
+          "cookies": "",
+          "location": "http://localhost:3000/debug-page",
+          "timestamp": "2025-09-20T20:05:15.171Z",
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T20:05:15.171Z"
+      },
+      {
+        "duration": 1,
+        "name": "Session Creation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T20:05:15.172Z"
+      },
+      {
+        "duration": 0,
+        "name": "Session Persistence",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T20:05:16.172Z"
+      },
+      {
+        "duration": 0,
+        "name": "Cookie Analysis",
+        "result": {
+          "allCookies": "movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY",
+          "cookieArray": [
+            "movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY"
+          ],
+          "cookieCount": 1,
+          "cookieDetails": [
+            {
+              "name": "movie_poll_session",
+              "value": "yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY"
+            }
+          ],
+          "cookieVisible": true,
+          "sessionCookie": "movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY"
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T20:05:16.172Z"
+      },
+      {
+        "duration": 0,
+        "name": "HTMX Configuration",
+        "result": {
+          "htmxLoaded": true,
+          "timeout": 0,
+          "version": "2.0.7",
+          "withCredentials": true
+        },
+        "status": "success",
+        "timestamp": "2025-09-20T20:05:16.172Z"
+      },
+      {
+        "duration": 1,
+        "name": "Voting Flow Simulation",
+        "result": {},
+        "status": "success",
+        "timestamp": "2025-09-20T20:05:16.173Z"
+      }
+    ],
+    "timestamp": "2025-09-20T20:05:15.171Z"
+  }
+}

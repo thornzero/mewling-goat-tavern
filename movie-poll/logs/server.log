@@ -1,0 +1,1371 @@
+2025/09/20 11:02:41 main.go:46: === Server Starting ===
+2025/09/20 11:02:41 main.go:136: Admin users already exist, skipping default admin creation
+2025/09/20 11:02:41 main.go:651: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:03:46 main.go:263: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 11:03:46 main.go:272: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: 3d602e126508f668e64bdd70f3eab82b, Votes: 0
+2025/09/20 11:03:46 main.go:277: DEBUG: Session ID in handleStartPoll: 630UQ31jlfvNVNyvbRXoOdRvfu3PGfZF5tHHFm9Y6UQ
+2025/09/20 11:03:46 main.go:280: DEBUG: Response headers being set: map[Vary:[Cookie]]
+2025/09/20 11:03:52 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:03:52 main.go:368: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 63a9377770e630fe004b20a96305814b, Votes: 0
+2025/09/20 11:03:52 main.go:373: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:03:53 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:03:53 main.go:368: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 3c4650deac3203cd7c11929058006c9c, Votes: 0
+2025/09/20 11:03:53 main.go:373: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:03:54 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:03:54 main.go:368: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 32d9d29e5f5a95df9f35ee5696820d27, Votes: 0
+2025/09/20 11:03:54 main.go:373: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:03:57 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:03:57 main.go:368: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 98aa95fa7aaa9b3a887d9e7656b39c1c, Votes: 0
+2025/09/20 11:03:57 main.go:373: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:03:58 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:03:58 main.go:368: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 8fb059e1faf7ddb8e8a45dfeee1a5407, Votes: 0
+2025/09/20 11:03:58 main.go:373: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:04:00 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:04:00 main.go:368: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: b5382a3026a0bf57311d715f9fcb2fda, Votes: 0
+2025/09/20 11:04:00 main.go:373: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:06:18 main.go:662: 🛑 Shutting down server...
+2025/09/20 11:06:18 main.go:671: ✅ Server shutdown complete
+2025/09/20 11:06:21 main.go:46: === Server Starting ===
+2025/09/20 11:06:21 main.go:136: Admin users already exist, skipping default admin creation
+2025/09/20 11:06:21 main.go:654: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:07:14 main.go:263: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 11:07:14 main.go:272: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: 9624b9e0eccf592caea1805675966875, Votes: 0
+2025/09/20 11:07:14 main.go:277: DEBUG: Session ID in handleStartPoll: tbq_Ae3L3fVs_aF4y-Tfg95UPEn3lvr9D5x29iyfrYo
+2025/09/20 11:07:14 main.go:280: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 11:07:14 main.go:300: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=tbq_Ae3L3fVs_aF4y-Tfg95UPEn3lvr9D5x29iyfrYo; Path=/; Expires=Sat, 20 Sep 2025 15:07:15 GMT; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 11:07:16 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:07:16 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: acbe020d8b46c20556840b1cf388bf92, Votes: 0
+2025/09/20 11:07:16 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:07:18 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:07:18 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: d95d05af31f2832b6c79197abd07c56f, Votes: 0
+2025/09/20 11:07:18 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:07:18 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:07:18 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 890bf138652bde767ecc19daf71ac917, Votes: 0
+2025/09/20 11:07:18 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:08:32 main.go:665: 🛑 Shutting down server...
+2025/09/20 11:08:32 main.go:674: ✅ Server shutdown complete
+2025/09/20 11:08:35 main.go:46: === Server Starting ===
+2025/09/20 11:08:35 main.go:136: Admin users already exist, skipping default admin creation
+2025/09/20 11:08:35 main.go:654: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:09:20 main.go:263: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 11:09:20 main.go:272: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: 1e8fce45217dcf3c5a5a2045b7bae781, Votes: 0
+2025/09/20 11:09:20 main.go:277: DEBUG: Session ID in handleStartPoll: rcspeHbVDXBEQSoLPoRnQR14F08BHeIhveWQhyZOctU
+2025/09/20 11:09:20 main.go:280: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 11:09:20 main.go:300: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=rcspeHbVDXBEQSoLPoRnQR14F08BHeIhveWQhyZOctU; Path=/; Expires=Sat, 20 Sep 2025 15:09:21 GMT; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 11:09:23 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:23 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 16fc35983a16dde7e38490fb41bd3c04, Votes: 0
+2025/09/20 11:09:23 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:25 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:25 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 5c3262f4a291200388396a9a247c41bb, Votes: 0
+2025/09/20 11:09:25 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:26 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:26 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: cd8ac8e753b50befd2cbe9231809804a, Votes: 0
+2025/09/20 11:09:26 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:26 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:26 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 041fc796300696c2d1ad2486a9409c0f, Votes: 0
+2025/09/20 11:09:26 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:27 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:27 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 3b8fc5ead124f6e45f5972b05f3e6728, Votes: 0
+2025/09/20 11:09:27 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:27 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:27 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 881672dda578338e0c3122b7dae928f1, Votes: 0
+2025/09/20 11:09:27 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:28 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:28 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: ea048a6e246c5da2876f409147a1841d, Votes: 0
+2025/09/20 11:09:28 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:28 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:28 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 1b837e62487e002187d56af16ac525ed, Votes: 0
+2025/09/20 11:09:28 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:32 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:32 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 8ebd3f59ecbfe9f66f59f598f7714bf5, Votes: 0
+2025/09/20 11:09:32 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:09:32 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:09:32 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 68385fb9dc073ea84fa690ce6ebb932f, Votes: 0
+2025/09/20 11:09:32 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:11:12 main.go:665: 🛑 Shutting down server...
+2025/09/20 11:11:12 main.go:674: ✅ Server shutdown complete
+2025/09/20 11:11:16 main.go:46: === Server Starting ===
+2025/09/20 11:11:16 main.go:136: Admin users already exist, skipping default admin creation
+2025/09/20 11:11:16 main.go:654: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:14:00 main.go:263: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 11:14:00 main.go:272: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: 96d1243ab979e370cd75e5b52ff9c680, Votes: 0
+2025/09/20 11:14:00 main.go:277: DEBUG: Session ID in handleStartPoll: RMddMb3RoBTpa0CXb8mUnbEL2f0dM9DcsTx6a6ZZ_5g
+2025/09/20 11:14:00 main.go:280: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 11:14:00 main.go:300: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=RMddMb3RoBTpa0CXb8mUnbEL2f0dM9DcsTx6a6ZZ_5g; Path=/; Expires=Sat, 20 Sep 2025 15:14:01 GMT; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 11:14:05 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:14:05 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 815312ef69ab055d9b3d7443f947488b, Votes: 0
+2025/09/20 11:14:05 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:14:07 main.go:367: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:14:07 main.go:371: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 251a2c3b042eefbbf8d85fb3cee5aed3, Votes: 0
+2025/09/20 11:14:07 main.go:376: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:15:53 main.go:665: 🛑 Shutting down server...
+2025/09/20 11:15:53 main.go:674: ✅ Server shutdown complete
+2025/09/20 11:15:56 main.go:46: === Server Starting ===
+2025/09/20 11:15:56 main.go:136: Admin users already exist, skipping default admin creation
+2025/09/20 11:15:56 main.go:670: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:16:50 main.go:263: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 11:16:50 main.go:286: DEBUG: Manually set cookie: movie_poll_session=QdL6B4Mmv2NKBv30vHJrKyRfgtH37bO8U4-FmAxXp-o; Path=/; Expires=Sun, 21 Sep 2025 15:16:50 GMT; SameSite=Lax
+2025/09/20 11:16:50 main.go:288: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: 1c39af801fc4d70f725ac315f9ae0b87, Votes: 0
+2025/09/20 11:16:50 main.go:293: DEBUG: Session ID in handleStartPoll: QdL6B4Mmv2NKBv30vHJrKyRfgtH37bO8U4-FmAxXp-o
+2025/09/20 11:16:50 main.go:296: DEBUG: Response headers before render: map[Set-Cookie:[movie_poll_session=QdL6B4Mmv2NKBv30vHJrKyRfgtH37bO8U4-FmAxXp-o; Path=/; Expires=Sun, 21 Sep 2025 15:16:50 GMT; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 11:16:50 main.go:316: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=QdL6B4Mmv2NKBv30vHJrKyRfgtH37bO8U4-FmAxXp-o; Path=/; Expires=Sun, 21 Sep 2025 15:16:50 GMT; SameSite=Lax movie_poll_session=QdL6B4Mmv2NKBv30vHJrKyRfgtH37bO8U4-FmAxXp-o; Path=/; Expires=Sat, 20 Sep 2025 15:16:51 GMT; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 11:16:56 main.go:383: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:16:56 main.go:387: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: cabf77189e1483cec5107a0990a72d0a, Votes: 0
+2025/09/20 11:16:56 main.go:392: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:16:59 main.go:383: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:16:59 main.go:387: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 3ea9ce4bc962bfb168074c68977c412a, Votes: 0
+2025/09/20 11:16:59 main.go:392: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:21:22 main.go:681: 🛑 Shutting down server...
+2025/09/20 11:21:22 main.go:690: ✅ Server shutdown complete
+2025/09/20 11:21:25 main.go:46: === Server Starting ===
+2025/09/20 11:21:25 main.go:136: Admin users already exist, skipping default admin creation
+2025/09/20 11:21:25 main.go:651: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:23:56 main.go:263: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 11:23:56 main.go:272: DEBUG: Session ID in handleStartPoll: 
+2025/09/20 11:23:56 main.go:273: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: a28c65669a31078e9405ad22c71f90f2, Votes: 0
+2025/09/20 11:23:56 main.go:277: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 11:23:56 main.go:297: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=HCGC11XR0CdzGqfzdW0Kl3c7B9qeXUDO3whLRwmuWrs; Path=/; Expires=Sat, 20 Sep 2025 15:23:57 GMT; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 11:24:10 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:24:10 main.go:368: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:24:10 main.go:372: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 3a3140066f55072825cb96cce79b7ce0, Votes: 0
+2025/09/20 11:24:11 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:24:11 main.go:368: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:24:11 main.go:372: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 9d80bb0f1b294f940674136d8cacd1f1, Votes: 0
+2025/09/20 11:25:58 main.go:662: 🛑 Shutting down server...
+2025/09/20 11:25:58 main.go:671: ✅ Server shutdown complete
+2025/09/20 11:26:01 main.go:46: === Server Starting ===
+2025/09/20 11:26:01 main.go:136: Admin users already exist, skipping default admin creation
+2025/09/20 11:26:01 main.go:651: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:26:26 main.go:263: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 11:26:26 main.go:272: DEBUG: Session ID in handleStartPoll: 
+2025/09/20 11:26:26 main.go:273: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: e752f5b530f4fbf6c02c5cbc033a0ec3, Votes: 0
+2025/09/20 11:26:26 main.go:277: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 11:26:26 main.go:297: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=tI9KGvsvuccNSnIuH6Ia2fQfL-bJF5Vfy-1kvGS501g; Path=/; Expires=Sat, 20 Sep 2025 15:26:27 GMT; HttpOnly; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 11:26:33 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:26:33 main.go:368: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:26:33 main.go:372: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 0d7670985b51abcad04c46ef3954ac16, Votes: 0
+2025/09/20 11:26:35 main.go:364: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:26:35 main.go:368: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:26:35 main.go:372: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 455e8a1751966f9302c7e532b99cce33, Votes: 0
+2025/09/20 11:27:32 main.go:662: 🛑 Shutting down server...
+2025/09/20 11:27:32 main.go:671: ✅ Server shutdown complete
+2025/09/20 11:27:36 main.go:46: === Server Starting ===
+2025/09/20 11:27:36 main.go:136: Admin users already exist, skipping default admin creation
+2025/09/20 11:27:36 main.go:652: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:29:25 main.go:263: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 11:29:25 main.go:273: DEBUG: Session ID in handleStartPoll: tCuZ89q0pJPgSiDXFwDnDv8CxzjtLhSQu6Br2v1x--Y
+2025/09/20 11:29:25 main.go:274: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: ce67cb97a913f446bb45244062faf9c0, Votes: 0
+2025/09/20 11:29:25 main.go:278: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 11:29:25 main.go:298: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=tCuZ89q0pJPgSiDXFwDnDv8CxzjtLhSQu6Br2v1x--Y; Path=/; Expires=Sat, 20 Sep 2025 15:29:26 GMT; HttpOnly; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 11:29:28 main.go:365: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:29:28 main.go:369: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:29:28 main.go:373: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 06f84e61f84930b330c660a27475c5bb, Votes: 0
+2025/09/20 11:29:31 main.go:365: DEBUG: Cookies in handleVotingSeen: []
+2025/09/20 11:29:31 main.go:369: DEBUG: Session ID in handleVotingSeen: 
+2025/09/20 11:29:31 main.go:373: DEBUG: Session data in handleVotingSeen - UserName: , DeviceID: 715db1e1f435937742436bb513e9e5e8, Votes: 0
+2025/09/20 11:32:55 main.go:46: === Server Starting ===
+2025/09/20 11:32:55 main.go:143: Admin users already exist, skipping default admin creation
+2025/09/20 11:32:55 main.go:747: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/20 11:32:55 main.go:751: ✅ Found available port: 3001
+2025/09/20 11:32:55 main.go:715: 🚀 Movie Poll Server starting on :3001
+2025/09/20 11:37:29 main.go:663: 🛑 Shutting down server...
+2025/09/20 11:37:29 main.go:726: 🛑 Shutting down server...
+2025/09/20 11:37:29 main.go:672: ✅ Server shutdown complete
+2025/09/20 11:37:29 main.go:735: ✅ Server shutdown complete
+2025/09/20 11:37:33 main.go:46: === Server Starting ===
+2025/09/20 11:37:33 main.go:143: Admin users already exist, skipping default admin creation
+2025/09/20 11:37:33 main.go:715: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:42:38 main.go:726: 🛑 Shutting down server...
+2025/09/20 11:42:38 main.go:735: ✅ Server shutdown complete
+2025/09/20 11:42:44 main.go:46: === Server Starting ===
+2025/09/20 11:42:44 main.go:143: Admin users already exist, skipping default admin creation
+2025/09/20 11:42:44 main.go:728: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:43:05 main.go:659: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:43:05 main.go:660: DEBUG SESSION - Cookies received: []
+2025/09/20 11:43:05 main.go:661: DEBUG SESSION - New session token: hnRbXfQ5Y8fqCcK4f51OauVNP1N_Dg9knsz1B7onR64
+2025/09/20 11:43:05 main.go:662: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=93a3148be6c5393b61d074b16b4eede4
+2025/09/20 11:43:07 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:07 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:07 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:07 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=99745bd28824ccf490c0de1a7d7ed09b, Votes=0
+2025/09/20 11:43:34 main.go:659: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:43:34 main.go:660: DEBUG SESSION - Cookies received: []
+2025/09/20 11:43:34 main.go:661: DEBUG SESSION - New session token: LjHv-ZvLm3g1EOB1mVhq0NppRhuYAZi1Ip1vd1sXsH0
+2025/09/20 11:43:34 main.go:662: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=fe178d51da5c96a511e68a36099afeb6
+2025/09/20 11:43:35 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:35 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:35 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:35 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=fb3e9abcb8ddb251e33b58cb62bddbd5, Votes=0
+2025/09/20 11:43:36 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:36 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:36 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:36 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=93662a3c2cb0f38770a6eff5cc441422, Votes=0
+2025/09/20 11:43:37 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:37 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:37 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:37 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=a0b64410bf8bcd7d2ce88437816e2d8e, Votes=0
+2025/09/20 11:43:37 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:37 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:37 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:37 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=da3c23b552b035e29d013f41de0f2fb7, Votes=0
+2025/09/20 11:43:37 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:37 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:37 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:37 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=a260aa955d598a6b3ae1b7d273d05bdd, Votes=0
+2025/09/20 11:43:37 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:37 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:37 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:37 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=1e01226177965d077294608e489f390b, Votes=0
+2025/09/20 11:43:38 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:38 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:38 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:38 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=259de3463f3d48d58fa3b871ba07d7c6, Votes=0
+2025/09/20 11:43:38 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:38 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:38 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:38 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=e379a70cbc26d4179cdbac550c3072c4, Votes=0
+2025/09/20 11:43:43 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:43 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:43 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:43 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=5d0ab3833584e85c8e30912294c7b558, Votes=0
+2025/09/20 11:43:55 main.go:631: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:43:55 main.go:632: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:43:55 main.go:633: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:43:55 main.go:634: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=401af80a65c1a1ebbfe16fb0f8272083, Votes=0
+2025/09/20 11:50:27 main.go:739: 🛑 Shutting down server...
+2025/09/20 11:50:27 main.go:748: ✅ Server shutdown complete
+2025/09/20 11:50:34 main.go:47: === Server Starting ===
+2025/09/20 11:50:34 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 11:50:34 main.go:902: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:55:08 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:55:08 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 11:55:08 main.go:663: DEBUG SESSION - New session token: PPc3k-JDn04c6eo9AUMQzok3eRTbeI_Pz_YPnEiS_K0
+2025/09/20 11:55:08 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=0952a20f133ecdeeddf2108b0a33fa8e
+2025/09/20 11:55:11 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:55:11 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:55:11 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:55:11 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=3f55e1e12bd5c1079f725b0635de49ac, Votes=0
+2025/09/20 11:55:18 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:55:18 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 11:55:18 main.go:663: DEBUG SESSION - New session token: OLwNQsUidP71kzIMhvLley1TilVnCrtC11BLKBkdF5w
+2025/09/20 11:55:18 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=5a577f662241ab2302b1e79c9396f683
+2025/09/20 11:55:18 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:55:18 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:55:18 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:55:18 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=113634828d2ec203c1c01e9c6420be8c, Votes=0
+2025/09/20 11:55:22 main.go:689: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 11:55:22 main.go:690: Timestamp: 2025-09-20T15:55:18.320Z
+2025/09/20 11:55:22 main.go:691: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 11:55:22 main.go:697: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 11:55:22 main.go:701:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T15:55:18.320Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 11:55:22 main.go:697: Test: Session Creation - Status: success - Duration: 1ms
+2025/09/20 11:55:22 main.go:701:   Result: map[]
+2025/09/20 11:55:22 main.go:697: Test: Session Persistence - Status: success - Duration: 0ms
+2025/09/20 11:55:22 main.go:701:   Result: map[]
+2025/09/20 11:55:22 main.go:697: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 11:55:22 main.go:701:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 11:55:22 main.go:697: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 11:55:22 main.go:701:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 11:55:22 main.go:697: Test: Voting Flow Simulation - Status: success - Duration: 0ms
+2025/09/20 11:55:22 main.go:701:   Result: map[]
+2025/09/20 11:55:22 main.go:849: Debug results saved to debug-results.json
+2025/09/20 11:56:53 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:56:53 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 11:56:53 main.go:663: DEBUG SESSION - New session token: mJiPHuW08iBgkWs3wLP0TDxj431W2itewJDtterlLQE
+2025/09/20 11:56:53 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=11e3c368131ef8f73df20d34ea363675
+2025/09/20 11:56:54 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:56:54 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 11:56:54 main.go:663: DEBUG SESSION - New session token: hGRN72DS_vX_vj_k3x82h6dXdcpL6ZoxpIauVC9sST8
+2025/09/20 11:56:54 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=c6702a8a396108d42149eb7a9b631e0e
+2025/09/20 11:56:54 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:56:54 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:56:54 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:56:54 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=258ec20b7c106ede942b0f4e717e4cac, Votes=0
+2025/09/20 11:57:03 main.go:689: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 11:57:03 main.go:690: Timestamp: 2025-09-20T15:56:54.728Z
+2025/09/20 11:57:03 main.go:691: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 11:57:03 main.go:697: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 11:57:03 main.go:701:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T15:56:54.728Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 11:57:03 main.go:697: Test: Session Creation - Status: success - Duration: 1ms
+2025/09/20 11:57:03 main.go:701:   Result: map[]
+2025/09/20 11:57:03 main.go:697: Test: Session Persistence - Status: success - Duration: 0ms
+2025/09/20 11:57:03 main.go:701:   Result: map[]
+2025/09/20 11:57:03 main.go:697: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 11:57:03 main.go:701:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 11:57:03 main.go:697: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 11:57:03 main.go:701:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 11:57:03 main.go:697: Test: Voting Flow Simulation - Status: success - Duration: 0ms
+2025/09/20 11:57:03 main.go:701:   Result: map[]
+2025/09/20 11:57:03 main.go:849: Debug results saved to debug-results.json
+2025/09/20 11:58:07 main.go:913: 🛑 Shutting down server...
+2025/09/20 11:58:07 main.go:922: ✅ Server shutdown complete
+2025/09/20 11:58:15 main.go:47: === Server Starting ===
+2025/09/20 11:58:15 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 11:58:15 main.go:902: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:58:25 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:58:25 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 11:58:25 main.go:663: DEBUG SESSION - New session token: FcvMmS62oxiXaasGBfWzvkAq42dq3qmZe_IDFZfDKms
+2025/09/20 11:58:25 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=b131202bb9016fc0335d5f5057758273
+2025/09/20 11:58:27 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:58:27 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 11:58:27 main.go:663: DEBUG SESSION - New session token: 9O8EZvZsfUkjE8TWvWcoLZXfkAxYjceVJ4DrYmfxw88
+2025/09/20 11:58:27 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=532f202c0609852bb2cb40ccfc0dea72
+2025/09/20 11:58:27 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:58:27 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:58:27 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:58:27 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=7969ab8154e4b3f582954cf83741411e, Votes=0
+2025/09/20 11:58:35 main.go:689: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 11:58:35 main.go:690: Timestamp: 2025-09-20T15:58:27.925Z
+2025/09/20 11:58:35 main.go:691: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 11:58:35 main.go:697: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 11:58:35 main.go:701:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T15:58:27.925Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 11:58:35 main.go:697: Test: Session Creation - Status: success - Duration: 0ms
+2025/09/20 11:58:35 main.go:701:   Result: map[]
+2025/09/20 11:58:35 main.go:697: Test: Session Persistence - Status: success - Duration: 0ms
+2025/09/20 11:58:35 main.go:701:   Result: map[]
+2025/09/20 11:58:35 main.go:697: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 11:58:35 main.go:701:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 11:58:35 main.go:697: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 11:58:35 main.go:701:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 11:58:35 main.go:697: Test: Voting Flow Simulation - Status: success - Duration: 1ms
+2025/09/20 11:58:35 main.go:701:   Result: map[]
+2025/09/20 11:58:35 main.go:849: Debug results saved to debug-results.json
+2025/09/20 11:59:04 main.go:913: 🛑 Shutting down server...
+2025/09/20 11:59:04 main.go:922: ✅ Server shutdown complete
+2025/09/20 11:59:08 main.go:47: === Server Starting ===
+2025/09/20 11:59:08 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 11:59:08 main.go:914: 🚀 Movie Poll Server starting on :3000
+2025/09/20 11:59:42 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 11:59:42 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 11:59:42 main.go:663: DEBUG SESSION - New session token: PDk82xiTRzYL5JM97kZ13VpH9_3OFDKWROfNBOsDHVQ
+2025/09/20 11:59:42 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=6bb61d2508d96fdfe858d9063971be34
+2025/09/20 11:59:42 main.go:676: DEBUG SESSION - Explicitly set cookie: movie_poll_session=PDk82xiTRzYL5JM97kZ13VpH9_3OFDKWROfNBOsDHVQ; Path=/; Max-Age=86400; HttpOnly
+2025/09/20 11:59:42 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 11:59:42 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 11:59:42 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 11:59:42 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=3b96e3ee526e6330956c41fcb6be3483, Votes=0
+2025/09/20 11:59:47 main.go:701: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 11:59:47 main.go:702: Timestamp: 2025-09-20T15:59:42.510Z
+2025/09/20 11:59:47 main.go:703: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 11:59:47 main.go:709: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 11:59:47 main.go:713:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T15:59:42.510Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 11:59:47 main.go:709: Test: Session Creation - Status: success - Duration: 0ms
+2025/09/20 11:59:47 main.go:713:   Result: map[]
+2025/09/20 11:59:47 main.go:709: Test: Session Persistence - Status: success - Duration: 0ms
+2025/09/20 11:59:47 main.go:713:   Result: map[]
+2025/09/20 11:59:47 main.go:709: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 11:59:47 main.go:713:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 11:59:47 main.go:709: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 11:59:47 main.go:713:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 11:59:47 main.go:709: Test: Voting Flow Simulation - Status: success - Duration: 0ms
+2025/09/20 11:59:47 main.go:713:   Result: map[]
+2025/09/20 11:59:47 main.go:861: Debug results saved to debug-results.json
+2025/09/20 12:00:55 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 12:00:55 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 12:00:55 main.go:663: DEBUG SESSION - New session token: 5HVkAKMtxWQG54pwIhjcKpfh-tQL9sPPG2JGN0FAX-g
+2025/09/20 12:00:55 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=4d55fe9b752a7fb2009cecec8146604e
+2025/09/20 12:00:55 main.go:676: DEBUG SESSION - Explicitly set cookie: movie_poll_session=5HVkAKMtxWQG54pwIhjcKpfh-tQL9sPPG2JGN0FAX-g; Path=/; Max-Age=86400; HttpOnly
+2025/09/20 12:00:55 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 12:00:55 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 12:00:55 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 12:00:55 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=f5903f7db95257770ba08818ac31503c, Votes=0
+2025/09/20 12:10:22 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 12:10:22 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 12:10:22 main.go:663: DEBUG SESSION - New session token: okLav3BxtZeH2RmTp8H5_BjUAFTWC0hinYyWfryXAHg
+2025/09/20 12:10:22 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=aef74a1ab6e40deaad5c1e29973e2875
+2025/09/20 12:10:22 main.go:676: DEBUG SESSION - Explicitly set cookie: movie_poll_session=okLav3BxtZeH2RmTp8H5_BjUAFTWC0hinYyWfryXAHg; Path=/; Max-Age=86400; HttpOnly
+2025/09/20 12:10:22 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 12:10:22 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 12:10:22 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 12:10:22 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=d5c18bdb8aca1a84c97de0aacfb2a2c9, Votes=0
+2025/09/20 12:10:27 main.go:701: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 12:10:27 main.go:702: Timestamp: 2025-09-20T16:10:22.448Z
+2025/09/20 12:10:27 main.go:703: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:10:27 main.go:709: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 12:10:27 main.go:713:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T16:10:22.448Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:10:27 main.go:709: Test: Session Creation - Status: success - Duration: 1ms
+2025/09/20 12:10:27 main.go:713:   Result: map[]
+2025/09/20 12:10:27 main.go:709: Test: Session Persistence - Status: success - Duration: 0ms
+2025/09/20 12:10:27 main.go:713:   Result: map[]
+2025/09/20 12:10:27 main.go:709: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 12:10:27 main.go:713:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 12:10:27 main.go:709: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 12:10:27 main.go:713:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 12:10:27 main.go:709: Test: Voting Flow Simulation - Status: success - Duration: 1ms
+2025/09/20 12:10:27 main.go:713:   Result: map[]
+2025/09/20 12:10:27 main.go:861: Debug results saved to debug-results.json
+2025/09/20 12:12:41 main.go:925: 🛑 Shutting down server...
+2025/09/20 12:12:41 main.go:934: ✅ Server shutdown complete
+2025/09/20 12:12:48 main.go:47: === Server Starting ===
+2025/09/20 12:12:48 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 12:12:48 main.go:914: 🚀 Movie Poll Server starting on :3000
+2025/09/20 12:13:09 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 12:13:09 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 12:13:09 main.go:663: DEBUG SESSION - New session token: FapMcLKEREEkeN1df0IEyiwPiWI-B259ti296rRc9Mk
+2025/09/20 12:13:09 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=90217efabab165c0b06581fdf7e163f8
+2025/09/20 12:13:09 main.go:676: DEBUG SESSION - Explicitly set cookie: movie_poll_session=FapMcLKEREEkeN1df0IEyiwPiWI-B259ti296rRc9Mk; Path=/; Max-Age=86400
+2025/09/20 12:13:09 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 12:13:09 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 12:13:09 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 12:13:09 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=e0f8ee6fba14bbbd9bee5511d21b09a7, Votes=0
+2025/09/20 12:13:17 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 12:13:17 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 12:13:17 main.go:663: DEBUG SESSION - New session token: SBDu-cQcO53-uysBS_VRyIoRiG__hPHs-Oc0uhczoZ4
+2025/09/20 12:13:17 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=ed93a5e490dc0be03788f37e33127b60
+2025/09/20 12:13:17 main.go:676: DEBUG SESSION - Explicitly set cookie: movie_poll_session=SBDu-cQcO53-uysBS_VRyIoRiG__hPHs-Oc0uhczoZ4; Path=/; Max-Age=86400
+2025/09/20 12:13:17 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 12:13:17 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 12:13:17 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 12:13:17 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=59f15b9d151183364a7ed27685d14129, Votes=0
+2025/09/20 12:13:23 main.go:701: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 12:13:23 main.go:702: Timestamp: 2025-09-20T16:13:17.922Z
+2025/09/20 12:13:23 main.go:703: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:13:23 main.go:709: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 12:13:23 main.go:713:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T16:13:17.922Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:13:23 main.go:709: Test: Session Creation - Status: success - Duration: 0ms
+2025/09/20 12:13:23 main.go:713:   Result: map[]
+2025/09/20 12:13:23 main.go:709: Test: Session Persistence - Status: success - Duration: 1ms
+2025/09/20 12:13:23 main.go:713:   Result: map[]
+2025/09/20 12:13:23 main.go:709: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 12:13:23 main.go:713:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 12:13:23 main.go:709: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 12:13:23 main.go:713:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 12:13:23 main.go:709: Test: Voting Flow Simulation - Status: success - Duration: 0ms
+2025/09/20 12:13:23 main.go:713:   Result: map[]
+2025/09/20 12:13:23 main.go:861: Debug results saved to debug-results.json
+2025/09/20 12:13:26 main.go:701: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 12:13:26 main.go:702: Timestamp: 2025-09-20T16:13:17.922Z
+2025/09/20 12:13:26 main.go:703: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:13:26 main.go:709: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 12:13:26 main.go:713:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T16:13:17.922Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:13:26 main.go:709: Test: Session Creation - Status: success - Duration: 0ms
+2025/09/20 12:13:26 main.go:713:   Result: map[]
+2025/09/20 12:13:26 main.go:709: Test: Session Persistence - Status: success - Duration: 1ms
+2025/09/20 12:13:26 main.go:713:   Result: map[]
+2025/09/20 12:13:26 main.go:709: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 12:13:26 main.go:713:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 12:13:26 main.go:709: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 12:13:26 main.go:713:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 12:13:26 main.go:709: Test: Voting Flow Simulation - Status: success - Duration: 0ms
+2025/09/20 12:13:26 main.go:713:   Result: map[]
+2025/09/20 12:13:26 main.go:861: Debug results saved to debug-results.json
+2025/09/20 12:13:27 main.go:701: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 12:13:27 main.go:702: Timestamp: 2025-09-20T16:13:17.922Z
+2025/09/20 12:13:27 main.go:703: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:13:27 main.go:709: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 12:13:27 main.go:713:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T16:13:17.922Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:13:27 main.go:709: Test: Session Creation - Status: success - Duration: 0ms
+2025/09/20 12:13:27 main.go:713:   Result: map[]
+2025/09/20 12:13:27 main.go:709: Test: Session Persistence - Status: success - Duration: 1ms
+2025/09/20 12:13:27 main.go:713:   Result: map[]
+2025/09/20 12:13:27 main.go:709: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 12:13:27 main.go:713:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 12:13:27 main.go:709: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 12:13:27 main.go:713:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 12:13:27 main.go:709: Test: Voting Flow Simulation - Status: success - Duration: 0ms
+2025/09/20 12:13:27 main.go:713:   Result: map[]
+2025/09/20 12:13:27 main.go:861: Debug results saved to debug-results.json
+2025/09/20 12:14:31 main.go:925: 🛑 Shutting down server...
+2025/09/20 12:14:31 main.go:934: ✅ Server shutdown complete
+2025/09/20 12:14:37 main.go:47: === Server Starting ===
+2025/09/20 12:14:37 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 12:14:37 main.go:914: 🚀 Movie Poll Server starting on :3000
+2025/09/20 12:14:55 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 12:14:55 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 12:14:55 main.go:663: DEBUG SESSION - New session token: txh-1WfipNF50lYFjbYAZD43POIzZA-F8VZKMyie6EY
+2025/09/20 12:14:55 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=f2683b39fbc5c0fa90c27352c2441f16
+2025/09/20 12:14:55 main.go:676: DEBUG SESSION - Explicitly set cookie: movie_poll_session=txh-1WfipNF50lYFjbYAZD43POIzZA-F8VZKMyie6EY; Path=/; Max-Age=86400
+2025/09/20 12:14:55 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 12:14:55 main.go:634: DEBUG ENDPOINT - Cookies: []
+2025/09/20 12:14:55 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 12:14:55 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=33731686943f52b742a9be15802957b4, Votes=0
+2025/09/20 12:15:02 main.go:701: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 12:15:02 main.go:702: Timestamp: 2025-09-20T16:14:55.214Z
+2025/09/20 12:15:02 main.go:703: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:15:02 main.go:709: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 12:15:02 main.go:713:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T16:14:55.214Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:15:02 main.go:709: Test: Session Creation - Status: success - Duration: 1ms
+2025/09/20 12:15:02 main.go:713:   Result: map[]
+2025/09/20 12:15:02 main.go:709: Test: Session Persistence - Status: success - Duration: 0ms
+2025/09/20 12:15:02 main.go:713:   Result: map[]
+2025/09/20 12:15:02 main.go:709: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 12:15:02 main.go:713:   Result: map[allCookies: cookieArray:[] cookieCount:0 cookieDetails:[]]
+2025/09/20 12:15:02 main.go:709: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 12:15:02 main.go:713:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 12:15:02 main.go:709: Test: Voting Flow Simulation - Status: success - Duration: 0ms
+2025/09/20 12:15:02 main.go:713:   Result: map[]
+2025/09/20 12:15:02 main.go:861: Debug results saved to debug-results.json
+2025/09/20 12:15:48 main.go:925: 🛑 Shutting down server...
+2025/09/20 12:15:48 main.go:934: ✅ Server shutdown complete
+2025/09/20 12:15:52 main.go:47: === Server Starting ===
+2025/09/20 12:15:52 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 12:15:52 main.go:914: 🚀 Movie Poll Server starting on :3000
+2025/09/20 12:16:51 main.go:661: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 12:16:51 main.go:662: DEBUG SESSION - Cookies received: []
+2025/09/20 12:16:51 main.go:663: DEBUG SESSION - New session token: oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc
+2025/09/20 12:16:51 main.go:664: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=be4d42b13a97bed05a92caa5f556cef1
+2025/09/20 12:16:51 main.go:676: DEBUG SESSION - Explicitly set cookie: movie_poll_session=oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc; Path=/; Max-Age=86400
+2025/09/20 12:16:52 main.go:633: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 12:16:52 main.go:634: DEBUG ENDPOINT - Cookies: [movie_poll_session=oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc]
+2025/09/20 12:16:52 main.go:635: DEBUG ENDPOINT - Session Token: 
+2025/09/20 12:16:52 main.go:636: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=4596b0d91685bddb5525886109c24c76, Votes=0
+2025/09/20 12:16:58 main.go:701: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 12:16:58 main.go:702: Timestamp: 2025-09-20T16:16:51.311Z
+2025/09/20 12:16:58 main.go:703: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:16:58 main.go:709: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 12:16:58 main.go:713:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T16:16:51.311Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 12:16:58 main.go:709: Test: Session Creation - Status: success - Duration: 1ms
+2025/09/20 12:16:58 main.go:713:   Result: map[]
+2025/09/20 12:16:58 main.go:709: Test: Session Persistence - Status: success - Duration: 1ms
+2025/09/20 12:16:58 main.go:713:   Result: map[]
+2025/09/20 12:16:58 main.go:709: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 12:16:58 main.go:713:   Result: map[allCookies:movie_poll_session=oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc cookieArray:[movie_poll_session=oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc] cookieCount:1 cookieDetails:[map[name:movie_poll_session value:oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc]] cookieVisible:true sessionCookie:movie_poll_session=oabIZipXPm87WYOYasmX-n4cKv0Ny0HdrTUWZVrVehc]
+2025/09/20 12:16:58 main.go:709: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 12:16:58 main.go:713:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 12:16:58 main.go:709: Test: Voting Flow Simulation - Status: success - Duration: 0ms
+2025/09/20 12:16:58 main.go:713:   Result: map[]
+2025/09/20 12:16:58 main.go:861: Debug results saved to debug-results.json
+2025/09/20 12:20:03 main.go:925: 🛑 Shutting down server...
+2025/09/20 12:20:03 main.go:934: ✅ Server shutdown complete
+2025/09/20 12:20:22 main.go:47: === Server Starting ===
+2025/09/20 12:20:22 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 12:20:22 main.go:919: 🚀 Movie Poll Server starting on :3000
+2025/09/20 16:02:19 main.go:666: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 16:02:19 main.go:667: DEBUG SESSION - Cookies received: []
+2025/09/20 16:02:19 main.go:668: DEBUG SESSION - New session token: P-_1k6WQG182ANuxR8T6yDPuKGv9absoNhs626q1yOA
+2025/09/20 16:02:19 main.go:669: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=819a1cad64f6e4591678bae295cf4196
+2025/09/20 16:02:19 main.go:681: DEBUG SESSION - Explicitly set cookie: movie_poll_session=P-_1k6WQG182ANuxR8T6yDPuKGv9absoNhs626q1yOA; Path=/; Max-Age=86400
+2025/09/20 16:02:22 main.go:626: DEBUG ENDPOINT - Session Token from manager: ''
+2025/09/20 16:02:22 main.go:627: DEBUG ENDPOINT - Session Data: UserName='', DeviceID='11f250337b18b52263a56ed8948abce3', Votes=0
+2025/09/20 16:02:22 main.go:638: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 16:02:22 main.go:639: DEBUG ENDPOINT - Cookies: [movie_poll_session=P-_1k6WQG182ANuxR8T6yDPuKGv9absoNhs626q1yOA]
+2025/09/20 16:02:22 main.go:640: DEBUG ENDPOINT - Session Token: 
+2025/09/20 16:02:22 main.go:641: DEBUG ENDPOINT - Session Data: UserName=, DeviceID=11f250337b18b52263a56ed8948abce3, Votes=0
+2025/09/20 16:02:45 main.go:930: 🛑 Shutting down server...
+2025/09/20 16:02:45 main.go:939: ✅ Server shutdown complete
+2025/09/20 16:03:04 main.go:47: === Server Starting ===
+2025/09/20 16:03:04 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 16:03:04 main.go:919: 🚀 Movie Poll Server starting on :3000
+2025/09/20 16:05:15 main.go:666: DEBUG SESSION - Creating session for request: GET /debug/session
+2025/09/20 16:05:15 main.go:667: DEBUG SESSION - Cookies received: []
+2025/09/20 16:05:15 main.go:668: DEBUG SESSION - New session token: yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY
+2025/09/20 16:05:15 main.go:669: DEBUG SESSION - Session data: UserName=DebugUser, DeviceID=97e717b5c5350be66450b06da9462986
+2025/09/20 16:05:15 main.go:681: DEBUG SESSION - Explicitly set cookie: movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY; Path=/; Max-Age=86400
+2025/09/20 16:05:16 main.go:626: DEBUG ENDPOINT - Session Token from manager: 'yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY'
+2025/09/20 16:05:16 main.go:627: DEBUG ENDPOINT - Session Data: UserName='DebugUser', DeviceID='97e717b5c5350be66450b06da9462986', Votes=0
+2025/09/20 16:05:16 main.go:638: DEBUG ENDPOINT - Request: GET /debug
+2025/09/20 16:05:16 main.go:639: DEBUG ENDPOINT - Cookies: [movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY]
+2025/09/20 16:05:16 main.go:640: DEBUG ENDPOINT - Session Token: yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY
+2025/09/20 16:05:16 main.go:641: DEBUG ENDPOINT - Session Data: UserName=DebugUser, DeviceID=97e717b5c5350be66450b06da9462986, Votes=0
+2025/09/20 16:05:32 main.go:706: === COMPREHENSIVE DEBUG TEST RESULTS ===
+2025/09/20 16:05:32 main.go:707: Timestamp: 2025-09-20T20:05:15.171Z
+2025/09/20 16:05:32 main.go:708: Browser: map[cookieCount:0 cookies: location:http://localhost:3000/debug-page userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 16:05:32 main.go:714: Test: Initial State - Status: success - Duration: 0ms
+2025/09/20 16:05:32 main.go:718:   Result: map[cookies: location:http://localhost:3000/debug-page timestamp:2025-09-20T20:05:15.171Z userAgent:Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0]
+2025/09/20 16:05:32 main.go:714: Test: Session Creation - Status: success - Duration: 1ms
+2025/09/20 16:05:32 main.go:718:   Result: map[]
+2025/09/20 16:05:32 main.go:714: Test: Session Persistence - Status: success - Duration: 0ms
+2025/09/20 16:05:32 main.go:718:   Result: map[]
+2025/09/20 16:05:32 main.go:714: Test: Cookie Analysis - Status: success - Duration: 0ms
+2025/09/20 16:05:32 main.go:718:   Result: map[allCookies:movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY cookieArray:[movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY] cookieCount:1 cookieDetails:[map[name:movie_poll_session value:yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY]] cookieVisible:true sessionCookie:movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY]
+2025/09/20 16:05:32 main.go:714: Test: HTMX Configuration - Status: success - Duration: 0ms
+2025/09/20 16:05:32 main.go:718:   Result: map[htmxLoaded:true timeout:0 version:2.0.7 withCredentials:true]
+2025/09/20 16:05:32 main.go:714: Test: Voting Flow Simulation - Status: success - Duration: 1ms
+2025/09/20 16:05:32 main.go:718:   Result: map[]
+2025/09/20 16:05:32 main.go:866: Debug results saved to debug-results.json
+2025/09/20 16:06:44 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY]
+2025/09/20 16:06:44 main.go:378: DEBUG: Session ID in handleVotingSeen: yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY
+2025/09/20 16:06:44 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: DebugUser, DeviceID: 97e717b5c5350be66450b06da9462986, Votes: 0
+2025/09/20 16:11:28 main.go:930: 🛑 Shutting down server...
+2025/09/20 16:11:28 main.go:939: ✅ Server shutdown complete
+2025/09/20 16:11:45 main.go:47: === Server Starting ===
+2025/09/20 16:11:45 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 16:11:45 main.go:919: 🚀 Movie Poll Server starting on :3000
+2025/09/20 16:12:06 main.go:272: DEBUG: Cookies in handleStartPoll: [movie_poll_session=yQAhdob1wNEcolyepLLPES4Xa4fd6bUGhOWZkRMYjzY]
+2025/09/20 16:12:06 main.go:282: DEBUG: Session ID in handleStartPoll: r9AhqAuHPpVeM-hzQIIBCGEylLjb9Q816qJAFQGhrTY
+2025/09/20 16:12:06 main.go:283: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: dc94d6991fdf8d7b01a58f9d606b04ff, Votes: 0
+2025/09/20 16:12:06 main.go:287: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 16:12:06 main.go:307: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=r9AhqAuHPpVeM-hzQIIBCGEylLjb9Q816qJAFQGhrTY; Path=/; Expires=Sat, 20 Sep 2025 20:42:07 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 16:12:10 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=r9AhqAuHPpVeM-hzQIIBCGEylLjb9Q816qJAFQGhrTY]
+2025/09/20 16:12:10 main.go:378: DEBUG: Session ID in handleVotingSeen: r9AhqAuHPpVeM-hzQIIBCGEylLjb9Q816qJAFQGhrTY
+2025/09/20 16:12:10 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: dc94d6991fdf8d7b01a58f9d606b04ff, Votes: 0
+2025/09/20 16:12:29 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=r9AhqAuHPpVeM-hzQIIBCGEylLjb9Q816qJAFQGhrTY]
+2025/09/20 16:12:29 main.go:378: DEBUG: Session ID in handleVotingSeen: r9AhqAuHPpVeM-hzQIIBCGEylLjb9Q816qJAFQGhrTY
+2025/09/20 16:12:29 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: dc94d6991fdf8d7b01a58f9d606b04ff, Votes: 1
+2025/09/20 16:12:47 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=r9AhqAuHPpVeM-hzQIIBCGEylLjb9Q816qJAFQGhrTY]
+2025/09/20 16:12:47 main.go:378: DEBUG: Session ID in handleVotingSeen: r9AhqAuHPpVeM-hzQIIBCGEylLjb9Q816qJAFQGhrTY
+2025/09/20 16:12:47 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: dc94d6991fdf8d7b01a58f9d606b04ff, Votes: 2
+2025/09/20 16:15:05 main.go:930: 🛑 Shutting down server...
+2025/09/20 16:15:05 main.go:939: ✅ Server shutdown complete
+2025/09/20 16:15:09 main.go:47: === Server Starting ===
+2025/09/20 16:15:09 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 16:15:09 main.go:919: 🚀 Movie Poll Server starting on :3000
+2025/09/20 16:28:10 main.go:930: 🛑 Shutting down server...
+2025/09/20 16:28:10 main.go:939: ✅ Server shutdown complete
+2025/09/20 16:28:16 main.go:47: === Server Starting ===
+2025/09/20 16:28:16 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 16:28:16 main.go:919: 🚀 Movie Poll Server starting on :3000
+2025/09/20 16:50:18 main.go:930: 🛑 Shutting down server...
+2025/09/20 16:50:18 main.go:939: ✅ Server shutdown complete
+2025/09/20 16:50:23 main.go:47: === Server Starting ===
+2025/09/20 16:50:23 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 16:50:23 main.go:919: 🚀 Movie Poll Server starting on :3000
+2025/09/20 16:51:20 main.go:272: DEBUG: Cookies in handleStartPoll: []
+2025/09/20 16:51:20 main.go:282: DEBUG: Session ID in handleStartPoll: oA7aP4cCMpZEjQ7Ge92VEPtmcD-4lOTbWvaa6sv-I1k
+2025/09/20 16:51:20 main.go:283: DEBUG: Session data in handleStartPoll - UserName: test, DeviceID: ab6c3653d72beea2a948f85567334787, Votes: 0
+2025/09/20 16:51:20 main.go:287: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 16:51:20 main.go:307: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=oA7aP4cCMpZEjQ7Ge92VEPtmcD-4lOTbWvaa6sv-I1k; Path=/; Expires=Sat, 20 Sep 2025 21:21:21 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 16:51:46 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=oA7aP4cCMpZEjQ7Ge92VEPtmcD-4lOTbWvaa6sv-I1k]
+2025/09/20 16:51:46 main.go:378: DEBUG: Session ID in handleVotingSeen: oA7aP4cCMpZEjQ7Ge92VEPtmcD-4lOTbWvaa6sv-I1k
+2025/09/20 16:51:46 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: test, DeviceID: ab6c3653d72beea2a948f85567334787, Votes: 0
+2025/09/20 16:56:17 main.go:930: 🛑 Shutting down server...
+2025/09/20 16:56:17 main.go:939: ✅ Server shutdown complete
+2025/09/20 16:56:24 main.go:47: === Server Starting ===
+2025/09/20 16:56:24 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 16:56:24 main.go:936: 🚀 Movie Poll Server starting on :3000
+2025/09/20 16:56:56 main.go:272: DEBUG: Cookies in handleStartPoll: [movie_poll_session=oA7aP4cCMpZEjQ7Ge92VEPtmcD-4lOTbWvaa6sv-I1k]
+2025/09/20 16:56:56 main.go:282: DEBUG: Session ID in handleStartPoll: IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw
+2025/09/20 16:56:56 main.go:283: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: b7bde71dcf08d205054ed372f5ef34aa, Votes: 0
+2025/09/20 16:56:56 main.go:287: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 16:56:56 main.go:307: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw; Path=/; Expires=Sat, 20 Sep 2025 21:26:57 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 16:57:03 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw]
+2025/09/20 16:57:03 main.go:378: DEBUG: Session ID in handleVotingSeen: IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw
+2025/09/20 16:57:03 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: b7bde71dcf08d205054ed372f5ef34aa, Votes: 0
+2025/09/20 16:57:17 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw]
+2025/09/20 16:57:17 main.go:378: DEBUG: Session ID in handleVotingSeen: IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw
+2025/09/20 16:57:17 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: b7bde71dcf08d205054ed372f5ef34aa, Votes: 1
+2025/09/20 16:57:28 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw]
+2025/09/20 16:57:28 main.go:378: DEBUG: Session ID in handleVotingSeen: IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw
+2025/09/20 16:57:28 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: b7bde71dcf08d205054ed372f5ef34aa, Votes: 1
+2025/09/20 16:59:40 main.go:947: 🛑 Shutting down server...
+2025/09/20 16:59:40 main.go:956: ✅ Server shutdown complete
+2025/09/20 16:59:43 main.go:47: === Server Starting ===
+2025/09/20 16:59:43 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 16:59:43 main.go:940: 🚀 Movie Poll Server starting on :3000
+2025/09/20 17:00:16 main.go:272: DEBUG: Cookies in handleStartPoll: [movie_poll_session=IGAN5OfZ4ihpOlNRf1ZY6V2qZqpbLatav9gvWdphtQw]
+2025/09/20 17:00:16 main.go:282: DEBUG: Session ID in handleStartPoll: _OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0
+2025/09/20 17:00:16 main.go:283: DEBUG: Session data in handleStartPoll - UserName: test, DeviceID: 9857380b8d8f08d94b44ee274740cd6e, Votes: 0
+2025/09/20 17:00:16 main.go:287: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 17:00:16 main.go:307: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=_OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0; Path=/; Expires=Sat, 20 Sep 2025 21:30:17 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 17:00:20 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=_OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0]
+2025/09/20 17:00:20 main.go:378: DEBUG: Session ID in handleVotingSeen: _OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0
+2025/09/20 17:00:20 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: test, DeviceID: 9857380b8d8f08d94b44ee274740cd6e, Votes: 0
+2025/09/20 17:00:26 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=_OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0]
+2025/09/20 17:00:26 main.go:378: DEBUG: Session ID in handleVotingSeen: _OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0
+2025/09/20 17:00:26 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: test, DeviceID: 9857380b8d8f08d94b44ee274740cd6e, Votes: 1
+2025/09/20 17:00:30 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=_OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0]
+2025/09/20 17:00:30 main.go:378: DEBUG: Session ID in handleVotingSeen: _OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0
+2025/09/20 17:00:30 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: test, DeviceID: 9857380b8d8f08d94b44ee274740cd6e, Votes: 2
+2025/09/20 17:04:03 main.go:47: === Server Starting ===
+2025/09/20 17:04:03 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 17:04:03 main.go:1016: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/20 17:04:03 main.go:1020: ✅ Found available port: 3001
+2025/09/20 17:04:03 main.go:984: 🚀 Movie Poll Server starting on :3001
+2025/09/20 17:04:38 main.go:272: DEBUG: Cookies in handleStartPoll: [movie_poll_session=_OTkumtUfe89aXCASy2Fvws11Q1JaAbcojMDsHRerf0]
+2025/09/20 17:04:38 main.go:282: DEBUG: Session ID in handleStartPoll: R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4
+2025/09/20 17:04:38 main.go:283: DEBUG: Session data in handleStartPoll - UserName: test, DeviceID: 7e62b16dad9e99c9651754fb594f840b, Votes: 0
+2025/09/20 17:04:38 main.go:287: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 17:04:38 main.go:307: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4; Path=/; Expires=Sat, 20 Sep 2025 21:34:39 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 17:04:45 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4]
+2025/09/20 17:04:45 main.go:378: DEBUG: Session ID in handleVotingSeen: R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4
+2025/09/20 17:04:45 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: test, DeviceID: 7e62b16dad9e99c9651754fb594f840b, Votes: 0
+2025/09/20 17:04:52 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4]
+2025/09/20 17:04:52 main.go:378: DEBUG: Session ID in handleVotingSeen: R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4
+2025/09/20 17:04:52 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: test, DeviceID: 7e62b16dad9e99c9651754fb594f840b, Votes: 1
+2025/09/20 17:04:55 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4]
+2025/09/20 17:04:55 main.go:378: DEBUG: Session ID in handleVotingSeen: R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4
+2025/09/20 17:04:55 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: test, DeviceID: 7e62b16dad9e99c9651754fb594f840b, Votes: 2
+2025/09/20 17:17:10 main.go:47: === Server Starting ===
+2025/09/20 17:17:10 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 17:17:10 main.go:1016: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/20 17:17:10 main.go:1020: ✅ Found available port: 3002
+2025/09/20 17:17:10 main.go:984: 🚀 Movie Poll Server starting on :3002
+2025/09/20 17:17:51 main.go:272: DEBUG: Cookies in handleStartPoll: [movie_poll_session=R4bszgGYRifgZoP4RfWyqEx_V1eqfb16Zrf_lBrA4z4]
+2025/09/20 17:17:51 main.go:282: DEBUG: Session ID in handleStartPoll: PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk
+2025/09/20 17:17:51 main.go:283: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: 6d7cfa77674497bdea85be07a2254dc9, Votes: 0
+2025/09/20 17:17:51 main.go:287: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 17:17:51 main.go:307: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk; Path=/; Expires=Sat, 20 Sep 2025 21:47:52 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 17:17:55 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk]
+2025/09/20 17:17:55 main.go:378: DEBUG: Session ID in handleVotingSeen: PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk
+2025/09/20 17:17:55 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: 6d7cfa77674497bdea85be07a2254dc9, Votes: 0
+2025/09/20 17:18:02 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk]
+2025/09/20 17:18:02 main.go:378: DEBUG: Session ID in handleVotingSeen: PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk
+2025/09/20 17:18:02 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: 6d7cfa77674497bdea85be07a2254dc9, Votes: 1
+2025/09/20 17:18:08 main.go:374: DEBUG: Cookies in handleVotingSeen: [movie_poll_session=PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk]
+2025/09/20 17:18:08 main.go:378: DEBUG: Session ID in handleVotingSeen: PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk
+2025/09/20 17:18:08 main.go:382: DEBUG: Session data in handleVotingSeen - UserName: Test, DeviceID: 6d7cfa77674497bdea85be07a2254dc9, Votes: 2
+2025/09/20 17:18:12 basic.go:70: Error calculating appeal scores: database is locked (5) (SQLITE_BUSY)
+2025/09/20 17:18:25 basic.go:70: Error calculating appeal scores: database is locked (5) (SQLITE_BUSY)
+2025/09/20 17:24:26 main.go:47: === Server Starting ===
+2025/09/20 17:24:26 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 17:24:26 main.go:1016: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/20 17:24:26 main.go:1020: ✅ Found available port: 3003
+2025/09/20 17:24:26 main.go:984: 🚀 Movie Poll Server starting on :3003
+2025/09/20 17:25:29 basic.go:70: Error calculating appeal scores: database is locked (5) (SQLITE_BUSY)
+2025/09/20 17:25:33 basic.go:70: Error calculating appeal scores: database is locked (5) (SQLITE_BUSY)
+2025/09/20 17:25:36 basic.go:70: Error calculating appeal scores: database is locked (5) (SQLITE_BUSY)
+2025/09/20 17:26:04 basic.go:70: Error calculating appeal scores: database is locked (5) (SQLITE_BUSY)
+2025/09/20 17:26:11 basic.go:70: Error calculating appeal scores: database is locked (5) (SQLITE_BUSY)
+2025/09/20 17:26:28 main.go:995: 🛑 Shutting down server...
+2025/09/20 17:26:28 main.go:995: 🛑 Shutting down server...
+2025/09/20 17:26:28 main.go:951: 🛑 Shutting down server...
+2025/09/20 17:26:28 main.go:995: 🛑 Shutting down server...
+2025/09/20 17:26:28 main.go:1004: ✅ Server shutdown complete
+2025/09/20 17:26:28 main.go:960: ✅ Server shutdown complete
+2025/09/20 17:26:28 main.go:1004: ✅ Server shutdown complete
+2025/09/20 17:26:28 main.go:1004: ✅ Server shutdown complete
+2025/09/20 17:26:37 main.go:47: === Server Starting ===
+2025/09/20 17:26:37 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 17:26:37 main.go:984: 🚀 Movie Poll Server starting on :3000
+2025/09/20 17:27:17 main.go:272: DEBUG: Cookies in handleStartPoll: [movie_poll_session=PXcGuV85qs6vl3RWIIQ0BZaWEoV6ipvE-ICRwhS6uWk]
+2025/09/20 17:27:17 main.go:282: DEBUG: Session ID in handleStartPoll: AG9brCsLlvFAVz-1Snpn31L4zCh2py2iArzh-C-kgb0
+2025/09/20 17:27:17 main.go:283: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: b35c80be2d7e88769c90399ae348b262, Votes: 0
+2025/09/20 17:27:17 main.go:287: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 17:27:17 main.go:307: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=AG9brCsLlvFAVz-1Snpn31L4zCh2py2iArzh-C-kgb0; Path=/; Expires=Sat, 20 Sep 2025 21:57:18 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 17:30:05 main.go:995: 🛑 Shutting down server...
+2025/09/20 17:30:05 main.go:1004: ✅ Server shutdown complete
+2025/09/20 17:33:37 main.go:47: === Server Starting ===
+2025/09/20 17:33:37 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 17:33:37 main.go:984: 🚀 Movie Poll Server starting on :3000
+2025/09/20 17:41:20 main.go:47: === Server Starting ===
+2025/09/20 17:41:20 main.go:145: Admin users already exist, skipping default admin creation
+2025/09/20 17:41:20 main.go:1016: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/20 17:41:20 main.go:1020: ✅ Found available port: 3001
+2025/09/20 17:41:20 main.go:984: 🚀 Movie Poll Server starting on :3001
+2025/09/20 17:41:49 main.go:272: DEBUG: Cookies in handleStartPoll: [movie_poll_session=AG9brCsLlvFAVz-1Snpn31L4zCh2py2iArzh-C-kgb0]
+2025/09/20 17:41:49 main.go:282: DEBUG: Session ID in handleStartPoll: 32nBxDlqfjRvI4jzoalLqw0UYck9v8dUcQGIxcV-9MQ
+2025/09/20 17:41:49 main.go:283: DEBUG: Session data in handleStartPoll - UserName: Test, DeviceID: 5af058cddf76ddaeb3fc3f4eb18350d7, Votes: 0
+2025/09/20 17:41:49 main.go:287: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/20 17:41:49 main.go:307: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=32nBxDlqfjRvI4jzoalLqw0UYck9v8dUcQGIxcV-9MQ; Path=/; Expires=Sat, 20 Sep 2025 22:11:50 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/20 17:44:05 main.go:995: 🛑 Shutting down server...
+2025/09/20 17:44:05 main.go:995: 🛑 Shutting down server...
+2025/09/20 17:44:05 main.go:1004: ✅ Server shutdown complete
+2025/09/20 17:44:05 main.go:1004: ✅ Server shutdown complete
+2025/09/20 17:57:34 main.go:48: === Server Starting ===
+2025/09/20 17:57:34 main.go:157: Admin users already exist, skipping default admin creation
+2025/09/20 17:57:34 main.go:1090: 🚀 Movie Poll Server starting on :3000
+2025/09/20 18:07:52 main.go:1184: Admin login failed for user admin: invalid password
+2025/09/20 18:07:59 main.go:1184: Admin login failed for user admin: invalid password
+2025/09/20 18:08:14 main.go:1101: 🛑 Shutting down server...
+2025/09/20 18:08:14 main.go:1110: ✅ Server shutdown complete
+2025/09/20 18:09:48 main.go:48: === Server Starting ===
+2025/09/20 18:09:48 main.go:157: Admin users already exist, skipping default admin creation
+2025/09/20 18:09:48 main.go:1090: 🚀 Movie Poll Server starting on :3000
+2025/09/20 18:35:30 main.go:1101: 🛑 Shutting down server...
+2025/09/20 18:35:30 main.go:1110: ✅ Server shutdown complete
+2025/09/20 18:45:17 main.go:48: === Server Starting ===
+2025/09/20 18:45:17 main.go:157: Admin users already exist, skipping default admin creation
+2025/09/20 18:45:17 main.go:1090: 🚀 Movie Poll Server starting on :3000
+2025/09/20 18:46:54 main.go:1201: Admin login failed for user admin: invalid password
+2025/09/20 18:48:38 main.go:1101: 🛑 Shutting down server...
+2025/09/20 18:48:38 main.go:1110: ✅ Server shutdown complete
+2025/09/21 14:35:27 logging.go:44: === Server Starting ===
+2025/09/21 14:35:27 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 14:35:27 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 14:35:33 logging.go:44: 🛑 Shutting down server...
+2025/09/21 14:35:33 logging.go:44: ✅ Server shutdown complete
+2025/09/21 16:37:50 logging.go:44: === Server Starting ===
+2025/09/21 16:37:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:37:50 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:37:57 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:37:57 logging.go:44: ✅ Server shutdown complete
+2025/09/21 16:38:22 logging.go:44: === Server Starting ===
+2025/09/21 16:38:22 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:38:22 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:38:32 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:38:32 logging.go:44: ✅ Server shutdown complete
+2025/09/21 16:38:41 logging.go:44: === Server Starting ===
+2025/09/21 16:38:41 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:38:41 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:38:47 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:38:47 logging.go:44: ✅ Server shutdown complete
+2025/09/21 16:38:49 logging.go:44: === Server Starting ===
+2025/09/21 16:38:49 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:38:49 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:39:01 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:39:01 logging.go:44: ✅ Server shutdown complete
+2025/09/21 16:41:09 logging.go:44: === Server Starting ===
+2025/09/21 16:41:09 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:41:09 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:42:12 logging.go:44: === Server Starting ===
+2025/09/21 16:42:12 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:42:12 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 16:42:12 logging.go:49: ✅ Found available port: 3001
+2025/09/21 16:42:12 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 16:42:34 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:42:34 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:42:34 logging.go:44: ✅ Server shutdown complete
+2025/09/21 16:42:34 logging.go:44: ✅ Server shutdown complete
+2025/09/21 16:46:05 logging.go:44: === Server Starting ===
+2025/09/21 16:46:05 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:46:05 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:47:44 logging.go:59: ERROR: Admin login failed for user admin: invalid password
+2025/09/21 16:48:57 logging.go:44: === Server Starting ===
+2025/09/21 16:48:57 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:48:57 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:49:01 logging.go:44: === Server Starting ===
+2025/09/21 16:49:01 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:49:01 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:49:14 logging.go:44: === Server Starting ===
+2025/09/21 16:49:14 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:49:14 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 16:49:14 logging.go:49: ✅ Found available port: 3001
+2025/09/21 16:49:14 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 16:49:28 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:49:28 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:49:28 logging.go:44: ✅ Server shutdown complete
+2025/09/21 16:49:33 logging.go:44: === Server Starting ===
+2025/09/21 16:49:33 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:49:33 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:49:40 logging.go:44: === Server Starting ===
+2025/09/21 16:49:40 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 16:49:40 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 16:51:48 logging.go:44: 🛑 Shutting down server...
+2025/09/21 16:51:48 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:00:19 logging.go:44: === Server Starting ===
+2025/09/21 17:00:19 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:00:19 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:00:26 logging.go:44: === Server Starting ===
+2025/09/21 17:00:26 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:00:26 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 17:00:26 logging.go:49: ✅ Found available port: 3001
+2025/09/21 17:00:26 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 17:00:33 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:00:33 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:00:33 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:00:38 logging.go:44: === Server Starting ===
+2025/09/21 17:00:38 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:00:38 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:00:52 logging.go:44: === Server Starting ===
+2025/09/21 17:00:52 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:00:52 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 17:00:52 logging.go:49: ✅ Found available port: 3001
+2025/09/21 17:00:52 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 17:01:16 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:01:16 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:01:25 logging.go:44: === Server Starting ===
+2025/09/21 17:01:25 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:01:25 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:05:26 logging.go:44: === Server Starting ===
+2025/09/21 17:05:26 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:05:26 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:06:50 logging.go:44: === Server Starting ===
+2025/09/21 17:06:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:06:50 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 17:06:50 logging.go:49: ✅ Found available port: 3001
+2025/09/21 17:06:50 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 17:07:50 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:07:50 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:07:50 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:07:50 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:08:07 logging.go:44: === Server Starting ===
+2025/09/21 17:08:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:08:07 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:09:13 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:09:13 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:09:31 logging.go:44: === Server Starting ===
+2025/09/21 17:09:31 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:09:31 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:10:38 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:10:38 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:10:50 logging.go:44: === Server Starting ===
+2025/09/21 17:10:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:10:50 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:11:12 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:11:12 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:12:34 logging.go:44: === Server Starting ===
+2025/09/21 17:12:34 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:12:34 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:13:08 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:13:08 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:13:10 logging.go:44: === Server Starting ===
+2025/09/21 17:13:10 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:13:10 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:13:22 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:13:22 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:13:24 logging.go:44: === Server Starting ===
+2025/09/21 17:13:24 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:13:24 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:13:28 logging.go:44: 🛑 Shutting down server...
+2025/09/21 17:13:28 logging.go:44: ✅ Server shutdown complete
+2025/09/21 17:13:39 logging.go:44: === Server Starting ===
+2025/09/21 17:13:39 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:13:39 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:14:42 logging.go:44: === Server Starting ===
+2025/09/21 17:14:42 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:14:42 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:15:49 logging.go:44: === Server Starting ===
+2025/09/21 17:15:49 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:15:49 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:15:56 logging.go:44: === Server Starting ===
+2025/09/21 17:15:56 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:15:56 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:16:30 logging.go:44: === Server Starting ===
+2025/09/21 17:16:30 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:16:30 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:16:37 logging.go:44: === Server Starting ===
+2025/09/21 17:16:37 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:16:37 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:18:01 logging.go:44: === Server Starting ===
+2025/09/21 17:18:01 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:18:01 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:18:07 logging.go:44: === Server Starting ===
+2025/09/21 17:18:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:18:07 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:18:14 logging.go:44: === Server Starting ===
+2025/09/21 17:18:14 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:18:14 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:18:19 logging.go:44: === Server Starting ===
+2025/09/21 17:18:19 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:18:19 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:18:25 logging.go:44: === Server Starting ===
+2025/09/21 17:18:25 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:18:25 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:18:31 logging.go:44: === Server Starting ===
+2025/09/21 17:18:31 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:18:31 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:19:07 logging.go:44: === Server Starting ===
+2025/09/21 17:19:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:19:07 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:19:13 logging.go:44: === Server Starting ===
+2025/09/21 17:19:13 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:19:13 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:19:18 logging.go:44: === Server Starting ===
+2025/09/21 17:19:18 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:19:18 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:19:27 logging.go:44: === Server Starting ===
+2025/09/21 17:19:27 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:19:27 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:19:52 logging.go:44: === Server Starting ===
+2025/09/21 17:19:52 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:19:52 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:19:58 logging.go:44: === Server Starting ===
+2025/09/21 17:19:58 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:19:58 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:20:46 logging.go:44: === Server Starting ===
+2025/09/21 17:20:46 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:20:46 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:20:52 logging.go:44: === Server Starting ===
+2025/09/21 17:20:52 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:20:52 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:20:59 logging.go:44: === Server Starting ===
+2025/09/21 17:20:59 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:20:59 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:21:10 logging.go:44: === Server Starting ===
+2025/09/21 17:21:10 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:21:10 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:21:15 logging.go:44: === Server Starting ===
+2025/09/21 17:21:15 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:21:15 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:39:03 logging.go:44: === Server Starting ===
+2025/09/21 17:39:03 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:39:03 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:39:06 logging.go:44: === Server Starting ===
+2025/09/21 17:39:06 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:39:06 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:39:22 logging.go:44: === Server Starting ===
+2025/09/21 17:39:22 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:39:22 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:40:06 logging.go:44: === Server Starting ===
+2025/09/21 17:40:06 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:40:06 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:40:08 logging.go:44: === Server Starting ===
+2025/09/21 17:40:08 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:40:08 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:40:13 logging.go:44: === Server Starting ===
+2025/09/21 17:40:13 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:40:13 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:41:50 logging.go:44: === Server Starting ===
+2025/09/21 17:41:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:41:50 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:55:06 logging.go:44: === Server Starting ===
+2025/09/21 17:55:06 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:55:06 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:55:30 logging.go:44: === Server Starting ===
+2025/09/21 17:55:30 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:55:30 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:55:32 logging.go:44: === Server Starting ===
+2025/09/21 17:55:32 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:55:32 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:57:27 logging.go:44: === Server Starting ===
+2025/09/21 17:57:27 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:57:27 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:57:29 logging.go:44: === Server Starting ===
+2025/09/21 17:57:29 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:57:29 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:57:36 logging.go:44: === Server Starting ===
+2025/09/21 17:57:36 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:57:36 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:57:39 logging.go:44: === Server Starting ===
+2025/09/21 17:57:39 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:57:39 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:57:42 logging.go:44: === Server Starting ===
+2025/09/21 17:57:42 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:57:42 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:57:57 logging.go:44: === Server Starting ===
+2025/09/21 17:57:57 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:57:57 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:58:10 logging.go:44: === Server Starting ===
+2025/09/21 17:58:10 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:58:10 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:58:28 logging.go:44: === Server Starting ===
+2025/09/21 17:58:28 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:58:28 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:58:35 logging.go:44: === Server Starting ===
+2025/09/21 17:58:35 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:58:35 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:58:37 logging.go:44: === Server Starting ===
+2025/09/21 17:58:37 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:58:37 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:58:39 logging.go:44: === Server Starting ===
+2025/09/21 17:58:39 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:58:39 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:59:02 logging.go:44: === Server Starting ===
+2025/09/21 17:59:02 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:59:02 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:59:17 logging.go:44: === Server Starting ===
+2025/09/21 17:59:17 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:59:17 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:59:20 logging.go:44: === Server Starting ===
+2025/09/21 17:59:20 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:59:20 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:59:25 logging.go:44: === Server Starting ===
+2025/09/21 17:59:25 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:59:25 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:59:26 logging.go:44: === Server Starting ===
+2025/09/21 17:59:26 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:59:26 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:59:28 logging.go:44: === Server Starting ===
+2025/09/21 17:59:28 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:59:28 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 17:59:31 logging.go:44: === Server Starting ===
+2025/09/21 17:59:31 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 17:59:31 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:07:49 logging.go:44: === Server Starting ===
+2025/09/21 18:07:49 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:07:49 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:07:55 logging.go:44: === Server Starting ===
+2025/09/21 18:07:55 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:07:55 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:09 logging.go:44: === Server Starting ===
+2025/09/21 18:08:09 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:09 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:14 logging.go:44: === Server Starting ===
+2025/09/21 18:08:14 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:14 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:17 logging.go:44: === Server Starting ===
+2025/09/21 18:08:17 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:17 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:21 logging.go:44: === Server Starting ===
+2025/09/21 18:08:21 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:21 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:22 logging.go:44: === Server Starting ===
+2025/09/21 18:08:22 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:22 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:25 logging.go:44: === Server Starting ===
+2025/09/21 18:08:25 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:25 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:27 logging.go:44: === Server Starting ===
+2025/09/21 18:08:27 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:27 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:33 logging.go:44: === Server Starting ===
+2025/09/21 18:08:33 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:33 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:08:33 logging.go:44: === Server Starting ===
+2025/09/21 18:08:33 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:08:33 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:17:37 logging.go:44: === Server Starting ===
+2025/09/21 18:17:37 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:17:37 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:17:44 logging.go:44: === Server Starting ===
+2025/09/21 18:17:44 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:17:44 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:17:56 logging.go:44: === Server Starting ===
+2025/09/21 18:17:56 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:17:56 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:18:02 logging.go:44: === Server Starting ===
+2025/09/21 18:18:02 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:18:02 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:18:16 logging.go:44: === Server Starting ===
+2025/09/21 18:18:16 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:18:16 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:18:29 logging.go:44: === Server Starting ===
+2025/09/21 18:18:29 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:18:29 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:18:37 logging.go:44: === Server Starting ===
+2025/09/21 18:18:37 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:18:37 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:19:08 logging.go:44: === Server Starting ===
+2025/09/21 18:19:08 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:19:08 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:19:33 logging.go:44: === Server Starting ===
+2025/09/21 18:19:33 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:19:33 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:21:08 logging.go:44: === Server Starting ===
+2025/09/21 18:21:08 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:21:08 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:23:47 logging.go:44: === Server Starting ===
+2025/09/21 18:23:47 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:23:47 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:23:48 logging.go:44: === Server Starting ===
+2025/09/21 18:23:48 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:23:48 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:23:52 logging.go:44: === Server Starting ===
+2025/09/21 18:23:52 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:23:52 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:23:54 logging.go:44: === Server Starting ===
+2025/09/21 18:23:54 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:23:54 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:24:56 logging.go:44: === Server Starting ===
+2025/09/21 18:24:56 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:24:56 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:25:07 logging.go:44: === Server Starting ===
+2025/09/21 18:25:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:25:07 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:29:45 logging.go:44: === Server Starting ===
+2025/09/21 18:29:45 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:29:45 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:29:48 logging.go:44: === Server Starting ===
+2025/09/21 18:29:48 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:29:48 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:29:55 logging.go:44: === Server Starting ===
+2025/09/21 18:29:55 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:29:55 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:13 logging.go:44: === Server Starting ===
+2025/09/21 18:30:13 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:13 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:17 logging.go:44: === Server Starting ===
+2025/09/21 18:30:17 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:17 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:21 logging.go:44: === Server Starting ===
+2025/09/21 18:30:21 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:21 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:28 logging.go:44: === Server Starting ===
+2025/09/21 18:30:28 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:28 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:29 logging.go:44: === Server Starting ===
+2025/09/21 18:30:29 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:29 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:32 logging.go:44: === Server Starting ===
+2025/09/21 18:30:32 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:32 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:35 logging.go:44: === Server Starting ===
+2025/09/21 18:30:35 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:35 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:39 logging.go:44: === Server Starting ===
+2025/09/21 18:30:39 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:39 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:49 logging.go:44: === Server Starting ===
+2025/09/21 18:30:49 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:49 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:50 logging.go:44: === Server Starting ===
+2025/09/21 18:30:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:50 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:54 logging.go:44: === Server Starting ===
+2025/09/21 18:30:54 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:54 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:30:58 logging.go:44: === Server Starting ===
+2025/09/21 18:30:58 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:30:58 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:31:10 logging.go:44: === Server Starting ===
+2025/09/21 18:31:10 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:31:10 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:33:04 logging.go:44: === Server Starting ===
+2025/09/21 18:33:04 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:33:04 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:33:04 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:33:04 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:33:33 logging.go:79: DEBUG: Cookies in handleStartPoll: []
+2025/09/21 18:33:33 logging.go:59: ERROR: Error adding device name: SQL logic error: no such table: user_devices (1)
+2025/09/21 18:33:33 logging.go:79: DEBUG: SESSION [handleStartPoll] - Token: -jTMaTn3KtkQTDhZBaghuajTYbC8EmGr7tv6D58hvDQ, User: Daniel, Device: f4cf53cb-a1a6-4700-ae88-f9b67e70b4ee, Votes: 0
+2025/09/21 18:33:33 logging.go:79: DEBUG: Response headers before render: map[Vary:[Cookie]]
+2025/09/21 18:33:33 logging.go:79: DEBUG: Response headers after render: map[Cache-Control:[no-cache="Set-Cookie"] Set-Cookie:[movie_poll_session=-jTMaTn3KtkQTDhZBaghuajTYbC8EmGr7tv6D58hvDQ; Path=/; Expires=Sun, 21 Sep 2025 23:03:34 GMT; Max-Age=1800; SameSite=Lax] Vary:[Cookie]]
+2025/09/21 18:35:19 logging.go:44: === Server Starting ===
+2025/09/21 18:35:19 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:35:19 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:35:19 logging.go:44: === Server Starting ===
+2025/09/21 18:35:19 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:35:19 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:35:19 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:35:19 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:35:26 logging.go:44: === Server Starting ===
+2025/09/21 18:35:26 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:35:26 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:35:26 logging.go:44: === Server Starting ===
+2025/09/21 18:35:26 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:35:26 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:35:26 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:35:26 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:35:38 logging.go:44: === Server Starting ===
+2025/09/21 18:35:38 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:35:38 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:35:38 logging.go:44: === Server Starting ===
+2025/09/21 18:35:38 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:35:38 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:35:38 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:35:38 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:35:49 logging.go:44: === Server Starting ===
+2025/09/21 18:35:49 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:35:49 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:35:49 logging.go:44: === Server Starting ===
+2025/09/21 18:35:49 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:35:49 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:35:49 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:35:49 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:36:00 logging.go:44: === Server Starting ===
+2025/09/21 18:36:00 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:36:00 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:36:00 logging.go:44: === Server Starting ===
+2025/09/21 18:36:00 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:36:00 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:36:00 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:36:00 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:36:20 logging.go:44: === Server Starting ===
+2025/09/21 18:36:20 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:36:20 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:36:20 logging.go:44: === Server Starting ===
+2025/09/21 18:36:20 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:36:20 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:36:20 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:36:20 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:38:24 logging.go:44: === Server Starting ===
+2025/09/21 18:38:24 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:38:24 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:38:24 logging.go:44: === Server Starting ===
+2025/09/21 18:38:24 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:38:24 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:38:24 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:38:24 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:38:30 logging.go:44: === Server Starting ===
+2025/09/21 18:38:30 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:38:30 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:38:30 logging.go:44: === Server Starting ===
+2025/09/21 18:38:30 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:38:30 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:38:30 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:38:30 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:38:39 logging.go:44: === Server Starting ===
+2025/09/21 18:38:39 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:38:39 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:38:39 logging.go:44: === Server Starting ===
+2025/09/21 18:38:39 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:38:39 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:38:39 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:38:39 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:39:04 logging.go:44: === Server Starting ===
+2025/09/21 18:39:04 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:39:04 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:39:04 logging.go:44: === Server Starting ===
+2025/09/21 18:39:04 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:39:04 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:39:04 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:39:04 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:39:07 logging.go:44: === Server Starting ===
+2025/09/21 18:39:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:39:07 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:39:07 logging.go:44: === Server Starting ===
+2025/09/21 18:39:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:39:07 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:39:07 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:39:07 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:39:17 logging.go:44: === Server Starting ===
+2025/09/21 18:39:17 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:39:17 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:39:17 logging.go:44: === Server Starting ===
+2025/09/21 18:39:17 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:39:17 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:39:17 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:39:17 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:40:16 logging.go:59: ERROR: Admin login failed for user admin: invalid password
+2025/09/21 18:41:13 logging.go:44: === Server Starting ===
+2025/09/21 18:41:13 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:13 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:41:13 logging.go:44: === Server Starting ===
+2025/09/21 18:41:13 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:13 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:41:13 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:41:13 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:41:13 logging.go:44: === Server Starting ===
+2025/09/21 18:41:13 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:13 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:41:13 logging.go:44: === Server Starting ===
+2025/09/21 18:41:13 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:13 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:41:13 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:41:13 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:41:35 logging.go:44: === Server Starting ===
+2025/09/21 18:41:35 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:35 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:41:35 logging.go:44: === Server Starting ===
+2025/09/21 18:41:35 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:35 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:41:35 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:41:35 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:41:40 logging.go:44: === Server Starting ===
+2025/09/21 18:41:40 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:40 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:41:40 logging.go:44: === Server Starting ===
+2025/09/21 18:41:40 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:40 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:41:40 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:41:40 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:41:51 logging.go:44: === Server Starting ===
+2025/09/21 18:41:51 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:51 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:41:51 logging.go:44: === Server Starting ===
+2025/09/21 18:41:51 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:41:51 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:41:51 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:41:51 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:42:50 logging.go:44: === Server Starting ===
+2025/09/21 18:42:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:42:50 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:42:50 logging.go:44: === Server Starting ===
+2025/09/21 18:42:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:42:50 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:42:50 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:42:50 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:43:05 logging.go:44: === Server Starting ===
+2025/09/21 18:43:05 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:43:05 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:43:05 logging.go:44: === Server Starting ===
+2025/09/21 18:43:05 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:43:05 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:43:05 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:43:05 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:45:47 logging.go:44: === Server Starting ===
+2025/09/21 18:45:47 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:45:47 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:45:47 logging.go:44: === Server Starting ===
+2025/09/21 18:45:47 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:45:47 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:45:47 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:45:47 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:46:01 logging.go:44: === Server Starting ===
+2025/09/21 18:46:01 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:46:01 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:46:01 logging.go:44: === Server Starting ===
+2025/09/21 18:46:01 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:46:01 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:46:01 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:46:01 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:46:27 logging.go:44: === Server Starting ===
+2025/09/21 18:46:27 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:46:27 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:46:28 logging.go:44: === Server Starting ===
+2025/09/21 18:46:28 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:46:28 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:46:28 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:46:28 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:48:20 logging.go:44: === Server Starting ===
+2025/09/21 18:48:20 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:48:20 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 18:48:20 logging.go:44: === Server Starting ===
+2025/09/21 18:48:20 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 18:48:20 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 18:48:20 logging.go:49: ✅ Found available port: 3001
+2025/09/21 18:48:20 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 18:48:29 logging.go:44: 🛑 Shutting down server...
+2025/09/21 18:48:29 logging.go:44: ✅ Server shutdown complete
+2025/09/21 18:48:29 logging.go:44: 🛑 Shutting down server...
+2025/09/21 18:48:29 logging.go:44: ✅ Server shutdown complete

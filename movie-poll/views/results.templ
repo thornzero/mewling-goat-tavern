@@ -1,0 +1,426 @@
+package views
+
+import (
+	"strconv"
+
+	"github.com/thornzero/movie-poll/types"
+)
+
+type ResultsData struct {
+	Movies []types.VotingSummary
+	Stats  types.VotingStats
+}
+
+templ ResultsPage(data ResultsData) {
+	@BaseLayout("Results", "Movie Poll Results - See how your favorite movies ranked!", ResultsContent(data))
+}
+
+templ ResultsContent(data ResultsData) {
+	<div class="min-h-screen bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900">
+		<div class="container mx-auto px-4 py-8">
+			<!-- Header -->
+			<div class="text-center mb-8">
+				<h1 class="text-4xl font-bold text-tavern-400 mb-4">🎬 Movie Poll Results</h1>
+				<p class="text-goat-300 text-lg">Movies ranked by their potential for creating shared new experiences!</p>
+			</div>
+			<!-- Appeal Score Explanation -->
+			@AppealScoreExplanation()
+			<!-- Statistics Cards -->
+			@StatsCards(data.Stats)
+			<!-- Results List -->
+			@ResultsList(data.Movies)
+			<!-- Actions -->
+			<div class="text-center mt-8">
+				<a href="/" class="btn-primary mr-4">Vote on More Movies</a>
+				<button onclick="window.location.reload()" class="btn-secondary">Refresh Results</button>
+			</div>
+		</div>
+	</div>
+}
+
+templ AppealScoreExplanation() {
+	<div class="bg-goat-800 rounded-lg p-6 mb-8 border border-goat-600">
+		<h2 class="text-2xl font-bold text-tavern-400 mb-4">🌟 How Appeal Scores Work</h2>
+		<p class="text-goat-300 mb-4">
+			Movies are ranked by their potential for creating meaningful shared experiences. Higher scores mean better choices for group viewing!
+		</p>
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+			<div class="flex items-start space-x-3">
+				<span class="text-tavern-400 font-bold">🌟</span>
+				<div>
+					<span class="font-semibold text-goat-200">Appeal Score (0-10):</span>
+					<span class="text-goat-300">Overall group appeal rating</span>
+				</div>
+			</div>
+			<div class="flex items-start space-x-3">
+				<span class="text-tavern-400 font-bold">📊</span>
+				<div>
+					<span class="font-semibold text-goat-200">Participation:</span>
+					<span class="text-goat-300">How many people voted on this movie</span>
+				</div>
+			</div>
+			<div class="flex items-start space-x-3">
+				<span class="text-tavern-400 font-bold">👀</span>
+				<div>
+					<span class="font-semibold text-goat-200">Discovery Level:</span>
+					<span class="text-goat-300">% of voters who have seen it</span>
+				</div>
+			</div>
+			<div class="flex items-start space-x-3">
+				<span class="text-tavern-400 font-bold">🆕</span>
+				<div>
+					<span class="font-semibold text-goat-200">Novelty:</span>
+					<span class="text-goat-300">% of voters who haven't seen it</span>
+				</div>
+			</div>
+			<div class="flex items-start space-x-3">
+				<span class="text-tavern-400 font-bold">🎯</span>
+				<div>
+					<span class="font-semibold text-goat-200">Sweet Spot:</span>
+					<span class="text-goat-300">Perfect balance for group discovery</span>
+				</div>
+			</div>
+			<div class="flex items-start space-x-3">
+				<span class="text-tavern-400 font-bold">🤝</span>
+				<div>
+					<span class="font-semibold text-goat-200">Consensus:</span>
+					<span class="text-goat-300">How much the group agrees on it</span>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+templ StatsCards(stats types.VotingStats) {
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+		<div class="bg-goat-700 p-6 rounded-lg text-center">
+			<div class="text-3xl font-bold text-tavern-400 mb-2">
+				{ formatInt(stats.TotalMovies) }
+			</div>
+			<div class="text-goat-300">Movies in Poll</div>
+		</div>
+		<div class="bg-goat-700 p-6 rounded-lg text-center">
+			<div class="text-3xl font-bold text-tavern-400 mb-2">
+				{ formatInt(stats.TotalVotes) }
+			</div>
+			<div class="text-goat-300">Total Votes Cast</div>
+		</div>
+		<div class="bg-goat-700 p-6 rounded-lg text-center">
+			<div class="text-3xl font-bold text-tavern-400 mb-2">
+				{ formatInt(stats.UniqueVoters) }
+			</div>
+			<div class="text-goat-300">Active Voters</div>
+		</div>
+		<div class="bg-goat-700 p-6 rounded-lg text-center">
+			<div class="text-3xl font-bold text-tavern-400 mb-2">
+				{ formatFloat(stats.AverageAppealScore) }
+			</div>
+			<div class="text-goat-300">Avg Appeal Score</div>
+		</div>
+	</div>
+}
+
+templ ResultsList(movies []types.VotingSummary) {
+	<div class="space-y-6">
+		if len(movies) == 0 {
+			<div class="text-center py-12">
+				<div class="text-6xl mb-4">🎭</div>
+				<h3 class="text-2xl font-bold text-goat-300 mb-2">No Results Yet</h3>
+				<p class="text-goat-400">Be the first to vote on some movies!</p>
+			</div>
+		} else {
+			<div class="space-y-4">
+				for i, movie := range movies {
+					@MovieResultCard(movie, i+1)
+				}
+			</div>
+		}
+	</div>
+}
+
+templ MovieResultCard(movie types.VotingSummary, rank int) {
+	<div class="bg-goat-700 rounded-lg p-6 flex items-center space-x-6">
+		<!-- Rank Badge -->
+		<div class="flex-shrink-0">
+			<div class="w-12 h-12 bg-tavern-400 text-goat-900 rounded-full flex items-center justify-center font-bold text-lg">
+				{ strconv.Itoa(rank) }
+			</div>
+		</div>
+		<!-- Movie Poster -->
+		<div class="flex-shrink-0">
+			if movie.PosterPath != nil && *movie.PosterPath != "" {
+				<img
+					src={ "https://image.tmdb.org/t/p/w200" + *movie.PosterPath }
+					alt={ movie.Title }
+					class="w-20 h-30 object-cover rounded-lg"
+				/>
+			} else {
+				<div class="w-20 h-30 bg-goat-600 rounded-lg flex items-center justify-center">
+					<span class="text-goat-400 text-xs">No Image</span>
+				</div>
+			}
+		</div>
+		<!-- Movie Info -->
+		<div class="flex-grow">
+			<h3 class="text-xl font-bold text-tavern-400 mb-2">
+				{ movie.Title }
+				if movie.Year != nil {
+					<span class="text-goat-300 font-normal">({ strconv.Itoa(*movie.Year) })</span>
+				}
+			</h3>
+			if movie.Overview != nil && *movie.Overview != "" {
+				<p class="text-goat-400 text-sm mb-3 line-clamp-2">
+					{ *movie.Overview }
+				</p>
+			}
+			<!-- Stats -->
+			<div class="flex flex-wrap gap-4 text-sm">
+				<div class="flex items-center space-x-2">
+					<span class="text-goat-300">🌟 Appeal Score:</span>
+					<span class="font-bold text-tavern-400">
+						{ formatNormalizedScore(movie.AppealScore, 10.0, "Excellent", "Poor") }
+					</span>
+				</div>
+				<div class="flex items-center space-x-2">
+					<span class="text-goat-300">📊 Participation:</span>
+					<span class="font-bold text-tavern-400">
+						{ formatNormalizedParticipation(movie.VoteCount) }
+					</span>
+				</div>
+				<div class="flex items-center space-x-2">
+					<span class="text-goat-300">👀 Discovery Level:</span>
+					<span class="font-bold text-tavern-400">
+						{ formatNormalizedDiscovery(movie.SeenCount, movie.VoteCount) }
+					</span>
+				</div>
+				<div class="flex items-center space-x-2">
+					<span class="text-goat-300">🆕 Novelty:</span>
+					<span class="font-bold text-tavern-400">
+						{ formatNormalizedNovelty(movie.VisibilityRatio) }
+					</span>
+				</div>
+			</div>
+		</div>
+		<!-- Appeal Score Bar -->
+		<div class="flex-shrink-0 w-32">
+			<div class="text-center mb-2">
+				<span class="text-sm font-bold text-tavern-400">
+					{ formatFloat(movie.AppealScore) }/10
+				</span>
+			</div>
+			<div class="w-full bg-goat-600 rounded-full h-3">
+				<div
+					class="bg-gradient-to-r from-tavern-400 to-tavern-300 h-3 rounded-full transition-all duration-500"
+					style={ "width: " + formatPercent(movie.AppealScore/10.0) }
+				></div>
+			</div>
+		</div>
+	</div>
+}
+
+// Helper functions
+func formatInt(value interface{}) string {
+	if value == nil {
+		return "0"
+	}
+	if intVal, ok := value.(int); ok {
+		return strconv.Itoa(intVal)
+	}
+	return "0"
+}
+
+func formatFloat(value interface{}) string {
+	if value == nil {
+		return "0.0"
+	}
+	if floatVal, ok := value.(float64); ok {
+		return strconv.FormatFloat(floatVal, 'f', 1, 64)
+	}
+	return "0.0"
+}
+
+func formatPercent(value interface{}) string {
+	if value == nil {
+		return "0%"
+	}
+	var floatVal float64
+	switch v := value.(type) {
+	case float64:
+		floatVal = v
+	case int:
+		floatVal = float64(v)
+	default:
+		return "0%"
+	}
+	return strconv.FormatFloat(floatVal*100, 'f', 1, 64) + "%"
+}
+
+// formatNormalizedScore formats any score to a 0-10 scale with descriptive text
+func formatNormalizedScore(value interface{}, maxValue float64, highDesc, lowDesc string) string {
+	if value == nil {
+		return "0.0 (" + lowDesc + ")"
+	}
+
+	var score float64
+	switch v := value.(type) {
+	case float64:
+		score = v
+	case int:
+		score = float64(v)
+	default:
+		return "0.0 (" + lowDesc + ")"
+	}
+
+	// Normalize to 0-10 scale
+	normalizedScore := (score / maxValue) * 10.0
+	if normalizedScore > 10.0 {
+		normalizedScore = 10.0
+	}
+
+	var description string
+	switch {
+	case normalizedScore >= 8.0:
+		description = highDesc
+	case normalizedScore >= 6.0:
+		description = "Great"
+	case normalizedScore >= 4.0:
+		description = "Good"
+	case normalizedScore >= 2.0:
+		description = "Fair"
+	default:
+		description = lowDesc
+	}
+
+	return strconv.FormatFloat(normalizedScore, 'f', 1, 64) + " (" + description + ")"
+}
+
+// formatNormalizedParticipation normalizes vote count to 0-10 scale
+func formatNormalizedParticipation(totalVotes interface{}) string {
+	if totalVotes == nil {
+		return "0.0 (None)"
+	}
+
+	var votes int
+	switch v := totalVotes.(type) {
+	case int:
+		votes = v
+	case float64:
+		votes = int(v)
+	default:
+		return "0.0 (None)"
+	}
+
+	// Normalize participation: 0 votes = 0, 10+ votes = 10
+	// This creates a reasonable scale where 1-2 votes = 1-2, 5 votes = 5, 10+ votes = 10
+	normalizedScore := float64(votes)
+	if normalizedScore > 10.0 {
+		normalizedScore = 10.0
+	}
+
+	var description string
+	switch {
+	case normalizedScore >= 8.0:
+		description = "High"
+	case normalizedScore >= 6.0:
+		description = "Good"
+	case normalizedScore >= 4.0:
+		description = "Moderate"
+	case normalizedScore >= 2.0:
+		description = "Low"
+	default:
+		description = "None"
+	}
+
+	return strconv.FormatFloat(normalizedScore, 'f', 1, 64) + " (" + description + ")"
+}
+
+// formatNormalizedDiscovery normalizes discovery level to 0-10 scale
+func formatNormalizedDiscovery(seenCount, totalVotes interface{}) string {
+	if seenCount == nil || totalVotes == nil {
+		return "0.0 (Unknown)"
+	}
+
+	var seen, total int
+	switch v := seenCount.(type) {
+	case int:
+		seen = v
+	case float64:
+		seen = int(v)
+	default:
+		return "0.0 (Unknown)"
+	}
+
+	switch v := totalVotes.(type) {
+	case int:
+		total = v
+	case float64:
+		total = int(v)
+	default:
+		return "0.0 (Unknown)"
+	}
+
+	if total == 0 {
+		return "0.0 (No votes)"
+	}
+
+	// Calculate percentage of people who have seen it
+	percentage := float64(seen) / float64(total)
+
+	// Normalize to 0-10 scale (0% seen = 0, 100% seen = 10)
+	normalizedScore := percentage * 10.0
+
+	var description string
+	switch {
+	case normalizedScore >= 8.0:
+		description = "Well-known"
+	case normalizedScore >= 6.0:
+		description = "Popular"
+	case normalizedScore >= 4.0:
+		description = "Moderate"
+	case normalizedScore >= 2.0:
+		description = "Niche"
+	default:
+		description = "Hidden gem"
+	}
+
+	return strconv.FormatFloat(normalizedScore, 'f', 1, 64) + " (" + description + ")"
+}
+
+// formatNormalizedNovelty normalizes novelty level to 0-10 scale
+func formatNormalizedNovelty(visibilityRatio interface{}) string {
+	if visibilityRatio == nil {
+		return "0.0 (Unknown)"
+	}
+
+	var ratio float64
+	switch v := visibilityRatio.(type) {
+	case float64:
+		ratio = v
+	case int:
+		ratio = float64(v)
+	default:
+		return "0.0 (Unknown)"
+	}
+
+	// Calculate novelty percentage (inverse of visibility)
+	noveltyPercentage := 1.0 - ratio
+
+	// Normalize to 0-10 scale (0% novel = 0, 100% novel = 10)
+	normalizedScore := noveltyPercentage * 10.0
+
+	var description string
+	switch {
+	case normalizedScore >= 8.0:
+		description = "Very novel"
+	case normalizedScore >= 6.0:
+		description = "Novel"
+	case normalizedScore >= 4.0:
+		description = "Mixed"
+	case normalizedScore >= 2.0:
+		description = "Familiar"
+	default:
+		description = "Well-known"
+	}
+
+	return strconv.FormatFloat(normalizedScore, 'f', 1, 64) + " (" + description + ")"
+}

@@ -1,0 +1,70 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Show File Sizes",
+            "type": "shell",
+            "command": "ls",
+            "args": [
+                "-lah",
+                "${workspaceFolder}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Show Audio File Sizes",
+            "type": "shell",
+            "command": "find",
+            "args": [
+                "${workspaceFolder}",
+                "-name",
+                "*.wav",
+                "-o",
+                "-name",
+                "*.mp3",
+                "-o",
+                "-name",
+                "*.m4a",
+                "-o",
+                "-name",
+                "*.aac",
+                "|",
+                "xargs",
+                "ls",
+                "-lah"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Show Project File Sizes",
+            "type": "shell",
+            "command": "du",
+            "args": [
+                "-sh",
+                "${workspaceFolder}/*"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,1 +1,66 @@
-{}
+{
+  // File Explorer Settings
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js, ${capture}.d.ts, ${capture}.js.map",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.css": "${capture}.css.map, ${capture}.min.css",
+    "*.scss": "${capture}.css, ${capture}.css.map",
+    "*.less": "${capture}.css, ${capture}.css.map",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb",
+    "tsconfig.json": "tsconfig.*.json",
+    "*.astro": "${capture}.astro.d.ts"
+  },
+  // Show file sizes in explorer
+  "explorer.decorations.colors": true,
+  "explorer.decorations.badges": true,
+  // Status bar settings
+  "workbench.statusBar.visible": true,
+  // File size display in status bar
+  "workbench.editor.enablePreview": true,
+  "workbench.editor.showTabs": "multiple",
+  // Terminal settings
+  "terminal.integrated.defaultProfile.linux": "bash",
+  // File associations
+  "files.associations": {
+    "*.mdc": "markdown",
+    "*.ivr": "text",
+    "*.wav": "audio",
+    "*.mp3": "audio",
+    "*.toml": "toml"
+  },
+  // Audio file handling
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+  // Search settings
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.git": true
+  },
+  // Editor settings
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  // TypeScript settings
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  // JSON settings
+  "json.schemas": [
+    {
+      "fileMatch": ["package.json"],
+      "url": "https://json.schemastore.org/package.json"
+    }
+  ]
+}

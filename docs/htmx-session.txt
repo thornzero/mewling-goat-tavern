@@ -1,0 +1,94 @@
+# htmx and session management
+
+## AI search results
+
+query: 
+    sending session cookie htmx localhost
+
+response:
+    HTMX, as a client-side library, does not directly handle setting session cookies. Cookies, including session cookies, are set by the server in the HTTP response headers and then managed by the browser. HTMX interacts with the server, but the mechanism for setting and sending cookies remains the standard HTTP process. 
+    Setting a Session Cookie from the Server (for HTMX interactions): 
+    
+    • Server-Side Generation: Your server-side application (e.g., Python, Node.js, PHP, Ruby on Rails) generates a session ID and potentially stores session data associated with it. 
+    • Set-Cookie Header: The server includes a Set-Cookie header in its HTTP response to the client. This header instructs the browser to store the cookie. 
+    
+        HTTP/2.0 200 OK
+        Content-Type: text/html
+        Set-Cookie: session_id=your_session_id_here; Path=/; HttpOnly; SameSite=Lax
+    
+    • session_id=your_session_id_here: The name and value of your session cookie. 
+    • Path=/: Ensures the cookie is sent with requests to all paths within the domain. 
+    • HttpOnly: Prevents client-side scripts (like JavaScript) from accessing the cookie, enhancing security. 
+    • SameSite=Lax or Strict: Helps mitigate CSRF attacks. 
+    
+    • Browser Storage: The browser receives the Set-Cookie header and stores the session cookie. 
+    
+    Sending the Session Cookie with HTMX Requests: 
+    When HTMX makes subsequent requests to the server (e.g., hx-get, hx-post), the browser will automatically include the stored session cookie in the Cookie header of those requests, provided the request is to the same domain and path for which the cookie was set. 
+    GET /some_htmx_endpoint HTTP/2.0
+    Host: localhost:8000
+    Cookie: session_id=your_session_id_here
+    
+    Important Considerations for Localhost: 
+    
+    • Secure Flag: While Secure cookies are typically only sent over HTTPS, most modern browsers allow Secure cookies to be set and sent on http://localhost for development purposes. If you encounter issues, you might need to ensure your localhost setup is configured correctly or temporarily remove the Secure flag during development. 
+    • Domain and Path: Ensure the Path attribute of your Set-Cookie header is correctly configured for your localhost environment to ensure the cookie is sent with relevant requests. 
+    
+    In essence, HTMX does not alter the fundamental way session cookies are handled; it relies on the standard HTTP cookie mechanism between the server and the browser. 
+    
+    AI responses may include mistakes.
+
+## about deleting cookies client side
+
+question:
+    How can I delete a specific cookie with the name roundcube_sessauth?
+    
+    Shouldn't the following:
+    
+    function del_cookie(name) {
+        document.cookie = 'roundcube_sessauth' + 
+        '=; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+    } 
+    
+    And then:
+    
+    <a href="javascript:del_cookie(name);">KILL</a>
+    
+    Kill the roundcube_sessauth cookie?
+    
+Answer:
+    You should define the path on which the cookie exists to ensure that you are deleting the correct cookie.
+    
+    function set_cookie(name, value) {
+    document.cookie = name +'='+ value +'; Path=/;';
+    }
+    function delete_cookie(name) {
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+    
+    If you don't specify the path, the browser will set a cookie relative to the page you are currently on, so if you delete the cookie while on a different page, the other cookie continues its existence.
+    
+    Edit based on @Evan Morrison's comment. Be aware that in some cases to identify the correct cookie, the Domain parameter is required. Usually it's defined as Domain=.yourdomain.example. Placing a dot in front of your domain name means that this cookie may exist on any sub-domain (www also counts as sub-domain).
+    
+    Also, as mentioned in @RobertT's answer, HttpOnly cookies cannot be deleted with JavaScript on the client side.
+    
+question:
+     Is there a recommended way of using session cookies (and resetting a session) using HTMX?
+
+    I'm trying to write a multi page application with HTMX but lack a way to linking the pages together with a session ID that survives a mixture of GET and POST requests and resets once you return to the first page.
+    
+answer:
+   I would say, simply do it the easy way:
+
+    Generate a session ID on your backend
+    Save it in a database (you can map that to a User ID to make an authentication)
+    Instruct your client to store it as a cookie using a Set-Cookie header
+    Then, on your backend, check whether the incoming requests (whether they are GET, POST or any other method) passed a session cookie or not, and use it to identify your client
+    Notice how, in the process described above, htmx doesn't have anything to do. You could do the exact same process using vanilla JS or any other lib that is similar to htmx.
+    You don't need a JWT, but you could totally use one if you want, in which case you'll just have to adjust your backend, but the process of storing a cookie remains the same, and htmx doesn't have to care about it.
+    
+    As for resetting the session, you could
+    
+    Add a route to your backend to clear the session (thus removing the ID from the database), which would invalide the cookie value for any future request
+    Add 1 line of handwritten JS to clear the cookie (though the session ID would persist in the database)
+    Hope this helps!

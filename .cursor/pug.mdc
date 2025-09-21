@@ -1,0 +1,70 @@
+---
+description: Pug template best practices and guidelines for server-side rendering in Cloudflare Workers
+globs: **/*.pug
+---
+
+# Pug Template Best Practices
+
+## Template Structure
+
+- Use semantic HTML5 elements
+- Implement proper indentation (2 spaces)
+- Use mixins for reusable components
+- Organize templates in logical hierarchy (layouts, pages, partials)
+
+## Data Binding
+
+- Pass data from controllers to templates via context
+- Use proper variable interpolation with #{variable}
+- Implement safe HTML rendering with != for trusted content
+- Use = for escaped content by default
+
+## Layout System
+
+- Create base layout templates in views/layouts/
+- Use block content for main content areas
+- Implement proper head section management
+- Use extends for template inheritance
+
+## Component Organization
+
+- Create reusable partials in views/partials/
+- Use mixins for complex reusable components
+- Keep components focused and single-purpose
+- Implement proper parameter passing
+
+## HTMX Integration
+
+- Use proper HTMX attributes in Pug templates
+- Implement hx-get, hx-post, hx-swap, hx-target
+- Add loading indicators with hx-indicator
+- Use hx-trigger for custom events
+
+## Styling Integration
+
+- Use Tailwind CSS classes directly in templates
+- Implement responsive design patterns
+- Use proper semantic class naming
+- Keep styling consistent across templates
+
+## Error Handling
+
+- Implement proper error page templates
+- Use conditional rendering for error states
+- Provide user-friendly error messages
+- Handle missing data gracefully
+
+## Performance
+
+- Minimize template complexity
+- Use includes for static content
+- Implement proper caching strategies
+- Optimize for server-side rendering
+
+## Best Practices
+
+- Keep templates readable and maintainable
+- Use descriptive variable names
+- Comment complex template logic
+- Follow consistent naming conventions
+- Test templates with various data scenarios

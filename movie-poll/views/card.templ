@@ -1,0 +1,48 @@
+package views
+
+type Movie struct {
+	Title       string
+	Year        *int
+	Overview    string
+	PosterPath  string
+	ReleaseDate string
+}
+
+templ Card(movie Movie, showVoting bool) {
+	<div class="swiper-slide">
+		<div class="movie-card bg-goat-700 p-6 rounded-lg text-center">
+			<div class="movie-poster mb-4">
+				if movie.PosterPath != "" {
+					<img
+						src={ "https://image.tmdb.org/t/p/w200" }
+						{ movie.PosterPath }
+						alt={ movie.Title }
+						class="w-48 h-72 object-cover rounded-lg mx-auto"
+					/>
+				} else {
+					<div class="w-48 h-72 bg-goat-600 rounded-lg mx-auto flex items-center justify-center">
+						<span class="text-goat-400 text-sm">No Image</span>
+					</div>
+				}
+			</div>
+			<div class="movie-info">
+				<h3 class="text-xl font-bold text-tavern-400 mb-2">{ movie.Title }</h3>
+				if movie.Year != nil {
+					<p class="text-goat-300 text-sm mb-4">{ *movie.Year }</p>
+				}
+				if movie.Overview != "" {
+					<p class="text-goat-400 text-xs mb-6">{ movie.Overview }</p>
+				}
+				if showVoting {
+					<div class="voting-interface space-y-4">
+						<div class="flex justify-center space-x-4">
+							<button class="btn-primary" hx-post="/api/vote" hx-vals='{"title":"{ movie.Title }","vote":"❤️"}'>❤️ Loved It</button>
+							<button class="btn-secondary" hx-post="/api/vote" hx-vals='{"title":"{ movie.Title }","vote":"😐"}'>😐 Meh</button>
+							<button class="btn-danger" hx-post="/api/vote" hx-vals='{"title":"{ movie.Title }","vote":"🗑️"}'>🗑️ Hated It</button>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+}
