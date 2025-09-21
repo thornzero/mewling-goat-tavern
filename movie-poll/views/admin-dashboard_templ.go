@@ -94,7 +94,7 @@ func AdminDashboardPage(data AdminDashboardData) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"description\" content=\"Movie poll administration and management\"><title>Admin Dashboard - Mewling Goat Tavern</title><link rel=\"icon\" sizes=\"16x16\" href=\"/img/favicon-16x16.png\"><link rel=\"icon\" sizes=\"32x32\" href=\"/img/favicon-32x32.png\"><link rel=\"icon\" sizes=\"192x192\" href=\"/img/android-chrome-192x192.png\"><link rel=\"icon\" sizes=\"512x512\" href=\"/img/android-chrome-512x512.png\"><link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/img/apple-touch-icon.png\"><link rel=\"manifest\" href=\"/site.webmanifest\"><link rel=\"stylesheet\" href=\"/css/style.css\"><script defer src=\"/js/htmx.min.js\"></script><script>\n\t\t\t\t// Wait for HTMX to load before configuring it\n\t\t\t\tdocument.addEventListener('DOMContentLoaded', function() {\n\t\t\t\t\t// Configure HTMX to include cookies using the correct method\n\t\t\t\t\thtmx.config.withCredentials = true;\n\t\t\t\t\t\n\t\t\t\t\t// Debug: Check cookies\n\t\t\t\t\tconsole.log('All cookies:', document.cookie);\n\t\t\t\t\tconsole.log('Session cookie:', document.cookie.split(';').find(c => c.trim().startsWith('movie_poll_session')));\n\t\t\t\t});\n\t\t\t</script></head><body class=\"bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900 min-h-screen\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"description\" content=\"Movie poll administration and management\"><title>Admin Dashboard - Mewling Goat Tavern</title><link rel=\"icon\" sizes=\"16x16\" href=\"/img/favicon-16x16.png\"><link rel=\"icon\" sizes=\"32x32\" href=\"/img/favicon-32x32.png\"><link rel=\"icon\" sizes=\"192x192\" href=\"/img/android-chrome-192x192.png\"><link rel=\"icon\" sizes=\"512x512\" href=\"/img/android-chrome-512x512.png\"><link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/img/apple-touch-icon.png\"><link rel=\"manifest\" href=\"/site.webmanifest\"><link rel=\"stylesheet\" href=\"/css/style.css\"><script defer src=\"/js/htmx.min.js\"></script><script>\n\t\t\t\t// Wait for HTMX to load before configuring it\n\t\t\t\tdocument.addEventListener('DOMContentLoaded', function() {\n\t\t\t\t\t// Configure HTMX to include cookies using the correct method\n\t\t\t\t\thtmx.config.withCredentials = true;\n\t\t\t\t});\n\t\t\t</script></head><body class=\"bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900 min-h-screen\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -171,7 +171,7 @@ func AdminDashboardTemplate(data AdminDashboardData) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(data.AdminUser.Username)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 136, Col: 69}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 132, Col: 69}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -237,7 +237,7 @@ func AdminStatsCards(stats AdminStats) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(stats.TotalMovies))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 193, Col: 79}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 189, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -250,7 +250,7 @@ func AdminStatsCards(stats AdminStats) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(stats.TotalVotes))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 206, Col: 78}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 202, Col: 78}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -263,7 +263,7 @@ func AdminStatsCards(stats AdminStats) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(stats.UniqueVoters))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 219, Col: 80}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 215, Col: 80}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -276,7 +276,7 @@ func AdminStatsCards(stats AdminStats) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(stats.ActiveSessions))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 232, Col: 82}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 228, Col: 82}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -410,7 +410,7 @@ func AdminMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var13 string
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(movie.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 286, Col: 16}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 282, Col: 16}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
@@ -428,7 +428,7 @@ func AdminMovieCard(movie MovieInfo) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movie.Year))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 289, Col: 68}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 285, Col: 68}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -446,7 +446,7 @@ func AdminMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movie.VoteCount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 292, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 288, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -459,7 +459,7 @@ func AdminMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(movie.AddedAt.Format("Jan 2, 2006"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 293, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 289, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -516,7 +516,7 @@ func VoteCard(vote VoteInfo) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(vote.MovieTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 314, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 310, Col: 67}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -529,7 +529,7 @@ func VoteCard(vote VoteInfo) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(vote.UserName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 315, Col: 56}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 311, Col: 56}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -542,7 +542,7 @@ func VoteCard(vote VoteInfo) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(vote.VotedAt.Format("Jan 2, 15:04"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 315, Col: 100}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 311, Col: 100}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -555,7 +555,7 @@ func VoteCard(vote VoteInfo) templ.Component {
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(vote.Vibe))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 321, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-dashboard.templ`, Line: 317, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {

@@ -86,10 +86,6 @@ templ AdminDashboardPage(data AdminDashboardData) {
 				document.addEventListener('DOMContentLoaded', function() {
 					// Configure HTMX to include cookies using the correct method
 					htmx.config.withCredentials = true;
-					
-					// Debug: Check cookies
-					console.log('All cookies:', document.cookie);
-					console.log('Session cookie:', document.cookie.split(';').find(c => c.trim().startsWith('movie_poll_session')));
 				});
 			</script>
 		</head>

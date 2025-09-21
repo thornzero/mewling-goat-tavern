@@ -9,6 +9,8 @@ require (
 	modernc.org/sqlite v1.39.0
 )
 
+require github.com/joho/godotenv v1.5.1 // indirect
+
 require golang.org/x/crypto v0.42.0 // direct
 
 require (

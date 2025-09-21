@@ -1,8 +1,11 @@
 package services
 
 import (
+	"log"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type EnvConfig struct {
@@ -38,7 +41,19 @@ func GetEnvInt(key, fallback string) int {
 	return value
 }
 
+func LoadEnvFile() {
+	// Try to load .env file, but don't fail if it doesn't exist
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found, using environment variables only")
+	} else {
+		log.Println("Loaded .env file successfully")
+	}
+}
+
 func NewEnvConfig() *EnvConfig {
+	// Load .env file first
+	LoadEnvFile()
+
 	return &EnvConfig{
 		Port:                   GetEnvInt("PORT", "3000"),
 		DBPath:                 Getenv("DB_PATH", "db/movie_poll.db"),

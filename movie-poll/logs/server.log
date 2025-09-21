@@ -1447,3 +1447,74 @@
 2025/09/21 19:11:59 logging.go:44: === Server Starting ===
 2025/09/21 19:11:59 logging.go:44: Admin users already exist, skipping default admin creation
 2025/09/21 19:11:59 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:12:38 logging.go:44: 🛑 Shutting down server...
+2025/09/21 19:12:38 logging.go:44: ✅ Server shutdown complete
+2025/09/21 19:12:48 logging.go:44: === Server Starting ===
+2025/09/21 19:12:48 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:12:48 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:13:21 logging.go:59: ERROR: Admin login failed for user admin: invalid password
+2025/09/21 19:14:35 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:14:35 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:14:36 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:16:07 logging.go:44: === Server Starting ===
+2025/09/21 19:16:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:16:07 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:16:07 logging.go:44: === Server Starting ===
+2025/09/21 19:16:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:16:07 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:16:07 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:16:07 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 19:16:22 logging.go:44: === Server Starting ===
+2025/09/21 19:16:22 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:16:22 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:16:22 logging.go:44: === Server Starting ===
+2025/09/21 19:16:22 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:16:22 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:16:22 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:16:22 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 19:17:04 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:17:04 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:17:53 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:17:56 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:17:56 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:17:58 logging.go:59: ERROR: Error searching movies: Code (7): Invalid API key: You must be granted a valid key.
+2025/09/21 19:20:14 logging.go:44: === Server Starting ===
+2025/09/21 19:20:14 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:20:14 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:20:14 logging.go:44: === Server Starting ===
+2025/09/21 19:20:14 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:20:14 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:20:14 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:20:14 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 19:20:16 logging.go:44: === Server Starting ===
+2025/09/21 19:20:16 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:20:16 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:20:16 logging.go:44: === Server Starting ===
+2025/09/21 19:20:16 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:20:16 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:20:16 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:20:16 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 19:20:43 logging.go:44: === Server Starting ===
+2025/09/21 19:20:43 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:20:43 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:20:43 logging.go:44: === Server Starting ===
+2025/09/21 19:20:43 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:20:43 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:20:43 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:20:43 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 19:20:50 logging.go:44: === Server Starting ===
+2025/09/21 19:20:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:20:50 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:20:50 logging.go:44: === Server Starting ===
+2025/09/21 19:20:50 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:20:50 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:20:50 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:20:50 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 19:21:10 logging.go:44: === Server Starting ===
+2025/09/21 19:21:10 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:21:10 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:21:10 logging.go:44: === Server Starting ===
+2025/09/21 19:21:10 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:21:10 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:21:10 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:21:10 logging.go:49: 🚀 Movie Poll Server starting on :3001

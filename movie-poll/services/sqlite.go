@@ -315,8 +315,8 @@ func (s *SQLite) AddMovie(movie types.Movie) (int64, error) {
 		INSERT INTO movies (tmdb_id, title, overview, poster_path, backdrop_path,
 		release_date, runtime, adult, original_language, original_title,
 		popularity, vote_average, vote_count, video, added_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	`, movie.ID, movie.Title, movie.Overview, movie.PosterPath,
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`, movie.TMDBID, movie.Title, movie.Overview, movie.PosterPath,
 		movie.BackdropPath, movie.ReleaseDate, movie.Runtime, movie.Adult,
 		movie.OriginalLanguage, movie.OriginalTitle, movie.Popularity,
 		movie.VoteAverage, movie.VoteCount, movie.Video, timestamp, timestamp)
