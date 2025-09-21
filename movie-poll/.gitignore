@@ -1,0 +1,112 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+go.work
+
+# Build outputs
+/server
+/db-manager
+*.exe
+*.dll
+*.so
+*.dylib
+tmp/
+build/
+
+# Air live reload
+.air.toml.bak
+tmp/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database files (keep schema.sql but ignore actual database)
+db/*.db
+db/*.sqlite
+db/*.sqlite3
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+debug-results.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Node.js (for any frontend tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Tailwind CSS build outputs (if using npm/yarn)
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Coverage reports
+coverage.txt
+coverage.html
+*.cover
+*.coverprofile
+
+# Profiling files
+*.prof
+*.pprof
+
+# Railway deployment
+.railway/
+
+# Local development
+.local/
+.cache/
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Compiled templates (these are generated)
+views/*_templ.go
+
+# But keep the source templates
+!views/*.templ
