@@ -67,20 +67,71 @@ templ AdminMoviesContent(data AdminMoviesData) {
 templ MovieSearchSection() {
 	<div class="bg-goat-800 rounded-lg p-6 mb-8">
 		<h2 class="text-2xl font-bold text-tavern-400 mb-4">🔍 Add New Movies</h2>
-		<div class="max-w-2xl">
-			<form hx-get="/api/search" hx-target="#search-results" hx-swap="innerHTML" hx-trigger="submit, keyup delay:500ms from:input[name='q']" class="flex gap-4">
-				<input
-					type="text"
-					name="q"
-					placeholder="Search for movies to add..."
-					class="flex-1 px-4 py-3 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none focus:ring-2 focus:ring-tavern-400/20"
-				/>
-				<button
-					type="submit"
-					class="px-6 py-3 bg-tavern-500 hover:bg-tavern-600 text-white rounded-lg transition-colors font-semibold"
-				>
-					Search
-				</button>
+		<div class="max-w-4xl">
+			<form hx-get="/api/search" hx-target="#search-results" hx-swap="innerHTML" hx-trigger="submit, keyup delay:500ms from:input[name='q']" class="space-y-4">
+				<div class="flex gap-4">
+					<input
+						type="text"
+						name="q"
+						placeholder="Search for movies to add..."
+						class="flex-1 px-4 py-3 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none focus:ring-2 focus:ring-tavern-400/20"
+					/>
+					<button
+						type="submit"
+						class="px-6 py-3 bg-tavern-500 hover:bg-tavern-600 text-white rounded-lg transition-colors font-semibold"
+					>
+						Search
+					</button>
+				</div>
+				<div class="flex gap-4 flex-wrap">
+					<div class="flex-1 min-w-48">
+						<label for="lang" class="block text-sm font-medium text-goat-200 mb-1">Language</label>
+						<select name="lang" id="lang" class="w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none">
+							<option value="">All Languages</option>
+							<option value="en-US">English (US)</option>
+							<option value="ja-JP">Japanese</option>
+							<option value="ko-KR">Korean</option>
+							<option value="zh-CN">Chinese (Simplified)</option>
+							<option value="fr-FR">French</option>
+							<option value="de-DE">German</option>
+							<option value="es-ES">Spanish</option>
+							<option value="it-IT">Italian</option>
+							<option value="pt-BR">Portuguese (Brazil)</option>
+							<option value="ru-RU">Russian</option>
+						</select>
+					</div>
+					<div class="flex-1 min-w-48">
+						<label for="region" class="block text-sm font-medium text-goat-200 mb-1">Region</label>
+						<select name="region" id="region" class="w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none">
+							<option value="">All Regions</option>
+							<option value="US">United States</option>
+							<option value="JP">Japan</option>
+							<option value="KR">South Korea</option>
+							<option value="CN">China</option>
+							<option value="FR">France</option>
+							<option value="DE">Germany</option>
+							<option value="ES">Spain</option>
+							<option value="IT">Italy</option>
+							<option value="BR">Brazil</option>
+							<option value="RU">Russia</option>
+							<option value="GB">United Kingdom</option>
+							<option value="CA">Canada</option>
+							<option value="AU">Australia</option>
+						</select>
+					</div>
+					<div class="flex-1 min-w-48">
+						<label for="year" class="block text-sm font-medium text-goat-200 mb-1">Year</label>
+						<input
+							type="number"
+							name="year"
+							id="year"
+							placeholder="e.g., 2023"
+							min="1900"
+							max="2030"
+							class="w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none"
+						/>
+					</div>
+				</div>
 			</form>
 		</div>
 		<!-- Search Results -->
@@ -96,52 +147,92 @@ templ SearchResults(searchResults []tmdb.MovieShort) {
 			<p class="text-goat-400">No movies found. Try a different search term.</p>
 		</div>
 	} else {
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-			for _, movie := range searchResults {
-				<div class="bg-goat-700 rounded-lg p-4 border border-goat-600 hover:border-tavern-400 transition-colors">
-					<div class="flex gap-4">
-						if movie.PosterPath != "" {
-							<img
-								src={ "https://image.tmdb.org/t/p/w200" + movie.PosterPath }
-								alt={ movie.Title + " poster" }
-								class="w-16 h-24 object-cover rounded"
-							/>
-						} else {
-							<div class="w-16 h-24 bg-goat-600 rounded flex items-center justify-center">
-								<span class="text-goat-400 text-xs">No Image</span>
-							</div>
-						}
-						<div class="flex-1">
-							<h3 class="font-semibold text-goat-100 text-lg mb-1">{ movie.Title }</h3>
-							if movie.ReleaseDate != "" {
-								<p class="text-goat-400 text-sm mb-2">Released: { movie.ReleaseDate }</p>
-							}
-							if movie.Overview != "" {
-								<p class="text-goat-300 text-sm line-clamp-3">{ movie.Overview }</p>
-							}
-							<div class="mt-3 flex gap-2">
-								<button
-									hx-post="/api/admin/add-movie"
-									hx-vals={ `{"tmdb_id": ` + strconv.Itoa(movie.ID) + `, "title": "` + movie.Title + `", "year": ` + strconv.Itoa(func() int {
-	if len(movie.ReleaseDate) >= 4 {
-		year, _ := strconv.Atoi(movie.ReleaseDate[:4])
-		return year
-	} else {
-		return 0
-	}
-}()) + `}` }
-									hx-target="#search-results"
-									hx-swap="innerHTML"
-									class="px-3 py-1 bg-tavern-500 hover:bg-tavern-600 text-white text-sm rounded transition-colors"
-								>
-									Add Movie
-								</button>
+		<div class="swiper search-swiper">
+			<div class="swiper-wrapper">
+				for _, movie := range searchResults {
+					<div class="swiper-slide">
+						<div class="bg-goat-700 rounded-lg p-4 border border-goat-600 hover:border-tavern-400 transition-colors h-full">
+							<div class="flex flex-col sm:flex-row gap-4 h-full">
+								<div class="flex-shrink-0 mx-auto sm:mx-0">
+									if movie.PosterPath != "" {
+										<img
+											src={ "https://image.tmdb.org/t/p/w200" + movie.PosterPath }
+											alt={ movie.Title + " poster" }
+											class="w-24 h-36 sm:w-16 sm:h-24 object-cover rounded"
+										/>
+									} else {
+										<div class="w-24 h-36 sm:w-16 sm:h-24 bg-goat-600 rounded flex items-center justify-center">
+											<span class="text-goat-400 text-xs">No Image</span>
+										</div>
+									}
+								</div>
+								<div class="flex-1 flex flex-col">
+									<h3 class="font-semibold text-goat-100 text-lg mb-1 line-clamp-2">{ movie.Title }</h3>
+									if movie.ReleaseDate != "" {
+										<p class="text-goat-400 text-sm mb-2">Released: { movie.ReleaseDate }</p>
+									}
+									if movie.Overview != "" {
+										<p class="text-goat-300 text-sm line-clamp-3 flex-1">{ movie.Overview }</p>
+									}
+									<div class="mt-3 flex gap-2">
+										<button
+											hx-post="/api/admin/add-movie"
+											hx-vals={ `{"tmdb_id": ` + strconv.Itoa(movie.ID) + `, "title": "` + movie.Title + `", "year": ` + strconv.Itoa(func() int {
+												if len(movie.ReleaseDate) >= 4 {
+													year, _ := strconv.Atoi(movie.ReleaseDate[:4])
+													return year
+												} else {
+													return 0
+												}
+											}()) + `}` }
+											hx-target="#search-results"
+											hx-swap="innerHTML"
+											class="px-3 py-1 bg-tavern-500 hover:bg-tavern-600 text-white text-sm rounded transition-colors"
+										>
+											Add Movie
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			}
+				}
+			</div>
+			<!-- Navigation buttons -->
+			<div class="swiper-button-next text-tavern-400"></div>
+			<div class="swiper-button-prev text-tavern-400"></div>
+			<!-- Pagination -->
+			<div class="swiper-pagination"></div>
 		</div>
+		<script>
+			// Initialize Swiper for search results
+			if (typeof Swiper !== 'undefined') {
+				new Swiper('.search-swiper', {
+					slidesPerView: 1,
+					spaceBetween: 16,
+					breakpoints: {
+						640: {
+							slidesPerView: 2,
+							spaceBetween: 20,
+						},
+						1024: {
+							slidesPerView: 3,
+							spaceBetween: 24,
+						},
+					},
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					pagination: {
+						el: '.swiper-pagination',
+						clickable: true,
+					},
+					loop: false,
+					centeredSlides: false,
+				});
+			}
+		</script>
 	}
 }
 
