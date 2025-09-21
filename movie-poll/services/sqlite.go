@@ -246,7 +246,7 @@ func (s *SQLite) GetMovies(limit int) ([]types.Movie, error) {
 	var movies []types.Movie
 	for rows.Next() {
 		var movie types.Movie
-		var year int
+		var year sql.NullInt32
 		err := rows.Scan(
 			&movie.ID, &movie.TMDBID, &movie.Title, &year, &movie.Overview,
 			&movie.PosterPath, &movie.BackdropPath, &movie.ReleaseDate, &movie.Runtime,
@@ -257,9 +257,10 @@ func (s *SQLite) GetMovies(limit int) ([]types.Movie, error) {
 		if err != nil {
 			return nil, err
 		}
-		// Set the year if it's not zero
-		if year > 0 {
-			movie.Year = &year
+		// Set the year if it's valid and not zero
+		if year.Valid && year.Int32 > 0 {
+			yearInt := int(year.Int32)
+			movie.Year = &yearInt
 		}
 		movies = append(movies, movie)
 	}

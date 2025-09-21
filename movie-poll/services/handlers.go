@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/thornzero/movie-poll/types"
+	"github.com/thornzero/movie-poll/views"
 )
 
 // HandlerRegistry contains all HTTP handlers
@@ -434,10 +435,10 @@ func (hr *HandlerRegistry) handleSearch(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// Return search results
-	w.Header().Set("Content-Type", "application/json")
+	// Return search results as HTML
+	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(searchResult)
+	views.SearchResults(searchResult.Results).Render(r.Context(), w)
 }
 
 func (hr *HandlerRegistry) handleUpdateAppeal(w http.ResponseWriter, r *http.Request) {

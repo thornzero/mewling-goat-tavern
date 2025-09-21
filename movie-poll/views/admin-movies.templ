@@ -1,6 +1,9 @@
 package views
 
-import "strconv"
+import (
+	"github.com/ryanbradynd05/go-tmdb"
+	"strconv"
+)
 
 type AdminMoviesData struct {
 	AdminUser AdminUserInfo
@@ -85,6 +88,61 @@ templ MovieSearchSection() {
 			<p class="text-goat-400 text-center py-8">Enter a search term to find movies</p>
 		</div>
 	</div>
+}
+
+templ SearchResults(searchResults []tmdb.MovieShort) {
+	if len(searchResults) == 0 {
+		<div class="text-center py-8">
+			<p class="text-goat-400">No movies found. Try a different search term.</p>
+		</div>
+	} else {
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+			for _, movie := range searchResults {
+				<div class="bg-goat-700 rounded-lg p-4 border border-goat-600 hover:border-tavern-400 transition-colors">
+					<div class="flex gap-4">
+						if movie.PosterPath != "" {
+							<img
+								src={ "https://image.tmdb.org/t/p/w200" + movie.PosterPath }
+								alt={ movie.Title + " poster" }
+								class="w-16 h-24 object-cover rounded"
+							/>
+						} else {
+							<div class="w-16 h-24 bg-goat-600 rounded flex items-center justify-center">
+								<span class="text-goat-400 text-xs">No Image</span>
+							</div>
+						}
+						<div class="flex-1">
+							<h3 class="font-semibold text-goat-100 text-lg mb-1">{ movie.Title }</h3>
+							if movie.ReleaseDate != "" {
+								<p class="text-goat-400 text-sm mb-2">Released: { movie.ReleaseDate }</p>
+							}
+							if movie.Overview != "" {
+								<p class="text-goat-300 text-sm line-clamp-3">{ movie.Overview }</p>
+							}
+							<div class="mt-3 flex gap-2">
+								<button
+									hx-post="/api/admin/add-movie"
+									hx-vals={ `{"tmdb_id": ` + strconv.Itoa(movie.ID) + `, "title": "` + movie.Title + `", "year": ` + strconv.Itoa(func() int {
+	if len(movie.ReleaseDate) >= 4 {
+		year, _ := strconv.Atoi(movie.ReleaseDate[:4])
+		return year
+	} else {
+		return 0
+	}
+}()) + `}` }
+									hx-target="#search-results"
+									hx-swap="innerHTML"
+									class="px-3 py-1 bg-tavern-500 hover:bg-tavern-600 text-white text-sm rounded transition-colors"
+								>
+									Add Movie
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
 }
 
 templ MovieImportSection() {

@@ -8,6 +8,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"os/exec"
 	"os/signal"
 
 	"strings"
@@ -235,13 +236,28 @@ func findAvailablePort(preferredPort int) string {
 		return fmt.Sprintf(":%d", preferredPort)
 	}
 
-	// If preferred port is busy, wait a bit for it to be released (for hot reload)
+	// If preferred port is busy, try to kill any processes on it first
 	LogPortSearch(preferredPort)
-	time.Sleep(500 * time.Millisecond)
 
-	// Try the preferred port again after a short wait
+	// Try to kill any processes on the preferred port
+	exec.Command("lsof", "-ti:"+fmt.Sprintf("%d", preferredPort)).Run()
+	exec.Command("pkill", "-f", "tmp/server").Run()
+	// Test comment to trigger hot reload
+
+	// Wait a bit for the port to be released
+	time.Sleep(2 * time.Second)
+
+	// Try the preferred port again
 	if isPortAvailable(preferredPort) {
 		return fmt.Sprintf(":%d", preferredPort)
+	}
+
+	// Try multiple times with increasing delays
+	for i := 0; i < 3; i++ {
+		time.Sleep(time.Duration(1000+i*500) * time.Millisecond)
+		if isPortAvailable(preferredPort) {
+			return fmt.Sprintf(":%d", preferredPort)
+		}
 	}
 
 	// If still busy, find the next available one
