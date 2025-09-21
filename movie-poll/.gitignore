@@ -28,8 +28,14 @@ tmp/
 build/
 
 # Air live reload
+# Note: .air.toml is kept in git as it contains project configuration
 .air.toml.bak
+.air.toml.backup
 tmp/
+tmp/*
+!tmp/.gitkeep
+build-errors.log
+.air/
 
 # Environment variables
 .env

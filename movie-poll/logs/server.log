@@ -1518,3 +1518,19 @@
 2025/09/21 19:21:10 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
 2025/09/21 19:21:10 logging.go:49: ✅ Found available port: 3001
 2025/09/21 19:21:10 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 19:25:04 logging.go:44: === Server Starting ===
+2025/09/21 19:25:04 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:25:04 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:25:06 logging.go:44: === Server Starting ===
+2025/09/21 19:25:06 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:25:06 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:25:06 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:25:06 logging.go:49: 🚀 Movie Poll Server starting on :3001
+2025/09/21 19:25:25 logging.go:44: === Server Starting ===
+2025/09/21 19:25:25 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:25:25 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 19:25:25 logging.go:44: === Server Starting ===
+2025/09/21 19:25:25 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 19:25:25 logging.go:69: WARNING: ⚠️  Port 3000 is busy, searching for available port...
+2025/09/21 19:25:26 logging.go:49: ✅ Found available port: 3001
+2025/09/21 19:25:26 logging.go:49: 🚀 Movie Poll Server starting on :3001

@@ -235,9 +235,16 @@ func findAvailablePort(preferredPort int) string {
 		return fmt.Sprintf(":%d", preferredPort)
 	}
 
-	// If preferred port is busy, find the next available one
+	// If preferred port is busy, wait a bit for it to be released (for hot reload)
 	LogPortSearch(preferredPort)
+	time.Sleep(500 * time.Millisecond)
 
+	// Try the preferred port again after a short wait
+	if isPortAvailable(preferredPort) {
+		return fmt.Sprintf(":%d", preferredPort)
+	}
+
+	// If still busy, find the next available one
 	for port := preferredPort + 1; port <= preferredPort+100; port++ {
 		if isPortAvailable(port) {
 			LogPortFound(port)

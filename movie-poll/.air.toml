@@ -7,7 +7,7 @@ args_bin = []
 bin = "./tmp/server"
 cmd = "go build -o ./tmp/server ."
 delay = 1000
-env = ["TMDB_API_KEY=test", "DB_PATH=./db/movie_poll.db"]
+env = ["TMDB_API_KEY=test", "DB_PATH=./db/movie_poll.db", "PORT=3000"]
 exclude_dir = ["assets", "tmp", "vendor", "testdata", "static"]
 exclude_file = []
 exclude_regex = ["_test.go", ".*_templ\\.go$"]
@@ -17,7 +17,7 @@ full_bin = ""
 include_dir = []
 include_ext = ["go", "templ"]
 include_file = []
-kill_delay = "0s"
+kill_delay = "3s"
 log = "build-errors.log"
 poll = false
 poll_interval = 0
@@ -25,7 +25,7 @@ post_cmd = []
 pre_cmd = ["go run github.com/a-h/templ/cmd/templ@latest generate"]
 rerun = false
 rerun_delay = 500
-send_interrupt = false
+send_interrupt = true
 stop_on_error = false
 
 [color]
