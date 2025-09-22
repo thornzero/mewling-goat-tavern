@@ -207,35 +207,6 @@ templ SearchResults(searchResults []tmdb.MovieShort) {
 			<!-- Pagination -->
 			<div class="swiper-pagination"></div>
 		</div>
-		<script>
-			// Initialize Swiper for search results
-			if (typeof Swiper !== 'undefined') {
-				new Swiper('.search-swiper', {
-					slidesPerView: 1,
-					spaceBetween: 16,
-					breakpoints: {
-						640: {
-							slidesPerView: 2,
-							spaceBetween: 20,
-						},
-						1024: {
-							slidesPerView: 3,
-							spaceBetween: 24,
-						},
-					},
-					navigation: {
-						nextEl: '.swiper-button-next',
-						prevEl: '.swiper-button-prev',
-					},
-					pagination: {
-						el: '.swiper-pagination',
-						clickable: true,
-					},
-					loop: false,
-					centeredSlides: false,
-				});
-			}
-		</script>
 	}
 }
 

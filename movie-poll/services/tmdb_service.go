@@ -124,38 +124,32 @@ func (s *TMDBService) SearchMovies(movieID MovieID, page int) (MovieSearchResult
 		options["region"] = ""
 	}
 
-	// First, try searching with the original language if specified
+	// Optimized search strategy - try at most 2 API calls
 	var searchResult *tmdb.MovieSearchResults
 	var err error
 
-	// If a specific language is requested, try searching in that language first
-	if movieID.HasLanguage() && movieID.Language != "en-US" {
-		searchResult, err = s.api.SearchMovie(movieID.Title, options)
-		if err == nil && len(searchResult.Results) > 0 {
-			return MovieSearchResults{
-				MovieSearchResults: searchResult,
-			}, nil
-		}
-	}
-
-	// If no results or error, try searching in English
-	options["language"] = "en-US"
+	// First attempt: Search with specified language and region
 	searchResult, err = s.api.SearchMovie(movieID.Title, options)
 	if err != nil {
 		return MovieSearchResults{}, err
 	}
 
-	// If we still have no results and we're searching for a non-English term,
-	// try a more flexible search by removing language restrictions
-	if len(searchResult.Results) == 0 && movieID.Language != "" && movieID.Language != "en-US" {
-		// Reset to original language but remove region restriction for broader search
-		options["language"] = movieID.Language
-		options["region"] = ""
+	// If we have results, return them immediately
+	if len(searchResult.Results) > 0 {
+		return MovieSearchResults{
+			MovieSearchResults: searchResult,
+		}, nil
+	}
+
+	// Second attempt: Only if no results and we're not already searching in English
+	// Try English search as fallback
+	if movieID.Language != "" && movieID.Language != "en-US" {
+		options["language"] = "en-US"
+		options["region"] = "" // Remove region restriction for broader search
 		searchResult, err = s.api.SearchMovie(movieID.Title, options)
 		if err != nil {
-			// If this fails too, return the original English results (even if empty)
-			options["language"] = "en-US"
-			searchResult, _ = s.api.SearchMovie(movieID.Title, options)
+			// If this fails, return empty results rather than error
+			searchResult = &tmdb.MovieSearchResults{Results: []tmdb.MovieShort{}}
 		}
 	}
 

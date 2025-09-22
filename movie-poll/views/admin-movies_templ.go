@@ -315,7 +315,7 @@ func SearchResults(searchResults []tmdb.MovieShort) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div><!-- Navigation buttons --><div class=\"swiper-button-next text-tavern-400\"></div><div class=\"swiper-button-prev text-tavern-400\"></div><!-- Pagination --><div class=\"swiper-pagination\"></div></div><script>\n\t\t\t// Initialize Swiper for search results\n\t\t\tif (typeof Swiper !== 'undefined') {\n\t\t\t\tnew Swiper('.search-swiper', {\n\t\t\t\t\tslidesPerView: 1,\n\t\t\t\t\tspaceBetween: 16,\n\t\t\t\t\tbreakpoints: {\n\t\t\t\t\t\t640: {\n\t\t\t\t\t\t\tslidesPerView: 2,\n\t\t\t\t\t\t\tspaceBetween: 20,\n\t\t\t\t\t\t},\n\t\t\t\t\t\t1024: {\n\t\t\t\t\t\t\tslidesPerView: 3,\n\t\t\t\t\t\t\tspaceBetween: 24,\n\t\t\t\t\t\t},\n\t\t\t\t\t},\n\t\t\t\t\tnavigation: {\n\t\t\t\t\t\tnextEl: '.swiper-button-next',\n\t\t\t\t\t\tprevEl: '.swiper-button-prev',\n\t\t\t\t\t},\n\t\t\t\t\tpagination: {\n\t\t\t\t\t\tel: '.swiper-pagination',\n\t\t\t\t\t\tclickable: true,\n\t\t\t\t\t},\n\t\t\t\t\tloop: false,\n\t\t\t\t\tcenteredSlides: false,\n\t\t\t\t});\n\t\t\t}\n\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div><!-- Navigation buttons --><div class=\"swiper-button-next text-tavern-400\"></div><div class=\"swiper-button-prev text-tavern-400\"></div><!-- Pagination --><div class=\"swiper-pagination\"></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -449,7 +449,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(movie.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 302, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 273, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -462,7 +462,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movie.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 305, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 276, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -480,7 +480,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movie.Year))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 309, Col: 68}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 280, Col: 68}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {
@@ -498,7 +498,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movie.VoteCount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 312, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 283, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -511,7 +511,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(movie.AddedAt.Format("Jan 2, 2006"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 313, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 284, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -524,7 +524,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs("/api/admin/movies/" + strconv.Itoa(movie.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 318, Col: 61}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 289, Col: 61}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {

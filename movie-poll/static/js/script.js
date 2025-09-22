@@ -44,7 +44,27 @@ function initializeSwipers() {
     swipers.forEach(function (swiperEl) {
       if (!swiperEl.swiper) {
         try {
-          new Swiper(swiperEl, {
+          // Check if this is a search results swiper
+          const isSearchSwiper = swiperEl.classList.contains('search-swiper');
+
+          const config = isSearchSwiper ? {
+            slidesPerView: 1,
+            spaceBetween: 16,
+            breakpoints: {
+              640: { slidesPerView: 2, spaceBetween: 20 },
+              1024: { slidesPerView: 3, spaceBetween: 24 },
+            },
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+            },
+            loop: false,
+            centeredSlides: false,
+          } : {
             slidesPerView: 1,
             spaceBetween: 20,
             centeredSlides: true,
@@ -62,7 +82,9 @@ function initializeSwipers() {
               768: { slidesPerView: 1, spaceBetween: 30 },
               1024: { slidesPerView: 1, spaceBetween: 40 },
             },
-          });
+          };
+
+          new Swiper(swiperEl, config);
           swiperEl.setAttribute('data-swiper-initialized', 'true');
         } catch (error) {
           console.error('Error initializing Swiper:', error);

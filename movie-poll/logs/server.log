@@ -1956,3 +1956,49 @@
 2025/09/21 20:01:38 logging.go:49: 🚀 Movie Poll Server starting on :3000
 2025/09/21 20:01:38 logging.go:44: 🛑 Shutting down server...
 2025/09/21 20:01:38 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:01:42 logging.go:44: === Server Starting ===
+2025/09/21 20:01:42 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:01:42 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:01:44 logging.go:44: === Server Starting ===
+2025/09/21 20:01:44 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:01:44 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:04:52 logging.go:44: 🛑 Shutting down server...
+2025/09/21 20:04:52 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:04:54 logging.go:44: === Server Starting ===
+2025/09/21 20:04:54 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:04:54 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:04:58 logging.go:44: === Server Starting ===
+2025/09/21 20:04:58 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:04:58 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:05:02 logging.go:44: 🛑 Shutting down server...
+2025/09/21 20:05:02 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:05:04 logging.go:44: === Server Starting ===
+2025/09/21 20:05:04 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:05:04 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:05:08 logging.go:44: === Server Starting ===
+2025/09/21 20:05:08 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:05:08 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:05:08 logging.go:44: 🛑 Shutting down server...
+2025/09/21 20:05:08 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:05:09 logging.go:44: === Server Starting ===
+2025/09/21 20:05:09 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:05:09 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:05:14 logging.go:44: === Server Starting ===
+2025/09/21 20:05:14 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:05:14 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:05:20 logging.go:44: 🛑 Shutting down server...
+2025/09/21 20:05:20 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:05:21 logging.go:44: === Server Starting ===
+2025/09/21 20:05:21 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:05:21 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:05:26 logging.go:44: === Server Starting ===
+2025/09/21 20:05:26 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:05:26 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:05:27 logging.go:44: 🛑 Shutting down server...
+2025/09/21 20:05:27 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:05:27 logging.go:44: === Server Starting ===
+2025/09/21 20:05:27 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:05:27 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:05:32 logging.go:44: === Server Starting ===
+2025/09/21 20:05:32 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:05:32 logging.go:49: 🚀 Movie Poll Server starting on :3000
