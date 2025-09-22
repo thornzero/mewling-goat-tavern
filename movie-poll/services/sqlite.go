@@ -247,12 +247,13 @@ func (s *SQLite) GetMovies(limit int) ([]types.Movie, error) {
 	for rows.Next() {
 		var movie types.Movie
 		var year sql.NullInt32
+		var addedAt, updatedAt sql.NullInt64
 		err := rows.Scan(
 			&movie.ID, &movie.TMDBID, &movie.Title, &year, &movie.Overview,
 			&movie.PosterPath, &movie.BackdropPath, &movie.ReleaseDate, &movie.Runtime,
 			&movie.Adult, &movie.OriginalLanguage, &movie.OriginalTitle,
 			&movie.Popularity, &movie.VoteAverage, &movie.VoteCount, &movie.Video,
-			&movie.AddedAt, &movie.UpdatedAt,
+			&addedAt, &updatedAt,
 		)
 		if err != nil {
 			return nil, err
@@ -262,6 +263,15 @@ func (s *SQLite) GetMovies(limit int) ([]types.Movie, error) {
 			yearInt := int(year.Int32)
 			movie.Year = &yearInt
 		}
+
+		// Set the timestamps if they're valid
+		if addedAt.Valid {
+			movie.AddedAt = addedAt.Int64
+		}
+		if updatedAt.Valid {
+			movie.UpdatedAt = updatedAt.Int64
+		}
+
 		movies = append(movies, movie)
 	}
 	return movies, nil
@@ -870,18 +880,18 @@ func (s *SQLite) AddMovieFromTMDB(tmdbID int) (string, error) {
 	}
 
 	// Check if movie exists by TMDB ID
-
 	err := s.QueryRow(`
 		SELECT id, title FROM movies WHERE tmdb_id = ?
 	`, tmdbID).Scan(&existingID, &existingTitle)
-	if err != nil {
+
+	if err == nil {
+		// Movie exists, return existing title
+		return existingTitle, nil
+	} else if err != sql.ErrNoRows {
+		// Some other error occurred
 		return "", err
 	}
-
-	if existingID > 0 {
-		// Movie exists, return existing ID
-		return existingTitle, nil
-	}
+	// If err == sql.ErrNoRows, movie doesn't exist, continue to add it
 
 	// Movie doesn't exist, find it on TMDB, and insert it
 	tmdbData, err := TMDB.GetMovieDetails(tmdbID)
@@ -894,7 +904,7 @@ func (s *SQLite) AddMovieFromTMDB(tmdbID int) (string, error) {
 			tmdb_id, title, overview, poster_path, backdrop_path,
 			release_date, runtime, adult, original_language, original_title,
 			popularity, vote_average, vote_count, video, added_at, updated_at
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	`
 
 	_, err = s.Exec(query,

@@ -88,6 +88,7 @@ func (rs *RouterService) SetupRoutes() *chi.Mux {
 
 		// Movie management API
 		r.Post("/add-movie", rs.registry.Get("add-movie"))
+		r.Post("/admin/add-movie", rs.registry.Get("add-movie"))
 	})
 
 	return r
