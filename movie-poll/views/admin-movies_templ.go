@@ -154,7 +154,7 @@ func MovieSearchSection() templ.Component {
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"bg-goat-800 rounded-lg p-6 mb-8\"><h2 class=\"text-2xl font-bold text-tavern-400 mb-4\">🔍 Add New Movies</h2><div class=\"max-w-4xl\"><form hx-get=\"/api/search\" hx-target=\"#search-results\" hx-swap=\"innerHTML\" hx-trigger=\"submit, keyup delay:500ms from:input[name='q']\" class=\"space-y-4\"><div class=\"flex gap-4\"><input type=\"text\" name=\"q\" placeholder=\"Search for movies to add...\" class=\"flex-1 px-4 py-3 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none focus:ring-2 focus:ring-tavern-400/20\"> <button type=\"submit\" class=\"px-6 py-3 bg-tavern-500 hover:bg-tavern-600 text-white rounded-lg transition-colors font-semibold\">Search</button></div><div class=\"flex gap-4 flex-wrap\"><div class=\"flex-1 min-w-48\"><label for=\"lang\" class=\"block text-sm font-medium text-goat-200 mb-1\">Language</label> <select name=\"lang\" id=\"lang\" class=\"w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none\"><option value=\"\">All Languages</option> <option value=\"en-US\">English (US)</option> <option value=\"ja-JP\">Japanese</option> <option value=\"ko-KR\">Korean</option> <option value=\"zh-CN\">Chinese (Simplified)</option> <option value=\"fr-FR\">French</option> <option value=\"de-DE\">German</option> <option value=\"es-ES\">Spanish</option> <option value=\"it-IT\">Italian</option> <option value=\"pt-BR\">Portuguese (Brazil)</option> <option value=\"ru-RU\">Russian</option></select></div><div class=\"flex-1 min-w-48\"><label for=\"region\" class=\"block text-sm font-medium text-goat-200 mb-1\">Region</label> <select name=\"region\" id=\"region\" class=\"w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none\"><option value=\"\">All Regions</option> <option value=\"US\">United States</option> <option value=\"JP\">Japan</option> <option value=\"KR\">South Korea</option> <option value=\"CN\">China</option> <option value=\"FR\">France</option> <option value=\"DE\">Germany</option> <option value=\"ES\">Spain</option> <option value=\"IT\">Italy</option> <option value=\"BR\">Brazil</option> <option value=\"RU\">Russia</option> <option value=\"GB\">United Kingdom</option> <option value=\"CA\">Canada</option> <option value=\"AU\">Australia</option></select></div><div class=\"flex-1 min-w-48\"><label for=\"year\" class=\"block text-sm font-medium text-goat-200 mb-1\">Year</label> <input type=\"number\" name=\"year\" id=\"year\" placeholder=\"e.g., 2023\" min=\"1900\" max=\"2030\" class=\"w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none\"></div></div></form></div><!-- Search Results --><div id=\"search-results\" class=\"mt-6\"><p class=\"text-goat-400 text-center py-8\">Enter a search term to find movies</p></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"bg-goat-800 rounded-lg p-6 mb-8\"><h2 class=\"text-2xl font-bold text-tavern-400 mb-4\">🔍 Add New Movies</h2><div class=\"max-w-4xl\"><form hx-get=\"/api/search\" hx-target=\"#search-results\" hx-swap=\"innerHTML\" hx-trigger=\"submit, keyup delay:500ms from:input[name='q']\" class=\"space-y-4\"><div class=\"flex gap-4\"><input type=\"text\" name=\"q\" placeholder=\"Search for movies to add... (try both English and original titles)\" class=\"flex-1 px-4 py-3 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none focus:ring-2 focus:ring-tavern-400/20\"> <button type=\"submit\" class=\"px-6 py-3 bg-tavern-500 hover:bg-tavern-600 text-white rounded-lg transition-colors font-semibold\">Search</button></div><div class=\"text-sm text-goat-400 mb-2\">💡 <strong>Tip:</strong> For international movies, try searching with both the English title and the original title (e.g., \"Spirited Away\" or \"千と千尋の神隠し\")</div><div class=\"flex gap-4 flex-wrap\"><div class=\"flex-1 min-w-48\"><label for=\"lang\" class=\"block text-sm font-medium text-goat-200 mb-1\">Language</label> <select name=\"lang\" id=\"lang\" class=\"w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none\"><option value=\"\">All Languages</option> <option value=\"en-US\">English (US)</option> <option value=\"ja-JP\">Japanese</option> <option value=\"ko-KR\">Korean</option> <option value=\"zh-CN\">Chinese (Simplified)</option> <option value=\"fr-FR\">French</option> <option value=\"de-DE\">German</option> <option value=\"es-ES\">Spanish</option> <option value=\"it-IT\">Italian</option> <option value=\"pt-BR\">Portuguese (Brazil)</option> <option value=\"ru-RU\">Russian</option></select></div><div class=\"flex-1 min-w-48\"><label for=\"region\" class=\"block text-sm font-medium text-goat-200 mb-1\">Region</label> <select name=\"region\" id=\"region\" class=\"w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none\"><option value=\"\">All Regions</option> <option value=\"US\">United States</option> <option value=\"JP\">Japan</option> <option value=\"KR\">South Korea</option> <option value=\"CN\">China</option> <option value=\"FR\">France</option> <option value=\"DE\">Germany</option> <option value=\"ES\">Spain</option> <option value=\"IT\">Italy</option> <option value=\"BR\">Brazil</option> <option value=\"RU\">Russia</option> <option value=\"GB\">United Kingdom</option> <option value=\"CA\">Canada</option> <option value=\"AU\">Australia</option></select></div><div class=\"flex-1 min-w-48\"><label for=\"year\" class=\"block text-sm font-medium text-goat-200 mb-1\">Year</label> <input type=\"number\" name=\"year\" id=\"year\" placeholder=\"e.g., 2023\" min=\"1900\" max=\"2030\" class=\"w-full px-3 py-2 bg-goat-700 text-goat-100 rounded-lg border border-goat-600 focus:border-tavern-400 focus:outline-none\"></div></div></form></div><!-- Search Results --><div id=\"search-results\" class=\"mt-6\"><p class=\"text-goat-400 text-center py-8\">Enter a search term to find movies</p></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -206,7 +206,7 @@ func SearchResults(searchResults []tmdb.MovieShort) templ.Component {
 					var templ_7745c5c3_Var7 string
 					templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs("https://image.tmdb.org/t/p/w200" + movie.PosterPath)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 159, Col: 69}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 162, Col: 69}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 					if templ_7745c5c3_Err != nil {
@@ -219,7 +219,7 @@ func SearchResults(searchResults []tmdb.MovieShort) templ.Component {
 					var templ_7745c5c3_Var8 string
 					templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(movie.Title + " poster")
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 160, Col: 40}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 163, Col: 40}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 					if templ_7745c5c3_Err != nil {
@@ -242,7 +242,7 @@ func SearchResults(searchResults []tmdb.MovieShort) templ.Component {
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(movie.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 170, Col: 88}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 173, Col: 88}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -260,7 +260,7 @@ func SearchResults(searchResults []tmdb.MovieShort) templ.Component {
 					var templ_7745c5c3_Var10 string
 					templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(movie.ReleaseDate)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 172, Col: 77}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 175, Col: 77}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 					if templ_7745c5c3_Err != nil {
@@ -279,7 +279,7 @@ func SearchResults(searchResults []tmdb.MovieShort) templ.Component {
 					var templ_7745c5c3_Var11 string
 					templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(movie.Overview)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 175, Col: 79}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 178, Col: 79}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 					if templ_7745c5c3_Err != nil {
@@ -304,7 +304,7 @@ func SearchResults(searchResults []tmdb.MovieShort) templ.Component {
 					}
 				}() + `}`)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 187, Col: 19}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 190, Col: 19}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -449,7 +449,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(movie.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 299, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 302, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -462,7 +462,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movie.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 302, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 305, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -480,7 +480,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movie.Year))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 306, Col: 68}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 309, Col: 68}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {
@@ -498,7 +498,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movie.VoteCount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 309, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 312, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -511,7 +511,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(movie.AddedAt.Format("Jan 2, 2006"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 310, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 313, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -524,7 +524,7 @@ func AdminMoviesMovieCard(movie MovieInfo) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs("/api/admin/movies/" + strconv.Itoa(movie.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 315, Col: 61}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-movies.templ`, Line: 318, Col: 61}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {

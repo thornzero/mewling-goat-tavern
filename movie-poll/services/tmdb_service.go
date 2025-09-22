@@ -80,7 +80,7 @@ func (s *TMDBService) GetMovieDetails(id int) (Movie, error) {
 	movie, err := s.api.GetMovieInfo(id, nil)
 	if err != nil {
 		return Movie{}, err
-	}	
+	}
 	return Movie{movie, time.Time{}, time.Time{}}, nil
 }
 
@@ -124,10 +124,39 @@ func (s *TMDBService) SearchMovies(movieID MovieID, page int) (MovieSearchResult
 		options["region"] = ""
 	}
 
-	// search tmdb by title
-	searchResult, err := s.api.SearchMovie(movieID.Title, options)
+	// First, try searching with the original language if specified
+	var searchResult *tmdb.MovieSearchResults
+	var err error
+
+	// If a specific language is requested, try searching in that language first
+	if movieID.HasLanguage() && movieID.Language != "en-US" {
+		searchResult, err = s.api.SearchMovie(movieID.Title, options)
+		if err == nil && len(searchResult.Results) > 0 {
+			return MovieSearchResults{
+				MovieSearchResults: searchResult,
+			}, nil
+		}
+	}
+
+	// If no results or error, try searching in English
+	options["language"] = "en-US"
+	searchResult, err = s.api.SearchMovie(movieID.Title, options)
 	if err != nil {
 		return MovieSearchResults{}, err
+	}
+
+	// If we still have no results and we're searching for a non-English term,
+	// try a more flexible search by removing language restrictions
+	if len(searchResult.Results) == 0 && movieID.Language != "" && movieID.Language != "en-US" {
+		// Reset to original language but remove region restriction for broader search
+		options["language"] = movieID.Language
+		options["region"] = ""
+		searchResult, err = s.api.SearchMovie(movieID.Title, options)
+		if err != nil {
+			// If this fails too, return the original English results (even if empty)
+			options["language"] = "en-US"
+			searchResult, _ = s.api.SearchMovie(movieID.Title, options)
+		}
 	}
 
 	return MovieSearchResults{
