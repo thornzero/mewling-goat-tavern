@@ -2113,3 +2113,29 @@
 2025/09/21 20:20:14 logging.go:44: === Server Starting ===
 2025/09/21 20:20:14 logging.go:44: Admin users already exist, skipping default admin creation
 2025/09/21 20:20:14 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:20:46 logging.go:59: ERROR: Error getting recent movies: sql: Scan error on column index 16, name "added_at": converting driver.Value type string ("0001-01-01 00:00:00 +0000 UTC") to a int64: invalid syntax
+2025/09/21 20:20:49 logging.go:59: ERROR: Error getting movies for admin: sql: Scan error on column index 16, name "added_at": converting driver.Value type string ("0001-01-01 00:00:00 +0000 UTC") to a int64: invalid syntax
+2025/09/21 20:21:00 logging.go:59: ERROR: Error getting movies for admin: sql: Scan error on column index 16, name "added_at": converting driver.Value type string ("0001-01-01 00:00:00 +0000 UTC") to a int64: invalid syntax
+2025/09/21 20:21:54 logging.go:44: 🛑 Shutting down server...
+2025/09/21 20:21:54 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:22:00 logging.go:44: === Server Starting ===
+2025/09/21 20:22:00 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:22:00 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:22:02 logging.go:44: 🛑 Shutting down server...
+2025/09/21 20:22:02 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:22:06 logging.go:44: === Server Starting ===
+2025/09/21 20:22:06 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:22:06 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:22:07 logging.go:44: === Server Starting ===
+2025/09/21 20:22:07 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:22:07 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 20:22:37 logging.go:44: 🛑 Shutting down server...
+2025/09/21 20:22:37 logging.go:44: ✅ Server shutdown complete
+2025/09/21 20:22:42 logging.go:44: === Server Starting ===
+2025/09/21 20:22:42 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 20:22:42 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 23:17:38 logging.go:44: 🛑 Shutting down server...
+2025/09/21 23:17:38 logging.go:44: ✅ Server shutdown complete
+2025/09/21 23:17:46 logging.go:44: === Server Starting ===
+2025/09/21 23:17:46 logging.go:44: Admin users already exist, skipping default admin creation
+2025/09/21 23:17:46 logging.go:49: 🚀 Movie Poll Server starting on :3000

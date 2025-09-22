@@ -287,14 +287,24 @@ func (s *SQLite) GetMovieByID(id int) (*Movie, error) {
 	`, id)
 
 	var movie Movie
+	var addedAt, updatedAt sql.NullInt64
 	err := row.Scan(
 		&movie.ID, &movie.Title, &movie.Overview, &movie.PosterPath, &movie.BackdropPath,
 		&movie.ReleaseDate, &movie.Runtime, &movie.Adult, &movie.OriginalLanguage, &movie.OriginalTitle,
-		&movie.Popularity, &movie.VoteAverage, &movie.VoteCount, &movie.Video, &movie.AddedAt, &movie.UpdatedAt,
+		&movie.Popularity, &movie.VoteAverage, &movie.VoteCount, &movie.Video, &addedAt, &updatedAt,
 	)
 	if err != nil {
 		return nil, err
 	}
+
+	// Set the timestamps if they're valid
+	if addedAt.Valid {
+		movie.AddedAt = addedAt.Int64
+	}
+	if updatedAt.Valid {
+		movie.UpdatedAt = updatedAt.Int64
+	}
+
 	return &movie, nil
 }
 
@@ -1040,6 +1050,7 @@ func (s *SQLite) RemoveDuplicateMovies() error {
 // GetMovieByTMDBID retrieves a movie by its TMDB ID
 func (s *SQLite) GetMovieByTMDBID(tmdbID int) (*Movie, error) {
 	var movie Movie
+	var addedAt, updatedAt sql.NullInt64
 	err := s.QueryRow(`
 		SELECT tmdb_id, title, overview, poster_path, backdrop_path,
 		       release_date, runtime, adult, original_language, original_title,
@@ -1049,11 +1060,20 @@ func (s *SQLite) GetMovieByTMDBID(tmdbID int) (*Movie, error) {
 	`, tmdbID).Scan(
 		&movie.ID, &movie.Title, &movie.Overview, &movie.PosterPath, &movie.BackdropPath,
 		&movie.ReleaseDate, &movie.Runtime, &movie.Adult, &movie.OriginalLanguage, &movie.OriginalTitle,
-		&movie.Popularity, &movie.VoteAverage, &movie.VoteCount, &movie.Video, &movie.AddedAt, &movie.UpdatedAt,
+		&movie.Popularity, &movie.VoteAverage, &movie.VoteCount, &movie.Video, &addedAt, &updatedAt,
 	)
 	if err != nil {
 		return nil, err
 	}
+
+	// Set the timestamps if they're valid
+	if addedAt.Valid {
+		movie.AddedAt = addedAt.Int64
+	}
+	if updatedAt.Valid {
+		movie.UpdatedAt = updatedAt.Int64
+	}
+
 	return &movie, nil
 }
 
