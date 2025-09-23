@@ -609,7 +609,7 @@ func (c *CacheService) InvalidateStaleCache() error {
 
 #### Phase 1: Setup GORM (CRITICAL - DO THIS FIRST)
 
-**Step 1: Install Dependencies**
+- **Step 1: Install Dependencies**
 
 ```bash
 cd movie-poll
@@ -619,7 +619,7 @@ go get gorm.io/driver/postgres
 go mod tidy
 ```
 
-**Step 2: Create Models Directory Structure**
+- **Step 2: Create Models Directory Structure**
 
 ```bash
 mkdir -p models
@@ -629,7 +629,7 @@ touch models/appeal.go
 touch models/admin_user.go
 ```
 
-**Step 3: Create New Database Services**
+- **Step 3: Create New Database Services**
 
 ```bash
 touch services/database_config.go
@@ -639,7 +639,7 @@ touch services/cache_service.go
 touch services/gorm_service.go  # Main GORM service
 ```
 
-**Step 4: Update go.mod**
+- **Step 4: Update go.mod**
 
 ```go
 // Add these imports to go.mod
@@ -654,7 +654,7 @@ require (
 
 **CRITICAL**: Keep existing `services/sqlite.go` running alongside new GORM services
 
-**Step 1: Create GORM Service Interface**
+- **Step 1: Create GORM Service Interface**
 
 ```go
 // services/gorm_service.go
@@ -732,7 +732,7 @@ func convertGORMMovieToType(gormMovie models.Movie) types.Movie {
 }
 ```
 
-**Step 2: Update services.go to Support Both**
+- **Step 2: Update services.go to Support Both**
 
 ```go
 // services/services.go - ADD THIS TO EXISTING FILE
@@ -773,7 +773,7 @@ func (s *Services) GetDB() interface{} {
 }
 ```
 
-**Step 3: Update Handlers Gradually**
+- **Step 3: Update Handlers Gradually**
 
 ```go
 // services/handlers.go - UPDATE EXISTING HANDLERS
@@ -805,7 +805,7 @@ func (hr *HandlerRegistry) handleGetMovies(w http.ResponseWriter, r *http.Reques
 
 #### Phase 3: Complete Migration (AFTER TESTING)
 
-**Step 1: Verify All Functionality Works**
+- **Step 1: Verify All Functionality Works**
 
 - Test all API endpoints
 - Test admin panel
@@ -813,14 +813,14 @@ func (hr *HandlerRegistry) handleGetMovies(w http.ResponseWriter, r *http.Reques
 - Test voting system
 - Test results page
 
-**Step 2: Remove Old SQLite Service**
+- **Step 2: Remove Old SQLite Service**
 
 ```bash
 # Only after confirming everything works with GORM
 rm services/sqlite.go
 ```
 
-**Step 3: Clean Up Services**
+- **Step 3: Clean Up Services**
 
 ```go
 // services/services.go - SIMPLIFY AFTER MIGRATION
@@ -842,13 +842,13 @@ func NewServices() (*Services, error) {
 
 #### Phase 4: Add Advanced Features
 
-**Step 1: Implement Caching**
+- **Step 1: Implement Caching**
 
 - Add Redis support
 - Implement cache warming
 - Add cache invalidation
 
-**Step 2: Add Database Agnosticism**
+- **Step 2: Add Database Agnosticism**
 
 - Support PostgreSQL
 - Add migration tools
@@ -1119,7 +1119,7 @@ func main() {
 
 ### Common Issues and Solutions
 
-**Issue 1: Import Errors**
+- **Issue 1: Import Errors**
 
 ```go
 // Fix: Update import paths to match your project structure
@@ -1127,7 +1127,7 @@ import "github.com/thornzero/movie-poll/models"
 import "github.com/thornzero/movie-poll/types"
 ```
 
-**Issue 2: Type Conversion Errors**
+- **Issue 2: Type Conversion Errors**
 
 ```go
 // Fix: Use the exact conversion functions provided in this document
@@ -1136,7 +1136,7 @@ func convertGORMMovieToType(gormMovie models.Movie) types.Movie {
 }
 ```
 
-**Issue 3: Database Connection Errors**
+- **Issue 3: Database Connection Errors**
 
 ```go
 // Fix: Check .env file and database configuration
@@ -1144,7 +1144,7 @@ func convertGORMMovieToType(gormMovie models.Movie) types.Movie {
 // Ensure DATABASE_NAME=movie_poll.db is set
 ```
 
-**Issue 4: Handler Update Errors**
+- **Issue 4: Handler Update Errors**
 
 ```go
 // Fix: Use the exact handler update pattern from this document
