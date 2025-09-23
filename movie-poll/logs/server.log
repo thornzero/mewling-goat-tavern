@@ -2139,3 +2139,5 @@
 2025/09/21 23:17:46 logging.go:44: === Server Starting ===
 2025/09/21 23:17:46 logging.go:44: Admin users already exist, skipping default admin creation
 2025/09/21 23:17:46 logging.go:49: 🚀 Movie Poll Server starting on :3000
+2025/09/21 23:47:57 logging.go:44: 🛑 Shutting down server...
+2025/09/21 23:47:57 logging.go:44: ✅ Server shutdown complete
