@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/thornzero/movie-poll/models"
 	"github.com/thornzero/movie-poll/services"
 )
 
@@ -27,8 +28,8 @@ func main() {
 // createDefaultAdminUser creates a default admin user if none exists
 func createDefaultAdminUser() {
 	// Check if any admin users exist
-	var count int
-	err := services.DB.QueryRow("SELECT COUNT(*) FROM admin_users").Scan(&count)
+	var count int64
+	err := services.DB.GetDB().Model(&models.AdminUser{}).Count(&count).Error
 	if err != nil {
 		services.LogErrorf("Error checking admin users: %v", err)
 		return
@@ -39,7 +40,19 @@ func createDefaultAdminUser() {
 		return
 	}
 
-	err = services.DB.CreateAdminUser(services.Config.AdminUsername, services.Config.AdminPassword)
+	// Create default admin user using GORM
+	passwordHash, err := services.HashPassword(services.Config.AdminPassword)
+	if err != nil {
+		services.LogErrorf("Error hashing password: %v", err)
+		return
+	}
+
+	adminUser := &models.AdminUser{
+		Username:     services.Config.AdminUsername,
+		PasswordHash: passwordHash,
+	}
+
+	err = services.DB.GetDB().Create(adminUser).Error
 	if err != nil {
 		services.LogErrorf("Error creating default admin user: %v", err)
 		return

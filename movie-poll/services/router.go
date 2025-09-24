@@ -55,6 +55,13 @@ func (rs *RouterService) SetupRoutes() *chi.Mux {
 	r.Delete("/api/admin/movies/{id}", rs.registry.Get("admin-delete-movie"))
 	r.Post("/api/admin/import-movies", rs.registry.Get("import-movies"))
 
+	// User management routes
+	r.Get("/admin/users", rs.registry.Get("admin-users"))
+	r.Get("/api/admin/users", rs.registry.Get("admin-users-api"))
+	r.Get("/api/admin/user-stats", rs.registry.Get("admin-user-stats"))
+	r.Post("/api/admin/user-delete", rs.registry.Get("admin-user-delete"))
+	r.Post("/api/admin/user-update-stats", rs.registry.Get("admin-user-update-stats"))
+
 	// Debug routes
 	r.Get("/debug", rs.registry.Get("debug"))
 	r.Get("/debug/session", rs.registry.Get("debug-session"))

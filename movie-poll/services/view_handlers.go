@@ -54,13 +54,13 @@ func (hr *HandlerRegistry) handleResults(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		LogErrorf("Error fetching voting stats: %v", err)
 		// Continue with empty stats
-		stats = types.VotingStats{}
+		stats = &types.VotingStats{}
 	}
 
 	// Create results data
 	resultsData := views.ResultsData{
 		Movies: votingSummary,
-		Stats:  stats,
+		Stats:  *stats,
 	}
 
 	// Render the results page
@@ -180,7 +180,7 @@ func (hr *HandlerRegistry) handleAdminLoginSubmit(w http.ResponseWriter, r *http
 	// Set admin user in session
 	sessionData := Session.GetSessionData(r)
 	sessionData.AdminUser = &AdminUserInfo{
-		ID:       adminUser.ID,
+		ID:       int(adminUser.ID),
 		Username: adminUser.Username,
 	}
 	Session.PutSessionData(r, sessionData)
@@ -207,7 +207,7 @@ func (hr *HandlerRegistry) handleAdminDashboard(w http.ResponseWriter, r *http.R
 	stats, err := DB.GetVotingStats()
 	if err != nil {
 		LogErrorf("Error getting admin stats: %v", err)
-		stats = types.VotingStats{}
+		stats = &types.VotingStats{}
 	}
 
 	// Get recent movies

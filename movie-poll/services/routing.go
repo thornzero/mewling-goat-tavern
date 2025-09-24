@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 
-
 	"github.com/thornzero/movie-poll/types"
 	"github.com/thornzero/movie-poll/views"
 )
@@ -24,7 +23,6 @@ func NewBasicHandlers() *BasicHandlers {
 		},
 	}
 }
-
 
 // HandleHome serves the home page
 func (h *BasicHandlers) HandleHome(w http.ResponseWriter, r *http.Request) {
@@ -70,13 +68,13 @@ func (h *BasicHandlers) HandleResults(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Error fetching voting stats: %v", err)
 		// Continue with empty stats
-		stats = types.VotingStats{}
+		stats = &types.VotingStats{}
 	}
 
 	// Create results data
 	resultsData := views.ResultsData{
 		Movies: votingSummary,
-		Stats:  stats,
+		Stats:  *stats,
 	}
 
 	// Render the results page

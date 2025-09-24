@@ -10,15 +10,16 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
-
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/thornzero/movie-poll/types"
 )
 
 var TMDB *TMDBService
 var Session *SessionManager
-var DB *SQLite
+var DB *GORMService
 var Config *EnvConfig
 var Handlers *BasicHandlers
 var Registry *HandlerRegistry
@@ -28,17 +29,20 @@ func InitServices() error {
 	var err error
 	Config = NewEnvConfig()
 	TMDB = NewTMDBService(Config.TMDBAPIKey)
-	Session = NewSessionManager()
-	DB, err = NewSQLite()
+
+	// Initialize GORM database first
+	DB, err = NewGORMService()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to initialize GORM database: %v", err)
 	}
 
-	// Apply database schema
-	err = DB.ApplyDBSchema()
+	// Initialize session manager with GORM database
+	Session, err = NewSessionManager(DB.GetDB())
 	if err != nil {
-		return fmt.Errorf("failed to apply database schema: %v", err)
+		return fmt.Errorf("failed to initialize session manager: %v", err)
 	}
+
+	LogInfo("GORM database initialized successfully")
 
 	// Register types for session serialization
 	gob.Register(&SessionData{})
@@ -56,11 +60,16 @@ func InitServices() error {
 	return nil
 }
 
-func LimitMovies(movies []Movie, limit int) []Movie {
+func LimitMovies(movies []types.Movie, limit int) []types.Movie {
 	if len(movies) > limit {
 		return movies[:limit]
 	}
 	return movies
+}
+
+// GetActiveDBService returns the active database service (GORM)
+func GetActiveDBService() interface{} {
+	return DB
 }
 
 func analyzeTestResults(testResults map[string]interface{}) map[string]interface{} {

@@ -51,6 +51,13 @@ func (hr *HandlerRegistry) registerHandlers() {
 	hr.handlers["admin-delete-all-votes"] = hr.handleAdminDeleteAllVotes
 	hr.handlers["admin-delete-movie"] = hr.handleAdminDeleteMovie
 
+	// User management handlers
+	hr.handlers["admin-users"] = hr.handleAdminUsers
+	hr.handlers["admin-user-stats"] = hr.handleAdminUserStats
+	hr.handlers["admin-user-delete"] = hr.handleAdminUserDelete
+	hr.handlers["admin-user-update-stats"] = hr.handleAdminUserUpdateStats
+	hr.handlers["admin-users-api"] = hr.handleAdminUsersAPI
+
 	// Debug handlers
 	hr.handlers["debug"] = hr.handleDebug
 	hr.handlers["debug-session"] = hr.handleDebugSession

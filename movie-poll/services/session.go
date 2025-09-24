@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/alexedwards/scs/gormstore"
 	"github.com/alexedwards/scs/v2"
-	"github.com/alexedwards/scs/v2/memstore"
 	"github.com/google/uuid"
 	"github.com/thornzero/movie-poll/types"
+	"gorm.io/gorm"
 )
 
 type SessionManager struct {
@@ -30,7 +31,8 @@ type AdminUserInfo struct {
 }
 
 // New creates a new session manager
-func NewSessionManager() *SessionManager {
+func NewSessionManager(db *gorm.DB) (*SessionManager, error) {
+	var err error
 	sessionManager := scs.New()
 
 	// Configure session lifetime
@@ -45,10 +47,13 @@ func NewSessionManager() *SessionManager {
 	sessionManager.Cookie.SameSite = http.SameSiteLaxMode // Set SameSite for localhost
 	sessionManager.Cookie.Domain = ""                     // Don't set domain for localhost
 
-	// Configure session store - this is crucial for persistence!
-	sessionManager.Store = memstore.New() // Store sessions in memory
+	// Configure session store - use GORM store for persistence!
+	sessionManager.Store, err = gormstore.New(db)
+	if err != nil {
+		return nil, err
+	}
 
-	return &SessionManager{sessionManager}
+	return &SessionManager{sessionManager}, nil
 }
 
 // GenerateDeviceID generates a unique device ID using UUID v4
