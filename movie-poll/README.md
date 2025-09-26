@@ -96,6 +96,7 @@ make dev
 
 - `PORT`: Server port (default: 3000)
 - `DB_PATH`: SQLite database path (default: db/movie_poll.db)
+- `CORS_ALLOWED_ORIGINS`: CORS allowed origins (default: "*" for development)
 - `TMDB_API_KEY`: TheMovieDB API key (optional, for movie details)
 
 ## Project Structure

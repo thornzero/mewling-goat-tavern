@@ -2,9 +2,12 @@ package services
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
+	"github.com/go-chi/httprate"
 )
 
 // RouterService handles HTTP routing using the handler registry
@@ -23,24 +26,44 @@ func NewRouterService(registry *HandlerRegistry) *RouterService {
 func (rs *RouterService) SetupRoutes() *chi.Mux {
 	r := chi.NewRouter()
 
-	// Global middleware
+	// Global middleware (all middleware must be defined before routes)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
+	r.Use(middleware.Compress(5))                // Enable gzip compression
+	r.Use(middleware.Heartbeat("/ping"))         // Health check endpoint
+	r.Use(middleware.NoCache)                    // Prevent caching of sensitive endpoints
+	r.Use(middleware.Throttle(100))              // Limit to 100 requests per second
+	r.Use(httprate.LimitByIP(60, 1*time.Minute)) // 60 requests per minute per IP
 
-	// Static file handlers
+	// CORS middleware
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{Config.CORSAllowedOrigins},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token", "X-Requested-With"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	}))
+
+	// Static file handlers with caching
 	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	r.Handle("/css/*", http.StripPrefix("/css/", http.FileServer(http.Dir("static/css"))))
 	r.Handle("/js/*", http.StripPrefix("/js/", http.FileServer(http.Dir("static/js"))))
 	r.Handle("/img/*", http.StripPrefix("/img/", http.FileServer(http.Dir("static/img"))))
 	r.Handle("/site.webmanifest", http.FileServer(http.Dir("static")))
 
+	// Favicon with caching (override NoCache for this specific route)
+	r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "public, max-age=31536000") // 1 year
+		http.ServeFile(w, r, "static/img/favicon-32x32.png")
+	})
+
 	// Main application routes
 	r.Get("/", rs.registry.Get("home"))
 	r.Get("/results", rs.registry.Get("results"))
 	r.Get("/test", rs.registry.Get("test"))
-	r.Get("/favicon.ico", rs.registry.Get("favicon"))
 
 	// Admin routes
 	r.Get("/admin", rs.registry.Get("admin-login"))

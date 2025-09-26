@@ -21,6 +21,8 @@ type EnvConfig struct {
 	LogDirectory  string
 	// voting constants
 	ParticipationThreshold int
+	// CORS configuration
+	CORSAllowedOrigins string
 }
 
 func Getenv(key, fallback string) string {
@@ -66,5 +68,6 @@ func NewEnvConfig() *EnvConfig {
 		LogFile:                Getenv("LOG_FILE", "server.log"),
 		LogDirectory:           Getenv("LOG_DIRECTORY", "logs"),
 		ParticipationThreshold: GetEnvInt("PARTICIPATION_THRESHOLD", "3"),
+		CORSAllowedOrigins:     Getenv("CORS_ALLOWED_ORIGINS", "*"),
 	}
 }

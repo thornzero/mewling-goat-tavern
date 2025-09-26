@@ -912,8 +912,6 @@ func (hr *HandlerRegistry) handleDebug(w http.ResponseWriter, r *http.Request) {
 
 	// Set response headers
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Credentials", "true")
 
 	// Return debug info
 	json.NewEncoder(w).Encode(debugInfo)
