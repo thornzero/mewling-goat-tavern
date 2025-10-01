@@ -9,49 +9,12 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
+	"github.com/thornzero/movie-poll/types"
 	"strconv"
-	"time"
 )
 
-// TestPageData represents data for the test page
-type TestPageData struct {
-	AdminUser     AdminUserInfo
-	SystemInfo    SystemInfo
-	DatabaseStats DatabaseStats
-	APIEndpoints  []APIEndpoint
-}
-
-// SystemInfo represents system information
-type SystemInfo struct {
-	ServerTime   time.Time
-	GoVersion    string
-	DatabasePath string
-	Uptime       string
-	MemoryUsage  string
-	Environment  string
-	TMDBEnabled  bool
-	SessionCount int
-}
-
-// DatabaseStats represents database statistics
-type DatabaseStats struct {
-	TotalMovies  int
-	TotalVotes   int
-	UniqueVoters int
-	AdminUsers   int
-	DatabaseSize string
-	LastBackup   time.Time
-}
-
-// APIEndpoint represents an API endpoint for testing
-type APIEndpoint struct {
-	Method string
-	Path   string
-	Desc   string
-}
-
 // AdminTestPage renders the admin test page
-func AdminTestPage(data TestPageData) templ.Component {
+func AdminTestPage(data types.TestPageData) templ.Component {
 	return BaseLayout(
 		"Test Page - Mewling Goat Tavern",
 		"System testing and debugging interface",
@@ -60,11 +23,11 @@ func AdminTestPage(data TestPageData) templ.Component {
 }
 
 // AdminTestContent renders the test page content
-func AdminTestContent(data TestPageData) templ.Component {
+func AdminTestContent(data types.TestPageData) templ.Component {
 	return AdminTestTemplate(data)
 }
 
-func AdminTestTemplate(data TestPageData) templ.Component {
+func AdminTestTemplate(data types.TestPageData) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -117,7 +80,7 @@ func AdminTestTemplate(data TestPageData) templ.Component {
 	})
 }
 
-func SystemInfoCard(info SystemInfo) templ.Component {
+func SystemInfoCard(info types.SystemInfo) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -145,7 +108,7 @@ func SystemInfoCard(info SystemInfo) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(info.ServerTime.Format("2006-01-02 15:04:05 MST"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 107, Col: 79}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 72, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -158,7 +121,7 @@ func SystemInfoCard(info SystemInfo) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(info.GoVersion)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 111, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 76, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -171,7 +134,7 @@ func SystemInfoCard(info SystemInfo) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(info.Environment)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 115, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 80, Col: 46}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -184,7 +147,7 @@ func SystemInfoCard(info SystemInfo) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(info.DatabasePath)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 119, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 84, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -212,7 +175,7 @@ func SystemInfoCard(info SystemInfo) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(info.SessionCount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 131, Col: 61}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 96, Col: 61}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -226,7 +189,7 @@ func SystemInfoCard(info SystemInfo) templ.Component {
 	})
 }
 
-func DatabaseStatsCard(stats DatabaseStats) templ.Component {
+func DatabaseStatsCard(stats types.DatabaseStats) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -254,7 +217,7 @@ func DatabaseStatsCard(stats DatabaseStats) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(stats.TotalMovies))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 140, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 105, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -267,7 +230,7 @@ func DatabaseStatsCard(stats DatabaseStats) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(stats.TotalVotes))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 144, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 109, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -280,7 +243,7 @@ func DatabaseStatsCard(stats DatabaseStats) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(stats.UniqueVoters))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 148, Col: 78}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 113, Col: 78}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -293,7 +256,7 @@ func DatabaseStatsCard(stats DatabaseStats) templ.Component {
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(stats.AdminUsers))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 152, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 117, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -306,7 +269,7 @@ func DatabaseStatsCard(stats DatabaseStats) templ.Component {
 		var templ_7745c5c3_Var13 string
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(stats.DatabaseSize)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 156, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 121, Col: 48}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
@@ -319,7 +282,7 @@ func DatabaseStatsCard(stats DatabaseStats) templ.Component {
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(stats.LastBackup.Format("2006-01-02 15:04"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 160, Col: 73}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 125, Col: 73}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
@@ -333,7 +296,7 @@ func DatabaseStatsCard(stats DatabaseStats) templ.Component {
 	})
 }
 
-func APIEndpointsList(endpoints []APIEndpoint) templ.Component {
+func APIEndpointsList(endpoints []types.APIEndpoint) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -366,7 +329,7 @@ func APIEndpointsList(endpoints []APIEndpoint) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(endpoint.Method)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 171, Col: 23}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 136, Col: 23}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -379,7 +342,7 @@ func APIEndpointsList(endpoints []APIEndpoint) templ.Component {
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(endpoint.Path)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 173, Col: 58}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 138, Col: 58}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -392,7 +355,7 @@ func APIEndpointsList(endpoints []APIEndpoint) templ.Component {
 			var templ_7745c5c3_Var18 string
 			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(endpoint.Desc)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 174, Col: 48}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 139, Col: 48}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 			if templ_7745c5c3_Err != nil {
@@ -405,7 +368,7 @@ func APIEndpointsList(endpoints []APIEndpoint) templ.Component {
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(endpoint.Path)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 178, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/admin-test.templ`, Line: 143, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {

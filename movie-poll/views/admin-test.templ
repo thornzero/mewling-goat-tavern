@@ -2,48 +2,13 @@ package views
 
 import (
 	"strconv"
-	"time"
+	"github.com/thornzero/movie-poll/types" 
 )
 
-// TestPageData represents data for the test page
-type TestPageData struct {
-	AdminUser     AdminUserInfo
-	SystemInfo    SystemInfo
-	DatabaseStats DatabaseStats
-	APIEndpoints  []APIEndpoint
-}
 
-// SystemInfo represents system information
-type SystemInfo struct {
-	ServerTime   time.Time
-	GoVersion    string
-	DatabasePath string
-	Uptime       string
-	MemoryUsage  string
-	Environment  string
-	TMDBEnabled  bool
-	SessionCount int
-}
-
-// DatabaseStats represents database statistics
-type DatabaseStats struct {
-	TotalMovies  int
-	TotalVotes   int
-	UniqueVoters int
-	AdminUsers   int
-	DatabaseSize string
-	LastBackup   time.Time
-}
-
-// APIEndpoint represents an API endpoint for testing
-type APIEndpoint struct {
-	Method string
-	Path   string
-	Desc   string
-}
 
 // AdminTestPage renders the admin test page
-func AdminTestPage(data TestPageData) templ.Component {
+func AdminTestPage(data types.TestPageData) templ.Component {
 	return BaseLayout(
 		"Test Page - Mewling Goat Tavern",
 		"System testing and debugging interface",
@@ -52,11 +17,11 @@ func AdminTestPage(data TestPageData) templ.Component {
 }
 
 // AdminTestContent renders the test page content
-func AdminTestContent(data TestPageData) templ.Component {
+func AdminTestContent(data types.TestPageData) templ.Component {
 	return AdminTestTemplate(data)
 }
 
-templ AdminTestTemplate(data TestPageData) {
+templ AdminTestTemplate(data types.TestPageData) {
 	<div class="min-h-screen bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900 p-4">
 		<div class="container mx-auto max-w-7xl">
 			<!-- Header -->
@@ -100,7 +65,7 @@ templ AdminTestTemplate(data TestPageData) {
 	</div>
 }
 
-templ SystemInfoCard(info SystemInfo) {
+templ SystemInfoCard(info types.SystemInfo) {
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 		<div class="bg-goat-700 p-4 rounded-lg">
 			<h3 class="font-semibold text-tavern-400 mb-2">Server Time</h3>
@@ -133,7 +98,7 @@ templ SystemInfoCard(info SystemInfo) {
 	</div>
 }
 
-templ DatabaseStatsCard(stats DatabaseStats) {
+templ DatabaseStatsCard(stats types.DatabaseStats) {
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 		<div class="bg-goat-700 p-4 rounded-lg">
 			<h3 class="font-semibold text-tavern-400 mb-2">Total Movies</h3>
@@ -162,7 +127,7 @@ templ DatabaseStatsCard(stats DatabaseStats) {
 	</div>
 }
 
-templ APIEndpointsList(endpoints []APIEndpoint) {
+templ APIEndpointsList(endpoints []types.APIEndpoint) {
 	<div class="space-y-4">
 		for _, endpoint := range endpoints {
 			<div class="bg-goat-700 p-4 rounded-lg flex items-center justify-between">

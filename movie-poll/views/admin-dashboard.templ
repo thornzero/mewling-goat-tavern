@@ -1,100 +1,31 @@
 package views
 
 import (
+	"github.com/thornzero/movie-poll/types"
 	"strconv"
-	"time"
 )
 
-// AdminDashboardData represents data for the admin dashboard
-type AdminDashboardData struct {
-	AdminUser    AdminUserInfo
-	Stats        AdminStats
-	RecentMovies []MovieInfo
-	RecentVotes  []VoteInfo
-}
-
-// AdminUserInfo represents admin user information
-type AdminUserInfo struct {
-	ID        int
-	Username  string
-	CreatedAt time.Time
-	LastLogin *int64
-}
-
-// AdminStats represents various statistics
-type AdminStats struct {
-	TotalMovies    int
-	TotalVotes     int
-	UniqueVoters   int
-	ActiveSessions int
-	LastUpdated    time.Time
-}
-
-// MovieInfo represents movie information for display
-type MovieInfo struct {
-	ID        int
-	Title     string
-	Year      int
-	VoteCount int
-	AddedAt   time.Time
-}
-
-// VoteInfo represents vote information for display
-type VoteInfo struct {
-	ID         int
-	MovieID    int
-	MovieTitle string
-	UserName   string
-	Vibe       int
-	Seen       bool
-	VotedAt    time.Time
-}
-
 // AdminDashboard renders the admin dashboard
-func AdminDashboard(data AdminDashboardData) templ.Component {
+func AdminDashboard(data types.AdminDashboardData) templ.Component {
 	return AdminDashboardLayout(data)
 }
 
 // AdminDashboardContent renders the admin dashboard content
-func AdminDashboardContent(data AdminDashboardData) templ.Component {
+func AdminDashboardContent(data types.AdminDashboardData) templ.Component {
 	return AdminDashboardTemplate(data)
 }
 
 // AdminDashboardLayout renders the full admin dashboard page
-func AdminDashboardLayout(data AdminDashboardData) templ.Component {
+func AdminDashboardLayout(data types.AdminDashboardData) templ.Component {
 	return AdminDashboardPage(data)
 }
 
-templ AdminDashboardPage(data AdminDashboardData) {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<meta name="description" content="Movie poll administration and management"/>
-			<title>Admin Dashboard - Mewling Goat Tavern</title>
-			<link rel="icon" sizes="16x16" href="/img/favicon-16x16.png"/>
-			<link rel="icon" sizes="32x32" href="/img/favicon-32x32.png"/>
-			<link rel="icon" sizes="192x192" href="/img/android-chrome-192x192.png"/>
-			<link rel="icon" sizes="512x512" href="/img/android-chrome-512x512.png"/>
-			<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"/>
-			<link rel="manifest" href="/site.webmanifest"/>
-			<link rel="stylesheet" href="/css/style.css"/>
-			<script defer src="/js/htmx.min.js"></script>
-			<script>
-				// Wait for HTMX to load before configuring it
-				document.addEventListener('DOMContentLoaded', function() {
-					// Configure HTMX to include cookies using the correct method
-					htmx.config.withCredentials = true;
-				});
-			</script>
-		</head>
-		<body class="bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900 min-h-screen">
-			@AdminNavigation()
-			@AdminDashboardTemplate(data)
-			<script defer src="/js/script.js"></script>
-		</body>
-	</html>
+func AdminDashboardPage(data types.AdminDashboardData) templ.Component {
+	return BaseLayout(
+		"Admin Dashboard - Mewling Goat Tavern",
+		"Secure admin access for movie poll management",
+		AdminDashboardContent(data),
+	)
 }
 
 templ AdminNavigation() {
@@ -122,7 +53,8 @@ templ AdminNavigation() {
 	</nav>
 }
 
-templ AdminDashboardTemplate(data AdminDashboardData) {
+templ AdminDashboardTemplate(data types.AdminDashboardData) {
+	@AdminNavigation()
 	<div class="p-4">
 		<div class="container mx-auto max-w-7xl">
 			<!-- Header -->
@@ -175,7 +107,7 @@ templ AdminDashboardTemplate(data AdminDashboardData) {
 	</div>
 }
 
-templ AdminStatsCards(stats AdminStats) {
+templ AdminStatsCards(stats types.AdminStats) {
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 		<div class="bg-goat-700 p-6 rounded-xl shadow-lg">
 			<div class="flex items-center">
@@ -232,7 +164,7 @@ templ AdminStatsCards(stats AdminStats) {
 	</div>
 }
 
-templ RecentMoviesSection(movies []MovieInfo) {
+templ RecentMoviesSection(movies []types.MovieInfo) {
 	<div class="bg-goat-800 rounded-lg p-6 mb-8">
 		<div class="flex justify-between items-center mb-6">
 			<h2 class="text-2xl font-bold text-tavern-400">Recent Movies</h2>
@@ -254,7 +186,7 @@ templ RecentMoviesSection(movies []MovieInfo) {
 	</div>
 }
 
-templ RecentVotesSection(votes []VoteInfo) {
+templ RecentVotesSection(votes []types.VoteInfo) {
 	<div class="bg-goat-800 rounded-lg p-6 mb-8">
 		<div class="flex justify-between items-center mb-6">
 			<h2 class="text-2xl font-bold text-tavern-400">Recent Votes</h2>
@@ -276,7 +208,7 @@ templ RecentVotesSection(votes []VoteInfo) {
 	</div>
 }
 
-templ AdminMovieCard(movie MovieInfo) {
+templ AdminMovieCard(movie types.MovieInfo) {
 	<div class="bg-goat-700 rounded-lg p-4 hover:bg-goat-600 transition-colors">
 		<h3 class="font-bold text-tavern-400 mb-2 line-clamp-2">
 			{ movie.Title }
@@ -291,7 +223,7 @@ templ AdminMovieCard(movie MovieInfo) {
 	</div>
 }
 
-templ VoteCard(vote VoteInfo) {
+templ VoteCard(vote types.VoteInfo) {
 	<div class="bg-goat-700 rounded-lg p-4 flex items-center justify-between">
 		<div class="flex-1">
 			<div class="flex items-center space-x-4">

@@ -1,0 +1,104 @@
+---
+
+description: MCP Server Tools - Project Management and Development Assistance
+
+globs: ["**/*"]
+
+alwaysApply: true
+
+---
+
+
+
+
+# MCP Server Tools
+
+## 🎯 Available Tools
+
+This project has access to MCP server tools for enhanced
+
+project management and AI assistance.
+
+### 📋 Goals Management
+
+- mcp_mcp-server-go_goals_list() - List active project goals
+- mcp_mcp-server-go_goals_add({title: "Goal Title"}) - Add new goal
+- mcp_mcp-server-go_goals_update({id: 1, status: "done"}) - Update goal status
+
+### 📝 Cursor Rules Management
+
+- mcp_mcp-server-go_cursor_rules_list() - List active cursor rules
+- mcp_mcp-server-go_cursor_rules_add({name: "Rule Name", category: "general",
+- mcp_mcp-server-go_cursor_rules_update({id: 1, content: "Updated content"})
+
+### 📚 Documentation & ADRs
+
+- mcp_mcp-server-go_adrs_list() - List Architecture Decision Records
+- mcp_mcp-server-go_adrs_get({id: "ADR-001"}) - Get specific ADR content
+- mcp_mcp-server-go_template_list() - List available documentation templates
+- mcp_mcp-server-go_template_apply({template_id: "template-name", variables:
+
+### 🔍 Repository Tools
+
+- mcp_mcp-server-go_repo_search({q: "search pattern"}) - Search codebase
+- mcp_mcp-server-go_markdown_lint({path: "docs/"}) - Lint markdown files
+- mcp_mcp-server-go_state_log_change({summary: "Change description", files:
+### 🧪 CI & Testing
+
+- mcp_mcp-server-go_ci_run_tests({scope: "./cmd"}) - Run tests
+- mcp_mcp-server-go_ci_last_failure() - Get last test failure info
+## 🚀 Getting Started
+
+### 1. Initialize Project Data
+
+First, add initial project data:
+
+```javascript
+// Add initial project goal
+mcp_mcp-server-go_goals_add({
+  title: "Project Setup Complete"
+})
+
+// Add project guidelines rule
+mcp_mcp-server-go_cursor_rules_add({
+  name: "Project Guidelines",
+  category: "general",
+  content: "Your project guidelines here..."
+})
+
+// Verify tools work
+mcp_mcp-server-go_goals_list()
+mcp_mcp-server-go_cursor_rules_list()
+```
+
+### 2. Use Tools Regularly
+
+- Track project goals and milestones
+- Maintain development rules and guidelines
+- Document architecture decisions
+- Log significant changes
+## ⚠️ Important Notes
+
+- **Always initialize with test data** before using list operations
+- **Use required parameters only** initially (avoid optional parameters)
+- **Restart Cursor** if tools show "Not connected" errors
+- **Check troubleshooting guide** if tools fail
+## 🔧 Troubleshooting
+
+If tools don't work:
+
+- Check if MCP server is configured in Cursor settings
+- Restart Cursor completely
+- Verify database exists: .agent/state.db
+- Try adding test data first: mcp_mcp-server-go_goals_add({title: "Test"})
+## 📚 Documentation
+
+- **Usage Guide**: See mcp-tools-usage.mdc
+- **Troubleshooting**: See mcp-tools-troubleshooting.mdc
+- **Full Documentation**: /home/thornzero/Repositories/mcp-server-go/docs/
+---
+
+**Last Updated**: 2025-09-30
+
+**Status**: Production Ready
+

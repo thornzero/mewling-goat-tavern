@@ -3,18 +3,15 @@ package views
 import (
 	"github.com/ryanbradynd05/go-tmdb"
 	"strconv"
+	"github.com/thornzero/movie-poll/types"
 )
 
-type AdminMoviesData struct {
-	AdminUser AdminUserInfo
-	Movies    []MovieInfo
-}
 
-templ AdminMoviesPage(data AdminMoviesData) {
+templ AdminMoviesPage(data types.AdminMoviesData) {
 	@BaseLayout("Admin Movies", "Manage movies in the poll", AdminMoviesContent(data))
 }
 
-templ AdminMoviesContent(data AdminMoviesData) {
+templ AdminMoviesContent(data types.AdminMoviesData) {
 	<div class="min-h-screen bg-gradient-to-br from-goat-900 via-goat-800 to-goat-900">
 		<div class="container mx-auto px-4 py-8">
 			<!-- Header -->
@@ -258,7 +255,7 @@ templ EmptyMoviesState() {
 	</div>
 }
 
-templ MoviesList(movies []MovieInfo) {
+templ MoviesList(movies []types.MovieInfo) {
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 		for _, movie := range movies {
 			@AdminMoviesMovieCard(movie)
@@ -266,7 +263,7 @@ templ MoviesList(movies []MovieInfo) {
 	</div>
 }
 
-templ AdminMoviesMovieCard(movie MovieInfo) {
+templ AdminMoviesMovieCard(movie types.MovieInfo) {
 	<div class="bg-goat-700 rounded-lg p-4 hover:bg-goat-600 transition-colors">
 		<div class="flex justify-between items-start mb-2">
 			<h3 class="font-bold text-tavern-400 line-clamp-2">
