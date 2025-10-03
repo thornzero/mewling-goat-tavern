@@ -218,13 +218,13 @@ func (hr *HandlerRegistry) handleAdminDashboard(w http.ResponseWriter, r *http.R
 	}
 
 	// Convert to admin format
-	adminMovies := make([]views.MovieInfo, len(recentMovies))
+	adminMovies := make([]types.MovieInfo, len(recentMovies))
 	for i, movie := range recentMovies {
 		year := 0
 		if movie.Year != nil {
 			year = *movie.Year
 		}
-		adminMovies[i] = views.MovieInfo{
+		adminMovies[i] = types.MovieInfo{
 			ID:        movie.ID,
 			Title:     movie.Title,
 			Year:      year,
@@ -234,12 +234,12 @@ func (hr *HandlerRegistry) handleAdminDashboard(w http.ResponseWriter, r *http.R
 	}
 
 	// Create admin dashboard data
-	dashboardData := views.AdminDashboardData{
-		AdminUser: views.AdminUserInfo{
+	dashboardData := types.AdminDashboardData{
+		AdminUser: types.AdminUserInfo{
 			ID:       sessionData.AdminUser.ID,
 			Username: sessionData.AdminUser.Username,
 		},
-		Stats: views.AdminStats{
+		Stats: types.AdminStats{
 			TotalMovies:    stats.TotalMovies,
 			TotalVotes:     stats.TotalVotes,
 			UniqueVoters:   stats.UniqueVoters,
@@ -247,7 +247,7 @@ func (hr *HandlerRegistry) handleAdminDashboard(w http.ResponseWriter, r *http.R
 			LastUpdated:    time.Now(),
 		},
 		RecentMovies: adminMovies,
-		RecentVotes:  []views.VoteInfo{}, // TODO: Implement recent votes
+		RecentVotes:  []types.VoteInfo{}, // TODO: Implement recent votes
 	}
 
 	views.AdminDashboard(dashboardData).Render(r.Context(), w)
@@ -270,13 +270,13 @@ func (hr *HandlerRegistry) handleAdminMovies(w http.ResponseWriter, r *http.Requ
 	}
 
 	// Convert to admin format
-	adminMovies := make([]views.MovieInfo, len(movies))
+	adminMovies := make([]types.MovieInfo, len(movies))
 	for i, movie := range movies {
 		year := 0
 		if yearPtr := movie.ReleaseYear(); yearPtr != nil {
 			year = *yearPtr
 		}
-		adminMovies[i] = views.MovieInfo{
+		adminMovies[i] = types.MovieInfo{
 			ID:        movie.ID,
 			Title:     movie.Title,
 			Year:      year,
@@ -286,8 +286,8 @@ func (hr *HandlerRegistry) handleAdminMovies(w http.ResponseWriter, r *http.Requ
 	}
 
 	// Create movies page data
-	moviesData := views.AdminMoviesData{
-		AdminUser: views.AdminUserInfo{
+	moviesData := types.AdminMoviesData{
+		AdminUser: types.AdminUserInfo{
 			ID:       sessionData.AdminUser.ID,
 			Username: sessionData.AdminUser.Username,
 		},

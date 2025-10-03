@@ -1,0 +1,110 @@
+---
+
+description: Comprehensive guide for using MCP server tools effectively
+
+globs: ["**/*"]
+
+alwaysApply: false
+
+---
+
+
+
+
+# MCP Tools Usage Guide
+
+## 🎯 Purpose
+
+MCP tools provide AI agents with project management
+
+capabilities, allowing them to:
+
+- Track goals and milestones
+- Maintain development rules
+- Document architecture decisions
+- Search and analyze code
+- Generate documentation
+## 📋 Core Workflows
+
+### Project Initialization
+
+```javascript
+// 1. Add initial project goal
+mcp_mcp-server-go_goals_add({
+  title: "Project Setup Complete"
+})
+
+// 2. Add project guidelines
+mcp_mcp-server-go_cursor_rules_add({
+  name: "Project Guidelines",
+  category: "general",
+  content: "Your project guidelines here..."
+})
+
+// 3. Verify tools work
+mcp_mcp-server-go_goals_list()
+mcp_mcp-server-go_cursor_rules_list()
+```
+
+### Goal Management
+
+```javascript
+// Add goals for different phases
+mcp_mcp-server-go_goals_add({title: "Phase 1: Core Features"})
+mcp_mcp-server-go_goals_add({title: "Phase 2: Performance"})
+mcp_mcp-server-go_goals_add({title: "Phase 3: Polish"})
+
+// Update goal status
+mcp_mcp-server-go_goals_update({
+  id: 1,
+  status: "done"
+})
+
+// List all goals
+mcp_mcp-server-go_goals_list()
+```
+
+### Rule Management
+
+```javascript
+// Add coding standards
+mcp_mcp-server-go_cursor_rules_add({
+  name: "Code Quality Standards",
+  category: "quality",
+  content: "Code quality guidelines..."
+})
+
+// Add specific technology rules
+mcp_mcp-server-go_cursor_rules_add({
+  name: "React Best Practices",
+  category: "framework",
+  content: "React development guidelines..."
+})
+```
+
+## 📊 Best Practices
+
+### 1. Always Initialize First
+
+- Add test data before using list operations
+- Verify tools work with simple operations
+### 2. Use Required Parameters Only
+
+- Avoid optional parameters initially
+- Add complexity gradually
+### 3. Regular Maintenance
+
+- Update goals as project progresses
+- Maintain current rules and guidelines
+- Log significant changes
+### 4. Error Handling
+
+- Check for "Not connected" errors
+- Restart Cursor if needed
+- Use troubleshooting guide
+---
+
+**Last Updated**: 2025-09-30
+
+**Status**: Production Ready
+

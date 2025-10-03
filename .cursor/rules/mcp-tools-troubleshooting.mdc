@@ -1,0 +1,97 @@
+---
+
+description: Troubleshooting guide for MCP server tools
+
+globs: ["**/*"]
+
+alwaysApply: false
+
+---
+
+
+
+
+# MCP Tools Troubleshooting
+
+## 🚨 Common Issues
+
+### "Not connected" Error
+
+```json
+{"error":"Not connected"}
+```
+
+**Cause**: MCP server not properly configured in Cursor
+
+**Solution**:
+
+- Check Cursor MCP configuration
+- Restart Cursor completely
+- Verify server binary exists
+### Parameter Type Validation Errors
+
+```text
+Error calling tool: Parameter 'active' must be of type null,boolean, got string
+```
+
+**Cause**: Incorrect parameter types
+
+**Solution**: Use required parameters only initially
+
+### JSON Schema Validation Errors
+
+```text
+MCP error 0: validating tool output: type: <invalid reflect.Value> has type "null", want "array"
+```
+
+**Cause**: Empty database state
+
+**Solution**: Initialize with test data first
+
+## 🔧 Quick Fixes
+
+### 1. Restart Everything
+
+```bash
+# Kill any existing processes
+pkill -f mcp-server
+
+# Restart Cursor
+# (Close and reopen Cursor application)
+```
+
+### 2. Initialize Database
+
+```javascript
+// Add test data
+mcp_mcp-server-go_goals_add({
+  title: "Test Goal"
+})
+
+// Verify tools work
+mcp_mcp-server-go_goals_list()
+```
+
+### 3. Check Configuration
+
+- Verify MCP server path in Cursor settings
+- Ensure server binary exists and is executable
+- Check database file exists: .agent/state.db
+## 📋 Diagnostic Checklist
+
+- - [ ] Cursor MCP server configured
+- - [ ] No multiple server processes running
+- - [ ] Database file exists and has content
+- - [ ] Server binary is up-to-date
+- - [ ] Cursor restarted after configuration
+## 📞 Support
+
+- **Documentation**: /home/thornzero/Repositories/mcp-server-go/docs/
+- **Server Path**: /home/thornzero/Repositories/mcp-server-go/build/mcp-server
+- **Database**: .agent/state.db
+---
+
+**Last Updated**: 2025-09-30
+
+**Status**: Production Ready
+
