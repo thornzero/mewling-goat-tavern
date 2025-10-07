@@ -1,7 +1,5 @@
 package views
 
-import "fmt"
-
 templ MoviePollLayout(components []templ.Component, userName string, totalMovies, votedMovies int) {
 	@BaseLayout("Movie Poll", "Movie poll for Mewling Goat Tavern", MoviePollContent(components, userName, totalMovies, votedMovies))
 }
@@ -13,22 +11,28 @@ templ MoviePollContent(components []templ.Component, userName string, totalMovie
 			<h2 class="text-lg sm:text-xl lg:text-2xl text-tavern-400 mb-4">Movie Poll</h2>
 			<p class="text-goat-300 text-sm sm:text-base">Welcome, { userName }!</p>
 			<p class="text-xs sm:text-sm text-goat-400 mb-4">Voting on { totalMovies } movies</p>
-			<!-- Progress Bar -->
+			<!-- Enhanced Progress Components -->
 			<div class="mt-4 sm:mt-6 max-w-sm sm:max-w-md lg:max-w-lg mx-auto">
-				<div class="flex justify-between text-xs sm:text-sm text-goat-300 mb-2">
-					<span>Progress</span>
-					<span>{ votedMovies } / { totalMovies } movies voted</span>
-				</div>
-				<div class="w-full bg-goat-600 rounded-full h-2 sm:h-3">
-					<div
-						class="bg-tavern-500 h-2 sm:h-3 rounded-full transition-all duration-300 ease-in-out"
-						style={ "width: " + fmt.Sprintf("%.1f", float64(votedMovies)/float64(totalMovies)*100) + "%" }
-					></div>
-				</div>
-				<div class="mt-2 text-xs text-goat-400">
-					{ fmt.Sprintf("%.0f", float64(votedMovies)/float64(totalMovies)*100) }% complete
-				</div>
+				@EnhancedProgressBar(ProgressData{
+					TotalMovies:     totalMovies,
+					VotedMovies:     votedMovies,
+					ProgressPercent: float64(votedMovies) / float64(totalMovies) * 100,
+				})
 			</div>
+			<!-- Progress Stats -->
+			<div class="mt-4">
+				@ProgressStats(ProgressData{
+					TotalMovies:     totalMovies,
+					VotedMovies:     votedMovies,
+					ProgressPercent: float64(votedMovies) / float64(totalMovies) * 100,
+				})
+			</div>
+			<!-- Completion Celebration (if all movies voted) -->
+			if votedMovies >= totalMovies && totalMovies > 0 {
+				<div class="mt-6">
+					@CompletionCelebration()
+				</div>
+			}
 		</div>
 		<div id="main-content">
 			<div class="swiper">

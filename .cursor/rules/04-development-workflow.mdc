@@ -1,0 +1,52 @@
+---
+description: "Development process, constraints, and workflow guidelines"
+globs: ["**/makefile", "**/Procfile", "**/railway.toml", "**/scripts/**"]
+alwaysApply: true
+---
+
+# Development Workflow
+
+## Development Commands
+
+```bash
+make dev          # Start development server with hot reload
+make build        # Build the application
+make start        # Start the server
+make stop         # Stop the server
+make clean        # Clean build artifacts
+```
+
+## Database Management
+
+```bash
+make db-stats     # Show database statistics
+make db-clean     # Clean duplicate movies
+make db-reset     # Reset database (WARNING: deletes all data)
+make db-movies    # List all movies
+make db-votes     # List all votes
+```
+
+## Hard Constraints
+
+- **Do not change DB schema** without a migration + ADR
+- **Keep movie-poll/ layout** and service boundaries (router/service/view separation)
+- **Templ is the only server-rendered view layer**; no raw HTML duplication
+- **TMDB integration stays behind the service**; no direct calls from handlers/views
+
+## Agent Workflow (PLAN → APPLY → REVIEW)
+
+1. **PLAN**: Summarize goals, list touched files, cite any ADRs
+2. **APPLY**: Provide diffs. Write/extend tests first if changing behavior
+3. **REVIEW**: Update documentation (what/why/files/ADR id)
+
+## Forbidden Actions
+
+- Reverting prior work unless referencing failing tests or ADR that supersedes it
+- Large sweeping renames. Prefer small, test-backed diffs
+- Breaking existing CLI commands or admin functionality
+
+## Deployment
+
+- **Railway deployment** via `make railway-deploy`
+- **Environment-based configuration** using `.env` files
+- **Single binary deployment** with embedded assets

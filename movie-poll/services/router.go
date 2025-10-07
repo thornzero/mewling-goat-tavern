@@ -78,6 +78,10 @@ func (rs *RouterService) SetupRoutes() *chi.Mux {
 	r.Delete("/api/admin/movies/{id}", rs.registry.Get("admin-delete-movie"))
 	r.Post("/api/admin/import-movies", rs.registry.Get("import-movies"))
 
+	// Cache management routes
+	r.Get("/api/admin/cache-stats", rs.registry.Get("admin-cache-stats"))
+	r.Post("/api/admin/clear-cache", rs.registry.Get("admin-clear-cache"))
+
 	// User management routes
 	r.Get("/admin/users", rs.registry.Get("admin-users"))
 	r.Get("/api/admin/users", rs.registry.Get("admin-users-api"))
@@ -119,6 +123,11 @@ func (rs *RouterService) SetupRoutes() *chi.Mux {
 		// Movie management API
 		r.Post("/add-movie", rs.registry.Get("add-movie"))
 		r.Post("/admin/add-movie", rs.registry.Get("add-movie"))
+
+		// Progress tracking API
+		r.Get("/progress-stats", rs.registry.Get("progress-stats"))
+		r.Post("/progress-initialize", rs.registry.Get("progress-initialize"))
+		r.Post("/progress-update", rs.registry.Get("progress-update"))
 	})
 
 	return r

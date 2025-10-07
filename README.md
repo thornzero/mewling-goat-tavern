@@ -1,14 +1,14 @@
-# Mewling Goat Tavern - Movie Poll System
+# Mewling Goat Tavern - Unified Platform
 
-A modern movie polling application built with Go, HTMX, Templ, and SQLite. Features a clean service-oriented architecture with admin dashboard and CLI tools.
+A unified tavern management platform built with Go, HTMX, Templ, and SQLite. Features shared infrastructure supporting multiple applications including movie polling and barkeep management systems.
 
 ## 🏗️ Architecture
 
 ```flow
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│    Frontend     │    │     Backend     │    │   SQLite DB     │
-│   (Templ +      │◄──►│  (Go Services   │◄──►│   (Local File)  │
-│   HTMX + CSS)   │    │   + Chi Router) │    │                 │
+│   Applications  │    │ Shared Services │    │   SQLite DB     │
+│ Movie Poll +    │◄──►│  (Go + GORM +   │◄──►│   (Shared)      │
+│ Barkeep Web     │    │   Chi + Templ)  │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
@@ -16,42 +16,33 @@ A modern movie polling application built with Go, HTMX, Templ, and SQLite. Featu
 
 ```tree
 mewling-goat-tavern/
-├── movie-poll/                 # Main Go application
-│   ├── main.go                # Application entry point
-│   ├── services/              # Service layer
-│   │   ├── handlers.go        # HTTP handlers registry
-│   │   ├── view_handlers.go   # Template rendering handlers
-│   │   ├── router.go          # Chi routing service
-│   │   ├── sqlite.go          # Database service
-│   │   ├── session.go         # Session management
-│   │   ├── tmdb_service.go    # TMDB API integration
-│   │   └── services.go        # Service initialization
-│   ├── types/                 # Shared type definitions
-│   │   ├── vote.go           # Vote types
-│   │   └── voting.go         # Voting statistics types
-│   ├── views/                 # Templ templates
-│   │   ├── *.templ           # Template files
-│   │   └── *_templ.go        # Generated Go files
-│   ├── static/                # Static assets
-│   │   ├── css/              # Tailwind CSS
-│   │   └── js/               # HTMX and custom JS
-│   ├── cmd/                   # CLI utilities
-│   │   └── db-manager/        # Database management tool
-│   ├── db/                    # Database files
-│   │   ├── movie_poll.db     # SQLite database
-│   │   └── schema.sql        # Database schema
-│   ├── scripts/               # Build and deployment scripts
-│   └── makefile              # Development commands
+├── shared/                    # ✅ Shared infrastructure (IMPLEMENTED)
+│   ├── config/               # Environment configuration
+│   ├── database/             # GORM database service
+│   ├── models/               # Shared database models
+│   ├── session/              # Session management
+│   └── interfaces/           # Service contracts
 │
-├── docs/                      # Documentation
-│   ├── architecture.md       # System architecture
-│   ├── api/                  # API documentation
-│   └── deployment/           # Deployment guides
+├── movie-poll/               # Movie Poll application
+│   ├── main.go              # Application entry point
+│   ├── services/            # Application-specific services
+│   ├── types/               # Application types
+│   ├── views/               # Application templates
+│   ├── static/              # Static assets
+│   ├── cmd/                 # CLI utilities
+│   ├── db/                  # Database files
+│   └── makefile             # Development commands
 │
-└── archive/                   # Legacy code
-    ├── astro-frontend/        # Previous Astro implementation
-    ├── legacy-frontend/       # Old GitHub Pages version
-    └── old-scripts/           # Deprecated scripts
+├── docs/                    # Documentation
+│   ├── architecture.md      # System architecture
+│   ├── archive/             # Historical references
+│   └── ADR-001-shared...md  # Architecture decisions
+│
+├── reference/               # External references
+│   └── Common Tailwind...md # Tutorial materials
+│
+└── archive/                 # Legacy code
+    └── bar and grill/        # Previous implementations
 ```
 
 ## 🚀 Quick Start

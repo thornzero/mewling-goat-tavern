@@ -14,12 +14,16 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/thornzero/mewling-goat-tavern/shared/config"
+	shareddb "github.com/thornzero/mewling-goat-tavern/shared/database"
+	sharedsession "github.com/thornzero/mewling-goat-tavern/shared/session"
 	"github.com/thornzero/movie-poll/types"
 )
 
 var TMDB *TMDBService
 var Session *SessionManager
 var DB *GORMService
+var Cache *CacheService
 var Config *EnvConfig
 var Handlers *BasicHandlers
 var Registry *HandlerRegistry
@@ -27,26 +31,64 @@ var Router *RouterService
 
 func InitServices() error {
 	var err error
-	Config = NewEnvConfig()
-	TMDB = NewTMDBService(Config.TMDBAPIKey)
 
-	// Initialize GORM database first
-	DB, err = NewGORMService()
-	if err != nil {
-		return fmt.Errorf("failed to initialize GORM database: %v", err)
+	// Load shared config
+	sharedConfig := config.NewEnvConfig()
+
+	// Create movie-poll specific config from shared config
+	Config = &EnvConfig{
+		Port:                   sharedConfig.Port,
+		DBPath:                 sharedConfig.DBPath,
+		DBSchema:               sharedConfig.DBSchema,
+		AdminUsername:          sharedConfig.AdminUsername,
+		AdminPassword:          sharedConfig.AdminPassword,
+		MovieLimit:             sharedConfig.MovieLimit,
+		TMDBAPIKey:             sharedConfig.TMDBAPIKey,
+		LogLevel:               sharedConfig.LogLevel,
+		LogFile:                sharedConfig.LogFile,
+		LogDirectory:           sharedConfig.LogDirectory,
+		ParticipationThreshold: sharedConfig.ParticipationThreshold,
+		CORSAllowedOrigins:     sharedConfig.CORSAllowedOrigins,
 	}
 
-	// Initialize session manager with GORM database
-	Session, err = NewSessionManager(DB.GetDB())
+	// Initialize shared database service
+	sharedDBService, err := shareddb.NewService()
+	if err != nil {
+		return fmt.Errorf("failed to initialize database: %v", err)
+	}
+
+	// Wrap shared database service in movie-poll's GORM service for backwards compatibility
+	DB = &GORMService{
+		db:           sharedDBService.GetDB(),
+		movieService: NewMovieService(sharedDBService.GetDB()),
+		voteService:  NewVoteService(sharedDBService.GetDB()),
+		userService:  NewUserService(sharedDBService.GetDB()),
+	}
+
+	// Initialize cache service with database
+	Cache = NewCacheService(DB.GetDB())
+
+	// Initialize TMDB service with cache
+	TMDB = NewTMDBService(Config.TMDBAPIKey, Cache)
+
+	// Initialize shared session manager
+	sharedSessionMgr, err := sharedsession.NewSessionManager(DB.GetDB())
 	if err != nil {
 		return fmt.Errorf("failed to initialize session manager: %v", err)
 	}
 
-	LogInfo("GORM database initialized successfully")
+	// Wrap shared session manager in movie-poll's session manager for backwards compatibility
+	Session = &SessionManager{
+		SessionManager: sharedSessionMgr.SessionManager,
+	}
+
+	LogInfo("Database initialized successfully with shared infrastructure")
 
 	// Register types for session serialization
 	gob.Register(&SessionData{})
 	gob.Register(&AdminUserInfo{})
+	gob.Register(&sharedsession.SessionData{})
+	gob.Register(&sharedsession.AdminUserInfo{})
 
 	// Set up logging
 	err = SetupLogging(DefaultLogConfig())

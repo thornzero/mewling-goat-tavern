@@ -39,6 +39,12 @@ templ MovieCardTemplate(movie MovieCard, hasVoted bool, userVote types.Vote) {
 			</div>
 			<div class="movie-info">
 				<h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-tavern-400 mb-2 leading-tight">{ movie.Title }</h3>
+				<!-- Voting Step Indicator -->
+				if !hasVoted {
+					<div class="mb-4">
+						@VotingStepIndicator("seen", movie.Title)
+					</div>
+				}
 				if movie.Overview != nil && *movie.Overview != "" {
 					<p class="text-goat-400 text-xs sm:text-sm lg:text-base mb-6 line-clamp-3 leading-relaxed">{ *movie.Overview }</p>
 				}

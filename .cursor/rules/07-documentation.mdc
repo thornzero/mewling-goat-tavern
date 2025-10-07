@@ -1,0 +1,93 @@
+---
+description: "Documentation standards and requirements for the unified tavern platform"
+globs: ["**/*.md", "**/README.md", "**/docs/**"]
+alwaysApply: true
+---
+
+# Documentation Standards
+
+## Markdown Formatting
+
+- **Strict markdownlint**: Follow markdownlint rules and fix all errors/warnings
+- **Proper Syntax**: Use correct markdown syntax throughout
+- **Code Fences**: Always label code fences with appropriate language identifier
+- **Blank Lines**: Surround headings, code fences, and lists with blank lines
+
+## Required Documentation
+
+### README.md (Root Directory)
+
+Must include:
+
+- **Project Overview**: Clear description of the movie poll application
+- **Features**: List of key features and capabilities
+- **Setup Instructions**: Complete installation and setup guide
+- **Usage Guidelines**: How to use the application
+- **Development Scope**: Explicit statement of Semi-Public scope level
+- **Security Measures**: List of implemented security features
+- **Deployment**: Railway deployment information
+
+### Architecture Documentation
+
+- **docs/architecture.md**: System architecture and component overview
+- **docs/design-gorm-migration.md**: Database migration documentation
+- **docs/voting-system.md**: Voting system design and implementation
+- **docs/admin-panel.md**: Admin panel functionality
+
+### Feature Documentation
+
+- **docs/voting-ranks.md**: Voting rank system explanation
+- **docs/appeal-formula-visualization.md**: Appeal score calculations
+- **docs/TODO.md**: Current priorities and completed features
+
+## Documentation Structure
+
+```markdown
+# Project Title
+
+## Overview
+Brief description of the project and its purpose.
+
+## Features
+- Feature 1
+- Feature 2
+
+## Setup
+### Prerequisites
+- Requirement 1
+- Requirement 2
+
+### Installation
+```bash
+make install-tools
+make deps
+```
+
+## Usage
+
+How to use the application.
+
+## Architecture
+
+Link to detailed architecture documentation.
+
+```
+
+## Code Documentation
+- **Go Code**: Use proper Go doc comments for exported functions
+- **Templates**: Comment complex template logic
+- **Database**: Document model relationships and constraints
+- **API**: Document endpoint behavior and parameters
+
+## Keeping Documentation Current
+- **Update with Changes**: Update docs when making code changes
+- **Version Control**: Keep documentation in version control
+- **Review Process**: Include documentation updates in code reviews
+- **Accuracy**: Ensure documentation accurately reflects current implementation
+
+## Documentation Best Practices
+- **Clear and Concise**: Write clear, easy-to-understand documentation
+- **Examples**: Include practical examples where helpful
+- **Links**: Use internal links to connect related documentation
+- **Visuals**: Use diagrams and screenshots where appropriate
+- **Maintenance**: Regularly review and update documentation

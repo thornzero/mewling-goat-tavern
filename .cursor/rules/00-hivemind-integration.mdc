@@ -1,0 +1,80 @@
+---
+description: "Hivemind MCP integration and fact management for the unified tavern platform"
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Hivemind MCP Integration
+
+## Required Workflow
+
+Before making any architectural decisions, recommendations, or implementations:
+
+1. **Retrieve Relevant Knowledge**: Use `mcp_hivemind_search_facts` to find relevant facts by type, category, or keywords
+2. **Validate Against Facts**: Use `mcp_hivemind_validate_criteria` to check compliance with established patterns
+3. **Reference Fact IDs**: Include fact IDs in documentation, ADRs, and implementation discussions
+4. **Update Facts**: Modify existing facts or create new ones when architecture evolves
+
+## Knowledge Retrieval Process
+
+### Before Planning or Refactoring
+
+- **Search Facts**: Query Hivemind for relevant facts using keywords from your current task
+- **Merge Citations**: Integrate retrieved snippets into your planning as citations
+- **Validate Patterns**: Ensure proposed changes align with established architectural patterns
+- **Reference Precedents**: Link to existing fact IDs that support your approach
+
+### When Adding/Updating Documentation
+
+- **Ingest New Docs**: Use `mcp_hivemind_set_fact` to capture new architectural decisions
+- **Update Existing Facts**: Modify related facts when implementations change
+- **Maintain Traceability**: Keep fact IDs referenced in documentation and code
+- **Version Control**: Update fact versions when breaking changes occur
+
+### Knowledge Integration
+
+- **Prefer Project Facts**: Prioritize facts from the same module/section you're editing
+- **Verify Sources**: Never claim facts not present in retrieved snippets or current code
+- **Cross-Reference**: Link related facts using conditions and dependencies
+- **Document Decisions**: Create facts for new patterns, decisions, or implementations
+
+## Fact Categories to Search
+
+- **`architecture_decision`** - For architectural choices and patterns
+- **`database`** - For database and ORM decisions
+- **`frontend`** - For UI, templating, and styling decisions
+- **`backend`** - For Go, services, and API decisions
+- **`security`** - For authentication, session, and security decisions
+- **`project_structure`** - For directory organization and code structure
+
+## Validation Workflow
+
+1. **Pre-implementation**: Validate design against applicable facts
+2. **During development**: Check compliance with acceptance criteria
+3. **Post-implementation**: Verify final implementation matches facts
+4. **Documentation**: Reference fact IDs in all relevant documentation
+
+## Fact Management
+
+- **Create facts** for new architectural patterns or decisions
+- **Update facts** when requirements or implementations change
+- **Use conditions** to link related facts and dependencies
+- **Set acceptance criteria** for automated or manual validation
+- **Version facts** appropriately with minVersion/maxVersion
+
+## Key Fact IDs for This Project
+
+- `shared-infrastructure-extraction` - Core shared infrastructure pattern
+- `unified-tavern-platform` - Multi-application platform architecture
+- `movie-poll-database-strategy` - GORM database implementation
+- `go-chi-router` - HTTP routing with Chi
+- `go-templ-templates` - Type-safe HTML templating
+- `movie-poll-htmx-frontend` - HTMX frontend interactions
+
+## Benefits
+
+- **Consistency**: All decisions align with established patterns
+- **Traceability**: Clear links between decisions and implementations
+- **Validation**: Automated checking against acceptance criteria
+- **Evolution**: Facts evolve with the project architecture
+- **Knowledge**: Comprehensive capture of architectural decisions

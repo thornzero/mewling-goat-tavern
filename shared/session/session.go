@@ -1,0 +1,102 @@
+package session
+
+import (
+	"net/http"
+	"time"
+
+	"github.com/alexedwards/scs/gormstore"
+	"github.com/alexedwards/scs/v2"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+)
+
+type SessionManager struct {
+	*scs.SessionManager
+}
+
+// Vote represents a vote stored in session
+type Vote struct {
+	Seen bool `json:"seen"`
+	Vibe int  `json:"vibe"`
+}
+
+// SessionData represents data stored in the session
+type SessionData struct {
+	UserName      string         `json:"user_name"`
+	DeviceID      string         `json:"device_id"`
+	Votes         map[int]Vote   `json:"votes"` // movie_id -> vote
+	AdminUser     *AdminUserInfo `json:"admin_user,omitempty"`
+	VotingStarted *int64         `json:"voting_started,omitempty"`
+	LastActivity  *int64         `json:"last_activity,omitempty"`
+}
+
+// AdminUserInfo represents admin user info in session
+type AdminUserInfo struct {
+	ID        int    `json:"id"`
+	Username  string `json:"username"`
+	LastLogin *int64 `json:"last_login,omitempty"`
+}
+
+// New creates a new session manager
+func NewSessionManager(db *gorm.DB) (*SessionManager, error) {
+	var err error
+	sessionManager := scs.New()
+
+	// Configure session lifetime
+	sessionManager.Lifetime = 24 * time.Hour      // 24 hours
+	sessionManager.IdleTimeout = 30 * time.Minute // 30 minutes
+
+	// Configure cookie settings
+	sessionManager.Cookie.Secure = false // Set to false for local development
+	sessionManager.Cookie.Path = "/"
+	sessionManager.Cookie.HttpOnly = false // Set to false for debugging - allows JS access
+	sessionManager.Cookie.Name = "movie_poll_session"
+	sessionManager.Cookie.SameSite = http.SameSiteLaxMode // Set SameSite for localhost
+	sessionManager.Cookie.Domain = ""                     // Don't set domain for localhost
+
+	// Configure session store - use GORM store for persistence!
+	sessionManager.Store, err = gormstore.New(db)
+	if err != nil {
+		return nil, err
+	}
+
+	return &SessionManager{sessionManager}, nil
+}
+
+// GenerateDeviceID generates a unique device ID using UUID v4
+func GenerateDeviceID() string {
+	return uuid.New().String()
+}
+
+// GetSessionData retrieves session data from the request
+func (s *SessionManager) GetSessionData(r *http.Request) *SessionData {
+	// Try to get session data
+	sessionData := s.Get(r.Context(), "data")
+	if sessionData == nil {
+		// No session data found, create new session data
+		deviceID := GenerateDeviceID()
+		sessionData := &SessionData{
+			UserName: "",
+			DeviceID: deviceID,
+			Votes:    make(map[int]Vote),
+		}
+		return sessionData
+	}
+	if data, ok := sessionData.(*SessionData); ok {
+		return data
+	}
+
+	// Fallback: create new session data
+	deviceID := GenerateDeviceID()
+	fallbackSessionData := &SessionData{
+		UserName: "",
+		DeviceID: deviceID,
+		Votes:    make(map[int]Vote),
+	}
+	return fallbackSessionData
+}
+
+// PutSessionData stores session data
+func (s *SessionManager) PutSessionData(r *http.Request, data *SessionData) {
+	s.Put(r.Context(), "data", data)
+}

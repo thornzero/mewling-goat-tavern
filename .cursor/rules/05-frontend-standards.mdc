@@ -1,0 +1,78 @@
+---
+description: "Frontend development standards for Templ, HTMX, and Tailwind CSS"
+globs: ["**/*.templ", "**/*.html", "**/static/**", "**/tailwind.config.js", "**/input.css"]
+alwaysApply: true
+---
+
+# Frontend Standards
+
+## Templ Templates
+
+- **File Extension**: Use `.templ` extension for all templates
+- **Generated Files**: Auto-generated `*_templ.go` files from `.templ` files
+- **Build Process**: Include `templ generate` in build pipeline
+- **Method Components**: Use method components for better organization
+- **Type Safety**: Leverage compile-time type checking
+
+### Template Structure
+
+```go
+// views/example.templ
+templ ExampleComponent(data Data) {
+    <div class="container">
+        <h1>{ data.Title }</h1>
+    </div>
+}
+```
+
+## HTMX Integration
+
+- **Library Inclusion**: HTMX library included in HTML templates
+- **Dynamic Interactions**: Use HTMX attributes (hx-get, hx-post, hx-target, etc.)
+- **Credentials**: Configure HTMX to send cookies and credentials
+- **Endpoints**: Backend provides HTMX-compatible endpoints for voting and admin operations
+
+### HTMX Patterns
+
+```html
+<button hx-post="/vote" hx-target="#results" hx-swap="innerHTML">
+    Vote
+</button>
+```
+
+## Tailwind CSS
+
+- **Configuration**: `tailwind.config.js` with custom theme configuration
+- **Custom Colors**: Use custom color palette (goat, tavern themes)
+- **Utility Classes**: Use Tailwind utility classes for styling
+- **Build Process**: CSS built from `input.css` to compiled `style.css`
+
+### Custom Theme Colors
+
+```javascript
+colors: {
+  'goat': {
+    300: '#a0a0a0',
+    400: '#9ca3af',
+    500: '#404040',
+    // ...
+  },
+  'tavern': {
+    300: '#f0d75a',
+    400: '#e6c547',
+    // ...
+  }
+}
+```
+
+## Responsive Design
+
+- **Mobile-first**: Design for mobile devices first
+- **Breakpoints**: Use Tailwind responsive prefixes (sm:, md:, lg:, xl:)
+- **Touch-friendly**: Ensure buttons and interactive elements are touch-friendly
+
+## Performance
+
+- **Static Assets**: Optimize images and assets
+- **CSS Purging**: Use Tailwind's purge functionality
+- **HTMX Efficiency**: Minimize DOM updates and server requests

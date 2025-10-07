@@ -1,0 +1,38 @@
+---
+description: "Core project objectives and success criteria for the movie poll application"
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Project Goals
+
+## Primary Objectives
+
+- **Stable movie poll for group nights** - No duplicate entries, idempotent vote operations
+- **Maintain tech stack** - Keep Go + Chi + GORM + SQLite + Templ + HTMX (no framework swaps)
+- **Admin dashboard stability** - Remain fully functional during feature work
+- **Railway deployment** - Don't break Make targets in `makefile`
+
+## Success Criteria
+
+- `make dev` runs with hot reload
+- Zero data loss across releases; existing DB file remains valid
+- Results page loads < 1s p95 in release mode
+- Admin panel loads < 2s with full functionality
+
+## Canonical Documentation
+
+Always read these docs first in every session:
+
+- `README.md` (architecture + commands)
+- `docs/architecture.md` (system overview)
+- `docs/TODO.md` (current priorities)
+
+## Development Scope
+
+This is a **Semi-Public** project with moderate production requirements:
+
+- Basic security measures (session management, admin auth)
+- Proper error handling and logging
+- Moderate scalability considerations
+- Basic CI/CD through Railway deployment

@@ -121,43 +121,57 @@ func MovieCardTemplate(movie MovieCard, hasVoted bool, userVote types.Vote) temp
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</h3>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</h3><!-- Voting Step Indicator -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		if !hasVoted {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"mb-4\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = VotingStepIndicator("seen", movie.Title).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
 		if movie.Overview != nil && *movie.Overview != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<p class=\"text-goat-400 text-xs sm:text-sm lg:text-base mb-6 line-clamp-3 leading-relaxed\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<p class=\"text-goat-400 text-xs sm:text-sm lg:text-base mb-6 line-clamp-3 leading-relaxed\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(*movie.Overview)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 43, Col: 113}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 49, Col: 113}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div id=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div id=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs("voting-interface-" + strconv.Itoa(movie.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 45, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 51, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" class=\"voting-interface space-y-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" class=\"voting-interface space-y-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -172,7 +186,7 @@ func MovieCardTemplate(movie MovieCard, hasVoted bool, userVote types.Vote) temp
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -201,42 +215,16 @@ func VotingInterface(movieID int) templ.Component {
 			templ_7745c5c3_Var8 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"space-y-4 sm:space-y-6\"><!-- Step 1: Have you seen it? --><div class=\"seen-section\"><div class=\"bg-goat-600 rounded-lg p-4 mb-4\"><p class=\"text-sm sm:text-base text-goat-200 font-medium mb-2\">Have you seen this movie?</p><p class=\"text-xs text-goat-400\">Choose your experience level</p></div><div class=\"flex flex-col sm:flex-row justify-center gap-3 sm:gap-4\"><form hx-post=\"/api/voting/seen\" hx-target=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"space-y-4 sm:space-y-6\"><!-- Step 1: Have you seen it? --><div class=\"seen-section\"><div class=\"bg-goat-600 rounded-lg p-4 mb-4\"><p class=\"text-sm sm:text-base text-goat-200 font-medium mb-2\">Have you seen this movie?</p><p class=\"text-xs text-goat-400\">Choose your experience level</p></div><div class=\"flex flex-col sm:flex-row justify-center gap-3 sm:gap-4\"><form hx-post=\"/api/voting/seen\" hx-target=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 66, Col: 93}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 72, Col: 93}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\" hx-swap=\"innerHTML\" class=\"flex-1\"><input type=\"hidden\" name=\"movie_id\" value=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var10 string
-		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 67, Col: 71}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\"> <input type=\"hidden\" name=\"seen\" value=\"true\"> <button type=\"submit\" class=\"btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex items-center justify-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-lg\">✅</span> <span>Yes, I've seen it</span></button></form><form hx-post=\"/api/voting/seen\" hx-target=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var11 string
-		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 74, Col: 93}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -244,16 +232,42 @@ func VotingInterface(movieID int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		var templ_7745c5c3_Var10 string
+		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 73, Col: 71}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\"> <input type=\"hidden\" name=\"seen\" value=\"true\"> <button type=\"submit\" class=\"btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex items-center justify-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-lg\">✅</span> <span>Yes, I've seen it</span></button></form><form hx-post=\"/api/voting/seen\" hx-target=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var11 string
+		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 80, Col: 93}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\" hx-swap=\"innerHTML\" class=\"flex-1\"><input type=\"hidden\" name=\"movie_id\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 75, Col: 71}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 81, Col: 71}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\"> <input type=\"hidden\" name=\"seen\" value=\"false\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex items-center justify-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-lg\">❌</span> <span>No, I haven't seen it</span></button></form></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\"> <input type=\"hidden\" name=\"seen\" value=\"false\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex items-center justify-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-lg\">❌</span> <span>No, I haven't seen it</span></button></form></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -282,39 +296,21 @@ func VotedState(movieID int, userVote types.Vote) templ.Component {
 			templ_7745c5c3_Var13 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"space-y-4\"><div class=\"bg-goat-600 p-3 sm:p-4 rounded-lg\"><p class=\"text-sm sm:text-base text-goat-300 mb-2\">Your Vote:</p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"space-y-4\"><div class=\"bg-goat-600 p-3 sm:p-4 rounded-lg\"><p class=\"text-sm sm:text-base text-goat-300 mb-2\">Your Vote:</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if userVote.Seen {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"text-center\"><p class=\"text-tavern-400 font-semibold mb-2 text-sm sm:text-base\">✅ You've seen it</p><p class=\"text-goat-300 text-sm sm:text-base\">Rating: ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"text-center\"><p class=\"text-tavern-400 font-semibold mb-2 text-sm sm:text-base\">✅ You've seen it</p><p class=\"text-goat-300 text-sm sm:text-base\">Rating: ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(getVoteLabel(userVote.Vibe))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 95, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 101, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</p></div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"text-center\"><p class=\"text-tavern-400 font-semibold mb-2 text-sm sm:text-base\">❌ You haven't seen it</p><p class=\"text-goat-300 text-sm sm:text-base\">Interest: ")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var15 string
-			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(getVoteLabel(userVote.Vibe))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 102, Col: 45}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -322,34 +318,52 @@ func VotedState(movieID int, userVote types.Vote) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"text-center\"><p class=\"text-tavern-400 font-semibold mb-2 text-sm sm:text-base\">❌ You haven't seen it</p><p class=\"text-goat-300 text-sm sm:text-base\">Interest: ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var15 string
+			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(getVoteLabel(userVote.Vibe))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 108, Col: 45}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</p></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div class=\"text-center\"><p class=\"text-goat-400 text-xs sm:text-sm mb-3\">Moving to next movie...</p><button class=\"btn-secondary text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6\" hx-post=\"/api/voting/change-vote\" hx-vals=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div><div class=\"text-center\"><p class=\"text-goat-400 text-xs sm:text-sm mb-3\">Moving to next movie...</p><button class=\"btn-secondary text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6\" hx-post=\"/api/voting/change-vote\" hx-vals=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(`{"movie_id":` + strconv.Itoa(movieID) + `}`)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 112, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 118, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" hx-target=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" hx-target=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 113, Col: 60}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 119, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" hx-swap=\"innerHTML\">Change Vote</button></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" hx-swap=\"innerHTML\">Change Vote</button></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -378,42 +392,16 @@ func RatingInterface(movieID int) templ.Component {
 			templ_7745c5c3_Var18 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"space-y-4 sm:space-y-6\"><div class=\"bg-goat-600 rounded-lg p-4 mb-4\"><p class=\"text-sm sm:text-base text-goat-200 font-medium mb-2\">How was it?</p><p class=\"text-xs text-goat-400\">Rate your experience</p></div><div class=\"grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3\"><form hx-post=\"/api/voting/rating\" hx-target=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<div class=\"space-y-4 sm:space-y-6\"><div class=\"bg-goat-600 rounded-lg p-4 mb-4\"><p class=\"text-sm sm:text-base text-goat-200 font-medium mb-2\">How was it?</p><p class=\"text-xs text-goat-400\">Rate your experience</p></div><div class=\"grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3\"><form hx-post=\"/api/voting/rating\" hx-target=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 129, Col: 94}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 135, Col: 94}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" hx-swap=\"innerHTML\"><input type=\"hidden\" name=\"movie_id\" value=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var20 string
-		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 130, Col: 70}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\"> <input type=\"hidden\" name=\"vibe\" value=\"1\"> <button type=\"submit\" class=\"btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">⭐</span> <span class=\"font-medium\">Rewatch</span> <span class=\"text-xs opacity-80\">Amazing!</span></button></form><form hx-post=\"/api/voting/rating\" hx-target=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 138, Col: 94}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -421,25 +409,25 @@ func RatingInterface(movieID int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var22 string
-		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
+		var templ_7745c5c3_Var20 string
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 139, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 136, Col: 70}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\"> <input type=\"hidden\" name=\"vibe\" value=\"2\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">😊</span> <span class=\"font-medium\">Good</span> <span class=\"text-xs opacity-80\">Enjoyed it</span></button></form><form hx-post=\"/api/voting/rating\" hx-target=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var23 string
-		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\"> <input type=\"hidden\" name=\"vibe\" value=\"1\"> <button type=\"submit\" class=\"btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">⭐</span> <span class=\"font-medium\">Rewatch</span> <span class=\"text-xs opacity-80\">Amazing!</span></button></form><form hx-post=\"/api/voting/rating\" hx-target=\"")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 147, Col: 94}
+			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
+		var templ_7745c5c3_Var21 string
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 144, Col: 94}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -447,16 +435,42 @@ func RatingInterface(movieID int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		var templ_7745c5c3_Var22 string
+		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 145, Col: 70}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "\"> <input type=\"hidden\" name=\"vibe\" value=\"2\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">😊</span> <span class=\"font-medium\">Good</span> <span class=\"text-xs opacity-80\">Enjoyed it</span></button></form><form hx-post=\"/api/voting/rating\" hx-target=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var23 string
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 153, Col: 94}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\" hx-swap=\"innerHTML\"><input type=\"hidden\" name=\"movie_id\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 148, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 154, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "\"> <input type=\"hidden\" name=\"vibe\" value=\"3\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">😐</span> <span class=\"font-medium\">Meh</span> <span class=\"text-xs opacity-80\">Not great</span></button></form></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\"> <input type=\"hidden\" name=\"vibe\" value=\"3\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">😐</span> <span class=\"font-medium\">Meh</span> <span class=\"text-xs opacity-80\">Not great</span></button></form></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -485,42 +499,16 @@ func InterestInterface(movieID int) templ.Component {
 			templ_7745c5c3_Var25 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<div class=\"space-y-4 sm:space-y-6\"><div class=\"bg-goat-600 rounded-lg p-4 mb-4\"><p class=\"text-sm sm:text-base text-goat-200 font-medium mb-2\">Interest level?</p><p class=\"text-xs text-goat-400\">How excited are you?</p></div><div class=\"grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3\"><form hx-post=\"/api/voting/interest\" hx-target=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"space-y-4 sm:space-y-6\"><div class=\"bg-goat-600 rounded-lg p-4 mb-4\"><p class=\"text-sm sm:text-base text-goat-200 font-medium mb-2\">Interest level?</p><p class=\"text-xs text-goat-400\">How excited are you?</p></div><div class=\"grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3\"><form hx-post=\"/api/voting/interest\" hx-target=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var26 string
 		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 167, Col: 96}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 173, Col: 96}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\" hx-swap=\"innerHTML\"><input type=\"hidden\" name=\"movie_id\" value=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var27 string
-		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 168, Col: 70}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "\"> <input type=\"hidden\" name=\"vibe\" value=\"1\"> <button type=\"submit\" class=\"btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">🔥</span> <span class=\"font-medium\">Stoked</span> <span class=\"text-xs opacity-80\">Can't wait!</span></button></form><form hx-post=\"/api/voting/interest\" hx-target=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var28 string
-		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 176, Col: 96}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -528,25 +516,25 @@ func InterestInterface(movieID int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var29 string
-		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
+		var templ_7745c5c3_Var27 string
+		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 177, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 174, Col: 70}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\"> <input type=\"hidden\" name=\"vibe\" value=\"2\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">😊</span> <span class=\"font-medium\">Interested</span> <span class=\"text-xs opacity-80\">Looks good</span></button></form><form hx-post=\"/api/voting/interest\" hx-target=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var30 string
-		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\"> <input type=\"hidden\" name=\"vibe\" value=\"1\"> <button type=\"submit\" class=\"btn-primary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">🔥</span> <span class=\"font-medium\">Stoked</span> <span class=\"text-xs opacity-80\">Can't wait!</span></button></form><form hx-post=\"/api/voting/interest\" hx-target=\"")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 185, Col: 96}
+			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
+		var templ_7745c5c3_Var28 string
+		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 182, Col: 96}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -554,16 +542,42 @@ func InterestInterface(movieID int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+		var templ_7745c5c3_Var29 string
+		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 183, Col: 70}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\"> <input type=\"hidden\" name=\"vibe\" value=\"2\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">😊</span> <span class=\"font-medium\">Interested</span> <span class=\"text-xs opacity-80\">Looks good</span></button></form><form hx-post=\"/api/voting/interest\" hx-target=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var30 string
+		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs("#voting-interface-" + strconv.Itoa(movieID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 191, Col: 96}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "\" hx-swap=\"innerHTML\"><input type=\"hidden\" name=\"movie_id\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		var templ_7745c5c3_Var31 string
 		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(movieID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 186, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-card.templ`, Line: 192, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\"> <input type=\"hidden\" name=\"vibe\" value=\"3\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">⏳</span> <span class=\"font-medium\">Later</span> <span class=\"text-xs opacity-80\">Maybe someday</span></button></form></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\"> <input type=\"hidden\" name=\"vibe\" value=\"3\"> <button type=\"submit\" class=\"btn-secondary w-full text-sm sm:text-base py-3 sm:py-4 flex flex-col items-center gap-2 hover:scale-105 transition-transform duration-200\"><span class=\"text-2xl\">⏳</span> <span class=\"font-medium\">Later</span> <span class=\"text-xs opacity-80\">Maybe someday</span></button></form></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

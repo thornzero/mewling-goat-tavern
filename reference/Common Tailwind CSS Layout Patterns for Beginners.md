@@ -8,14 +8,15 @@ author:
 # Common Tailwind CSS Layout Patterns for Beginners
 
 > ## Excerpt
+>
 > Learn essential Tailwind CSS layout patterns for blogs, dashboards, and landing pages. Build responsive, clean layouts faster—no custom CSS needed.
 
 ---
 ![Feature](https://images.prismic.io/staticmania/aCB9vidWJ-7kR4WM_tailwind-layout-patterns-beginners.jpg?auto=format,compress)
 
--   Author: Md. Saad
--   Published at: May 10, 2025
--   Updated at: May 27, 2025
+- Author: Md. Saad
+- Published at: May 10, 2025
+- Updated at: May 27, 2025
 
 Wondering how to build real-world layouts with Tailwind CSS? You're not alone. When you're just starting out, the number of utility classes can feel overwhelming. But once you understand a few core patterns, building clean, responsive layouts becomes much easier.
 
@@ -33,9 +34,9 @@ Centered container is one of the most used pattern in modern website. Tailwind u
 
 **What's happening here?**
 
--   **max-w-4xl**: Limits the container width.
--   **mx-auto**: Horizontally centres the container.
--   **px-4**: Adds horizontal padding for spacing on smaller screens.
+- **max-w-4xl**: Limits the container width.
+- **mx-auto**: Horizontally centres the container.
+- **px-4**: Adds horizontal padding for spacing on smaller screens.
 
 ## 2\. Full-Screen Centred Content
 
@@ -47,10 +48,10 @@ We can use full-screen centered content, which is perfect for splash pages or he
 
 **Breakdown:**
 
--   **flex**: Enables Flexbox layout.
--   **items-center**: this centers the content Vertically .
--   **justify-center**: It centers horizontally.
--   **h-screen**: This makes the div full height of the screen.
+- **flex**: Enables Flexbox layout.
+- **items-center**: this centers the content Vertically .
+- **justify-center**: It centers horizontally.
+- **h-screen**: This makes the div full height of the screen.
 
 ## 3\. Navbar with Space Between Items
 
@@ -70,8 +71,8 @@ Tailwind’s grid utilities help you build responsive layouts without writing me
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">  <div class="bg-white p-4 shadow rounded"> Card 1 </div>  <div class="bg-white p-4 shadow rounded"> Card 2 </div>  <div class="bg-white p-4 shadow rounded"> Card 3 </div></div>
 ```
 
--   **grid-cols-1, sm:grid-cols-2**, etc.: Control how many columns show at different breakpoints.
--   **gap-6**: Adds consistent spacing between items
+- **grid-cols-1, sm:grid-cols-2**, etc.: Control how many columns show at different breakpoints.
+- **gap-6**: Adds consistent spacing between items
 
 ## 5\. Sticky Footer Layout
 
@@ -81,8 +82,8 @@ Ensure your footer stays at the bottom even if the content is short.
 <body class="min-h-screen flex flex-col">  <main class="flex-grow">    <!-- Page content -->  </main>  <footer class="bg-gray-200 p-4 text-center">    © 2025 My Site  </footer></body>
 ```
 
--   **flex flex-col**: Stacks children vertically.
--   **flex-grow** on **main**: Pushes the footer down if content is short.
+- **flex flex-col**: Stacks children vertically.
+- **flex-grow** on **main**: Pushes the footer down if content is short.
 
 ## 6\. Card Component with Image and Text
 
@@ -102,9 +103,9 @@ Great for dashboards or admin panels.
 <div class="flex min-h-screen">  <aside class="w-64 bg-gray-800 text-white p-4">    <!-- Sidebar content -->  </aside>  <main class="flex-1 p-6">    <!-- Main content -->  </main></div>
 ```
 
--   **flex**: Horizontal layout.
--   **w-64**: Fixed width for the sidebar.
--   **flex-1**: Main content fills the remaining space.
+- **flex**: Horizontal layout.
+- **w-64**: Fixed width for the sidebar.
+- **flex-1**: Main content fills the remaining space.
 
 ## 8\. Use container for Consistent Layout Widths
 
@@ -130,9 +131,9 @@ This gives you precise control over how your layout adapts across devices withou
 
 Whenever you're unsure how to position something, reach for **flex** or **grid**. These two utilities solve *so many* layout headaches.
 
--   Use **flex items-center justify-between** to quickly align navbar items.
--   Use **grid grid-cols-2** for neat two-column layouts.
--   Add **gap-\*** to easily manage spacing between items.
+- Use **flex items-center justify-between** to quickly align navbar items.
+- Use **grid grid-cols-2** for neat two-column layouts.
+- Add **gap-\*** to easily manage spacing between items.
 
 ## 11\. Utility Stacking = Reusability + Speed
 
@@ -166,13 +167,13 @@ Instead of manually adding margin between elements, use the **space-y-\*** or **
 
 Much cleaner and more maintainable than setting individual margins!
 
-## Bonus Tip: Don’t Forget Tailwind Plugins!
+## Bonus Tip: Don’t Forget Tailwind Plugins:exclamation:
 
 Tailwind has powerful plugins like
 
--   **@tailwindcss/forms**: For beautiful form elements.
--   **@tailwindcss/typography**: For clean blog-style content.
--   **@tailwindcss/aspect-ratio**: For responsive image and video containers.
+- **@tailwindcss/forms**: For beautiful form elements.
+- **@tailwindcss/typography**: For clean blog-style content.
+- **@tailwindcss/aspect-ratio**: For responsive image and video containers.
 
 These can save tons of time and enhance layout consistency across your site.
 

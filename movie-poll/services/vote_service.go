@@ -17,10 +17,17 @@ func NewVoteService(db *gorm.DB) *VoteService {
 // SubmitVote - replaces 30+ line SubmitVote function
 func (s *VoteService) SubmitVote(vote *types.Vote) error {
 	gormVote := convertTypeVoteToGORM(vote)
-	return s.db.Where("movie_id = ? AND user_name = ? AND device_id = ?",
+	err := s.db.Where("movie_id = ? AND user_name = ? AND device_id = ?",
 		gormVote.MovieID, gormVote.UserName, gormVote.DeviceID).
 		Assign(gormVote).
 		FirstOrCreate(&gormVote).Error
+
+	// Invalidate vote-related caches when a new vote is submitted
+	if err == nil && Cache != nil {
+		Cache.InvalidateVoteCache()
+	}
+
+	return err
 }
 
 // GetUserVotes - replaces 20+ line GetUserVotes function

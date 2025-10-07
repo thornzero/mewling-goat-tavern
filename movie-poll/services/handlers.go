@@ -57,6 +57,8 @@ func (hr *HandlerRegistry) registerHandlers() {
 	hr.handlers["admin-user-delete"] = hr.handleAdminUserDelete
 	hr.handlers["admin-user-update-stats"] = hr.handleAdminUserUpdateStats
 	hr.handlers["admin-users-api"] = hr.handleAdminUsersAPI
+	hr.handlers["admin-cache-stats"] = hr.handleAdminCacheStats
+	hr.handlers["admin-clear-cache"] = hr.handleAdminClearCache
 
 	// Debug handlers
 	hr.handlers["debug"] = hr.handleDebug
@@ -90,6 +92,11 @@ func (hr *HandlerRegistry) registerHandlers() {
 	// Movie management handlers
 	hr.handlers["add-movie"] = hr.handleAddMovie
 	hr.handlers["import-movies"] = hr.handleImportMovies
+
+	// Progress tracking handlers
+	hr.handlers["progress-stats"] = hr.handleProgressStats
+	hr.handlers["progress-initialize"] = hr.handleInitializeProgress
+	hr.handlers["progress-update"] = hr.handleUpdateProgress
 }
 
 // Get retrieves a handler by name
@@ -194,6 +201,9 @@ func (hr *HandlerRegistry) handleVote(w http.ResponseWriter, r *http.Request) {
 	// Update session data
 	sessionData.Votes[voteRequest.MovieID] = vote
 	Session.PutSessionData(r, sessionData)
+
+	// Update progress tracking
+	Session.UpdateVotingActivity(r)
 
 	// Return success response
 	w.Header().Set("Content-Type", "application/json")
@@ -1150,4 +1160,89 @@ func (hr *HandlerRegistry) handleAdminDeleteMovie(w http.ResponseWriter, r *http
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
+}
+
+// handleAdminCacheStats returns cache performance statistics
+func (hr *HandlerRegistry) handleAdminCacheStats(w http.ResponseWriter, r *http.Request) {
+	// Check if logged in
+	sessionData := Session.GetSessionData(r)
+	if sessionData.AdminUser == nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	stats := Cache.GetCacheStats()
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(stats)
+}
+
+// handleAdminClearCache clears all cached data
+func (hr *HandlerRegistry) handleAdminClearCache(w http.ResponseWriter, r *http.Request) {
+	// Check if logged in
+	sessionData := Session.GetSessionData(r)
+	if sessionData.AdminUser == nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	Cache.ClearCache()
+
+	response := map[string]interface{}{
+		"success":   true,
+		"message":   "Cache cleared successfully",
+		"timestamp": time.Now().Unix(),
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+// Progress tracking API endpoints
+
+// handleProgressStats returns current voting progress statistics
+func (hr *HandlerRegistry) handleProgressStats(w http.ResponseWriter, r *http.Request) {
+	// Get total number of movies
+	movies, err := DB.GetMovies(Config.MovieLimit)
+	if err != nil {
+		http.Error(w, "Failed to get movies", http.StatusInternalServerError)
+		return
+	}
+
+	// Get progress data
+	progressData := Session.GetVotingProgress(r, len(movies))
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(progressData)
+}
+
+// handleInitializeProgress initializes progress tracking for a new session
+func (hr *HandlerRegistry) handleInitializeProgress(w http.ResponseWriter, r *http.Request) {
+	Session.InitializeVotingProgress(r)
+
+	response := map[string]interface{}{
+		"success": true,
+		"message": "Progress tracking initialized",
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+// handleUpdateProgress updates voting activity and returns current progress
+func (hr *HandlerRegistry) handleUpdateProgress(w http.ResponseWriter, r *http.Request) {
+	Session.UpdateVotingActivity(r)
+
+	// Get total number of movies
+	movies, err := DB.GetMovies(Config.MovieLimit)
+	if err != nil {
+		http.Error(w, "Failed to get movies", http.StatusInternalServerError)
+		return
+	}
+
+	// Get updated progress data
+	progressData := Session.GetVotingProgress(r, len(movies))
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(progressData)
 }

@@ -1,6 +1,6 @@
-# Movie Poll Documentation
+# Mewling Goat Tavern Platform Documentation
 
-This directory contains documentation for the Mewling Goat Tavern Movie Poll application.
+This directory contains documentation for the Mewling Goat Tavern unified platform, including the Movie Poll application and Barkeep management system.
 
 ## Documentation Structure
 
@@ -16,13 +16,17 @@ This directory contains documentation for the Mewling Goat Tavern Movie Poll app
 - **[Appeal Formula](appeal-formula-visualization.md)** - Detailed voting algorithm visualization
 - **[Voting Ranks](voting-ranks.md)** - Vote ranking system implementation
 
-### Future Design References
+### Historical References
 
-- **[GORM Migration Design](DESIGN_GORM_MIGRATION.md)** - Comprehensive plan for migrating from manual SQL to GORM
+- **[GORM Migration Design](archive/design-gorm-migration.md)** - Completed migration from manual SQL to GORM
 
 ## Project Overview
 
-The Movie Poll application is a Go-based web application that allows users to vote on movies using a sophisticated 6-rank voting system. The application features:
+The Mewling Goat Tavern Platform is a unified Go-based web platform that combines multiple tavern management applications:
+
+### Movie Poll Application
+
+A sophisticated voting system that allows users to vote on movies using a 6-rank voting system. Features include:
 
 - **Voting System**: 6-rank scale (1-6) with seen/not-seen states
 - **Appeal Calculation**: Complex algorithm balancing interest, novelty, quality, and consensus
@@ -30,11 +34,25 @@ The Movie Poll application is a Go-based web application that allows users to vo
 - **Results Display**: Real-time rankings with detailed statistics
 - **Session Management**: User state tracking and vote persistence
 
+### Barkeep Management System
+
+A comprehensive tavern management system for staff operations, inventory, and customer service.
+
+### Shared Infrastructure
+
+Both applications share common infrastructure components:
+
+- **Database Layer**: GORM with SQLite for consistent data management
+- **Session Management**: Unified authentication and user state tracking
+- **HTTP Routing**: Chi router with middleware and sub-routing
+- **Template System**: Templ for type-safe HTML generation
+- **Configuration**: Environment-based configuration management
+
 ## Technology Stack
 
 - **Backend**: Go with Chi router
 - **Frontend**: HTMX + Templ templates
-- **Database**: SQLite with manual SQL
+- **Database**: SQLite with GORM ORM
 - **Styling**: Tailwind CSS
 - **External API**: The Movie Database (TMDB)
 

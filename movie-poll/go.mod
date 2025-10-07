@@ -13,10 +13,6 @@ require (
 )
 
 require (
-	github.com/alexedwards/scs/gormstore v0.0.0-20250417082927-ab20b3feb5e9 // indirect
-	github.com/go-chi/cors v1.2.2 // indirect
-	github.com/go-chi/httprate v0.15.0 // indirect
-	github.com/indaco/goaster v0.2.2 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/pgx/v5 v5.6.0 // indirect
@@ -34,6 +30,15 @@ require (
 require github.com/joho/godotenv v1.5.1 // direct
 
 require golang.org/x/crypto v0.42.0 // direct
+
+require (
+	github.com/alexedwards/scs/gormstore v0.0.0-20250417082927-ab20b3feb5e9
+	github.com/go-chi/cors v1.2.2
+	github.com/go-chi/httprate v0.15.0
+	github.com/thornzero/mewling-goat-tavern v0.0.0-00010101000000-000000000000
+)
+
+replace github.com/thornzero/mewling-goat-tavern => ..
 
 require (
 	github.com/a-h/parse v0.0.0-20250122154542-74294addb73e // indirect

@@ -8,8 +8,6 @@ package views
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "fmt"
-
 func MoviePollLayout(components []templ.Component, userName string, totalMovies, votedMovies int) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -67,7 +65,7 @@ func MoviePollContent(components []templ.Component, userName string, totalMovies
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(userName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-poll.templ`, Line: 14, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-poll.templ`, Line: 12, Col: 68}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -80,65 +78,55 @@ func MoviePollContent(components []templ.Component, userName string, totalMovies
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(totalMovies)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-poll.templ`, Line: 15, Col: 75}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-poll.templ`, Line: 13, Col: 75}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " movies</p><!-- Progress Bar --><div class=\"mt-4 sm:mt-6 max-w-sm sm:max-w-md lg:max-w-lg mx-auto\"><div class=\"flex justify-between text-xs sm:text-sm text-goat-300 mb-2\"><span>Progress</span> <span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " movies</p><!-- Enhanced Progress Components --><div class=\"mt-4 sm:mt-6 max-w-sm sm:max-w-md lg:max-w-lg mx-auto\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(votedMovies)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-poll.templ`, Line: 20, Col: 24}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " / ")
+		templ_7745c5c3_Err = EnhancedProgressBar(ProgressData{
+			TotalMovies:     totalMovies,
+			VotedMovies:     votedMovies,
+			ProgressPercent: float64(votedMovies) / float64(totalMovies) * 100,
+		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(totalMovies)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-poll.templ`, Line: 20, Col: 42}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><!-- Progress Stats --><div class=\"mt-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " movies voted</span></div><div class=\"w-full bg-goat-600 rounded-full h-2 sm:h-3\"><div class=\"bg-tavern-500 h-2 sm:h-3 rounded-full transition-all duration-300 ease-in-out\" style=\"")
+		templ_7745c5c3_Err = ProgressStats(ProgressData{
+			TotalMovies:     totalMovies,
+			VotedMovies:     votedMovies,
+			ProgressPercent: float64(votedMovies) / float64(totalMovies) * 100,
+		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("width: " + fmt.Sprintf("%.1f", float64(votedMovies)/float64(totalMovies)*100) + "%")
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-poll.templ`, Line: 25, Col: 98}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><!-- Completion Celebration (if all movies voted) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\"></div></div><div class=\"mt-2 text-xs text-goat-400\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
+		if votedMovies >= totalMovies && totalMovies > 0 {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"mt-6\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = CompletionCelebration().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", float64(votedMovies)/float64(totalMovies)*100))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/movie-poll.templ`, Line: 29, Col: 73}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "% complete</div></div></div><div id=\"main-content\"><div class=\"swiper\"><div class=\"swiper-wrapper\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div><div id=\"main-content\"><div class=\"swiper\"><div class=\"swiper-wrapper\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -148,7 +136,7 @@ func MoviePollContent(components []templ.Component, userName string, totalMovies
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div><div class=\"swiper-pagination\"></div><div class=\"swiper-button-next\"></div><div class=\"swiper-button-prev\"></div></div></div><div class=\"text-center mt-6 sm:mt-8\"><div class=\"flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center\"><a href=\"/results\" class=\"bg-goat-600 hover:bg-goat-500 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base\">View Results</a> <button onclick=\"logout()\" class=\"bg-red-600 hover:bg-red-500 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base\">Logout</button></div></div></div><script>\n\t\tfunction logout() {\n\t\t\tif (confirm('Are you sure you want to logout?')) {\n\t\t\t\twindow.location.href = '/api/logout';\n\t\t\t}\n\t\t}\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div class=\"swiper-pagination\"></div><div class=\"swiper-button-next\"></div><div class=\"swiper-button-prev\"></div></div></div><div class=\"text-center mt-6 sm:mt-8\"><div class=\"flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center\"><a href=\"/results\" class=\"bg-goat-600 hover:bg-goat-500 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base\">View Results</a> <button onclick=\"logout()\" class=\"bg-red-600 hover:bg-red-500 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 text-sm sm:text-base\">Logout</button></div></div></div><script>\n\t\tfunction logout() {\n\t\t\tif (confirm('Are you sure you want to logout?')) {\n\t\t\t\twindow.location.href = '/api/logout';\n\t\t\t}\n\t\t}\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

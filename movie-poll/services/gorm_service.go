@@ -1,6 +1,7 @@
 package services
 
 import (
+	"database/sql"
 	"time"
 
 	"github.com/thornzero/movie-poll/models"
@@ -193,6 +194,19 @@ func (g *GORMService) FindDuplicateMovies() ([]models.DuplicateMovie, error) {
 	return duplicates, err
 }
 
+func (g *GORMService) RemoveDuplicateMovies() error {
+	duplicates, err := g.FindDuplicateMovies()
+	if err != nil {
+		return err
+	}
+	
+	for _, duplicate := range duplicates {
+		g.db.Where("id IN (?)", duplicate.MovieIDs).Delete(&models.Movie{})
+	}
+
+	return nil
+}
+
 func (g *GORMService) ResetDatabase() error {
 	// Drop and recreate all tables
 	return g.db.Migrator().DropTable(&models.Movie{}, &models.Vote{}, &models.Appeal{}, &models.AdminUser{})
@@ -288,6 +302,12 @@ func (g *GORMService) GetResultsSummary() ([]types.VotingSummary, error) {
 }
 
 func (g *GORMService) GetVotingStats() (*types.VotingStats, error) {
+	// Check cache first
+	if cached, found := Cache.GetCachedVotingStats(); found {
+		if stats, ok := cached.(*types.VotingStats); ok {
+			return stats, nil
+		}
+	}
 	stats := &types.VotingStats{}
 
 	// Count total movies
@@ -329,6 +349,9 @@ func (g *GORMService) GetVotingStats() (*types.VotingStats, error) {
 
 	stats.MostVotedMovie = mostVoted.Title
 	stats.MostVotedCount = int(mostVoted.Count)
+
+	// Cache the result
+	Cache.CacheVotingStats(stats)
 
 	return stats, nil
 }
@@ -385,4 +408,12 @@ func (g *GORMService) DeleteUser(userName, deviceID string) error {
 
 func (g *GORMService) GetUsersWithVotes() ([]models.User, error) {
 	return g.userService.GetUsersWithVotes()
+}
+
+func (g *GORMService) QueryRow(query string, args ...interface{}) *sql.Rows {
+	rows, err := g.db.Raw(query, args...).Rows()
+	if err != nil {
+		return nil
+	}
+	return rows
 }

@@ -1,0 +1,50 @@
+---
+description: "Tech stack and architecture patterns for the movie poll application"
+globs: ["**/*.go", "**/go.mod", "**/go.sum", "**/main.go"]
+alwaysApply: true
+---
+
+# Architecture & Tech Stack
+
+## Core Technology Stack
+
+- **Backend**: Go 1.25+ with Chi router
+- **Database**: SQLite with GORM ORM (fully migrated from manual SQL)
+- **Frontend**: Templ templates + HTMX + Tailwind CSS
+- **Deployment**: Railway platform
+- **Development**: Air for hot reload
+
+## Architecture Patterns
+
+### Service-Oriented Design
+
+- **Router Service**: Chi-based HTTP routing (`services/router.go`)
+- **Database Service**: GORM operations (`services/gorm_service.go`)
+- **Session Service**: User session management (`services/session.go`)
+- **TMDB Service**: External API integration (`services/tmdb_service.go`)
+- **View Handlers**: Template rendering (`services/view_handlers.go`)
+
+### Handler Registry Pattern
+
+- Centralized HTTP handler management in `services/handlers.go`
+- Thin handlers that delegate to services
+- Clear separation of concerns
+
+### Model-View-Controller (MVC)
+
+- **Models**: GORM models in `models/` directory
+- **Views**: Templ templates in `views/` directory
+- **Controllers**: Handler functions in services layer
+
+## Database Architecture
+
+- **GORM Models**: Movie, Vote, User, Appeal, AdminUser
+- **Relationships**: Proper foreign keys and constraints
+- **Auto-migrations**: GORM handles schema management
+- **Type Safety**: Conversion between GORM models and types
+
+## Public Contracts (Must Not Break)
+
+- CLI behavior in `cmd/db-manager`
+- Admin routes and query parameters
+- Database schema (changes require migration + ADR)

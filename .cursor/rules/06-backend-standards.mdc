@@ -1,0 +1,83 @@
+---
+description: "Backend development standards for Go, GORM, and service architecture"
+globs: ["**/*.go", "**/models/**", "**/services/**", "**/types/**"]
+alwaysApply: true
+---
+
+# Backend Standards
+
+## Go Development
+
+- **Go Version**: Use Go 1.25+
+- **Module System**: Use Go modules with `go.mod`
+- **Error Handling**: Proper error handling with meaningful messages
+- **Code Style**: Follow Go idioms and conventions
+
+## GORM Database Layer
+
+- **Models**: Define database models using GORM struct tags
+- **Relationships**: Use proper foreign keys and relationships
+- **Auto-migrations**: Let GORM handle schema management
+- **Type Safety**: Use conversion functions between GORM models and types
+
+### Model Example
+
+```go
+type Movie struct {
+    ID        uint      `gorm:"primaryKey" json:"id"`
+    Title     string    `gorm:"not null;index" json:"title"`
+    TMDBID    *int      `gorm:"uniqueIndex" json:"tmdb_id,omitempty"`
+    CreatedAt time.Time `json:"created_at"`
+    UpdatedAt time.Time `json:"updated_at"`
+    
+    // Relationships
+    Votes []Vote `gorm:"foreignKey:MovieID;constraint:OnDelete:CASCADE" json:"votes,omitempty"`
+}
+```
+
+## Service Architecture
+
+- **Service Layer**: Organize code into dedicated services
+- **Handler Registry**: Use centralized HTTP handler management
+- **Dependency Injection**: Properly initialize and inject services
+- **Single Responsibility**: Each service has a clear, single purpose
+
+### Service Structure
+
+```go
+type MovieService struct {
+    db *gorm.DB
+}
+
+func NewMovieService(db *gorm.DB) *MovieService {
+    return &MovieService{db: db}
+}
+```
+
+## Chi Router
+
+- **HTTP Routing**: Use Chi router for all HTTP routes
+- **Middleware**: Properly configure middleware using chi.Middlewares
+- **Route Groups**: Use route groups for organization
+- **Sub-routers**: Leverage sub-routers for API versioning
+
+## Session Management
+
+- **GORM Store**: Use GORM store for session persistence
+- **Secure Tokens**: Implement secure session tokens
+- **Device Tracking**: Track user devices for analytics
+- **Session Cleanup**: Implement proper session cleanup
+
+## Error Handling
+
+- **Structured Errors**: Use structured error responses
+- **Logging**: Implement comprehensive logging
+- **User Feedback**: Provide meaningful error messages to users
+- **Graceful Degradation**: Handle errors gracefully without breaking functionality
+
+## Testing
+
+- **Unit Tests**: Write unit tests for service functions
+- **Integration Tests**: Test database operations
+- **Handler Tests**: Test HTTP handlers
+- **Test Coverage**: Maintain good test coverage

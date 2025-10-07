@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -8,11 +9,12 @@ import (
 )
 
 type TMDBService struct {
-	api *tmdb.TMDb
+	api   *tmdb.TMDb
+	cache *CacheService
 }
 
 // New creates a new TMDBService instance
-func NewTMDBService(apiKey string) *TMDBService {
+func NewTMDBService(apiKey string, cache *CacheService) *TMDBService {
 	config := tmdb.Config{
 		APIKey:   apiKey,
 		Proxies:  nil,
@@ -20,7 +22,8 @@ func NewTMDBService(apiKey string) *TMDBService {
 	}
 
 	return &TMDBService{
-		api: tmdb.Init(config),
+		api:   tmdb.Init(config),
+		cache: cache,
 	}
 }
 
@@ -77,16 +80,42 @@ func (m *MovieID) HasTMDBID() bool {
 }
 
 func (s *TMDBService) GetMovieDetails(id int) (Movie, error) {
+	// Check cache first
+	if cached, found := s.cache.GetCachedMovieDetails(id); found {
+		if movie, ok := cached.(Movie); ok {
+			return movie, nil
+		}
+	}
+
+	// Fetch from TMDB API
 	movie, err := s.api.GetMovieInfo(id, nil)
 	if err != nil {
 		return Movie{}, err
 	}
-	return Movie{movie, time.Time{}, time.Time{}}, nil
+
+	result := Movie{movie, time.Time{}, time.Time{}}
+
+	// Cache the result
+	s.cache.CacheMovieDetails(id, result)
+
+	return result, nil
 }
 
 func (s *TMDBService) SearchMovies(movieID MovieID, page int) (MovieSearchResults, error) {
 	if page <= 0 {
 		page = 1
+	}
+
+	// Create cache key from search parameters
+	cacheKey := fmt.Sprintf("%s_%d_%s_%s_%s_%d",
+		movieID.Title, movieID.Year, movieID.Language,
+		movieID.Region, strconv.FormatBool(movieID.Adult), page)
+
+	// Check cache first
+	if cached, found := s.cache.GetCachedMovieSearch(cacheKey); found {
+		if results, ok := cached.(MovieSearchResults); ok {
+			return results, nil
+		}
 	}
 
 	/* Query params:
@@ -136,9 +165,12 @@ func (s *TMDBService) SearchMovies(movieID MovieID, page int) (MovieSearchResult
 
 	// If we have results, return them immediately
 	if len(searchResult.Results) > 0 {
-		return MovieSearchResults{
+		result := MovieSearchResults{
 			MovieSearchResults: searchResult,
-		}, nil
+		}
+		// Cache the successful result
+		s.cache.CacheMovieSearch(cacheKey, result)
+		return result, nil
 	}
 
 	// Second attempt: Only if no results and we're not already searching in English
@@ -153,9 +185,14 @@ func (s *TMDBService) SearchMovies(movieID MovieID, page int) (MovieSearchResult
 		}
 	}
 
-	return MovieSearchResults{
+	result := MovieSearchResults{
 		MovieSearchResults: searchResult,
-	}, nil
+	}
+
+	// Cache the result (even if empty)
+	s.cache.CacheMovieSearch(cacheKey, result)
+
+	return result, nil
 }
 
 func (s *TMDBService) GetMovieGenres() ([]struct {

@@ -304,6 +304,9 @@ func (hr *HandlerRegistry) handleDebugPage(w http.ResponseWriter, r *http.Reques
 // Helper functions for rendering
 
 func renderMoviePollPage(w http.ResponseWriter, r *http.Request, movies []types.Movie, sessionData *SessionData) {
+	// Initialize progress tracking for new voting sessions
+	Session.InitializeVotingProgress(r)
+
 	// Create movie card components
 	var components []templ.Component
 	for _, movie := range movies {
